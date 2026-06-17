@@ -1,0 +1,15 @@
+﻿{
+    "model": "mymod:geo/catspider.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/catspider.png"
+    },
+    "animation_file": "mymod:animations/spidercat.animation.json",
+    "animation_controller": [
+        {
+            "name": "looping_controller",
+            "transition_tick_time": 0,
+            "animation": "animation.spidercat.loop"
+        }
+    ]
+}

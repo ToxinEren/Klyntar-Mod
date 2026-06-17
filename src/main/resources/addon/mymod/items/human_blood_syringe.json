@@ -1,0 +1,8 @@
+{
+    "rarity": "common",
+    "is_fire_resistant": true,
+    "max_stack_size": 1,
+    "tooltip": [
+        "This syringe contains the DNA of a human."
+    ]
+}

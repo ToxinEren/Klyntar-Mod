@@ -1,0 +1,23 @@
+﻿{
+    "model": "mymod:geo/venombody.geo.json",
+    "type": "geckolib:default",
+    "animation_file": "mymod:animations/venom.animation.json",
+    "texture": "mymod:textures/models/venombody.png",
+    "animation_controller": [
+        {
+            "name": "venomattacks",
+            "transition_tick_time": 10,
+            "triggers": {
+                "rightpunch": "rightpunch"
+            }
+        }
+    ],
+    "bones": {
+        "head": "armorHead",
+        "body": "armorBody",
+        "right_arm": "armorRightArm",
+        "left_arm": "armorLeftArm",
+        "right_leg": "armorRightLeg",
+        "left_leg": "armorLeftLeg"
+    }
+}

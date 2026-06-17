@@ -1,0 +1,22 @@
+﻿{
+    "model": "mymod:geo/agentvenom.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/agentvenom.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "mymod:textures/models/alpha_masks/agentvenom/agentmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "mymod:agentvenom",
+                "ability": "enableagentvenom",
+                "property": "value"
+            }
+        },
+        "output": "mymod:textures/models/agentvenom_#MASK.png"
+    }
+}

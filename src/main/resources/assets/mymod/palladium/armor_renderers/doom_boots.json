@@ -1,0 +1,4 @@
+﻿{
+  "textures": "mymod:textures/models/armor/doom_boots.png",
+  "model_layers": "palladium:humanoid#suit"
+}

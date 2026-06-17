@@ -1,0 +1,5 @@
+﻿{
+  "textures": "mymod:textures/models/armor/greengoblinchestplate.png",
+  "model_layers": "mymod:greengoblinbody",
+    "hide_second_layer": true
+}

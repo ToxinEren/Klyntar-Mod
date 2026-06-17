@@ -1,0 +1,5 @@
+﻿{
+    "model": "mymod:geo/glider.geo.json",
+    "type": "geckolib:default",
+    "texture": "mymod:textures/models/glider.png"
+}

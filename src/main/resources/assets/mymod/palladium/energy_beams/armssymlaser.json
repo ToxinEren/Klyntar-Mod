@@ -1,0 +1,23 @@
+[
+  {
+    "body_part": "head",
+    "glow_color": "#fd9928",
+    "offset": [-13, 5, 0]
+  },
+  {
+    "body_part": "head",
+    "glow_color": "#fd9928",
+    "offset": [13, 5, 0]
+  },
+    {
+    "body_part": "head",
+    "glow_color": "#fd9928",
+    "offset": [-13, -15, 0]
+  },
+  {
+    "body_part": "head",
+    "glow_color": "#fd9928",
+    "offset": [13, -15, 0]
+  }
+
+]

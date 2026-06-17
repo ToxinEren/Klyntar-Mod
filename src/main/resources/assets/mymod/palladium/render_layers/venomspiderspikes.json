@@ -1,0 +1,21 @@
+﻿{
+    "model_layer": "mymod:spikes",
+    "texture": {
+        "base": "mymod:textures/models/spikes.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "mymod:textures/models/alpha_masks/spikesmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "mymod:venomspidey",
+                "ability": "enablespiderspikes",
+                "property": "value"
+            }
+        },
+        "output": "mymod:textures/models/spiderspikes_#MASK.png"
+    }
+}

@@ -1,0 +1,22 @@
+﻿{
+    "model": "mymod:geo/venomspidershield.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/venomspidershield2.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "mymod:textures/models/alpha_masks/venomspidey/symbioteshieldmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "mymod:venomspidey",
+                "ability": "enablespidershield",
+                "property": "value"
+            }
+        },
+        "output": "mymod:textures/models/venomspidershield2_#MASK.png"
+    }
+}

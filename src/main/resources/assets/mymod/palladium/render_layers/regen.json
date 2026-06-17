@@ -1,0 +1,29 @@
+﻿{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "model": {
+                "normal": "mymod:geo/wolverine/regenbody.geo.json",
+                "slim": "mymod:geo/wolverine/regenbodyslim.geo.json"
+            },
+            "type": "geckolib:default",
+            "texture": {
+                "base": "mymod:textures/models/regen/redarm.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/regen/redarmmask_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:objective_score",
+                        "objective": "Throg.Regen"
+                    }
+                },
+                "conditions": [],
+                "output": "mymod:textures/models/redarm_#MASK.png"
+            }
+        }
+    ]
+}

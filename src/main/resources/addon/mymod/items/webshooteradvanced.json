@@ -1,0 +1,13 @@
+{
+    "rarity": "common",
+    "is_fire_resistant": true,
+    "max_stack_size": 1,
+    "tooltip": [
+        "A device with more advanced and powerful web gadgets"
+    ],
+    "render_layers": {
+        "curios:hands": [
+            "mymod:webshootersadvanced"
+        ]
+    }
+}

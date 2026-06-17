@@ -1,0 +1,7 @@
+﻿{
+    "model": "mymod:geo/skeleton.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/skeletonorganic.png"
+    }
+}

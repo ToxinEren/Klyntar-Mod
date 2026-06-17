@@ -1,0 +1,33 @@
+{
+  "tooltip": [
+   
+  ],
+  "armor_material": "mymod:deadpool",
+  "creative_mode_tab": "throgaddonsuits",
+  "chest": {
+    "item_name": "deadpool_chestplate",
+    "tooltip": [
+      
+    ]
+  },
+  "legs": {
+    "item_name": "deadpool_leggings",
+    "tooltip": [
+      
+    ]
+  },
+  "feet": {
+    "item_name": "deadpool_boots",
+    "tooltip": [
+    
+    ]
+  },
+  "head": {
+    "item_name": "deadpool_mask",
+    "openable": false,
+    "opening_time": 6,
+    "tooltip": [
+     
+    ]
+  }
+}

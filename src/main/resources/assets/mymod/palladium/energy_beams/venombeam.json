@@ -1,0 +1,106 @@
+[
+    {
+        "type": "palladium:lightning",
+        "body_part": "right_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 7,
+        "frequency": 2,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "right_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 16,
+        "frequency": 7,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "right_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 10,
+        "frequency": 9,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "right_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 7,
+        "frequency": 5,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "left_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 7,
+        "frequency": 2,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "left_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 16,
+        "frequency": 7,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "left_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 10,
+        "frequency": 9,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    },
+    {
+        "type": "palladium:lightning",
+        "body_part": "left_arm",
+        "glow_color": "#00d8ff",
+        "segments": 15,
+        "spread": 7,
+        "frequency": 5,
+        "offset": [
+            -1,
+            -15,
+            -4
+        ]
+    }
+]

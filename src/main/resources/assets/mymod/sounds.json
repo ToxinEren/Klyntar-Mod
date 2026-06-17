@@ -1,0 +1,12 @@
+﻿{
+    "symbiotepulser": {
+        "sounds": [
+            "mymod:symbiotepulser"
+        ]
+    },
+    "electricity": {
+        "sounds": [
+            "mymod:electricity"
+        ]
+    }
+}

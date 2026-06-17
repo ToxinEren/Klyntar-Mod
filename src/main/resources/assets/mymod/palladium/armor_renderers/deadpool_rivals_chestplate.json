@@ -1,0 +1,5 @@
+﻿{
+    "textures": "mymod:textures/models/armor/deadpoolrivalsbody.png",
+    "model_layers": "mymod:deadpoolrivalsbody",
+    "hide_second_layer": true
+}

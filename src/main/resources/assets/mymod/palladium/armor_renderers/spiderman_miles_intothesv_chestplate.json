@@ -1,0 +1,11 @@
+﻿{
+    "textures": {
+        "normal": "mymod:textures/models/armor/miles/milesintochest.png",
+        "slim": "mymod:textures/models/armor/miles/milesintochestslim.png"
+    },
+    "model_layers": {
+        "normal": "mymod:moralesbody",
+        "slim": "mymod:moralesbodyslim"
+    },
+    "hide_second_layer": true
+}

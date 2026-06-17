@@ -1,0 +1,20 @@
+{
+  "pack": {
+    "id": "mymod",
+    "description": "Klyntar Palladium addon content copied from ThrogAddon for Venom and Carnage.",
+    "pack_format": 15,
+    "version": "1.0.0"
+  },
+  "custom": {
+    "curios": {
+      "body": true,
+      "hands": true,
+      "back": true
+    }
+  },
+  "dependencies": {
+    "common": {},
+    "fabric": {},
+    "forge": {}
+  }
+}

@@ -1,0 +1,5 @@
+﻿{
+    "textures": "mymod:textures/models/armor/deadpoollegs.png",
+    "model_layers": "mymod:deadpoolbody",
+    "hide_second_layer": true
+}

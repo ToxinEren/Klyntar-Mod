@@ -1,0 +1,305 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.venomhead_tentacle",
+        "texture_width": 48,
+        "texture_height": 48,
+        "visible_bounds_width": 5.5,
+        "visible_bounds_height": 6,
+        "visible_bounds_offset": [
+          -0.25,
+          1.75,
+          0.25
+        ]
+      },
+      "bones": [
+        {
+          "name": "armorBody",
+          "pivot": [
+            -7.25,
+            26.8,
+            2.4
+          ],
+          "rotation": [
+            12,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "bone",
+          "parent": "armorBody",
+          "pivot": [
+            1.18,
+            18.77,
+            -0.63
+          ],
+          "rotation": [
+            25.2229,
+            -9.13478,
+            -14.06824
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -0.32,
+                17.27,
+                -1.13
+              ],
+              "size": [
+                2.46,
+                2.46,
+                7
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    31,
+                    36
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    21,
+                    33
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    38,
+                    40
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    34
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ]
+                },
+                "up": {
+                  "uv": [
+                    7,
+                    34
+                  ],
+                  "uv_size": [
+                    3,
+                    7
+                  ]
+                },
+                "down": {
+                  "uv": [
+                    10,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    -7
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "bone2",
+          "parent": "bone",
+          "pivot": [
+            0.98,
+            19.07,
+            5.17
+          ],
+          "rotation": [
+            32.86735,
+            -17.23802,
+            -2.62165
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -0.52,
+                17.57,
+                4.67
+              ],
+              "size": [
+                2.46,
+                2.46,
+                7
+              ],
+              "inflate": -0.1,
+              "uv": {
+                "north": {
+                  "uv": [
+                    0,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    35,
+                    0
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    3,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    35,
+                    3
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ]
+                },
+                "up": {
+                  "uv": [
+                    35,
+                    6
+                  ],
+                  "uv_size": [
+                    3,
+                    7
+                  ]
+                },
+                "down": {
+                  "uv": [
+                    35,
+                    20
+                  ],
+                  "uv_size": [
+                    3,
+                    -7
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "bone3",
+          "parent": "bone2",
+          "pivot": [
+            0.58,
+            19.07,
+            11.67
+          ],
+          "rotation": [
+            59.2405,
+            2.39003,
+            -33.06541
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -0.92,
+                17.57,
+                11.17
+              ],
+              "size": [
+                2.46,
+                2.46,
+                5
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    6,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    35,
+                    28
+                  ],
+                  "uv_size": [
+                    5,
+                    3
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    9,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    3
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    35,
+                    31
+                  ],
+                  "uv_size": [
+                    5,
+                    3
+                  ]
+                },
+                "up": {
+                  "uv": [
+                    35,
+                    34
+                  ],
+                  "uv_size": [
+                    3,
+                    5
+                  ]
+                },
+                "down": {
+                  "uv": [
+                    21,
+                    41
+                  ],
+                  "uv_size": [
+                    3,
+                    -5
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

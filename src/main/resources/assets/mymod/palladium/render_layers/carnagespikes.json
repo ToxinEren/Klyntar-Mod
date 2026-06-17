@@ -1,0 +1,20 @@
+﻿{
+    "model_layer": "mymod:spikes",
+    "texture": {
+        "base": "mymod:textures/models/carnagespikes.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "mymod:textures/models/alpha_masks/carnage/carnagespikesmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "mymod:carnage",
+                    "ability": "enablecarnagespikes",
+                    "property": "value"
+                }
+            },
+            "output": "mymod:textures/models/carnagespikes_#MASK.png"
+}
+}

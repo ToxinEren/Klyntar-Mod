@@ -1,0 +1,9 @@
+﻿{
+    "model": "mymod:geo/dprifleblast.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/riflefire.png",
+        "output": "mymod:textures/models/rifleblast_#MASK.png"
+    },
+    "render_type": "glow"
+}

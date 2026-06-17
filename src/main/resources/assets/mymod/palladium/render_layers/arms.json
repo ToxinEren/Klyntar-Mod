@@ -1,0 +1,20 @@
+﻿{
+    "model_layer": "mymod:arms",
+    "texture": {
+        "base": "mymod:textures/models/arms.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "mymod:textures/models/alpha_masks/armsmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "mymod:armorsymbiote",
+                    "ability": "enablearms",
+                    "property": "value"
+                }
+            },
+            "output": "mymod:textures/models/arms_#MASK.png"
+}
+}

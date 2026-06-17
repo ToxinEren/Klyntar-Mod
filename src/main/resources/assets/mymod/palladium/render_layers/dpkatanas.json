@@ -1,0 +1,16 @@
+﻿{
+    "model": "mymod:geo/dpkatanas.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/dpkatanaentity.png",
+        "output": "mymod:textures/models/dpkatanas_#MASK.png"
+    },
+    "bones": {
+        "head": "armorHead",
+        "body": "armorBody",
+        "right_arm": "armorRightArm",
+        "left_arm": "armorLeftArm",
+        "right_leg": "armorRightLeg",
+        "left_leg": "armorLeftLeg"
+    }
+}

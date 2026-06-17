@@ -1,0 +1,33 @@
+{
+  "tooltip": [
+   
+  ],
+  "armor_material": "mymod:galactus",
+  "creative_mode_tab": "throgaddonsuits",
+  "chest": {
+    "item_name": "galactus_chestplate",
+    "tooltip": [
+      
+    ]
+  },
+  "legs": {
+    "item_name": "galactus_leggings",
+    "tooltip": [
+      
+    ]
+  },
+  "feet": {
+    "item_name": "galactus_boots",
+    "tooltip": [
+    
+    ]
+  },
+  "head": {
+    "item_name": "galactus_helmet",
+    "openable": false,
+    "opening_time": 6,
+    "tooltip": [
+     
+    ]
+  }
+}

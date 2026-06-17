@@ -1,0 +1,5 @@
+﻿{
+  "model_layer": "mymod:handsorcery",
+  "texture": "mymod:textures/models/handsorcery.png",
+  "render_type": "glow"
+}

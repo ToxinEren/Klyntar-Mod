@@ -1,0 +1,28 @@
+﻿{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "model_layer": "minecraft:player#main",
+            "model_type": "minecraft:player",
+            "texture": {
+                "type": "palladium:player",
+                "username": "@s",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/armorsymbiotemask_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "mymod:spidermanmiles",
+                        "ability": "invisibility",
+                        "property": "value"
+                    }
+                },
+                "output": "mymod:textures/models/camouflage_#MASK.png"
+            }
+        }
+    ]
+}

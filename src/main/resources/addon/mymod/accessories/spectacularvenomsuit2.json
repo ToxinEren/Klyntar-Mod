@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "mymod:symbiotesuit",
+  "render_layer": "mymod:spectacularsymbiote2",
+  "disable_rendering": false
+}

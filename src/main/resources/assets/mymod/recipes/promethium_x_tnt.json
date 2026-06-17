@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PTP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "mymod:promethium_x"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "mymod:promethium_x_tnt",
+    "count": 1
+  }
+}

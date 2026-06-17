@@ -1,0 +1,16 @@
+{
+    "durability_multiplier": 100,
+    "slot_protections": {
+        "helmet": 4,
+        "chestplate": 8,
+        "leggings": 6,
+        "boots": 4
+    },
+    "enchantment_value": 12,
+    "equip_sound": "minecraft:item.armor.equip_leather",
+    "toughness": 2,
+    "knockback_resistance": 0.3,
+    "repair_ingredient": {
+        "tag": "palladium:red_fabric"
+    }
+}

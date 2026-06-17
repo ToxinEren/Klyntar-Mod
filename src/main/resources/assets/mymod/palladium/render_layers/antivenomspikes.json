@@ -1,0 +1,20 @@
+﻿{
+    "model_layer": "mymod:spikes",
+    "texture": {
+        "base": "mymod:textures/models/antispikes.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "mymod:textures/models/alpha_masks/spikesmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "mymod:antivenom",
+                    "ability": "enableantivenomspikes",
+                    "property": "value"
+                }
+            },
+            "output": "mymod:textures/models/antispikes_#MASK.png"
+}
+}

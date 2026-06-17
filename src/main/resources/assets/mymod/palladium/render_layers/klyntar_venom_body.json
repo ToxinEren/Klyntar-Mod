@@ -1,0 +1,27 @@
+{
+    "model":  "mymod:geo/venom.geo.json",
+    "type":  "geckolib:default",
+    "texture":  "mymod:textures/entity/venom/venom.png",
+    "animation_file":  "mymod:animations/klyntar_venom.animation.json",
+    "animation_controller":  [
+                                 {
+                                     "name":  "venom_actions",
+                                     "transition_tick_time":  5,
+                                     "triggers":  {
+                                                      "walk_trigger":  "walk",
+                                                      "attack_trigger":  "attack",
+                                                      "attack_2_trigger":  "attack_2",
+                                                      "growl_trigger":  "growl",
+                                                      "assimilate_trigger":  "attack"
+                                                  }
+                                 }
+                             ],
+    "bones":  {
+                  "head":  "Venom_head",
+                  "body":  "Venom_body_high",
+                  "right_arm":  "Venom_right_arm_high",
+                  "left_arm":  "Venom_left_arm_high",
+                  "right_leg":  "Venom_right_leg",
+                  "left_leg":  "Venom_left_leg"
+              }
+}

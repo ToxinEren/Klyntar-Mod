@@ -1,0 +1,5 @@
+﻿{
+  "textures": "mymod:textures/models/armor/doom_chestplate.png",
+  "model_layers": "palladium:humanoid#suit",
+    "hide_second_layer": true
+}

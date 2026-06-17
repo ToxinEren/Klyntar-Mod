@@ -1,0 +1,22 @@
+﻿{
+    "model": "mymod:geo/venomspike.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/spikeantivenom.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "mymod:textures/models/alpha_masks/venom/spikevenommask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "mymod:antivenom",
+                "ability": "enableantivenomspike",
+                "property": "value"
+            }
+        },
+        "output": "mymod:textures/models/spikeantivenom_#MASK.png"
+    }
+}

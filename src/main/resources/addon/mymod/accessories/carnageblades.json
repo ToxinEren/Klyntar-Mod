@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "mymod:carnageblades",
+  "render_layer": "mymod:carnageblades2",
+  "disable_rendering": false
+}

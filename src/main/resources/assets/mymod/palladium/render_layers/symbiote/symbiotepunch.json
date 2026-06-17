@@ -1,0 +1,49 @@
+﻿{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "model": "mymod:geo/symbiotepunch.geo.json",
+            "type": "geckolib:default",
+            "texture": {
+                "base": "mymod:textures/models/symbiotepunch.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "mymod:venom",
+                        "ability": "enablesymbiotepunch",
+                        "property": "value"
+                    }
+                },
+                "output": "mymod:textures/models/symbiotepunch_#MASK.png"
+            }
+        },
+        {
+            "model": "mymod:geo/symbiotepunch.geo.json",
+            "type": "geckolib:default",
+            "texture": {
+                "base": "mymod:textures/models/antipunch.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "mymod:antivenom",
+                        "ability": "enablesymbiotepunch",
+                        "property": "value"
+                    }
+                },
+                "output": "mymod:textures/models/antipunch_#MASK.png"
+            }
+        }
+    ]
+}

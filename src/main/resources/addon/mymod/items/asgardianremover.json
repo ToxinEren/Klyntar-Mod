@@ -1,0 +1,8 @@
+{
+    "rarity": "epic",
+    "is_fire_resistant": true,
+    "max_stack_size": 1,
+    "tooltip": [
+        "This item will remove your asgardian dna, whether it is humanoid or animal-like."
+    ]
+}

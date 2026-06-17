@@ -1,0 +1,11 @@
+{
+    "rarity": "epic",
+    "is_fire_resistant": true,
+    "max_stack_size": 1,
+    "tooltip": [
+        "This essence will grant you power similar to Knull the god of symbiotes."
+    ],
+    "render_layers": {
+        "curios:body": []
+    }
+}

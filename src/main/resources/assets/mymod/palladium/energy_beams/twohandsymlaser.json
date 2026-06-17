@@ -1,0 +1,13 @@
+[
+  {
+    "body_part": "right_arm",
+    "glow_color": "#fd9928",
+    "offset": [-1, -11, 0]
+  },
+  {
+    "body_part": "left_arm",
+    "glow_color": "#fd9928",
+    "offset": [1, -11, 0]
+  }
+
+]

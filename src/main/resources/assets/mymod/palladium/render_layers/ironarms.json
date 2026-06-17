@@ -1,0 +1,32 @@
+﻿{
+    "model": "mymod:geo/ironlegs.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "mymod:textures/models/ironlegs.png",
+        "output": "mymod:textures/models/ironarms_#MASK.png"
+    },
+    "animation_file": "mymod:animations/ironarms.animation.json",
+    "animation_controller": [
+        {
+            "name": "triggerable_controller",
+            "transition_tick_time": 10,
+            "triggers": {
+                "block_trigger": "animation.ironarms.block",
+                "comeout_trigger": "animation.ironarms.comeout",
+                "blockreverse_trigger": "animation.ironarms.blockreverse",
+                "godown_trigger": "animation.ironarms.godown",
+                "gone_trigger": "animation.ironarms.gone",
+                "combo_trigger": "animation.ironarms.combo",
+                "combostop_trigger": "animation.ironarms.combostop"
+            }
+        }
+    ],
+    "bones": {
+        "head": "armorHead",
+        "body": "armorBody",
+        "right_arm": "armorRightArm",
+        "left_arm": "armorLeftArm",
+        "right_leg": "armorRightLeg",
+        "left_leg": "armorLeftLeg"
+    }
+}

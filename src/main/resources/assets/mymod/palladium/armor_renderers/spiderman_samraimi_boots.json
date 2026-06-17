@@ -1,0 +1,5 @@
+﻿{
+    "textures": "mymod:textures/models/armor/samraimiboots.png",
+    "model_layers": "mymod:spectacularbody",
+    "hide_second_layer": true
+}

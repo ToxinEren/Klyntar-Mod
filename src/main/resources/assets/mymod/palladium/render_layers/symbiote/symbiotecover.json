@@ -1,0 +1,47 @@
+﻿{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "type": "palladium:skin_overlay",
+            "texture": {
+                "base": "mymod:textures/models/blackcover.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "mymod:venom",
+                        "ability": "enablesymbiotecover",
+                        "property": "value"
+                    }
+                },
+                "output": "mymod:textures/models/blackcover_#MASK.png"
+            }
+        },
+        {
+            "type": "palladium:skin_overlay",
+            "texture": {
+                "base": "mymod:textures/models/redcover.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "mymod:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "mymod:carnage",
+                        "ability": "enablesymbiotecover",
+                        "property": "value"
+                    }
+                },
+                "output": "mymod:textures/models/redcover_#MASK.png"
+            }
+        }
+    ]
+}

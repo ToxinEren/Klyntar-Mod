@@ -1,0 +1,21 @@
+﻿{
+    "type": "palladium:skin_overlay",
+    "texture": {
+        "base": "mymod:textures/models/red.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "mymod:textures/models/alpha_masks/carnage/redmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "mymod:carnage",
+                "ability": "enablecarnagebody",
+                "property": "value"
+            }
+        },
+        "output": "mymod:textures/models/red_#MASK.png"
+    }
+}

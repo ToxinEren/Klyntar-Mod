@@ -1,0 +1,20 @@
+{
+    "type": "palladium:skin_overlay",
+    "texture": {
+        "base": "doomsday:textures/models/celestial.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "doomsday:textures/models/alpha_masks/celestialmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "doomsday:arishem",
+                    "ability": "enablearishem",
+                    "property": "value"
+                }
+            },
+            "output": "doomsday:textures/models/celestial_#MASK.png"
+}
+}

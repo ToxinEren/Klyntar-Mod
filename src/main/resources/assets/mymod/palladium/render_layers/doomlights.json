@@ -1,0 +1,5 @@
+﻿{
+    "type": "palladium:skin_overlay",
+  "texture": "mymod:textures/models/doomlights.png",
+  "render_type": "glow"
+}
