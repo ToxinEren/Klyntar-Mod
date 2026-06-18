@@ -149,7 +149,7 @@
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
-            "power": "null",
+            "power": "mymod:venom",
             "ability": "enablevenomhead",
             "min": 1,
             "max": 12
@@ -1288,6 +1288,14 @@
             "type": "palladium:ability_unlocked",
             "power": "mymod:venom",
             "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:crouching"
+              }
+            ]
           }
         ]
       }
@@ -4151,7 +4159,7 @@
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
-      "list_index": 4,
+      "list_index": 1,
       "gui_position": [
         1.5,
         -0.5
@@ -4184,6 +4192,9 @@
             "type": "palladium:ability_unlocked",
             "power": "mymod:venom",
             "ability": "venombody"
+          },
+          {
+            "type": "palladium:crouching"
           }
         ],
         "enabling": [
@@ -4279,6 +4290,59 @@
                 "ability": "assimilate"
               }
             ]
+          }
+        ]
+      }
+    },
+    "venomheadenteranimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "mymod:symbiote/symbiotehead",
+      "controller": "head_actions",
+      "animation_trigger": "venomhead_enter",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "mymod:venom",
+            "ability": "enablevenomhead",
+            "min": 1,
+            "max": 1
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "mymod:venom",
+            "ability": "enablevenomhead"
+          }
+        ]
+      }
+    },
+    "venomheadexitanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "mymod:symbiote/symbiotehead",
+      "controller": "head_actions",
+      "animation_trigger": "venomhead_exit",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_last_tick",
+            "power": "mymod:venom",
+            "ability": "enablevenomhead"
           }
         ]
       }
