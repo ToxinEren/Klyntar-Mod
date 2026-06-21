@@ -2,15 +2,19 @@ package modKlyntar.network;
 
 import modKlyntar.MyMod;
 import modKlyntar.client.ClientEventHandler;
+import modKlyntar.client.renderer.VenomLocomotionRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.network.NetworkRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModNetwork {
@@ -25,6 +29,9 @@ public class ModNetwork {
     public static void registerPackets() {
         int id = 0;
         INSTANCE.registerMessage(id++, SyncVenomModelPacket.class, SyncVenomModelPacket::encode, SyncVenomModelPacket::new, SyncVenomModelPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomLocomotionPacket.class, SyncVenomLocomotionPacket::encode, SyncVenomLocomotionPacket::new, SyncVenomLocomotionPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomLocomotionVelocityPacket.class, SyncVenomLocomotionVelocityPacket::encode, SyncVenomLocomotionVelocityPacket::new, SyncVenomLocomotionVelocityPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle);
     }
 
     public static class SyncVenomModelPacket {
@@ -52,5 +59,118 @@ public class ModNetwork {
             });
             return true;
         }
+    }
+    public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomLocomotionPacket(player.getId(), anchors));
+    }
+
+    public static class SyncVenomLocomotionPacket {
+        private final int entityId;
+        private final List<Vec3> anchors;
+
+        public SyncVenomLocomotionPacket(int entityId, List<Vec3> anchors) {
+            this.entityId = entityId;
+            this.anchors = anchors == null ? List.of() : anchors;
+        }
+
+        public SyncVenomLocomotionPacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readInt();
+            int size = buf.readVarInt();
+            List<Vec3> readAnchors = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                readAnchors.add(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
+            }
+            this.anchors = readAnchors;
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeInt(entityId);
+            buf.writeVarInt(anchors.size());
+            for (Vec3 anchor : anchors) {
+                buf.writeDouble(anchor.x);
+                buf.writeDouble(anchor.y);
+                buf.writeDouble(anchor.z);
+            }
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateAnchors(entityId, anchors));
+            return true;
+        }
+    }
+    public static void syncVenomLocomotionVelocity(Vec3 velocity) {
+        INSTANCE.sendToServer(new SyncVenomLocomotionVelocityPacket(velocity));
+    }
+
+    public static class SyncVenomLocomotionVelocityPacket {
+        private final Vec3 velocity;
+
+        public SyncVenomLocomotionVelocityPacket(Vec3 velocity) {
+            this.velocity = velocity == null ? Vec3.ZERO : velocity;
+        }
+
+        public SyncVenomLocomotionVelocityPacket(FriendlyByteBuf buf) {
+            this.velocity = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeDouble(velocity.x);
+            buf.writeDouble(velocity.y);
+            buf.writeDouble(velocity.z);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                ServerPlayer player = ctx.get().getSender();
+                if (player == null || !isVenomLocomotionActive(player)) {
+                    return;
+                }
+                player.setDeltaMovement(velocity);
+                player.fallDistance = 0.0F;
+            });
+            return true;
+        }
+    }
+
+
+    public static void syncVenomGrabTentacle(ServerPlayer player, Vec3 target) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomGrabTentaclePacket(player.getId(), target));
+    }
+
+    public static class SyncVenomGrabTentaclePacket {
+        private final int entityId;
+        private final Vec3 target;
+
+        public SyncVenomGrabTentaclePacket(int entityId, Vec3 target) {
+            this.entityId = entityId;
+            this.target = target;
+        }
+
+        public SyncVenomGrabTentaclePacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readInt();
+            this.target = buf.readBoolean() ? new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()) : null;
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeInt(entityId);
+            buf.writeBoolean(target != null);
+            if (target != null) {
+                buf.writeDouble(target.x);
+                buf.writeDouble(target.y);
+                buf.writeDouble(target.z);
+            }
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateGrabTarget(entityId, target));
+            return true;
+        }
+    }
+    private static boolean isVenomLocomotionActive(ServerPlayer player) {
+        var objective = player.getScoreboard().getObjective("Venom.Locomotion");
+        if (objective == null) {
+            return false;
+        }
+        return player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective).getScore() > 0;
     }
 }
