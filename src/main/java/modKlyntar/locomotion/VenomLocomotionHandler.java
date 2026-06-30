@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class VenomLocomotionHandler {
     private static final String OBJECTIVE_NAME = "Venom.Locomotion";
     private static final double GRAB_RANGE = 20.0D;
-    private static final int MIN_ARMS_FOR_LOCOMOTION = 1;
+    private static final int MIN_ARMS_FOR_LOCOMOTION = 4;
     private static final int MAX_ARMS = 6;
     private static final double STATIONARY_ANCHOR_DISTANCE_SQR = 0.04D;
     private static final Map<UUID, AnchorMemory> ANCHOR_MEMORY = new ConcurrentHashMap<>();
@@ -50,7 +50,7 @@ public final class VenomLocomotionHandler {
         int ticks = getLocomotionTicks(player);
         if (ticks <= 0) {
             ANCHOR_MEMORY.remove(player.getUUID());
-            ModNetwork.syncVenomLocomotion(player, Collections.emptyList());
+            ModNetwork.syncVenomLocomotion(player, Collections.emptyList(), false);
             return;
         }
         tickLocomotion(player);

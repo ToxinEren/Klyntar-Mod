@@ -26,8 +26,9 @@ public class PlayerEventSubscriber {
         public static void onPlayerClone(PlayerEvent.Clone event) {
         	if(event.isWasDeath()) {
         		event.getOriginal().getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(oldStore -> {
-        			event.getOriginal().getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(newStore -> {
+        			event.getEntity().getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(newStore -> {
         				newStore.copyFrom(oldStore);
+                        newStore.applyPowers(event.getEntity());
         			});
         		});
         	}
@@ -67,5 +68,15 @@ public class PlayerEventSubscriber {
                     }
                 });
             }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+            Player player = event.getEntity();
+            player.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(power -> {
+                if (power.getSymbioteLevel() == 1) {
+                    power.applyPowers(player);
+                }
+            });
         }
 }

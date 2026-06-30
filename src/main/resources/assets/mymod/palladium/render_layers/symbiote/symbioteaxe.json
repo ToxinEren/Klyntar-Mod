@@ -1,8 +1,29 @@
 {
-  "model": "mymod:geo/symbioteaxe.geo.json",
-  "type": "geckolib:default",
-  "texture": "mymod:textures/models/symbioteaxe.png",
-  "bones": {
-    "right_arm": "armorRightArm"
-  }
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model": "mymod:geo/symbioteaxe.geo.json",
+      "type": "geckolib:default",
+      "bones": {
+        "right_arm": "armorRightArm"
+      },
+      "texture": {
+        "base": "mymod:textures/models/symbioteaxe.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "mymod:textures/models/alpha_masks/venom/utility/symbioteaxemask_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:animation_timer_ability",
+            "power": "mymod:venom",
+            "ability": "enablesymbioteaxe"
+          }
+        },
+        "output": "mymod:textures/models/symbioteaxe_#MASK.png"
+      }
+    }
+  ]
 }

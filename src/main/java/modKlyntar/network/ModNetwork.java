@@ -32,6 +32,7 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomLocomotionPacket.class, SyncVenomLocomotionPacket::encode, SyncVenomLocomotionPacket::new, SyncVenomLocomotionPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomLocomotionVelocityPacket.class, SyncVenomLocomotionVelocityPacket::encode, SyncVenomLocomotionVelocityPacket::new, SyncVenomLocomotionVelocityPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle);
     }
 
     public static class SyncVenomModelPacket {
@@ -57,24 +58,32 @@ public class ModNetwork {
                     System.out.println("Model change packet handled. form: " + form);
                 }
             });
+            ctx.get().setPacketHandled(true);
             return true;
         }
     }
     public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors) {
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomLocomotionPacket(player.getId(), anchors));
+        syncVenomLocomotion(player, anchors, true);
+    }
+
+    public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors, boolean active) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomLocomotionPacket(player.getId(), anchors, active));
     }
 
     public static class SyncVenomLocomotionPacket {
         private final int entityId;
         private final List<Vec3> anchors;
+        private final boolean active;
 
-        public SyncVenomLocomotionPacket(int entityId, List<Vec3> anchors) {
+        public SyncVenomLocomotionPacket(int entityId, List<Vec3> anchors, boolean active) {
             this.entityId = entityId;
             this.anchors = anchors == null ? List.of() : anchors;
+            this.active = active;
         }
 
         public SyncVenomLocomotionPacket(FriendlyByteBuf buf) {
             this.entityId = buf.readInt();
+            this.active = buf.readBoolean();
             int size = buf.readVarInt();
             List<Vec3> readAnchors = new ArrayList<>();
             for (int i = 0; i < size; i++) {
@@ -85,6 +94,7 @@ public class ModNetwork {
 
         public void encode(FriendlyByteBuf buf) {
             buf.writeInt(entityId);
+            buf.writeBoolean(active);
             buf.writeVarInt(anchors.size());
             for (Vec3 anchor : anchors) {
                 buf.writeDouble(anchor.x);
@@ -94,7 +104,8 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateAnchors(entityId, anchors));
+            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateAnchors(entityId, anchors, active));
+            ctx.get().setPacketHandled(true);
             return true;
         }
     }
@@ -128,6 +139,7 @@ public class ModNetwork {
                 player.setDeltaMovement(velocity);
                 player.fallDistance = 0.0F;
             });
+            ctx.get().setPacketHandled(true);
             return true;
         }
     }
@@ -163,6 +175,46 @@ public class ModNetwork {
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateGrabTarget(entityId, target));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+    public static void syncVenomCombatTargets(ServerPlayer player, List<Vec3> targets) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
+    }
+
+    public static class SyncVenomCombatTargetsPacket {
+        private final int entityId;
+        private final List<Vec3> targets;
+
+        public SyncVenomCombatTargetsPacket(int entityId, List<Vec3> targets) {
+            this.entityId = entityId;
+            this.targets = targets == null ? List.of() : targets;
+        }
+
+        public SyncVenomCombatTargetsPacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readInt();
+            int size = buf.readVarInt();
+            List<Vec3> readTargets = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                readTargets.add(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
+            }
+            this.targets = readTargets;
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeInt(entityId);
+            buf.writeVarInt(targets.size());
+            for (Vec3 target : targets) {
+                buf.writeDouble(target.x);
+                buf.writeDouble(target.y);
+                buf.writeDouble(target.z);
+            }
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateCombatTargets(entityId, targets));
+            ctx.get().setPacketHandled(true);
             return true;
         }
     }

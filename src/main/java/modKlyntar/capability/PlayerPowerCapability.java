@@ -4,11 +4,15 @@ import modKlyntar.MyMod;
 import modKlyntar.network.ModNetwork;
 import modKlyntar.network.ModNetwork.SyncVenomModelPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
@@ -21,10 +25,16 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Method;
 
 @Mod.EventBusSubscriber
 public class PlayerPowerCapability {
+    private static final Logger LOGGER = LogManager.getLogger();
     public static final Capability<PlayerPower> PLAYER_POWER = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final String VENOM_TAG = "Klyntar.Venom";
@@ -36,8 +46,10 @@ public class PlayerPowerCapability {
     }
 
     @SubscribeEvent
-    public static void attachCapabilities(AttachCapabilitiesEvent<Player> event) {
-        event.addCapability(new ResourceLocation(MyMod.MOD_ID, "player_power"), new PlayerPowerProvider());
+    public static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player) {
+            event.addCapability(new ResourceLocation(MyMod.MOD_ID, "player_power"), new PlayerPowerProvider());
+        }
     }
 
     @SubscribeEvent
@@ -53,10 +65,29 @@ public class PlayerPowerCapability {
     }
 
     public static void infectPlayer(Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            infectPlayer(serverPlayer);
+            return;
+        }
         player.getCapability(PLAYER_POWER).ifPresent(power -> {
             power.setInfected(true);
             power.applyPassivePowers(player);
         });
+    }
+
+    public static void infectPlayer(ServerPlayer player) {
+        PlayerPower fallbackPower = new PlayerPower();
+        PlayerPower power = player.getCapability(PLAYER_POWER).orElse(fallbackPower);
+        if (power == fallbackPower) {
+            LOGGER.warn("Klyntar player_power capability missing on {}; applying Venom without persistent capability", player.getGameProfile().getName());
+        }
+        {
+            power.setInfected(true);
+            power.setForm("venom");
+            power.setTransformed(true);
+            power.applyTransformation(player);
+            setInfectionScore(player, true);
+        }
     }
 
     public static void transformPlayer(ServerPlayer player) {
@@ -64,12 +95,11 @@ public class PlayerPowerCapability {
     }
 
     public static void transformPlayer(ServerPlayer player, String form) {
-        player.getCapability(PLAYER_POWER).ifPresent(power -> {
-            power.setInfected(true);
-            power.setForm(form);
-            power.setTransformed(true);
-            power.applyTransformation(player);
-        });
+        PlayerPower power = player.getCapability(PLAYER_POWER).orElse(new PlayerPower());
+        power.setInfected(true);
+        power.setForm(form);
+        power.setTransformed(true);
+        power.applyTransformation(player);
     }
 
     public static void revertPlayer(ServerPlayer player) {
@@ -81,14 +111,33 @@ public class PlayerPowerCapability {
     }
 
     private static void syncPalladiumPower(ServerPlayer player, String powerPath) {
-        runServerCommand(player, "superpower remove mymod:venom " + player.getGameProfile().getName());
-        runServerCommand(player, "superpower remove mymod:carnage " + player.getGameProfile().getName());
-        runServerCommand(player, "superpower add mymod:" + powerPath + " " + player.getGameProfile().getName());
+        callPalladiumSuperpower("removeSuperpower", player, "venom");
+        callPalladiumSuperpower("removeSuperpower", player, "carnage");
+        if (!callPalladiumSuperpower("addSuperpower", player, powerPath)
+                && !callPalladiumSuperpower("hasSuperpower", player, powerPath)) {
+            LOGGER.error("Palladium did not add superpower mymod:{} to {}", powerPath, player.getGameProfile().getName());
+            player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato mymod:" + powerPath), false);
+        } else {
+            LOGGER.info("Palladium superpower mymod:{} synced to {}", powerPath, player.getGameProfile().getName());
+            player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: mymod:" + powerPath), false);
+        }
         runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " mymod:" + powerPath + " all");
     }
 
     private static void removePalladiumPower(ServerPlayer player, String powerPath) {
-        runServerCommand(player, "superpower remove mymod:" + powerPath + " " + player.getGameProfile().getName());
+        callPalladiumSuperpower("removeSuperpower", player, powerPath);
+    }
+
+    private static boolean callPalladiumSuperpower(String methodName, ServerPlayer player, String powerPath) {
+        try {
+            Class<?> utilClass = Class.forName("net.threetag.palladium.power.SuperpowerUtil");
+            Method method = utilClass.getMethod(methodName, LivingEntity.class, ResourceLocation.class);
+            Object result = method.invoke(null, player, new ResourceLocation(MyMod.MOD_ID, powerPath));
+            return !(result instanceof Boolean booleanResult) || booleanResult;
+        } catch (ReflectiveOperationException exception) {
+            LOGGER.error("Unable to call Palladium SuperpowerUtil.{} for mymod:{}", methodName, powerPath, exception);
+            return false;
+        }
     }
 
     private static void runServerCommand(ServerPlayer player, String command) {
@@ -96,6 +145,19 @@ public class PlayerPowerCapability {
             player.getServer().getCommands().performPrefixedCommand(player.createCommandSourceStack().withSuppressedOutput().withPermission(4), command);
         }
     }
+
+    private static void setInfectionScore(ServerPlayer player, boolean infected) {
+        runServerCommand(player, "scoreboard objectives add Klyntar.SymbioteInfected dummy");
+        runServerCommand(player, "scoreboard players set " + player.getGameProfile().getName() + " Klyntar.SymbioteInfected " + (infected ? 1 : 0));
+    }
+
+    private static void applyVenomSuperpowerBridge(ServerPlayer player) {
+        MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(MyMod.MOD_ID, "venom_infection"));
+        if (effect != null) {
+            player.addEffect(new MobEffectInstance(effect, 80, 0, false, false, false));
+        }
+    }
+
     public static class PlayerPower implements INBTSerializable<CompoundTag> {
         private boolean infected;
         private boolean transformed;
@@ -154,6 +216,9 @@ public class PlayerPowerCapability {
                 player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(carnage ? 10.0D : 8.0D);
             }
             syncPalladiumPower(player, carnage ? "carnage" : "venom");
+            if (!carnage) {
+                applyVenomSuperpowerBridge(player);
+            }
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(carnage ? "carnage" : "venom"));
         }
 
@@ -180,6 +245,7 @@ public class PlayerPowerCapability {
             }
             removePalladiumPower(player, "venom");
             removePalladiumPower(player, "carnage");
+            setInfectionScore(player, false);
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(""));
         }
 
@@ -236,6 +302,23 @@ public class PlayerPowerCapability {
                 }
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        player.getCapability(PLAYER_POWER).ifPresent(power -> {
+            if (power.isInfected()) {
+                if (!power.isTransformed()) {
+                    power.setForm("venom");
+                    power.setTransformed(true);
+                }
+                power.applyTransformation(player);
+                setInfectionScore(player, true);
+            }
+        });
     }
 }
 

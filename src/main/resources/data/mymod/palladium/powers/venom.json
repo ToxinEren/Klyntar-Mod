@@ -3723,15 +3723,72 @@
                                                                              }
                                                                          ],
                                                            "enabling":  [
-                                                                            {
-                                                                                "type":  "palladium:held",
-                                                                                "key_type":  "key_bind"
-                                                                            }
+                                                                           {
+                                                                               "type":  "palladium:not",
+                                                                               "conditions":  [
+                                                                                                  {
+                                                                                                      "type":  "palladium:crouching"
+                                                                                                  }
+                                                                                              ]
+                                                                           },
+                                                                           {
+                                                                               "type":  "palladium:held",
+                                                                               "key_type":  "key_bind"
+                                                                           }
                                                                         ]
                                                        }
                                     },
+                      "toolwheelreset":  {
+                                             "type":  "palladium:command",
+                                             "icon":  "mymod:textures/icon/symbiotehand.png",
+                                             "title":  "Disable Symbiote Tool",
+                                             "bar_color":  "black",
+                                             "hidden":  true,
+                                             "hidden_in_bar":  true,
+                                             "list_index":  -1,
+                                             "gui_position":  "null",
+                                             "description":  "null",
+                                             "first_tick_commands":  [
+                                                                        "scoreboard objectives add Venom.Tool dummy",
+                                                                        "scoreboard players set @s Venom.Tool 0"
+                                                                    ],
+                                             "last_tick_commands":  [
+
+                                                                   ],
+                                             "commands":  [
+
+                                                          ],
+                                             "conditions":  {
+                                                                "unlocking":  [
+                                                                                  {
+                                                                                      "type":  "palladium:not",
+                                                                                      "conditions":  [
+                                                                                                         {
+                                                                                                             "type":  "palladium:ability_enabled",
+                                                                                                             "power":  "null",
+                                                                                                             "ability":  "enablevenombody"
+                                                                                                         }
+                                                                                                     ]
+                                                                                  },
+                                                                                  {
+                                                                                      "type":  "palladium:ability_unlocked",
+                                                                                      "power":  "null",
+                                                                                      "ability":  "venombond1"
+                                                                                  }
+                                                                              ],
+                                                                "enabling":  [
+                                                                                 {
+                                                                                     "type":  "palladium:crouching"
+                                                                                 },
+                                                                                 {
+                                                                                     "type":  "palladium:held",
+                                                                                     "key_type":  "key_bind"
+                                                                                 }
+                                                                             ]
+                                                            }
+                                         },
                       "venompicprop":  {
-                                           "type":  "mymod:palladium_property_modifier",
+                                           "type":  "palladium:command",
                                            "icon":  "mymod:textures/icon/symbiotehandpic.png",
                                            "title":  "Symbiote Pickaxe",
                                            "bar_color":  "red",
@@ -3743,9 +3800,16 @@
                                                                 -1
                                                             ],
                                            "description":  "null",
-                                           "property_name":  "symbiotepicaxe",
-                                           "adjustment_type":  "set",
-                                           "adjustment_amount":  1,
+                                           "first_tick_commands":  [
+                                                                      "scoreboard objectives add Venom.Tool dummy",
+                                                                      "scoreboard players set @s Venom.Tool 1"
+                                                                  ],
+                                           "last_tick_commands":  [
+
+                                                                 ],
+                                           "commands":  [
+
+                                                        ],
                                            "conditions":  {
                                                               "unlocking":  [
 
@@ -3758,7 +3822,7 @@
                                                           }
                                        },
                       "venomaxeprop":  {
-                                           "type":  "mymod:palladium_property_modifier",
+                                           "type":  "palladium:command",
                                            "icon":  "mymod:textures/icon/symbiotehandaxe.png",
                                            "title":  "Symbiote Axe",
                                            "bar_color":  "red",
@@ -3770,9 +3834,16 @@
                                                                 -1
                                                             ],
                                            "description":  "null",
-                                           "property_name":  "symbioteaxe",
-                                           "adjustment_type":  "set",
-                                           "adjustment_amount":  1,
+                                           "first_tick_commands":  [
+                                                                      "scoreboard objectives add Venom.Tool dummy",
+                                                                      "scoreboard players set @s Venom.Tool 2"
+                                                                  ],
+                                           "last_tick_commands":  [
+
+                                                                 ],
+                                           "commands":  [
+
+                                                        ],
                                            "conditions":  {
                                                               "unlocking":  [
 
@@ -3813,10 +3884,10 @@
                                                                                     ],
                                                                       "enabling":  [
                                                                                        {
-                                                                                           "type":  "palladium:integer_property",
-                                                                                           "property":  "symbiotepicaxe",
-                                                                                           "min":  1,
-                                                                                           "max":  100
+                                                                                           "type":  "palladium:objective_score",
+                                                                                           "objective":  "Venom.Tool",
+                                                                                           "min_score":  1,
+                                                                                           "max_score":  1
                                                                                        }
                                                                                    ]
                                                                   }
@@ -3850,10 +3921,10 @@
                                                                                  ],
                                                                    "enabling":  [
                                                                                     {
-                                                                                        "type":  "palladium:integer_property",
-                                                                                        "property":  "symbioteaxe",
-                                                                                        "min":  1,
-                                                                                        "max":  100
+                                                                                        "type":  "palladium:objective_score",
+                                                                                        "objective":  "Venom.Tool",
+                                                                                        "min_score":  2,
+                                                                                        "max_score":  2
                                                                                     }
                                                                                 ]
                                                                }
@@ -4596,6 +4667,62 @@
                                                                                            ]
                                                                           }
                                                        },
+                      "fendoffenemies":  {
+                                             "type":  "palladium:command",
+                                             "icon":  "mymod:textures/icon/tentaclejabicon.png",
+                                             "list_index":  8,
+                                             "title":  "Fend Off Enemies",
+                                             "bar_color":  "black",
+                                             "hidden":  false,
+                                             "hidden_in_bar":  false,
+                                             "gui_position":  [
+                                                                  1.5,
+                                                                  -0.5
+                                                              ],
+                                             "description":  "Automatically lashes nearby enemies with symbiote tendrils. Each hit deals 10 damage.",
+                                             "first_tick_commands":  [
+                                                                         "scoreboard objectives add Venom.FendOffEnemies dummy",
+                                                                         "scoreboard players set @s Venom.FendOffEnemies 1",
+                                                                         "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.45"
+                                                                     ],
+                                             "last_tick_commands":  [
+                                                                        "scoreboard players set @s Venom.FendOffEnemies 0"
+                                                                    ],
+                                             "conditions":  {
+                                                                "unlocking":  [
+                                                                                  {
+                                                                                      "type":  "palladium:animation_timer_ability",
+                                                                                      "power":  "mymod:venom",
+                                                                                      "ability":  "enablevenom",
+                                                                                      "min":  20,
+                                                                                      "max":  20
+                                                                                  },
+                                                                                  {
+                                                                                      "type":  "palladium:ability_unlocked",
+                                                                                      "power":  "mymod:venom",
+                                                                                      "ability":  "venombody"
+                                                                                  },
+                                                                                  {
+                                                                                      "type":  "palladium:not",
+                                                                                      "conditions":  [
+                                                                                                         {
+                                                                                                             "type":  "palladium:ability_enabled",
+                                                                                                             "power":  "mymod:venom",
+                                                                                                             "ability":  "attack"
+                                                                                                         }
+                                                                                                     ]
+                                                                                  }
+                                                                              ],
+                                                                "enabling":  [
+                                                                                 {
+                                                                                     "type":  "palladium:toggle",
+                                                                                     "key_type":  "key_bind",
+                                                                                     "needs_empty_hand":  false,
+                                                                                     "cooldown":  0
+                                                                                 }
+                                                                             ]
+                                                            }
+                                         },
                       "grabtentacle":  {
                                            "type":  "palladium:command",
                                            "icon":  "mymod:textures/icon/tentaclejabicon.png",

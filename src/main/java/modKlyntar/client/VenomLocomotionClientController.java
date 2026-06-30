@@ -5,7 +5,13 @@ import modKlyntar.client.renderer.VenomLocomotionRenderer;
 import modKlyntar.network.ModNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,7 +22,8 @@ public final class VenomLocomotionClientController {
     private static final double UPWARD_FORCE = 0.025D;
     private static final double MOVEMENT_SPEED = 0.05D;
     private static final double JUMP_FORCE = 0.1D;
-    private static final int MIN_ARMS_FOR_LOCOMOTION = 1;
+    private static final double GROUND_CLEARANCE_THRESHOLD = 10.0D;
+    private static final int MIN_ARMS_FOR_LOCOMOTION = 4;
     private static long lastPacketGameTime;
 
     private VenomLocomotionClientController() {
@@ -58,9 +65,16 @@ public final class VenomLocomotionClientController {
         double multiplier = getMovementMultiplier(player);
 
         Vec3 current = player.getDeltaMovement();
+        double currentY = current.y;
+        if (currentY < -0.9D) {
+            currentY = -0.9D;
+        }
+        if (currentY < 0.0D) {
+            currentY *= 0.7D;
+        }
         Vec3 next = new Vec3(
                 current.x + movementForce.x * multiplier,
-                current.y + verticalForce * multiplier,
+                currentY * 0.95D + verticalForce * multiplier,
                 current.z + movementForce.z * multiplier
         );
 
@@ -95,16 +109,15 @@ public final class VenomLocomotionClientController {
     }
 
     private static double calculateVerticalForce(LocalPlayer player, boolean jump, boolean shift) {
-        double verticalBase = 0.065D;
-        double currentY = player.getDeltaMovement().y;
-        double force;
+        double force = 0.0D;
+        double distanceToGround = getDistanceToGround(player);
+        if (distanceToGround < GROUND_CLEARANCE_THRESHOLD) {
+            double closeness = 1.0D - distanceToGround / GROUND_CLEARANCE_THRESHOLD;
+            force = UPWARD_FORCE * closeness * closeness * GROUND_CLEARANCE_THRESHOLD;
+        }
 
         if (shift) {
-            force = -0.01D;
-        } else if (jump) {
-            force = verticalBase;
-        } else {
-            force = verticalBase - currentY * 0.2D;
+            force = -0.1D;
         }
 
         if (jump && !shift) {
@@ -124,5 +137,34 @@ public final class VenomLocomotionClientController {
             return 1.2D;
         }
         return 1.0D;
+    }
+
+    private static double getDistanceToGround(Entity entity) {
+        Level level = entity.level();
+        BlockPos origin = entity.blockPosition();
+        double closestDistance = GROUND_CLEARANCE_THRESHOLD;
+
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                for (int y = 0; y < GROUND_CLEARANCE_THRESHOLD; y++) {
+                    BlockPos pos = origin.offset(x, -y, z);
+                    BlockState state = level.getBlockState(pos);
+                    if (state.isAir() && state.getFluidState().isEmpty()) {
+                        continue;
+                    }
+
+                    VoxelShape shape = state.getCollisionShape(level, pos);
+                    double surfaceY = pos.getY();
+                    if (!shape.isEmpty()) {
+                        surfaceY += shape.max(Direction.Axis.Y);
+                    }
+
+                    closestDistance = Math.min(closestDistance, entity.getY() - surfaceY);
+                    break;
+                }
+            }
+        }
+
+        return closestDistance;
     }
 }

@@ -14,7 +14,7 @@
       "list_index": 1,
       "gui_position": [0, 0],
       "description": "Grants the Klyntar Venom power when Promethium X is used as a test trigger. The mob symbiote remains the intended source of infection.",
-      "first_tick_commands": ["superpower add mymod:klyntar_venom @s"],
+      "first_tick_commands": ["superpower add mymod:venom @s"],
       "last_tick_commands": [],
       "commands": [],
       "conditions": {

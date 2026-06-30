@@ -34,7 +34,7 @@ public final class VenomGrabTentacleHandler {
     private static final String OBJECTIVE_NAME = "Venom.GrabTentacle";
     private static final String DISTANCE_DELTA_OBJECTIVE = "Venom.GrabTentacle.DistanceDelta";
     private static final String RELEASE_CHARGE_OBJECTIVE = "Venom.GrabTentacle.ReleaseCharge";
-    private static final double GRAB_RANGE = 10.0D;
+    private static final double GRAB_RANGE = 20.0D;
     private static final int EXTEND_TICKS = 6;
     private static final double HOLD_DISTANCE_STEP = 0.35D;
     private static final double MIN_HOLD_DISTANCE_OFFSET = -1.75D;
@@ -75,6 +75,7 @@ public final class VenomGrabTentacleHandler {
         if (!canGrabEntity(target, player)) {
             target = getLookedAtEntity(player);
             if (target == null) {
+                setScore(player, OBJECTIVE_NAME, 0);
                 ACTIVE_GRABS.remove(playerId);
                 ModNetwork.syncVenomGrabTentacle(player, null);
                 return;

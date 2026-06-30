@@ -26,12 +26,15 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import modKlyntar.capability.PlayerPowerCapability;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import modKlyntar.power.PlayersPower;
 import modKlyntar.power.PlayersPowerProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class SymbioteEntity extends Mob implements GeoEntity {
+    private static final Logger LOGGER = LogManager.getLogger();
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private Animal hostAnimal;
 
@@ -146,8 +149,9 @@ public class SymbioteEntity extends Mob implements GeoEntity {
     }
 
     public void doPlayerEffect(ServerPlayer player) {
+        LOGGER.info("Symbiote infection triggered for {}", player.getGameProfile().getName());
         player.displayClientMessage(Component.literal("You have bonded with a symbiote."), false);
-        PlayerPowerCapability.transformPlayer(player, "venom");
+        PlayerPowerCapability.infectPlayer(player);
         player.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(power -> {
             power.addSymbiote(1);
             power.applyPowers(player);
