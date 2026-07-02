@@ -1,27 +1,27 @@
 {
-    "model":  "mymod:geo/venom.geo.json",
+    "model":  "mymod:geo/venom_bedrock_my_teeth.geo.json",
     "type":  "geckolib:default",
-    "texture":  "mymod:textures/entity/venom/venom.png",
-    "animation_file":  "mymod:animations/klyntar_venom.animation.json",
+    "texture":  "mymod:textures/entity/venom/venom_bedrock.png",
+    "animation_file":  "mymod:animations/venom_bedrock.animation.json",
     "animation_controller":  [
                                  {
                                      "name":  "venom_actions",
                                      "transition_tick_time":  5,
                                      "triggers":  {
-                                                      "walk_trigger":  "walk",
-                                                      "attack_trigger":  "attack",
-                                                      "attack_2_trigger":  "attack_2",
-                                                      "growl_trigger":  "growl",
-                                                      "assimilate_trigger":  "attack"
+                                                      "walk_trigger":  "animation.venom.walk",
+                                                      "attack_trigger":  "animation.venom.attack.1",
+                                                      "attack_2_trigger":  "animation.venom.attack.2",
+                                                      "growl_trigger":  "animation.venom.idle2",
+                                                      "assimilate_trigger":  "animation.venom.transformation"
                                                   }
                                  }
                              ],
     "bones":  {
-                  "head":  "Venom_head",
-                  "body":  "Venom_body_high",
-                  "right_arm":  "Venom_right_arm_high",
-                  "left_arm":  "Venom_left_arm_high",
-                  "right_leg":  "Venom_right_leg",
-                  "left_leg":  "Venom_left_leg"
+                  "head":  "head_venom",
+                  "body":  "body_venom",
+                  "right_arm":  "rightArm_venom",
+                  "left_arm":  "leftArm_venom",
+                  "right_leg":  "rightLeg_venom",
+                  "left_leg":  "leftLeg_venom"
               }
 }
