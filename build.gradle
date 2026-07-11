@@ -27,6 +27,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             jvmArg '-Xms512m'
             jvmArg '-Xmx2G'
+            arg '-mixin.config=klyntar.mixins.json'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${project.buildDir}/createSrgToMcp/output.srg"
 
@@ -79,6 +80,7 @@ dependencies {
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation 'org.spongepowered:mixin:0.8.5'
     implementation('com.eliotlash.mclib:mclib:20')
+    compileOnly fg.deobf('local:palladium:4.5.6+1.20.1-forge')
     runtimeOnly fg.deobf('local:palladium:4.5.6+1.20.1-forge')
     runtimeOnly fg.deobf('local:kubejs-forge:2001.6.5-build.26')
     runtimeOnly fg.deobf('local:curios-forge:5.14.1+1.20.1')
@@ -114,7 +116,8 @@ tasks.named('jar', Jar).configure {
             'Implementation-Title'    : project.name,
             'Implementation-Version'  : project.jar.archiveVersion,
             'Implementation-Vendor'   : mod_authors,
-            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'            : 'klyntar.mixins.json'
         ])
     }
     finalizedBy 'reobfJar'
