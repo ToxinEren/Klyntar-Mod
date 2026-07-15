@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import modKlyntar.block.PromethiumXBlock;
+import modKlyntar.block.PromethiumXSmokeHandler;
 import modKlyntar.entity.custom.GhastProjectileEntity;
 
 import modKlyntar.entity.custom.SmokeTrailEntity;
@@ -32,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -41,15 +43,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID, bus = Bus.FORGE)
 public class MeteorCommand {
 
     private static final Random RANDOM = new Random();
     private static final int SMOKE_DURATION_TICKS = 4 * 60 * 20; // Durata in ticks (4 minuti)
-    private static final Map<BlockPos, Integer> smokingObsidianBlocks = new HashMap<>();
+    private static final double METEOR_SPACING = 14.0D;
+    private static final int IMPACT_SYNC_RADIUS = 10;
+    private static final int IMPACT_SYNC_HEIGHT_ABOVE = 5;
+    private static final int IMPACT_SYNC_HEIGHT_BELOW = 14;
+    private static final Map<BlockPos, Integer> smokingObsidianBlocks = new ConcurrentHashMap<>();
 
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
@@ -72,17 +77,17 @@ public class MeteorCommand {
         double fallDistance = 60.0; // Distanza di caduta
         double angle = Math.toRadians(45); // Angolo di caduta (45 gradi)
         double offsetX = Math.cos(angle) * fallDistance;
-        double offsetY = Math.sin(angle) * fallDistance;
+        double spawnY = world.getMaxBuildHeight() - 4.0D;
         
         // Calcola la posizione di partenza delle fireball
-        Vec3 meteorPos1 = new Vec3(playerPos.x + offsetX, playerPos.y + offsetY, playerPos.z);
-        Vec3 meteorPos2 = new Vec3(playerPos.x + offsetX + 4, playerPos.y + offsetY + 2, playerPos.z);
-        Vec3 meteorPos3 = new Vec3(playerPos.x + offsetX + 6, playerPos.y + offsetY - 1, playerPos.z);
+        Vec3 meteorPos1 = new Vec3(playerPos.x + offsetX, spawnY, playerPos.z);
+        Vec3 meteorPos2 = new Vec3(playerPos.x + offsetX + METEOR_SPACING, spawnY - 3.0D, playerPos.z);
+        Vec3 meteorPos3 = new Vec3(playerPos.x + offsetX + METEOR_SPACING * 2.0D, spawnY - 6.0D, playerPos.z);
 
         // Calcola la posizione di impatto a 10 blocchi di fronte al giocatore
         Vec3 impactPos = playerPos.add(offsetX, 0, 10);
-        Vec3 impactPos2 = playerPos.add(offsetX + 4, 0, 10);
-        Vec3 impactPos3 = playerPos.add(offsetX + 6, 0, 10);
+        Vec3 impactPos2 = playerPos.add(offsetX + METEOR_SPACING, 0, 10);
+        Vec3 impactPos3 = playerPos.add(offsetX + METEOR_SPACING * 2.0D, 0, 10);
 
         // Spawna i proiettili di Ghast
         spawnGhastProjectile(world, meteorPos1, impactPos);
@@ -105,57 +110,68 @@ public class MeteorCommand {
 
     public static void handleProjectileImpact(GhastProjectileEntity projectile, BlockHitResult blockHitResult) {
         BlockPos impactPos = blockHitResult.getBlockPos();
-        BlockPos blockBelowImpactPos = impactPos.below(); // Ottieni la posizione un blocco sotto l'impatto
 
         // Spawna i blocchi di ossidiana e il symbiote
         spawnObsidianBlocks(projectile.level(), impactPos, 15);
         // spawnSymbiote(projectile.level(), impactPos, 2);
         spawnFire(projectile.level(), impactPos);
 
-        // Piazza il blocco PromethiumX un blocco sotto l'impactPos
-        //projectile.level().setBlock(blockBelowImpactPos, MyMod.PROMETHIUMX_BLOCK.get().defaultBlockState(), 3); // 3: Notify clients and prevent updates
-        projectile.level().setBlock(blockBelowImpactPos, MyMod.PROMETHIUMX_BLOCK.get().defaultBlockState().setValue(PromethiumXBlock.FULL, true), 3); // 3: Notify clients and prevent updates
+        BlockPos promethiumPos = findImpactSurface(projectile.level(), impactPos);
+        if (promethiumPos != null) {
+            projectile.level().setBlock(promethiumPos, MyMod.PROMETHIUMX_BLOCK.get().defaultBlockState().setValue(PromethiumXBlock.FULL, true), 3);
+            PromethiumXSmokeHandler.registerBlockSmoke(projectile.level(), promethiumPos);
+        }
 
+        syncImpactArea(projectile.level(), impactPos);
         projectile.remove(RemovalReason.DISCARDED);
     }
 
     private static void spawnObsidianBlocks(Level world, BlockPos centerPos, int count) {
         for (int i = 0; i < count; i++) {
-            int xo = RANDOM.nextInt(5) - 2; // Random tra -2 e 2
-            int zo = RANDOM.nextInt(5) - 2; // Random tra -2 e 2
-            BlockPos spawnPos = centerPos.offset(xo, 0, zo);
-            BlockPos belowPos = spawnPos.below();
-
-            // Controlla che il blocco sotto non sia aria e che la posizione attuale non sia aria
-            if (!world.getBlockState(belowPos).isAir() && !world.getBlockState(spawnPos).isAir()) {
-                BlockState blockState = Blocks.OBSIDIAN.defaultBlockState();
-                world.setBlock(spawnPos, blockState, 3); // 3: Notify clients and prevent updates
-
-                // Aggiungi il blocco di ossidiana fumante alla mappa
+            int xo = RANDOM.nextInt(13) - 6;
+            int zo = RANDOM.nextInt(13) - 6;
+            BlockPos spawnPos = findImpactSurface(world, centerPos.offset(xo, 0, zo));
+            if (spawnPos != null) {
+                world.setBlock(spawnPos, Blocks.OBSIDIAN.defaultBlockState(), 3);
                 smokingObsidianBlocks.put(spawnPos, 0);
+                if (world instanceof ServerLevel serverLevel) {
+                    emitObsidianSmoke(serverLevel, spawnPos);
+                }
             }
         }
      }
     
     @SubscribeEvent
     public static void onWorldTick(TickEvent.LevelTickEvent event) {
-        if (event.level instanceof ServerLevel) {
+        if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel) {
             ServerLevel world = (ServerLevel) event.level;
-            Iterator<Map.Entry<BlockPos, Integer>> iterator = smokingObsidianBlocks.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<BlockPos, Integer> entry = iterator.next();
+            for (Map.Entry<BlockPos, Integer> entry : smokingObsidianBlocks.entrySet()) {
                 BlockPos pos = entry.getKey();
                 int ticks = entry.getValue();
-                if (ticks < 20 * 60 * 20) { // 3 minuti in ticks
-                    // Genera particelle di fumo sopra il blocco di ossidiana
-                    Vec3 particlePos = Vec3.atCenterOf(pos).add(0, 1.0, 0);
-                    world.sendParticles(ParticleTypes.LARGE_SMOKE, particlePos.x, particlePos.y, particlePos.z, 5, 0.0, 0.1, 0.0, 0.0);
-                    entry.setValue(ticks + 1);
-                } else {
-                    iterator.remove(); // Rimuovi dopo 3 minuti
+                if (ticks > 0 && ticks % 10 == 0) {
+                    emitObsidianSmoke(world, pos);
                 }
+                smokingObsidianBlocks.replace(pos, ticks, ticks + 1);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+        if (state.is(Blocks.OBSIDIAN)) {
+            smokingObsidianBlocks.remove(pos);
+        } else if (state.is(MyMod.PROMETHIUMX_BLOCK.get())) {
+            PromethiumXBlock.clearSmokeTimer(event.getLevel(), pos);
+            PromethiumXSmokeHandler.removeBlockSmoke(event.getLevel(), pos);
+        }
+    }
+
+    private static void emitObsidianSmoke(ServerLevel world, BlockPos pos) {
+        Vec3 particlePos = Vec3.atCenterOf(pos).add(0.0D, 1.0D, 0.0D);
+        world.sendParticles(ParticleTypes.LARGE_SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.25D, 0.15D, 0.25D, 0.02D);
+        world.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, particlePos.x, particlePos.y, particlePos.z, 2, 0.15D, 0.05D, 0.15D, 0.01D);
     }
 
     private static void spawnSymbiote(Level world, BlockPos centerPos, int count) {
@@ -173,12 +189,43 @@ public class MeteorCommand {
 
 
     private static void spawnFire(Level world, BlockPos centerPos) {
-        int count = 5; // Numero di fiamme da spawnare
+        int count = 12; // Numero di fiamme da spawnare
         for (int i = 0; i < count; i++) {
-            int xo = RANDOM.nextInt(5) - 2; // Random tra -2 e 2
-            int zo = RANDOM.nextInt(5) - 2; // Random tra -2 e 2
-            BlockPos spawnPos = centerPos.offset(xo, 0, zo);
-            world.setBlock(spawnPos, Blocks.FIRE.defaultBlockState(), 11); // 11: Notify clients and prevent updates
+            int xo = RANDOM.nextInt(13) - 6;
+            int zo = RANDOM.nextInt(13) - 6;
+            BlockPos surface = findImpactSurface(world, centerPos.offset(xo, 0, zo));
+            if (surface != null) {
+                BlockPos firePos = surface.above();
+                if (world.getBlockState(firePos).isAir()) {
+                    world.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 11);
+                }
+            }
+        }
+    }
+
+    private static BlockPos findImpactSurface(Level world, BlockPos origin) {
+        for (int y = 4; y >= -12; y--) {
+            BlockPos pos = origin.offset(0, y, 0);
+            BlockPos below = pos.below();
+            if (world.getBlockState(pos).isAir() && !world.getBlockState(below).isAir()) {
+                return pos;
+            }
+        }
+        return null;
+    }
+
+    private static void syncImpactArea(Level world, BlockPos centerPos) {
+        if (!(world instanceof ServerLevel)) {
+            return;
+        }
+        for (int x = -IMPACT_SYNC_RADIUS; x <= IMPACT_SYNC_RADIUS; x++) {
+            for (int y = -IMPACT_SYNC_HEIGHT_BELOW; y <= IMPACT_SYNC_HEIGHT_ABOVE; y++) {
+                for (int z = -IMPACT_SYNC_RADIUS; z <= IMPACT_SYNC_RADIUS; z++) {
+                    BlockPos pos = centerPos.offset(x, y, z);
+                    BlockState state = world.getBlockState(pos);
+                    world.sendBlockUpdated(pos, state, state, 3);
+                }
+            }
         }
     }
 

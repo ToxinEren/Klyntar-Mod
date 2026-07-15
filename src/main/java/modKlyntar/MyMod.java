@@ -1,6 +1,7 @@
 package modKlyntar;
 
 import modKlyntar.block.PromethiumXBlock;
+import modKlyntar.block.PromethiumXSmokeHandler;
 import modKlyntar.block.PromethiumXTNTBlock;
 import modKlyntar.capability.PlayerPowerCapability;
 import modKlyntar.client.ClientEventHandler;
@@ -152,6 +153,7 @@ public class MyMod {
         MinecraftForge.EVENT_BUS.register(PlayersPower.class);
         MinecraftForge.EVENT_BUS.register(PlayerEventSubscriber.class);
         MinecraftForge.EVENT_BUS.register(KeyInputHandler.class);
+        MinecraftForge.EVENT_BUS.register(PromethiumXSmokeHandler.class);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

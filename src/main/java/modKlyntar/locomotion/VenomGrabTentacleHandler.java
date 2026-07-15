@@ -35,6 +35,7 @@ public final class VenomGrabTentacleHandler {
     private static final String DISTANCE_DELTA_OBJECTIVE = "Venom.GrabTentacle.DistanceDelta";
     private static final String RELEASE_CHARGE_OBJECTIVE = "Venom.GrabTentacle.ReleaseCharge";
     private static final double GRAB_RANGE = 20.0D;
+    private static final double LOCK_ON_CONE_DOT = 0.78D;
     private static final int EXTEND_TICKS = 6;
     private static final double HOLD_DISTANCE_STEP = 0.35D;
     private static final double MIN_HOLD_DISTANCE_OFFSET = -1.75D;
@@ -134,14 +135,37 @@ public final class VenomGrabTentacleHandler {
 
     private static Entity getLookedAtEntity(ServerPlayer player) {
         Vec3 start = player.getEyePosition();
-        Vec3 end = start.add(player.getLookAngle().scale(GRAB_RANGE));
-        AABB searchBox = player.getBoundingBox().expandTowards(player.getLookAngle().scale(GRAB_RANGE)).inflate(1.25D);
+        Vec3 look = player.getLookAngle().normalize();
+        Vec3 end = start.add(look.scale(GRAB_RANGE));
+        AABB searchBox = player.getBoundingBox().expandTowards(look.scale(GRAB_RANGE)).inflate(3.0D);
         EntityHitResult hit = ProjectileUtil.getEntityHitResult(player, start, end, searchBox,
                 entity -> canGrabEntity(resolveGrabEntityTarget(entity, player), player), GRAB_RANGE * GRAB_RANGE);
-        if (hit == null) {
-            return null;
+        if (hit != null) {
+            return resolveGrabEntityTarget(hit.getEntity(), player);
         }
-        return resolveGrabEntityTarget(hit.getEntity(), player);
+
+        return player.level().getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(GRAB_RANGE),
+                        entity -> canGrabEntity(resolveGrabEntityTarget(entity, player), player))
+                .stream()
+                .map(entity -> resolveGrabEntityTarget(entity, player))
+                .filter(entity -> isInsideLockCone(player, look, entity))
+                .min((first, second) -> Double.compare(lockOnScore(player, look, first), lockOnScore(player, look, second)))
+                .orElse(null);
+    }
+
+    private static boolean isInsideLockCone(ServerPlayer player, Vec3 look, Entity entity) {
+        Vec3 toTarget = getTargetCenter(entity).subtract(player.getEyePosition());
+        if (toTarget.lengthSqr() > GRAB_RANGE * GRAB_RANGE || toTarget.lengthSqr() < 1.0E-4D) {
+            return false;
+        }
+        return toTarget.normalize().dot(look) >= LOCK_ON_CONE_DOT && player.hasLineOfSight(entity);
+    }
+
+    private static double lockOnScore(ServerPlayer player, Vec3 look, Entity entity) {
+        Vec3 toTarget = getTargetCenter(entity).subtract(player.getEyePosition());
+        double distance = toTarget.length();
+        double aimPenalty = 1.0D - toTarget.normalize().dot(look);
+        return distance + aimPenalty * 10.0D;
     }
 
     private static Entity resolveGrabEntityTarget(Entity entity, LivingEntity holder) {

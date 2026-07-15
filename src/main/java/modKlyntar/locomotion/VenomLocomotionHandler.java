@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
 public final class VenomLocomotionHandler {
     private static final String OBJECTIVE_NAME = "Venom.Locomotion";
-    private static final double GRAB_RANGE = 20.0D;
+    private static final double GRAB_RANGE = 30.0D;
     private static final int MIN_ARMS_FOR_LOCOMOTION = 4;
     private static final int MAX_ARMS = 6;
     private static final double STATIONARY_ANCHOR_DISTANCE_SQR = 0.04D;

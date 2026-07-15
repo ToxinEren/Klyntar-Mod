@@ -1,4 +1,4 @@
-﻿{
+{
     "name":  "venom",
     "persistent_data":  true,
     "background":  "minecraft:textures/block/black_concrete.png",
@@ -65,7 +65,7 @@
                                                                                      "max":  20
                                                                                  }
                                                                              ]
-                                             }
+                                                            }
                                          },
                       "venombedrocktransformationanimation":  {
                                                                   "type":  "geckolib:render_layer_animation",
@@ -456,7 +456,7 @@
                                                                                                ]
                                                                               }
                                                            },
-                      "venombedrockcombatclawattackanimation":  {
+                      "venombedrockattackresetidleanimation":  {
                                                                    "type":  "geckolib:render_layer_animation",
                                                                    "icon":  "minecraft:bone",
                                                                    "title":  "null",
@@ -468,86 +468,40 @@
                                                                    "description":  "null",
                                                                    "render_layer":  "mymod:klyntar_venom_body",
                                                                    "controller":  "venom_actions",
-                                                                   "animation_trigger":  "hability_attack_trigger",
+                                                                   "animation_trigger":  "idle_trigger",
                                                                    "conditions":  {
                                                                                       "enabling":  [
                                                                                                        {
-                                                                                                           "type":  "palladium:ability_first_tick",
+                                                                                                           "type":  "palladium:ability_last_tick",
                                                                                                            "power":  "mymod:venom",
-                                                                                                           "ability":  "symbiontclawattack"
+                                                                                                           "ability":  "attack"
                                                                                                        }
                                                                                                    ]
                                                                                   }
                                                                },
-                      "venombedrockattackresetidleanimation":  {
-                                                                  "type":  "geckolib:render_layer_animation",
-                                                                  "icon":  "minecraft:bone",
-                                                                  "title":  "null",
-                                                                  "bar_color":  "black",
-                                                                  "hidden":  true,
-                                                                  "hidden_in_bar":  true,
-                                                                  "list_index":  -1,
-                                                                  "gui_position":  "null",
-                                                                  "description":  "null",
-                                                                  "render_layer":  "mymod:klyntar_venom_body",
-                                                                  "controller":  "venom_actions",
-                                                                  "animation_trigger":  "idle_trigger",
-                                                                  "conditions":  {
-                                                                                     "enabling":  [
-                                                                                                      {
-                                                                                                          "type":  "palladium:ability_last_tick",
-                                                                                                          "power":  "mymod:venom",
-                                                                                                          "ability":  "attack"
-                                                                                                      }
-                                                                                                  ]
-                                                                                 }
-                                                              },
                       "venombedrockattackresetwhipanimation":  {
-                                                                  "type":  "geckolib:render_layer_animation",
-                                                                  "icon":  "minecraft:bone",
-                                                                  "title":  "null",
-                                                                  "bar_color":  "black",
-                                                                  "hidden":  true,
-                                                                  "hidden_in_bar":  true,
-                                                                  "list_index":  -1,
-                                                                  "gui_position":  "null",
-                                                                  "description":  "null",
-                                                                  "render_layer":  "mymod:klyntar_venom_body",
-                                                                  "controller":  "venom_whip_visibility",
-                                                                  "animation_trigger":  "whip_hidden_trigger",
-                                                                  "conditions":  {
-                                                                                     "enabling":  [
-                                                                                                      {
-                                                                                                          "type":  "palladium:ability_last_tick",
-                                                                                                          "power":  "mymod:venom",
-                                                                                                          "ability":  "attack"
-                                                                                                      }
-                                                                                                  ]
-                                                                                 }
-                                                              },
-                      "venombedrockattackresethabilityanimation":  {
-                                                                      "type":  "geckolib:render_layer_animation",
-                                                                      "icon":  "minecraft:bone",
-                                                                      "title":  "null",
-                                                                      "bar_color":  "black",
-                                                                      "hidden":  true,
-                                                                      "hidden_in_bar":  true,
-                                                                      "list_index":  -1,
-                                                                      "gui_position":  "null",
-                                                                      "description":  "null",
-                                                                      "render_layer":  "mymod:klyntar_venom_body",
-                                                                      "controller":  "venom_actions",
-                                                                      "animation_trigger":  "hability_off_trigger",
-                                                                      "conditions":  {
-                                                                                         "enabling":  [
-                                                                                                          {
-                                                                                                              "type":  "palladium:ability_last_tick",
-                                                                                                              "power":  "mymod:venom",
-                                                                                                              "ability":  "attack"
-                                                                                                          }
-                                                                                                      ]
-                                                                                     }
-                                                                  },
+                                                                   "type":  "geckolib:render_layer_animation",
+                                                                   "icon":  "minecraft:bone",
+                                                                   "title":  "null",
+                                                                   "bar_color":  "black",
+                                                                   "hidden":  true,
+                                                                   "hidden_in_bar":  true,
+                                                                   "list_index":  -1,
+                                                                   "gui_position":  "null",
+                                                                   "description":  "null",
+                                                                   "render_layer":  "mymod:klyntar_venom_body",
+                                                                   "controller":  "venom_whip_visibility",
+                                                                   "animation_trigger":  "whip_hidden_trigger",
+                                                                   "conditions":  {
+                                                                                      "enabling":  [
+                                                                                                       {
+                                                                                                           "type":  "palladium:ability_last_tick",
+                                                                                                           "power":  "mymod:venom",
+                                                                                                           "ability":  "attack"
+                                                                                                       }
+                                                                                                   ]
+                                                                                  }
+                                                               },
                       "venombedrockgrabanimation":  {
                                                         "type":  "geckolib:render_layer_animation",
                                                         "icon":  "minecraft:bone",
@@ -595,29 +549,6 @@
                                                                         }
                                                      },
                       "venombedrockaxeonanimation":  {
-                                                        "type":  "geckolib:render_layer_animation",
-                                                        "icon":  "minecraft:bone",
-                                                        "title":  "null",
-                                                        "bar_color":  "black",
-                                                        "hidden":  true,
-                                                        "hidden_in_bar":  true,
-                                                        "list_index":  -1,
-                                                        "gui_position":  "null",
-                                                        "description":  "null",
-                                                        "render_layer":  "mymod:klyntar_venom_body",
-                                                        "controller":  "venom_axe_visibility",
-                                                        "animation_trigger":  "axe_visible_trigger",
-                                                        "conditions":  {
-                                                                           "enabling":  [
-                                                                                            {
-                                                                                                "type":  "palladium:ability_first_tick",
-                                                                                                "power":  "mymod:venom",
-                                                                                                "ability":  "enablesymbioteaxe"
-                                                                                            }
-                                                                                        ]
-                                                                       }
-                                                    },
-                      "venombedrockaxeoffanimation":  {
                                                          "type":  "geckolib:render_layer_animation",
                                                          "icon":  "minecraft:bone",
                                                          "title":  "null",
@@ -629,17 +560,40 @@
                                                          "description":  "null",
                                                          "render_layer":  "mymod:klyntar_venom_body",
                                                          "controller":  "venom_axe_visibility",
-                                                         "animation_trigger":  "axe_hidden_trigger",
+                                                         "animation_trigger":  "axe_visible_trigger",
                                                          "conditions":  {
                                                                             "enabling":  [
                                                                                              {
-                                                                                                 "type":  "palladium:ability_last_tick",
+                                                                                                 "type":  "palladium:ability_first_tick",
                                                                                                  "power":  "mymod:venom",
                                                                                                  "ability":  "enablesymbioteaxe"
                                                                                              }
                                                                                          ]
                                                                         }
                                                      },
+                      "venombedrockaxeoffanimation":  {
+                                                          "type":  "geckolib:render_layer_animation",
+                                                          "icon":  "minecraft:bone",
+                                                          "title":  "null",
+                                                          "bar_color":  "black",
+                                                          "hidden":  true,
+                                                          "hidden_in_bar":  true,
+                                                          "list_index":  -1,
+                                                          "gui_position":  "null",
+                                                          "description":  "null",
+                                                          "render_layer":  "mymod:klyntar_venom_body",
+                                                          "controller":  "venom_axe_visibility",
+                                                          "animation_trigger":  "axe_hidden_trigger",
+                                                          "conditions":  {
+                                                                             "enabling":  [
+                                                                                              {
+                                                                                                  "type":  "palladium:ability_last_tick",
+                                                                                                  "power":  "mymod:venom",
+                                                                                                  "ability":  "enablesymbioteaxe"
+                                                                                              }
+                                                                                          ]
+                                                                         }
+                                                      },
                       "venombedrockcombatwhiponanimation":  {
                                                                 "type":  "geckolib:render_layer_animation",
                                                                 "icon":  "minecraft:bone",
@@ -733,35 +687,6 @@
                                                                                }
                                                             },
                       "venombedrockcombatmaceonanimation":  {
-                                                               "type":  "geckolib:render_layer_animation",
-                                                               "icon":  "minecraft:bone",
-                                                               "title":  "null",
-                                                               "bar_color":  "black",
-                                                               "hidden":  true,
-                                                               "hidden_in_bar":  true,
-                                                               "list_index":  -1,
-                                                               "gui_position":  "null",
-                                                               "description":  "null",
-                                                               "render_layer":  "mymod:klyntar_venom_body",
-                                                               "controller":  "venom_mace_visibility",
-                                                               "animation_trigger":  "mace_visible_trigger",
-                                                               "conditions":  {
-                                                                                  "enabling":  [
-                                                                                                   {
-                                                                                                       "type":  "palladium:ability_first_tick",
-                                                                                                       "power":  "mymod:venom",
-                                                                                                       "ability":  "venomcrush"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "type":  "palladium:objective_score",
-                                                                                                       "objective":  "Venom.CombatTool",
-                                                                                                       "min_score":  3,
-                                                                                                       "max_score":  3
-                                                                                                   }
-                                                                                               ]
-                                                                              }
-                                                           },
-                      "venombedrockcombatmaceoffanimation":  {
                                                                 "type":  "geckolib:render_layer_animation",
                                                                 "icon":  "minecraft:bone",
                                                                 "title":  "null",
@@ -773,11 +698,11 @@
                                                                 "description":  "null",
                                                                 "render_layer":  "mymod:klyntar_venom_body",
                                                                 "controller":  "venom_mace_visibility",
-                                                                "animation_trigger":  "mace_hidden_trigger",
+                                                                "animation_trigger":  "mace_visible_trigger",
                                                                 "conditions":  {
                                                                                    "enabling":  [
                                                                                                     {
-                                                                                                        "type":  "palladium:ability_last_tick",
+                                                                                                        "type":  "palladium:ability_first_tick",
                                                                                                         "power":  "mymod:venom",
                                                                                                         "ability":  "venomcrush"
                                                                                                     },
@@ -790,171 +715,154 @@
                                                                                                 ]
                                                                                }
                                                             },
-                      "venombedrockcombatclawonanimation":  {
-                                                               "type":  "geckolib:render_layer_animation",
-                                                               "icon":  "minecraft:bone",
-                                                               "title":  "null",
-                                                               "bar_color":  "black",
-                                                               "hidden":  true,
-                                                               "hidden_in_bar":  true,
-                                                               "list_index":  -1,
-                                                               "gui_position":  "null",
-                                                               "description":  "null",
-                                                               "render_layer":  "mymod:klyntar_venom_body",
-                                                               "controller":  "venom_actions",
-                                                               "animation_trigger":  "hability_trigger",
-                                                               "conditions":  {
-                                                                                  "enabling":  [
-                                                                                                   {
-                                                                                                       "type":  "palladium:ability_first_tick",
-                                                                                                       "power":  "mymod:venom",
-                                                                                                       "ability":  "enablesymbiontclaw"
-                                                                                                   }
-                                                                                               ]
-                                                                              }
-                                                           },
-                      "venombedrockcombatclawoffanimation":  {
-                                                                "type":  "geckolib:render_layer_animation",
-                                                                "icon":  "minecraft:bone",
-                                                                "title":  "null",
-                                                                "bar_color":  "black",
-                                                                "hidden":  true,
-                                                                "hidden_in_bar":  true,
-                                                                "list_index":  -1,
-                                                                "gui_position":  "null",
-                                                                "description":  "null",
-                                                                "render_layer":  "mymod:klyntar_venom_body",
-                                                                "controller":  "venom_actions",
-                                                                "animation_trigger":  "hability_off_trigger",
-                                                                "conditions":  {
-                                                                                   "enabling":  [
-                                                                                                    {
-                                                                                                        "type":  "palladium:ability_last_tick",
-                                                                                                        "power":  "mymod:venom",
-                                                                                                        "ability":  "enablesymbiontclaw"
-                                                                                                    }
-                                                                                                ]
-                                                                               }
-                                                            },
+                      "venombedrockcombatmaceoffanimation":  {
+                                                                 "type":  "geckolib:render_layer_animation",
+                                                                 "icon":  "minecraft:bone",
+                                                                 "title":  "null",
+                                                                 "bar_color":  "black",
+                                                                 "hidden":  true,
+                                                                 "hidden_in_bar":  true,
+                                                                 "list_index":  -1,
+                                                                 "gui_position":  "null",
+                                                                 "description":  "null",
+                                                                 "render_layer":  "mymod:klyntar_venom_body",
+                                                                 "controller":  "venom_mace_visibility",
+                                                                 "animation_trigger":  "mace_hidden_trigger",
+                                                                 "conditions":  {
+                                                                                    "enabling":  [
+                                                                                                     {
+                                                                                                         "type":  "palladium:ability_last_tick",
+                                                                                                         "power":  "mymod:venom",
+                                                                                                         "ability":  "venomcrush"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "type":  "palladium:objective_score",
+                                                                                                         "objective":  "Venom.CombatTool",
+                                                                                                         "min_score":  3,
+                                                                                                         "max_score":  3
+                                                                                                     }
+                                                                                                 ]
+                                                                                }
+                                                             },
                       "venombedrocksuperjumpanimation":  {
-                                                            "type":  "geckolib:render_layer_animation",
-                                                            "icon":  "minecraft:bone",
-                                                            "title":  "null",
-                                                            "bar_color":  "black",
-                                                            "hidden":  true,
-                                                            "hidden_in_bar":  true,
-                                                            "list_index":  -1,
-                                                            "gui_position":  "null",
-                                                            "description":  "null",
-                                                            "render_layer":  "mymod:klyntar_venom_body",
-                                                            "controller":  "venom_actions",
-                                                            "animation_trigger":  "super_jump_trigger",
-                                                            "conditions":  {
-                                                                               "enabling":  [
-                                                                                                {
-                                                                                                    "type":  "palladium:ability_first_tick",
-                                                                                                    "power":  "mymod:venom",
-                                                                                                    "ability":  "venomleap"
-                                                                                                }
-                                                                                            ]
-                                                                           }
-                                                        },
+                                                             "type":  "geckolib:render_layer_animation",
+                                                             "icon":  "minecraft:bone",
+                                                             "title":  "null",
+                                                             "bar_color":  "black",
+                                                             "hidden":  true,
+                                                             "hidden_in_bar":  true,
+                                                             "list_index":  -1,
+                                                             "gui_position":  "null",
+                                                             "description":  "null",
+                                                             "render_layer":  "mymod:klyntar_venom_body",
+                                                             "controller":  "venom_actions",
+                                                             "animation_trigger":  "super_jump_trigger",
+                                                             "conditions":  {
+                                                                                "enabling":  [
+                                                                                                 {
+                                                                                                     "type":  "palladium:ability_first_tick",
+                                                                                                     "power":  "mymod:venom",
+                                                                                                     "ability":  "venomleap"
+                                                                                                 }
+                                                                                             ]
+                                                                            }
+                                                         },
                       "venombedrockclimbanimation":  {
-                                                        "type":  "geckolib:render_layer_animation",
-                                                        "icon":  "minecraft:bone",
-                                                        "title":  "null",
-                                                        "bar_color":  "black",
-                                                        "hidden":  true,
-                                                        "hidden_in_bar":  true,
-                                                        "list_index":  -1,
-                                                        "gui_position":  "null",
-                                                        "description":  "null",
-                                                        "render_layer":  "mymod:klyntar_venom_body",
-                                                        "controller":  "venom_actions",
-                                                        "animation_trigger":  "climb_trigger",
-                                                        "conditions":  {
-                                                                           "enabling":  [
-                                                                                            {
-                                                                                                "type":  "palladium:ability_first_tick",
-                                                                                                "power":  "mymod:venom",
-                                                                                                "ability":  "climb"
-                                                                                            }
-                                                                                        ]
-                                                                       }
-                                                    },
+                                                         "type":  "geckolib:render_layer_animation",
+                                                         "icon":  "minecraft:bone",
+                                                         "title":  "null",
+                                                         "bar_color":  "black",
+                                                         "hidden":  true,
+                                                         "hidden_in_bar":  true,
+                                                         "list_index":  -1,
+                                                         "gui_position":  "null",
+                                                         "description":  "null",
+                                                         "render_layer":  "mymod:klyntar_venom_body",
+                                                         "controller":  "venom_actions",
+                                                         "animation_trigger":  "climb_trigger",
+                                                         "conditions":  {
+                                                                            "enabling":  [
+                                                                                             {
+                                                                                                 "type":  "palladium:ability_first_tick",
+                                                                                                 "power":  "mymod:venom",
+                                                                                                 "ability":  "climb"
+                                                                                             }
+                                                                                         ]
+                                                                        }
+                                                     },
+                      "venombedrockclimbwallpassiveanimation":  {
+                                                                    "type":  "geckolib:render_layer_animation",
+                                                                    "icon":  "minecraft:bone",
+                                                                    "title":  "null",
+                                                                    "bar_color":  "black",
+                                                                    "hidden":  true,
+                                                                    "hidden_in_bar":  true,
+                                                                    "list_index":  -1,
+                                                                    "gui_position":  "null",
+                                                                    "description":  "null",
+                                                                    "render_layer":  "mymod:klyntar_venom_body",
+                                                                    "controller":  "venom_actions",
+                                                                    "animation_trigger":  "climb_trigger",
+                                                                    "conditions":  {
+                                                                                       "enabling":  [
+                                                                                                        {
+                                                                                                            "type":  "palladium:objective_score",
+                                                                                                            "objective":  "Venom.Anim.ClimbWall",
+                                                                                                            "min_score":  1,
+                                                                                                            "max_score":  1
+                                                                                                        }
+                                                                                                    ]
+                                                                                   }
+                                                                },
+                      "venombedrockclimbhangpassiveanimation":  {
+                                                                    "type":  "geckolib:render_layer_animation",
+                                                                    "icon":  "minecraft:bone",
+                                                                    "title":  "null",
+                                                                    "bar_color":  "black",
+                                                                    "hidden":  true,
+                                                                    "hidden_in_bar":  true,
+                                                                    "list_index":  -1,
+                                                                    "gui_position":  "null",
+                                                                    "description":  "null",
+                                                                    "render_layer":  "mymod:klyntar_venom_body",
+                                                                    "controller":  "venom_actions",
+                                                                    "animation_trigger":  "climb_hang_trigger",
+                                                                    "conditions":  {
+                                                                                       "enabling":  [
+                                                                                                        {
+                                                                                                            "type":  "palladium:objective_score",
+                                                                                                            "objective":  "Venom.Anim.ClimbHang",
+                                                                                                            "min_score":  1,
+                                                                                                            "max_score":  1
+                                                                                                        }
+                                                                                                    ]
+                                                                                   }
+                                                                },
+                      "venombedrockclimbimpulsepassiveanimation":  {
+                                                                       "type":  "geckolib:render_layer_animation",
+                                                                       "icon":  "minecraft:bone",
+                                                                       "title":  "null",
+                                                                       "bar_color":  "black",
+                                                                       "hidden":  true,
+                                                                       "hidden_in_bar":  true,
+                                                                       "list_index":  -1,
+                                                                       "gui_position":  "null",
+                                                                       "description":  "null",
+                                                                       "render_layer":  "mymod:klyntar_venom_body",
+                                                                       "controller":  "venom_actions",
+                                                                       "animation_trigger":  "climb_impulse_trigger",
+                                                                       "conditions":  {
+                                                                                          "enabling":  [
+                                                                                                           {
+                                                                                                               "type":  "palladium:objective_score",
+                                                                                                               "objective":  "Venom.Anim.ClimbImpulse",
+                                                                                                               "min_score":  1,
+                                                                                                               "max_score":  1
+                                                                                                           }
+                                                                                                       ]
+                                                                                      }
+                                                                   },
                       "venombedrockidleanimation":  {
-                                                       "type":  "geckolib:render_layer_animation",
-                                                       "icon":  "minecraft:bone",
-                                                       "title":  "null",
-                                                       "bar_color":  "black",
-                                                       "hidden":  true,
-                                                       "hidden_in_bar":  true,
-                                                       "list_index":  -1,
-                                                       "gui_position":  "null",
-                                                       "description":  "null",
-                                                       "render_layer":  "mymod:klyntar_venom_body",
-                                                       "controller":  "venom_actions",
-                                                       "animation_trigger":  "idle_trigger",
-                                                       "conditions":  {
-                                                                          "enabling":  [
-                                                                                           {
-                                                                                               "type":  "palladium:objective_score",
-                                                                                               "objective":  "Venom.Anim.Idle",
-                                                                                               "min_score":  1,
-                                                                                               "max_score":  1
-                                                                                           }
-                                                                                       ]
-                                                                      }
-                                                   },
-                      "venombedrockwalkanimation":  {
-                                                       "type":  "geckolib:render_layer_animation",
-                                                       "icon":  "minecraft:bone",
-                                                       "title":  "null",
-                                                       "bar_color":  "black",
-                                                       "hidden":  true,
-                                                       "hidden_in_bar":  true,
-                                                       "list_index":  -1,
-                                                       "gui_position":  "null",
-                                                       "description":  "null",
-                                                       "render_layer":  "mymod:klyntar_venom_body",
-                                                       "controller":  "venom_actions",
-                                                       "animation_trigger":  "walk_trigger",
-                                                       "conditions":  {
-                                                                          "enabling":  [
-                                                                                           {
-                                                                                               "type":  "palladium:objective_score",
-                                                                                               "objective":  "Venom.Anim.Walk",
-                                                                                               "min_score":  1,
-                                                                                               "max_score":  1
-                                                                                           }
-                                                                                       ]
-                                                                      }
-                                                   },
-                      "venombedrockrunanimation":  {
-                                                      "type":  "geckolib:render_layer_animation",
-                                                      "icon":  "minecraft:bone",
-                                                      "title":  "null",
-                                                      "bar_color":  "black",
-                                                      "hidden":  true,
-                                                      "hidden_in_bar":  true,
-                                                      "list_index":  -1,
-                                                      "gui_position":  "null",
-                                                      "description":  "null",
-                                                      "render_layer":  "mymod:klyntar_venom_body",
-                                                      "controller":  "venom_actions",
-                                                      "animation_trigger":  "run_trigger",
-                                                      "conditions":  {
-                                                                         "enabling":  [
-                                                                                          {
-                                                                                              "type":  "palladium:objective_score",
-                                                                                              "objective":  "Venom.Anim.Run",
-                                                                                              "min_score":  1,
-                                                                                              "max_score":  1
-                                                                                          }
-                                                                                      ]
-                                                                     }
-                                                  },
-                      "venombedrocksneakanimation":  {
                                                         "type":  "geckolib:render_layer_animation",
                                                         "icon":  "minecraft:bone",
                                                         "title":  "null",
@@ -966,114 +874,186 @@
                                                         "description":  "null",
                                                         "render_layer":  "mymod:klyntar_venom_body",
                                                         "controller":  "venom_actions",
-                                                        "animation_trigger":  "sneak_trigger",
+                                                        "animation_trigger":  "idle_trigger",
                                                         "conditions":  {
                                                                            "enabling":  [
                                                                                             {
                                                                                                 "type":  "palladium:objective_score",
-                                                                                                "objective":  "Venom.Anim.Sneak",
+                                                                                                "objective":  "Venom.Anim.Idle",
                                                                                                 "min_score":  1,
                                                                                                 "max_score":  1
                                                                                             }
                                                                                         ]
                                                                        }
                                                     },
+                      "venombedrockwalkanimation":  {
+                                                        "type":  "geckolib:render_layer_animation",
+                                                        "icon":  "minecraft:bone",
+                                                        "title":  "null",
+                                                        "bar_color":  "black",
+                                                        "hidden":  true,
+                                                        "hidden_in_bar":  true,
+                                                        "list_index":  -1,
+                                                        "gui_position":  "null",
+                                                        "description":  "null",
+                                                        "render_layer":  "mymod:klyntar_venom_body",
+                                                        "controller":  "venom_actions",
+                                                        "animation_trigger":  "walk_trigger",
+                                                        "conditions":  {
+                                                                           "enabling":  [
+                                                                                            {
+                                                                                                "type":  "palladium:objective_score",
+                                                                                                "objective":  "Venom.Anim.Walk",
+                                                                                                "min_score":  1,
+                                                                                                "max_score":  1
+                                                                                            }
+                                                                                        ]
+                                                                       }
+                                                    },
+                      "venombedrockrunanimation":  {
+                                                       "type":  "geckolib:render_layer_animation",
+                                                       "icon":  "minecraft:bone",
+                                                       "title":  "null",
+                                                       "bar_color":  "black",
+                                                       "hidden":  true,
+                                                       "hidden_in_bar":  true,
+                                                       "list_index":  -1,
+                                                       "gui_position":  "null",
+                                                       "description":  "null",
+                                                       "render_layer":  "mymod:klyntar_venom_body",
+                                                       "controller":  "venom_actions",
+                                                       "animation_trigger":  "run_trigger",
+                                                       "conditions":  {
+                                                                          "enabling":  [
+                                                                                           {
+                                                                                               "type":  "palladium:objective_score",
+                                                                                               "objective":  "Venom.Anim.Run",
+                                                                                               "min_score":  1,
+                                                                                               "max_score":  1
+                                                                                           }
+                                                                                       ]
+                                                                      }
+                                                   },
+                      "venombedrocksneakanimation":  {
+                                                         "type":  "geckolib:render_layer_animation",
+                                                         "icon":  "minecraft:bone",
+                                                         "title":  "null",
+                                                         "bar_color":  "black",
+                                                         "hidden":  true,
+                                                         "hidden_in_bar":  true,
+                                                         "list_index":  -1,
+                                                         "gui_position":  "null",
+                                                         "description":  "null",
+                                                         "render_layer":  "mymod:klyntar_venom_body",
+                                                         "controller":  "venom_actions",
+                                                         "animation_trigger":  "sneak_trigger",
+                                                         "conditions":  {
+                                                                            "enabling":  [
+                                                                                             {
+                                                                                                 "type":  "palladium:objective_score",
+                                                                                                 "objective":  "Venom.Anim.Sneak",
+                                                                                                 "min_score":  1,
+                                                                                                 "max_score":  1
+                                                                                             }
+                                                                                         ]
+                                                                        }
+                                                     },
                       "venombedrockwalksneakanimation":  {
-                                                            "type":  "geckolib:render_layer_animation",
-                                                            "icon":  "minecraft:bone",
-                                                            "title":  "null",
-                                                            "bar_color":  "black",
-                                                            "hidden":  true,
-                                                            "hidden_in_bar":  true,
-                                                            "list_index":  -1,
-                                                            "gui_position":  "null",
-                                                            "description":  "null",
-                                                            "render_layer":  "mymod:klyntar_venom_body",
-                                                            "controller":  "venom_actions",
-                                                            "animation_trigger":  "walk_sneak_trigger",
-                                                            "conditions":  {
-                                                                               "enabling":  [
-                                                                                                {
-                                                                                                    "type":  "palladium:objective_score",
-                                                                                                    "objective":  "Venom.Anim.WalkSneak",
-                                                                                                    "min_score":  1,
-                                                                                                    "max_score":  1
-                                                                                                }
-                                                                                            ]
-                                                                           }
-                                                        },
+                                                             "type":  "geckolib:render_layer_animation",
+                                                             "icon":  "minecraft:bone",
+                                                             "title":  "null",
+                                                             "bar_color":  "black",
+                                                             "hidden":  true,
+                                                             "hidden_in_bar":  true,
+                                                             "list_index":  -1,
+                                                             "gui_position":  "null",
+                                                             "description":  "null",
+                                                             "render_layer":  "mymod:klyntar_venom_body",
+                                                             "controller":  "venom_actions",
+                                                             "animation_trigger":  "walk_sneak_trigger",
+                                                             "conditions":  {
+                                                                                "enabling":  [
+                                                                                                 {
+                                                                                                     "type":  "palladium:objective_score",
+                                                                                                     "objective":  "Venom.Anim.WalkSneak",
+                                                                                                     "min_score":  1,
+                                                                                                     "max_score":  1
+                                                                                                 }
+                                                                                             ]
+                                                                            }
+                                                         },
                       "venombedrockfallinganimation":  {
-                                                          "type":  "geckolib:render_layer_animation",
-                                                          "icon":  "minecraft:bone",
-                                                          "title":  "null",
-                                                          "bar_color":  "black",
-                                                          "hidden":  true,
-                                                          "hidden_in_bar":  true,
-                                                          "list_index":  -1,
-                                                          "gui_position":  "null",
-                                                          "description":  "null",
-                                                          "render_layer":  "mymod:klyntar_venom_body",
-                                                          "controller":  "venom_actions",
-                                                          "animation_trigger":  "falling_trigger",
-                                                          "conditions":  {
-                                                                             "enabling":  [
-                                                                                              {
-                                                                                                  "type":  "palladium:objective_score",
-                                                                                                  "objective":  "Venom.Anim.Falling",
-                                                                                                  "min_score":  1,
-                                                                                                  "max_score":  1
-                                                                                              }
-                                                                                          ]
-                                                                         }
-                                                      },
+                                                           "type":  "geckolib:render_layer_animation",
+                                                           "icon":  "minecraft:bone",
+                                                           "title":  "null",
+                                                           "bar_color":  "black",
+                                                           "hidden":  true,
+                                                           "hidden_in_bar":  true,
+                                                           "list_index":  -1,
+                                                           "gui_position":  "null",
+                                                           "description":  "null",
+                                                           "render_layer":  "mymod:klyntar_venom_body",
+                                                           "controller":  "venom_actions",
+                                                           "animation_trigger":  "falling_trigger",
+                                                           "conditions":  {
+                                                                              "enabling":  [
+                                                                                               {
+                                                                                                   "type":  "palladium:objective_score",
+                                                                                                   "objective":  "Venom.Anim.Falling",
+                                                                                                   "min_score":  1,
+                                                                                                   "max_score":  1
+                                                                                               }
+                                                                                           ]
+                                                                          }
+                                                       },
                       "venombedrockfallingattackanimation":  {
-                                                                "type":  "geckolib:render_layer_animation",
-                                                                "icon":  "minecraft:bone",
-                                                                "title":  "null",
-                                                                "bar_color":  "black",
-                                                                "hidden":  true,
-                                                                "hidden_in_bar":  true,
-                                                                "list_index":  -1,
-                                                                "gui_position":  "null",
-                                                                "description":  "null",
-                                                                "render_layer":  "mymod:klyntar_venom_body",
-                                                                "controller":  "venom_actions",
-                                                                "animation_trigger":  "falling_attack_trigger",
-                                                                "conditions":  {
-                                                                                   "enabling":  [
-                                                                                                    {
-                                                                                                        "type":  "palladium:objective_score",
-                                                                                                        "objective":  "Venom.Anim.FallingAttack",
-                                                                                                        "min_score":  1,
-                                                                                                        "max_score":  1
-                                                                                                    }
-                                                                                                ]
-                                                                               }
-                                                            },
+                                                                 "type":  "geckolib:render_layer_animation",
+                                                                 "icon":  "minecraft:bone",
+                                                                 "title":  "null",
+                                                                 "bar_color":  "black",
+                                                                 "hidden":  true,
+                                                                 "hidden_in_bar":  true,
+                                                                 "list_index":  -1,
+                                                                 "gui_position":  "null",
+                                                                 "description":  "null",
+                                                                 "render_layer":  "mymod:klyntar_venom_body",
+                                                                 "controller":  "venom_actions",
+                                                                 "animation_trigger":  "falling_attack_trigger",
+                                                                 "conditions":  {
+                                                                                    "enabling":  [
+                                                                                                     {
+                                                                                                         "type":  "palladium:objective_score",
+                                                                                                         "objective":  "Venom.Anim.FallingAttack",
+                                                                                                         "min_score":  1,
+                                                                                                         "max_score":  1
+                                                                                                     }
+                                                                                                 ]
+                                                                                }
+                                                             },
                       "venombedrockfallingattackendanimation":  {
-                                                                   "type":  "geckolib:render_layer_animation",
-                                                                   "icon":  "minecraft:bone",
-                                                                   "title":  "null",
-                                                                   "bar_color":  "black",
-                                                                   "hidden":  true,
-                                                                   "hidden_in_bar":  true,
-                                                                   "list_index":  -1,
-                                                                   "gui_position":  "null",
-                                                                   "description":  "null",
-                                                                   "render_layer":  "mymod:klyntar_venom_body",
-                                                                   "controller":  "venom_actions",
-                                                                   "animation_trigger":  "falling_attack_end_trigger",
-                                                                   "conditions":  {
-                                                                                      "enabling":  [
-                                                                                                       {
-                                                                                                           "type":  "palladium:objective_score",
-                                                                                                           "objective":  "Venom.Anim.FallingAttackEnd",
-                                                                                                           "min_score":  1,
-                                                                                                           "max_score":  1
-                                                                                                       }
-                                                                                                   ]
-                                                                                  }
-                                                               },
+                                                                    "type":  "geckolib:render_layer_animation",
+                                                                    "icon":  "minecraft:bone",
+                                                                    "title":  "null",
+                                                                    "bar_color":  "black",
+                                                                    "hidden":  true,
+                                                                    "hidden_in_bar":  true,
+                                                                    "list_index":  -1,
+                                                                    "gui_position":  "null",
+                                                                    "description":  "null",
+                                                                    "render_layer":  "mymod:klyntar_venom_body",
+                                                                    "controller":  "venom_actions",
+                                                                    "animation_trigger":  "falling_attack_end_trigger",
+                                                                    "conditions":  {
+                                                                                       "enabling":  [
+                                                                                                        {
+                                                                                                            "type":  "palladium:objective_score",
+                                                                                                            "objective":  "Venom.Anim.FallingAttackEnd",
+                                                                                                            "min_score":  1,
+                                                                                                            "max_score":  1
+                                                                                                        }
+                                                                                                    ]
+                                                                                   }
+                                                                },
                       "venombedrockfallingattackendslamplosion":  {
                                                                       "type":  "mymod:explosion",
                                                                       "icon":  "mymod:textures/icon/venomsmash.png",
@@ -1176,86 +1156,38 @@
                                                                                        }
                                                                     },
                       "venombedrockheadtentaclesgroundoff":  {
-                                                                "type":  "geckolib:render_layer_animation",
-                                                                "icon":  "minecraft:bone",
-                                                                "title":  "null",
-                                                                "bar_color":  "black",
-                                                                "hidden":  true,
-                                                                "hidden_in_bar":  true,
-                                                                "list_index":  -1,
-                                                                "gui_position":  "null",
-                                                                "description":  "null",
-                                                                "render_layer":  "mymod:klyntar_venom_body",
-                                                                "controller":  "venom_head_tentacles",
-                                                                "animation_trigger":  "head_tentacles_off_trigger",
-                                                                "conditions":  {
-                                                                                   "enabling":  [
-                                                                                                    {
-                                                                                                        "type":  "palladium:animation_timer_ability",
-                                                                                                        "power":  "mymod:venom",
-                                                                                                        "ability":  "enablevenom",
-                                                                                                        "min":  20,
-                                                                                                        "max":  20
-                                                                                                    },
-                                                                                                    {
-                                                                                                        "type":  "palladium:command_result",
-                                                                                                        "command":  "execute if entity @s[nbt={OnGround:1b}]",
-                                                                                                        "comparison":  ">",
-                                                                                                        "compare_to":  0,
-                                                                                                        "log":  false
-                                                                                                    }
-                                                                                                ]
-                                                                               }
-                                                            },
+                                                                 "type":  "geckolib:render_layer_animation",
+                                                                 "icon":  "minecraft:bone",
+                                                                 "title":  "null",
+                                                                 "bar_color":  "black",
+                                                                 "hidden":  true,
+                                                                 "hidden_in_bar":  true,
+                                                                 "list_index":  -1,
+                                                                 "gui_position":  "null",
+                                                                 "description":  "null",
+                                                                 "render_layer":  "mymod:klyntar_venom_body",
+                                                                 "controller":  "venom_head_tentacles",
+                                                                 "animation_trigger":  "head_tentacles_off_trigger",
+                                                                 "conditions":  {
+                                                                                    "enabling":  [
+                                                                                                     {
+                                                                                                         "type":  "palladium:animation_timer_ability",
+                                                                                                         "power":  "mymod:venom",
+                                                                                                         "ability":  "enablevenom",
+                                                                                                         "min":  20,
+                                                                                                         "max":  20
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "type":  "palladium:command_result",
+                                                                                                         "command":  "execute if entity @s[nbt={OnGround:1b}]",
+                                                                                                         "comparison":  "\u003e",
+                                                                                                         "compare_to":  0,
+                                                                                                         "log":  false
+                                                                                                     }
+                                                                                                 ]
+                                                                                }
+                                                             },
                       "venombedrockwateranimation":  {
-                                                        "type":  "geckolib:render_layer_animation",
-                                                        "icon":  "minecraft:bone",
-                                                        "title":  "null",
-                                                        "bar_color":  "black",
-                                                        "hidden":  true,
-                                                        "hidden_in_bar":  true,
-                                                        "list_index":  -1,
-                                                        "gui_position":  "null",
-                                                        "description":  "null",
-                                                        "render_layer":  "mymod:klyntar_venom_body",
-                                                        "controller":  "venom_actions",
-                                                        "animation_trigger":  "water_trigger",
-                                                        "conditions":  {
-                                                                           "enabling":  [
-                                                                                            {
-                                                                                                "type":  "palladium:objective_score",
-                                                                                                "objective":  "Venom.Anim.Water",
-                                                                                                "min_score":  1,
-                                                                                                "max_score":  1
-                                                                                            }
-                                                                                        ]
-                                                                       }
-                                                    },
-                      "venombedrockswimanimation":  {
-                                                       "type":  "geckolib:render_layer_animation",
-                                                       "icon":  "minecraft:bone",
-                                                       "title":  "null",
-                                                       "bar_color":  "black",
-                                                       "hidden":  true,
-                                                       "hidden_in_bar":  true,
-                                                       "list_index":  -1,
-                                                       "gui_position":  "null",
-                                                       "description":  "null",
-                                                       "render_layer":  "mymod:klyntar_venom_body",
-                                                       "controller":  "venom_actions",
-                                                       "animation_trigger":  "swim_trigger",
-                                                       "conditions":  {
-                                                                          "enabling":  [
-                                                                                           {
-                                                                                               "type":  "palladium:objective_score",
-                                                                                               "objective":  "Venom.Anim.Swim",
-                                                                                               "min_score":  1,
-                                                                                               "max_score":  1
-                                                                                           }
-                                                                                       ]
-                                                                      }
-                                                   },
-                      "venombedrockelytraanimation":  {
                                                          "type":  "geckolib:render_layer_animation",
                                                          "icon":  "minecraft:bone",
                                                          "title":  "null",
@@ -1267,18 +1199,66 @@
                                                          "description":  "null",
                                                          "render_layer":  "mymod:klyntar_venom_body",
                                                          "controller":  "venom_actions",
-                                                         "animation_trigger":  "elytra_trigger",
+                                                         "animation_trigger":  "water_trigger",
                                                          "conditions":  {
                                                                             "enabling":  [
                                                                                              {
                                                                                                  "type":  "palladium:objective_score",
-                                                                                                 "objective":  "Venom.Anim.Elytra",
+                                                                                                 "objective":  "Venom.Anim.Water",
                                                                                                  "min_score":  1,
                                                                                                  "max_score":  1
                                                                                              }
                                                                                          ]
                                                                         }
                                                      },
+                      "venombedrockswimanimation":  {
+                                                        "type":  "geckolib:render_layer_animation",
+                                                        "icon":  "minecraft:bone",
+                                                        "title":  "null",
+                                                        "bar_color":  "black",
+                                                        "hidden":  true,
+                                                        "hidden_in_bar":  true,
+                                                        "list_index":  -1,
+                                                        "gui_position":  "null",
+                                                        "description":  "null",
+                                                        "render_layer":  "mymod:klyntar_venom_body",
+                                                        "controller":  "venom_actions",
+                                                        "animation_trigger":  "swim_trigger",
+                                                        "conditions":  {
+                                                                           "enabling":  [
+                                                                                            {
+                                                                                                "type":  "palladium:objective_score",
+                                                                                                "objective":  "Venom.Anim.Swim",
+                                                                                                "min_score":  1,
+                                                                                                "max_score":  1
+                                                                                            }
+                                                                                        ]
+                                                                       }
+                                                    },
+                      "venombedrockelytraanimation":  {
+                                                          "type":  "geckolib:render_layer_animation",
+                                                          "icon":  "minecraft:bone",
+                                                          "title":  "null",
+                                                          "bar_color":  "black",
+                                                          "hidden":  true,
+                                                          "hidden_in_bar":  true,
+                                                          "list_index":  -1,
+                                                          "gui_position":  "null",
+                                                          "description":  "null",
+                                                          "render_layer":  "mymod:klyntar_venom_body",
+                                                          "controller":  "venom_actions",
+                                                          "animation_trigger":  "elytra_trigger",
+                                                          "conditions":  {
+                                                                             "enabling":  [
+                                                                                              {
+                                                                                                  "type":  "palladium:objective_score",
+                                                                                                  "objective":  "Venom.Anim.Elytra",
+                                                                                                  "min_score":  1,
+                                                                                                  "max_score":  1
+                                                                                              }
+                                                                                          ]
+                                                                         }
+                                                      },
                       "venombond1":  {
                                          "type":  "palladium:dummy",
                                          "icon":  "mymod:textures/icon/venomtransformation.png",
@@ -1606,7 +1586,7 @@
                                               "title":  "Unleash the symbiote",
                                               "hidden_in_bar":  false,
                                               "bar_color":  "black",
-                                              "hidden":  true,
+                                              "hidden":  false,
                                               "start_value":  0,
                                               "gui_position":  [
                                                                    0,
@@ -1706,11 +1686,22 @@
                                                                            ],
                                                              "enabling":  [
                                                                               {
-                                                                                  "type":  "palladium:animation_timer_ability",
-                                                                                  "power":  "null",
-                                                                                  "ability":  "enablevenombody",
-                                                                                  "min":  16,
-                                                                                  "max":  16
+                                                                                  "type":  "palladium:or",
+                                                                                  "conditions":  [
+                                                                                                     {
+                                                                                                         "type":  "palladium:animation_timer_ability",
+                                                                                                         "power":  "null",
+                                                                                                         "ability":  "enablevenombody",
+                                                                                                         "min":  16,
+                                                                                                         "max":  16
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "type":  "palladium:objective_score",
+                                                                                                         "objective":  "Venom.Berserk",
+                                                                                                         "min_score":  1,
+                                                                                                         "max_score":  1
+                                                                                                     }
+                                                                                                 ]
                                                                               }
                                                                           ]
                                                          }
@@ -1933,41 +1924,41 @@
                                                     }
                                  },
                       "combatprimaryattack":  {
-                                                 "type":  "palladium:animation_timer",
-                                                 "icon":  "mymod:textures/icon/venomscratchmark.png",
-                                                 "list_index":  -1,
-                                                 "title":  "Primary Combat Attack",
-                                                 "bar_color":  "black",
-                                                 "hidden_in_bar":  true,
-                                                 "hidden":  true,
-                                                 "start_value":  0,
-                                                 "gui_position":  "null",
-                                                 "max_value":  18,
-                                                 "conditions":  {
-                                                                    "enabling":  [
-                                                                                     {
-                                                                                         "type":  "palladium:action",
-                                                                                         "cooldown":  0,
-                                                                                         "key_type":  "left_click",
-                                                                                         "needs_empty_hand":  false,
-                                                                                         "allow_scrolling_when_crouching":  true
-                                                                                     },
-                                                                                     {
-                                                                                         "type":  "palladium:ability_enabled",
-                                                                                         "power":  "mymod:venom",
-                                                                                         "ability":  "enablevenom"
-                                                                                     },
-                                                                                     {
-                                                                                         "type":  "palladium:not",
-                                                                                         "conditions":  [
-                                                                                                            {
-                                                                                                                "type":  "palladium:crouching"
-                                                                                                            }
-                                                                                                        ]
-                                                                                     }
-                                                                                 ]
-                                                                }
-                                             },
+                                                  "type":  "palladium:animation_timer",
+                                                  "icon":  "mymod:textures/icon/venomscratchmark.png",
+                                                  "list_index":  -1,
+                                                  "title":  "Primary Combat Attack",
+                                                  "bar_color":  "black",
+                                                  "hidden_in_bar":  true,
+                                                  "hidden":  true,
+                                                  "start_value":  0,
+                                                  "gui_position":  "null",
+                                                  "max_value":  18,
+                                                  "conditions":  {
+                                                                     "enabling":  [
+                                                                                      {
+                                                                                          "type":  "palladium:action",
+                                                                                          "cooldown":  0,
+                                                                                          "key_type":  "left_click",
+                                                                                          "needs_empty_hand":  false,
+                                                                                          "allow_scrolling_when_crouching":  true
+                                                                                      },
+                                                                                      {
+                                                                                          "type":  "palladium:ability_enabled",
+                                                                                          "power":  "mymod:venom",
+                                                                                          "ability":  "enablevenom"
+                                                                                      },
+                                                                                      {
+                                                                                          "type":  "palladium:not",
+                                                                                          "conditions":  [
+                                                                                                             {
+                                                                                                                 "type":  "palladium:crouching"
+                                                                                                             }
+                                                                                                         ]
+                                                                                      }
+                                                                                  ]
+                                                                 }
+                                              },
                       "symbiontwhipattack1":  {
                                                   "type":  "palladium:animation_timer",
                                                   "icon":  "mymod:textures/icon/tentaclejabicon.png",
@@ -2120,7 +2111,7 @@
                                                  "start_value":  0,
                                                  "gui_position":  "null",
                                                  "max_value":  15,
-                                                                 "conditions":  {
+                                                 "conditions":  {
                                                                     "enabling":  [
                                                                                      {
                                                                                          "type":  "palladium:or",
@@ -2308,75 +2299,51 @@
                                                                                   ]
                                                                  }
                                               },
-                      "symbiontclawattack":  {
-                                                 "type":  "palladium:animation_timer",
-                                                 "icon":  "mymod:textures/icon/venomscratchmark.png",
-                                                 "list_index":  -1,
-                                                 "title":  "Symbiont Claw",
-                                                 "hidden_in_bar":  true,
-                                                 "hidden":  true,
-                                                 "start_value":  0,
-                                                 "gui_position":  "null",
-                                                 "max_value":  18,
-                                                 "conditions":  {
-                                                                    "enabling":  [
-                                                                                     {
-                                                                                         "type":  "palladium:animation_timer_ability",
-                                                                                         "power":  "mymod:venom",
-                                                                                         "ability":  "attack",
-                                                                                         "min":  1,
-                                                                                         "max":  22
-                                                                                     },
-                                                                                     {
-                                                                                         "type":  "palladium:objective_score",
-                                                                                         "objective":  "Venom.CombatTool",
-                                                                                         "min_score":  4,
-                                                                                         "max_score":  4
-                                                                                     }
-                                                                                 ]
-                                                                }
-                                             },
                       "venomfallingattackrequest":  {
-                                                       "type":  "palladium:command",
-                                                       "icon":  "mymod:textures/icon/venomscratchmark.png",
-                                                       "list_index":  -1,
-                                                       "title":  "Falling Attack Request",
-                                                       "bar_color":  "black",
-                                                       "hidden_in_bar":  true,
-                                                       "hidden":  true,
-                                                       "gui_position":  [
-                                                                            0,
-                                                                            -3
-                                                                        ],
-                                                       "description":  "",
-                                                       "first_tick_commands":  [
-                                                                                  "scoreboard objectives add Venom.FallingAttack.Request dummy",
-                                                                                  "scoreboard players set @s Venom.FallingAttack.Request 1"
-                                                                              ],
-                                                       "conditions":  {
-                                                                          "enabling":  [
-                                                                                           {
-                                                                                               "type":  "palladium:action",
-                                                                                               "cooldown":  0,
-                                                                                               "key_type":  "left_click",
-                                                                                               "needs_empty_hand":  false,
-                                                                                               "allow_scrolling_when_crouching":  true
-                                                                                           },
-                                                                                           {
-                                                                                               "type":  "palladium:ability_enabled",
-                                                                                               "power":  "mymod:venom",
-                                                                                               "ability":  "enablevenom"
-                                                                                           },
-                                                                                           {
-                                                                                               "type":  "palladium:command_result",
-                                                                                               "command":  "execute if entity @s[nbt={OnGround:0b}]",
-                                                                                               "comparison":  ">",
-                                                                                               "compare_to":  0,
-                                                                                               "log":  false
-                                                                                           }
-                                                                                       ]
-                                                                      }
-                                                   },
+                                                        "type":  "palladium:command",
+                                                        "icon":  "mymod:textures/icon/venomscratchmark.png",
+                                                        "list_index":  -1,
+                                                        "title":  "Falling Attack Request",
+                                                        "bar_color":  "black",
+                                                        "hidden_in_bar":  true,
+                                                        "hidden":  true,
+                                                        "gui_position":  [
+                                                                             0,
+                                                                             -3
+                                                                         ],
+                                                        "description":  "",
+                                                        "first_tick_commands":  [
+                                                                                    "scoreboard objectives add Venom.FallingAttack.Request dummy",
+                                                                                    "scoreboard players set @s Venom.FallingAttack.Request 1"
+                                                                                ],
+                                                        "commands":  [
+                                                                         "scoreboard objectives add Venom.FallingAttack.Request dummy",
+                                                                         "scoreboard players set @s Venom.FallingAttack.Request 1"
+                                                                     ],
+                                                        "conditions":  {
+                                                                           "enabling":  [
+                                                                                            {
+                                                                                                "type":  "palladium:action",
+                                                                                                "cooldown":  0,
+                                                                                                "key_type":  "left_click",
+                                                                                                "needs_empty_hand":  false,
+                                                                                                "allow_scrolling_when_crouching":  true
+                                                                                            },
+                                                                                            {
+                                                                                                "type":  "palladium:ability_enabled",
+                                                                                                "power":  "mymod:venom",
+                                                                                                "ability":  "enablevenom"
+                                                                                            },
+                                                                                            {
+                                                                                                "type":  "palladium:command_result",
+                                                                                                "command":  "execute if entity @s[nbt={OnGround:0b}]",
+                                                                                                "comparison":  "\u003e",
+                                                                                                "compare_to":  0,
+                                                                                                "log":  false
+                                                                                            }
+                                                                                        ]
+                                                                       }
+                                                    },
                       "attackbarragedefaultroot":  {
                                                        "type":  "palladium:command",
                                                        "icon":  "mymod:textures/icon/venomscratchmark.png",
@@ -2388,7 +2355,8 @@
                                                        "gui_position":  "null",
                                                        "description":  "null",
                                                        "commands":  [
-                                                                        "effect give @s minecraft:slowness 1 255 true"
+                                                                        "scoreboard objectives add Venom.LockMovement dummy",
+                                                                        "scoreboard players set @s Venom.LockMovement 2"
                                                                     ],
                                                        "conditions":  {
                                                                           "enabling":  [
@@ -2887,35 +2855,6 @@
                                                             },
                                              "hidden_in_bar":  true
                                          },
-                      "symbiontclawdmg":  {
-                                              "type":  "palladium:projectile",
-                                              "entity_type":  "palladium:custom_projectile",
-                                              "title":  "Render Layer",
-                                              "list_index":  2,
-                                              "velocity":  1.7,
-                                              "hidden":  true,
-                                              "entity_data":  {
-                                                                  "Damage":  11,
-                                                                  "Size":  3,
-                                                                  "Lifetime":  5,
-                                                                  "DieOnEntityHit":  false,
-                                                                  "DieOnBlockHit":  false
-                                                              },
-                                              "swinging_arm":  "none",
-                                              "damage_from_player":  false,
-                                              "conditions":  {
-                                                                 "enabling":  [
-                                                                                  {
-                                                                                      "type":  "palladium:animation_timer_ability",
-                                                                                      "power":  "mymod:venom",
-                                                                                      "ability":  "symbiontclawattack",
-                                                                                      "min":  8,
-                                                                                      "max":  8
-                                                                                  }
-                                                                              ]
-                                                             },
-                                              "hidden_in_bar":  true
-                                          },
                       "attackbarragedefaultaoedmg":  {
                                                          "type":  "palladium:command",
                                                          "icon":  "mymod:textures/icon/venomscratchmark.png",
@@ -3223,10 +3162,10 @@
                                                           ],
                                          "max_value":  8,
                                          "conditions":  {
-                                                           "enabling":  [
-                                                                           {
-                                                                               "type":  "palladium:held",
-                                                                               "key_type":  "right_click"
+                                                            "enabling":  [
+                                                                             {
+                                                                                 "type":  "palladium:held",
+                                                                                 "key_type":  "right_click"
                                                                              }
                                                                          ],
                                                             "unlocking":  [
@@ -4540,12 +4479,12 @@
                                                                 ],
                                                "description":  "null",
                                                "first_tick_commands":  [
-                                                                          "scoreboard objectives add Venom.CombatTool dummy",
-                                                                          "scoreboard players set @s Venom.CombatTool 1"
-                                                                      ],
+                                                                           "scoreboard objectives add Venom.CombatTool dummy",
+                                                                           "scoreboard players set @s Venom.CombatTool 1"
+                                                                       ],
                                                "last_tick_commands":  [
 
-                                                                     ],
+                                                                      ],
                                                "commands":  [
 
                                                             ],
@@ -4571,12 +4510,12 @@
                                                                ],
                                               "description":  "null",
                                               "first_tick_commands":  [
-                                                                         "scoreboard objectives add Venom.CombatTool dummy",
-                                                                         "scoreboard players set @s Venom.CombatTool 2"
-                                                                     ],
+                                                                          "scoreboard objectives add Venom.CombatTool dummy",
+                                                                          "scoreboard players set @s Venom.CombatTool 2"
+                                                                      ],
                                               "last_tick_commands":  [
 
-                                                                    ],
+                                                                     ],
                                               "commands":  [
 
                                                            ],
@@ -4602,12 +4541,12 @@
                                                                 ],
                                                "description":  "null",
                                                "first_tick_commands":  [
-                                                                          "scoreboard objectives add Venom.CombatTool dummy",
-                                                                          "scoreboard players set @s Venom.CombatTool 3"
-                                                                      ],
+                                                                           "scoreboard objectives add Venom.CombatTool dummy",
+                                                                           "scoreboard players set @s Venom.CombatTool 3"
+                                                                       ],
                                                "last_tick_commands":  [
 
-                                                                     ],
+                                                                      ],
                                                "commands":  [
 
                                                             ],
@@ -4633,12 +4572,12 @@
                                                                 ],
                                                "description":  "null",
                                                "first_tick_commands":  [
-                                                                          "scoreboard objectives add Venom.CombatTool dummy",
-                                                                          "scoreboard players set @s Venom.CombatTool 0"
-                                                                      ],
+                                                                           "scoreboard objectives add Venom.CombatTool dummy",
+                                                                           "scoreboard players set @s Venom.CombatTool 0"
+                                                                       ],
                                                "last_tick_commands":  [
 
-                                                                     ],
+                                                                      ],
                                                "commands":  [
 
                                                             ],
@@ -4690,18 +4629,18 @@
                                                       "max_value":  10,
                                                       "conditions":  {
                                                                          "enabling":  [
-                                                                                         {
-                                                                                             "type":  "palladium:objective_score",
-                                                                                             "objective":  "Venom.CombatTool",
-                                                                                             "min_score":  2,
-                                                                                             "max_score":  2
-                                                                                         },
-                                                                                         {
-                                                                                             "type":  "palladium:ability_enabled",
-                                                                                             "power":  "mymod:venom",
-                                                                                             "ability":  "enablevenom"
-                                                                                         }
-                                                                                     ]
+                                                                                          {
+                                                                                              "type":  "palladium:objective_score",
+                                                                                              "objective":  "Venom.CombatTool",
+                                                                                              "min_score":  2,
+                                                                                              "max_score":  2
+                                                                                          },
+                                                                                          {
+                                                                                              "type":  "palladium:ability_enabled",
+                                                                                              "power":  "mymod:venom",
+                                                                                              "ability":  "enablevenom"
+                                                                                          }
+                                                                                      ]
                                                                      }
                                                   },
                       "enablesymbiontmace":  {
@@ -4722,33 +4661,6 @@
                                                                                          "objective":  "Venom.CombatTool",
                                                                                          "min_score":  3,
                                                                                          "max_score":  3
-                                                                                     },
-                                                                                     {
-                                                                                         "type":  "palladium:ability_enabled",
-                                                                                         "power":  "mymod:venom",
-                                                                                         "ability":  "enablevenom"
-                                                                                     }
-                                                                                 ]
-                                                                }
-                                             },
-                      "enablesymbiontclaw":  {
-                                                 "type":  "palladium:animation_timer",
-                                                 "icon":  "mymod:textures/icon/venomscratchmark.png",
-                                                 "list_index":  -1,
-                                                 "title":  "Symbiont Claw",
-                                                 "hidden_in_bar":  true,
-                                                 "bar_color":  "black",
-                                                 "hidden":  true,
-                                                 "start_value":  0,
-                                                 "gui_position":  "null",
-                                                 "max_value":  10,
-                                                 "conditions":  {
-                                                                    "enabling":  [
-                                                                                     {
-                                                                                         "type":  "palladium:objective_score",
-                                                                                         "objective":  "Venom.CombatTool",
-                                                                                         "min_score":  4,
-                                                                                         "max_score":  4
                                                                                      },
                                                                                      {
                                                                                          "type":  "palladium:ability_enabled",
@@ -5244,16 +5156,13 @@
                                                          }
                                       },
                       "climb":  {
-                                    "type":  "mymod:climb",
+                                    "type":  "palladium:dummy",
                                     "icon":  "minecraft:ladder",
                                     "title":  "null",
                                     "bar_color":  "light_gray",
                                     "hidden":  true,
                                     "hidden_in_bar":  true,
                                     "list_index":  1,
-                                    "climb_speed":  0.45,
-                                    "block_distance":  2.2,
-                                    "data":  "throggy.climb",
                                     "conditions":  {
                                                        "unlocking":  [
                                                                          {
@@ -5414,8 +5323,12 @@
                                                           ],
                                          "description":  "null",
                                          "first_tick_commands":  [
-                                                                     "scoreboard players add @s Throgy.Climbenable 1",
-                                                                     "function mymod:climbenable"
+                                                                     "scoreboard objectives add Throgy.Climbenable dummy",
+                                                                     "tag @s remove klyntar_climb_was_enabled",
+                                                                     "execute if score @s Throgy.Climbenable matches 1.. run tag @s add klyntar_climb_was_enabled",
+                                                                     "scoreboard players set @s Throgy.Climbenable 1",
+                                                                     "execute if entity @s[tag=klyntar_climb_was_enabled] run scoreboard players set @s Throgy.Climbenable 0",
+                                                                     "tag @s remove klyntar_climb_was_enabled"
                                                                  ],
                                          "last_tick_commands":  [
                                                                     ""
@@ -5541,9 +5454,20 @@
                                                                                ],
                                                                  "enabling":  [
                                                                                   {
-                                                                                      "type":  "palladium:toggle",
-                                                                                      "key_type":  "key_bind",
-                                                                                      "cooldown":  1000
+                                                                                      "type":  "palladium:or",
+                                                                                      "conditions":  [
+                                                                                                         {
+                                                                                                             "type":  "palladium:toggle",
+                                                                                                             "key_type":  "key_bind",
+                                                                                                             "cooldown":  1000
+                                                                                                         },
+                                                                                                         {
+                                                                                                             "type":  "palladium:objective_score",
+                                                                                                             "objective":  "Venom.AutoHead",
+                                                                                                             "min_score":  1,
+                                                                                                             "max_score":  1
+                                                                                                         }
+                                                                                                     ]
                                                                                   }
                                                                               ]
                                                              }
@@ -5650,6 +5574,35 @@
                                                                             ]
                                                            }
                                         },
+                      "venomheadautofeeddisable":  {
+                                                       "type":  "palladium:command",
+                                                       "icon":  "mymod:textures/icon/venom_symbol.png",
+                                                       "title":  "Venom Head Auto Feed Disable",
+                                                       "bar_color":  "black",
+                                                       "hidden":  true,
+                                                       "hidden_in_bar":  true,
+                                                       "list_index":  -1,
+                                                       "gui_position":  [
+                                                                            0,
+                                                                            0
+                                                                        ],
+                                                       "description":  "",
+                                                       "commands":  [
+                                                                        "scoreboard objectives add Venom.AutoHead dummy",
+                                                                        "scoreboard objectives add Venom.AutoHead.Disabled dummy",
+                                                                        "scoreboard players set @s Venom.AutoHead 0",
+                                                                        "scoreboard players set @s Venom.AutoHead.Disabled 1"
+                                                                    ],
+                                                       "conditions":  {
+                                                                          "enabling":  [
+                                                                                           {
+                                                                                               "type":  "palladium:chat_action",
+                                                                                               "chat_message":  "Get back inside",
+                                                                                               "cooldown":  20
+                                                                                           }
+                                                                                       ]
+                                                                      }
+                                                   },
                       "venomdsiable3":  {
                                             "type":  "mymod:palladium_property_modifier",
                                             "icon":  "mymod:textures/icon/impactweb.png",
@@ -6063,18 +6016,18 @@
                                                                              }
                                                                          ],
                                                            "enabling":  [
-                                                                           {
-                                                                               "type":  "palladium:not",
-                                                                               "conditions":  [
-                                                                                                  {
-                                                                                                      "type":  "palladium:crouching"
-                                                                                                  }
-                                                                                              ]
-                                                                           },
-                                                                           {
-                                                                               "type":  "palladium:held",
-                                                                               "key_type":  "key_bind"
-                                                                           }
+                                                                            {
+                                                                                "type":  "palladium:not",
+                                                                                "conditions":  [
+                                                                                                   {
+                                                                                                       "type":  "palladium:crouching"
+                                                                                                   }
+                                                                                               ]
+                                                                            },
+                                                                            {
+                                                                                "type":  "palladium:held",
+                                                                                "key_type":  "key_bind"
+                                                                            }
                                                                         ]
                                                        }
                                     },
@@ -6092,15 +6045,15 @@
                                                               ],
                                              "description":  "null",
                                              "first_tick_commands":  [
-                                                                        "scoreboard objectives add Venom.Tool dummy",
-                                                                        "scoreboard players set @s Venom.Tool 0",
-                                                                        "scoreboard players reset @s Venom.Tool",
-                                                                        "scoreboard objectives add Venom.Tool dummy",
-                                                                        "scoreboard players set @s Venom.Tool 0"
-                                                                    ],
+                                                                         "scoreboard objectives add Venom.Tool dummy",
+                                                                         "scoreboard players set @s Venom.Tool 0",
+                                                                         "scoreboard players reset @s Venom.Tool",
+                                                                         "scoreboard objectives add Venom.Tool dummy",
+                                                                         "scoreboard players set @s Venom.Tool 0"
+                                                                     ],
                                              "last_tick_commands":  [
 
-                                                                   ],
+                                                                    ],
                                              "commands":  [
 
                                                           ],
@@ -6143,12 +6096,12 @@
                                                             ],
                                            "description":  "null",
                                            "first_tick_commands":  [
-                                                                      "scoreboard objectives add Venom.Tool dummy",
-                                                                      "scoreboard players set @s Venom.Tool 1"
-                                                                  ],
+                                                                       "scoreboard objectives add Venom.Tool dummy",
+                                                                       "scoreboard players set @s Venom.Tool 1"
+                                                                   ],
                                            "last_tick_commands":  [
 
-                                                                 ],
+                                                                  ],
                                            "commands":  [
 
                                                         ],
@@ -6177,12 +6130,12 @@
                                                             ],
                                            "description":  "null",
                                            "first_tick_commands":  [
-                                                                      "scoreboard objectives add Venom.Tool dummy",
-                                                                      "scoreboard players set @s Venom.Tool 2"
-                                                                  ],
+                                                                       "scoreboard objectives add Venom.Tool dummy",
+                                                                       "scoreboard players set @s Venom.Tool 2"
+                                                                   ],
                                            "last_tick_commands":  [
 
-                                                                 ],
+                                                                  ],
                                            "commands":  [
 
                                                         ],
@@ -6679,14 +6632,16 @@
                                                                      "team join venom_feed_nocollision @s",
                                                                      "team join venom_feed_nocollision @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1]",
                                                                      "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] run data merge entity @s {NoAI:1b,NoGravity:1b}",
+                                                                     "scoreboard objectives add Venom.LockMovement dummy",
+                                                                     "scoreboard players set @s Venom.LockMovement 2",
                                                                      "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run effect give @s minecraft:regeneration 3 3 true",
-                                                                     "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run effect give @s minecraft:slowness 3 255 true",
                                                                      "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run effect give @s minecraft:saturation 1 0 true",
                                                                      "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run playsound minecraft:block.sculk_catalyst.bloom player @a ~ ~ ~ 0.8 0.7"
                                                                  ],
                                          "commands":  [
                                                           "execute if entity @e[tag=venom_feed_target,distance=..12,limit=1] run effect give @s minecraft:regeneration 1 3 true",
-                                                          "execute if entity @e[tag=venom_feed_target,distance=..12,limit=1] run effect give @s minecraft:slowness 1 255 true",
+                                                          "scoreboard objectives add Venom.LockMovement dummy",
+                                                          "scoreboard players set @s Venom.LockMovement 2",
                                                           "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] at @p[tag=venom_feeding,sort=nearest,limit=1] anchored eyes run tp @s ^ ^1 ^0.25",
                                                           "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] run effect give @s minecraft:invisibility 1 0 true",
                                                           "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] run effect give @s minecraft:slowness 1 255 true",
@@ -6699,9 +6654,9 @@
                                                                     "execute as @e[tag=venom_feed_target,distance=..16,sort=nearest,limit=1] run data merge entity @s {NoAI:0b,NoGravity:0b}",
                                                                     "team leave @s",
                                                                     "team leave @e[tag=venom_feed_target,distance=..16]",
-                                                                     "tag @e[tag=venom_feed_target,distance=..16] remove venom_feed_target",
-                                                                     "tag @s remove venom_feeding"
-                                                                 ],
+                                                                    "tag @e[tag=venom_feed_target,distance=..16] remove venom_feed_target",
+                                                                    "tag @s remove venom_feeding"
+                                                                ],
                                          "conditions":  {
                                                             "unlocking":  [
                                                                               {
@@ -6744,9 +6699,20 @@
                                                   "conditions":  {
                                                                      "enabling":  [
                                                                                       {
-                                                                                          "type":  "palladium:ability_enabled",
-                                                                                          "power":  "mymod:venom",
-                                                                                          "ability":  "assimilate"
+                                                                                          "type":  "palladium:or",
+                                                                                          "conditions":  [
+                                                                                                             {
+                                                                                                                 "type":  "palladium:ability_enabled",
+                                                                                                                 "power":  "mymod:venom",
+                                                                                                                 "ability":  "assimilate"
+                                                                                                             },
+                                                                                                             {
+                                                                                                                 "type":  "palladium:objective_score",
+                                                                                                                 "objective":  "Venom.Berserk.Regeneration",
+                                                                                                                 "min_score":  1,
+                                                                                                                 "max_score":  1
+                                                                                                             }
+                                                                                                         ]
                                                                                       }
                                                                                   ]
                                                                  }
@@ -6773,7 +6739,7 @@
                                                                                  {
                                                                                      "type":  "palladium:command_result",
                                                                                      "command":  "execute if entity @e[tag=venom_feed_target,distance=..12,limit=1]",
-                                                                                     "comparison":  ">",
+                                                                                     "comparison":  "\u003e",
                                                                                      "compare_to":  0,
                                                                                      "log":  false
                                                                                  }
@@ -7031,7 +6997,7 @@
                                                                                                    "min_score":  1,
                                                                                                    "max_score":  1
                                                                                                }
-                                                                           ]
+                                                                                           ]
                                                                           }
                                                        },
                       "enablevenomflight":  {
@@ -7049,13 +7015,18 @@
                                                 "description":  "Deploys Venom wings and enables Bedrock-style flight control.",
                                                 "first_tick_commands":  [
                                                                             "scoreboard objectives add Venom.Flight dummy",
-                                                                            "tag @s remove venom_flight_was_active",
-                                                                            "execute if score @s Venom.Flight matches 1 run tag @s add venom_flight_was_active",
                                                                             "scoreboard players set @s Venom.Flight 1",
-                                                                            "execute if entity @s[tag=venom_flight_was_active] run scoreboard players set @s Venom.Flight 0",
-                                                                            "tag @s remove venom_flight_was_active",
+                                                                            "title @s actionbar {\"text\":\"Venom Flight ON\",\"color\":\"dark_purple\"}",
                                                                             "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.65"
                                                                         ],
+                                                "commands":  [
+                                                                 "scoreboard objectives add Venom.Flight dummy",
+                                                                 "scoreboard players set @s Venom.Flight 1"
+                                                             ],
+                                                "last_tick_commands":  [
+                                                                           "scoreboard players set @s Venom.Flight 0",
+                                                                           "title @s actionbar {\"text\":\"Venom Flight OFF\",\"color\":\"gray\"}"
+                                                                       ],
                                                 "conditions":  {
                                                                    "unlocking":  [
                                                                                      {
@@ -7083,10 +7054,17 @@
                                                                                  ],
                                                                    "enabling":  [
                                                                                     {
-                                                                                        "type":  "palladium:activation",
-                                                                                        "ticks":  5,
+                                                                                        "type":  "palladium:toggle",
                                                                                         "key_type":  "key_bind",
-                                                                                        "needs_empty_hand":  false
+                                                                                        "needs_empty_hand":  false,
+                                                                                        "cooldown":  0
+                                                                                    },
+                                                                                    {
+                                                                                        "type":  "palladium:command_result",
+                                                                                        "command":  "execute unless score @s Venom.Flight.CollisionLock matches 1..",
+                                                                                        "comparison":  "\u003e",
+                                                                                        "compare_to":  0,
+                                                                                        "log":  false
                                                                                     }
                                                                                 ]
                                                                }
@@ -7189,7 +7167,7 @@
                                                                                           {
                                                                                               "type":  "palladium:command_result",
                                                                                               "command":  "execute if entity @s[nbt={OnGround:0b}]",
-                                                                                              "comparison":  ">",
+                                                                                              "comparison":  "\u003e",
                                                                                               "compare_to":  0,
                                                                                               "log":  false
                                                                                           }
@@ -7197,61 +7175,61 @@
                                                                      }
                                                   },
                       "venomflightcontrol":  {
-                                                "type":  "palladium:command",
-                                                "icon":  "mymod:textures/icon/knullwings.png",
-                                                "title":  "Flight Control",
-                                                "bar_color":  "black",
-                                                "hidden":  true,
-                                                "hidden_in_bar":  true,
-                                                "list_index":  -1,
-                                                "gui_position":  "null",
-                                                "description":  "null",
-                                                "commands":  [
-                                                                 "effect give @s minecraft:slow_falling 1 0 true"
-                                                             ],
-                                                "conditions":  {
-                                                                   "enabling":  [
-                                                                                    {
-                                                                                        "type":  "palladium:ability_enabled",
-                                                                                        "power":  "mymod:venom",
-                                                                                        "ability":  "enablevenomflightstate"
-                                                                                    }
-                                                                                ]
-                                                               }
-                                            },
+                                                 "type":  "palladium:command",
+                                                 "icon":  "mymod:textures/icon/knullwings.png",
+                                                 "title":  "Flight Control",
+                                                 "bar_color":  "black",
+                                                 "hidden":  true,
+                                                 "hidden_in_bar":  true,
+                                                 "list_index":  -1,
+                                                 "gui_position":  "null",
+                                                 "description":  "null",
+                                                 "commands":  [
+                                                                  "effect give @s minecraft:slow_falling 1 0 true"
+                                                              ],
+                                                 "conditions":  {
+                                                                    "enabling":  [
+                                                                                     {
+                                                                                         "type":  "palladium:ability_enabled",
+                                                                                         "power":  "mymod:venom",
+                                                                                         "ability":  "enablevenomflightstate"
+                                                                                     }
+                                                                                 ]
+                                                                }
+                                             },
                       "venomflightlift":  {
-                                             "type":  "palladium:command",
-                                             "icon":  "mymod:textures/icon/knullwings.png",
-                                             "title":  "Flight Lift",
-                                             "bar_color":  "black",
-                                             "hidden":  true,
-                                             "hidden_in_bar":  true,
-                                             "list_index":  -1,
-                                             "gui_position":  "null",
-                                             "description":  "null",
-                                             "commands":  [
-                                                              "effect give @s minecraft:levitation 1 1 true"
-                                                          ],
-                                             "conditions":  {
-                                                                "enabling":  [
-                                                                                 {
-                                                                                     "type":  "palladium:ability_enabled",
-                                                                                     "power":  "mymod:venom",
-                                                                                     "ability":  "enablevenomflightstate"
-                                                                                 },
-                                                                                 {
-                                                                                     "type":  "palladium:crouching"
-                                                                                 },
-                                                                                 {
-                                                                                     "type":  "palladium:command_result",
-                                                                                     "command":  "execute if entity @s[nbt={OnGround:0b}]",
-                                                                                     "comparison":  ">",
-                                                                                     "compare_to":  0,
-                                                                                     "log":  false
-                                                                                 }
-                                                                             ]
-                                                            }
-                                         },
+                                              "type":  "palladium:command",
+                                              "icon":  "mymod:textures/icon/knullwings.png",
+                                              "title":  "Flight Lift",
+                                              "bar_color":  "black",
+                                              "hidden":  true,
+                                              "hidden_in_bar":  true,
+                                              "list_index":  -1,
+                                              "gui_position":  "null",
+                                              "description":  "null",
+                                              "commands":  [
+                                                               "effect give @s minecraft:levitation 1 1 true"
+                                                           ],
+                                              "conditions":  {
+                                                                 "enabling":  [
+                                                                                  {
+                                                                                      "type":  "palladium:ability_enabled",
+                                                                                      "power":  "mymod:venom",
+                                                                                      "ability":  "enablevenomflightstate"
+                                                                                  },
+                                                                                  {
+                                                                                      "type":  "palladium:crouching"
+                                                                                  },
+                                                                                  {
+                                                                                      "type":  "palladium:command_result",
+                                                                                      "command":  "execute if entity @s[nbt={OnGround:0b}]",
+                                                                                      "comparison":  "\u003e",
+                                                                                      "compare_to":  0,
+                                                                                      "log":  false
+                                                                                  }
+                                                                              ]
+                                                             }
+                                          },
                       "venomflightfallresistance":  {
                                                         "type":  "palladium:attribute_modifier",
                                                         "icon":  "mymod:textures/icon/knullwings.png",
@@ -7530,6 +7508,14 @@
                                                                             "scoreboard players set @s Venom.GrabTentacle.ReleaseCharge 40",
                                                                             "playsound minecraft:entity.player.attack.knockback player @a ~ ~ ~ 0.8 0.7"
                                                                         ],
+                                                "last_tick_commands":  [
+                                                                           "scoreboard objectives add Venom.GrabTentacle dummy",
+                                                                           "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
+                                                                           "scoreboard objectives add Venom.GrabTentacle.ReleaseCharge dummy",
+                                                                           "scoreboard players set @s Venom.GrabTentacle 0",
+                                                                           "scoreboard players set @s Venom.GrabTentacle.DistanceDelta 0",
+                                                                           "scoreboard players set @s Venom.GrabTentacle.ReleaseCharge 0"
+                                                                       ],
                                                 "conditions":  {
                                                                    "unlocking":  [
                                                                                      {
@@ -7571,6 +7557,88 @@
                                                                                 ]
                                                                }
                                             },
+                      "venomhungerabilitycost":  {
+                                                     "type":  "palladium:command",
+                                                     "icon":  "mymod:textures/icon/venom_symbol.png",
+                                                     "title":  "Symbiote Hunger Ability Cost",
+                                                     "bar_color":  "black",
+                                                     "hidden":  true,
+                                                     "hidden_in_bar":  true,
+                                                     "list_index":  -1,
+                                                     "gui_position":  [
+                                                                          0,
+                                                                          0
+                                                                      ],
+                                                     "description":  "",
+                                                     "commands":  [
+                                                                      "scoreboard objectives add Venom.SymbioteHunger dummy",
+                                                                      "execute if score @s Venom.SymbioteHunger matches 1.. run scoreboard players remove @s Venom.SymbioteHunger 1"
+                                                                  ],
+                                                     "conditions":  {
+                                                                        "enabling":  [
+                                                                                         {
+                                                                                             "type":  "palladium:or",
+                                                                                             "conditions":  [
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "assimilate"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "enablevenomlocomotion"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "enablevenomflight"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "fendoffenemies"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "venomgrab"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "climbscore"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "venomfallingattackrequest"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "symbiontwhipprop"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "symbiontaxeprop"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "symbiontmaceprop"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type":  "palladium:ability_first_tick",
+                                                                                                                    "power":  "mymod:venom",
+                                                                                                                    "ability":  "symbiontfistprop"
+                                                                                                                }
+                                                                                                            ]
+                                                                                         }
+                                                                                     ]
+                                                                    }
+                                                 },
                       "venomcameraheight":  {
                                                 "type":  "palladium:command",
                                                 "icon":  "mymod:textures/icon/venom_symbol.png",
@@ -7586,7 +7654,9 @@
                                                 "description":  "",
                                                 "commands":  [
                                                                  "scoreboard objectives add Venom.CameraHeight dummy",
-                                                                 "scoreboard players set @s Venom.CameraHeight 1"
+                                                                 "scoreboard players set @s Venom.CameraHeight 1",
+                                                                 "scoreboard objectives add Klyntar.VenomSize dummy",
+                                                                 "scoreboard players set @s Klyntar.VenomSize 1"
                                                              ],
                                                 "conditions":  {
                                                                    "enabling":  [
@@ -7615,7 +7685,9 @@
                                                      "description":  "",
                                                      "commands":  [
                                                                       "scoreboard objectives add Venom.CameraHeight dummy",
-                                                                      "scoreboard players set @s Venom.CameraHeight 0"
+                                                                      "scoreboard players set @s Venom.CameraHeight 0",
+                                                                      "scoreboard objectives add Klyntar.VenomSize dummy",
+                                                                      "scoreboard players set @s Klyntar.VenomSize 0"
                                                                   ],
                                                      "conditions":  {
                                                                         "enabling":  [

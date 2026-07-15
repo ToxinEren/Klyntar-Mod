@@ -2,6 +2,7 @@ package modKlyntar.network;
 
 import modKlyntar.MyMod;
 import modKlyntar.client.ClientEventHandler;
+import modKlyntar.client.VenomLocomotionClientController;
 import modKlyntar.client.renderer.VenomLocomotionRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,6 +34,7 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomLocomotionVelocityPacket.class, SyncVenomLocomotionVelocityPacket::encode, SyncVenomLocomotionVelocityPacket::new, SyncVenomLocomotionVelocityPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
     }
 
     public static class SyncVenomModelPacket {
@@ -133,7 +135,7 @@ public class ModNetwork {
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayer player = ctx.get().getSender();
-                if (player == null || !isVenomLocomotionActive(player)) {
+                if (player == null || !isVenomMovementVelocityAllowed(player)) {
                     return;
                 }
                 player.setDeltaMovement(velocity);
@@ -183,6 +185,32 @@ public class ModNetwork {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
     }
 
+    public static void syncVenomFlightState(ServerPlayer player, boolean active) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomFlightStatePacket(active));
+    }
+
+    public static class SyncVenomFlightStatePacket {
+        private final boolean active;
+
+        public SyncVenomFlightStatePacket(boolean active) {
+            this.active = active;
+        }
+
+        public SyncVenomFlightStatePacket(FriendlyByteBuf buf) {
+            this.active = buf.readBoolean();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeBoolean(active);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> VenomLocomotionClientController.setFlightActiveFromServer(active));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
     public static class SyncVenomCombatTargetsPacket {
         private final int entityId;
         private final List<Vec3> targets;
@@ -218,8 +246,12 @@ public class ModNetwork {
             return true;
         }
     }
-    private static boolean isVenomLocomotionActive(ServerPlayer player) {
-        var objective = player.getScoreboard().getObjective("Venom.Locomotion");
+    private static boolean isVenomMovementVelocityAllowed(ServerPlayer player) {
+        return isScoreActive(player, "Venom.Locomotion") || isScoreActive(player, "Venom.Flight");
+    }
+
+    private static boolean isScoreActive(ServerPlayer player, String objectiveName) {
+        var objective = player.getScoreboard().getObjective(objectiveName);
         if (objective == null) {
             return false;
         }

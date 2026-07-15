@@ -51,11 +51,6 @@
                                                   }
                                  },
                                  {
-                                     "name":  "venom_default_hability_off",
-                                     "transition_tick_time":  0,
-                                     "animation":  "animation.venom.hability.off"
-                                 },
-                                 {
                                      "name":  "venom_default_arm_tentacles_off",
                                      "transition_tick_time":  0,
                                      "animation":  "animation.venom.whip.idle"
@@ -127,10 +122,6 @@
                                                       "climb_hang_trigger":  "animation.venom.escalar.colgado",
                                                       "hang_trigger":  "animation.venom.colgado",
                                                       "regeneration_trigger":  "animation.venom.regeneration.java_safe",
-                                                      "hability_trigger":  "animation.venom.hability",
-                                                      "hability_idle_trigger":  "animation.venom.hability.idle.java_safe",
-                                                      "hability_attack_trigger":  "animation.venom.hability.attack.java_safe",
-                                                      "hability_off_trigger":  "animation.venom.hability.off",
                                                       "wings_on_trigger":  "animation.venom.wings.on.java_safe",
                                                       "wings_active_trigger":  "animation.venom.wings.active",
                                                       "wings_fly_trigger":  "animation.venom.wings.fly",

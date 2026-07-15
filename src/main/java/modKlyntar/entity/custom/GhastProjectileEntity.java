@@ -20,6 +20,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GhastProjectileEntity extends LargeFireball implements GeoEntity {
+    private static final float METEOR_EXPLOSION_POWER = 6.0F;
+    private static final int SMOKE_TRAIL_INTERVAL_TICKS = 5;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public GhastProjectileEntity(EntityType<? extends GhastProjectileEntity> entityType, Level level) {
@@ -51,10 +53,11 @@ public class GhastProjectileEntity extends LargeFireball implements GeoEntity {
             this.setDeltaMovement(this.getDeltaMovement().x(), -0.05, this.getDeltaMovement().z());
         }
         
-        // Genera una nuova scia di fumo ogni tick
         Vec3 currentPos = this.position();
-        SmokeTrailEntity smokeTrail = new SmokeTrailEntity(this.level(), currentPos.x, currentPos.y, currentPos.z);
-        this.level().addFreshEntity(smokeTrail);
+        if (this.tickCount % SMOKE_TRAIL_INTERVAL_TICKS == 0) {
+            SmokeTrailEntity smokeTrail = new SmokeTrailEntity(this.level(), currentPos.x, currentPos.y, currentPos.z);
+            this.level().addFreshEntity(smokeTrail);
+        }
 
         // Aggiungi particelle di fumo
         this.level().addParticle(ParticleTypes.LARGE_SMOKE, currentPos.x, currentPos.y, currentPos.z, 0.0D, 0.0D, 0.0D);
@@ -67,7 +70,7 @@ public class GhastProjectileEntity extends LargeFireball implements GeoEntity {
     protected void onHitBlock(BlockHitResult blockHitResult) {
         BlockPos impactPos = blockHitResult.getBlockPos();
         // Crea l'esplosione
-        this.level().explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, Level.ExplosionInteraction.TNT);
+        this.level().explode(this, this.getX(), this.getY(), this.getZ(), METEOR_EXPLOSION_POWER, Level.ExplosionInteraction.TNT);
         
         MeteorCommand.handleProjectileImpact(this, blockHitResult);
         this.remove(RemovalReason.DISCARDED);

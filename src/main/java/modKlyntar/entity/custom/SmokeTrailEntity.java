@@ -11,11 +11,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 
 public class SmokeTrailEntity extends Entity {
     private static final EntityDataAccessor<Integer> REMAINING_TICKS = SynchedEntityData.defineId(SmokeTrailEntity.class, EntityDataSerializers.INT);
-    private static final int DURATION_TICKS = 3 * 60 * 20; // Durata in ticks (4 minuti)
+    private static final int DURATION_TICKS = 3 * 60 * 20;
+    private static final double RISE_SPEED = 0.035D;
 
     public SmokeTrailEntity(EntityType<? extends SmokeTrailEntity> entityType, Level level) {
         super(entityType, level);
@@ -23,9 +25,13 @@ public class SmokeTrailEntity extends Entity {
     }
 
     public SmokeTrailEntity(Level level, double x, double y, double z) {
+        this(level, x, y, z, DURATION_TICKS);
+    }
+
+    public SmokeTrailEntity(Level level, double x, double y, double z, int durationTicks) {
         this(MyMod.SMOKE_TRAIL_ENTITY.get(), level);
         this.setPos(x, y, z);
-        this.entityData.set(REMAINING_TICKS, DURATION_TICKS);
+        this.entityData.set(REMAINING_TICKS, Math.max(1, durationTicks));
     }
 
     @Override
@@ -49,6 +55,8 @@ public class SmokeTrailEntity extends Entity {
         int ticks = this.entityData.get(REMAINING_TICKS);
         if (ticks > 0) {
             this.entityData.set(REMAINING_TICKS, ticks - 1);
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.92D, 0.0D, 0.92D).add(0.0D, RISE_SPEED, 0.0D));
+            this.move(MoverType.SELF, this.getDeltaMovement());
             //this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
         } else {
             this.remove(RemovalReason.DISCARDED);

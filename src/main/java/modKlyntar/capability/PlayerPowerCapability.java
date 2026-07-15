@@ -3,6 +3,7 @@ package modKlyntar.capability;
 import modKlyntar.MyMod;
 import modKlyntar.network.ModNetwork;
 import modKlyntar.network.ModNetwork.SyncVenomModelPacket;
+import modKlyntar.player.VenomPlayerSizeHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +40,7 @@ public class PlayerPowerCapability {
 
     public static final String VENOM_TAG = "Klyntar.Venom";
     public static final String CARNAGE_TAG = "Klyntar.Carnage";
+    private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -120,12 +122,16 @@ public class PlayerPowerCapability {
         } else {
             LOGGER.info("Palladium superpower mymod:{} synced to {}", powerPath, player.getGameProfile().getName());
             player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: mymod:" + powerPath), false);
+            player.getPersistentData().putString(PALLADIUM_SYNC_KEY, powerPath);
         }
         runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " mymod:" + powerPath + " all");
     }
 
     private static void removePalladiumPower(ServerPlayer player, String powerPath) {
         callPalladiumSuperpower("removeSuperpower", player, powerPath);
+        if (powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
+            player.getPersistentData().remove(PALLADIUM_SYNC_KEY);
+        }
     }
 
     private static boolean callPalladiumSuperpower(String methodName, ServerPlayer player, String powerPath) {
@@ -215,11 +221,15 @@ public class PlayerPowerCapability {
             if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
                 player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(carnage ? 10.0D : 8.0D);
             }
-            syncPalladiumPower(player, carnage ? "carnage" : "venom");
+            String powerPath = carnage ? "carnage" : "venom";
+            if (!powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
+                syncPalladiumPower(player, powerPath);
+            }
             if (!carnage) {
                 applyVenomSuperpowerBridge(player);
             }
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(carnage ? "carnage" : "venom"));
+            player.refreshDimensions();
         }
 
         public void removeTransformation(ServerPlayer player) {
@@ -247,6 +257,7 @@ public class PlayerPowerCapability {
             removePalladiumPower(player, "carnage");
             setInfectionScore(player, false);
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(""));
+            player.refreshDimensions();
         }
 
         public void handleDamage(LivingHurtEvent event) {

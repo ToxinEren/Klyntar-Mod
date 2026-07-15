@@ -1,0 +1,1131 @@
+package modKlyntar.player;
+
+import modKlyntar.MyMod;
+import modKlyntar.capability.PlayerPowerCapability;
+import modKlyntar.network.ModNetwork;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.Score;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Method;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
+public final class VenomSymbioteSystemsHandler {
+    private static final Logger LOGGER = LogManager.getLogger("KlyntarVenomSystems");
+    private static final String FLIGHT_OBJECTIVE = "Venom.Flight";
+    private static final String LOCOMOTION_OBJECTIVE = "Venom.Locomotion";
+    private static final String FEND_OFF_OBJECTIVE = "Venom.FendOffEnemies";
+    private static final String FLIGHT_COLLISION_LOCK_OBJECTIVE = "Venom.Flight.CollisionLock";
+    private static final String CLIMB_WALL_ANIM_OBJECTIVE = "Venom.Anim.ClimbWall";
+    private static final String CLIMB_HANG_ANIM_OBJECTIVE = "Venom.Anim.ClimbHang";
+    private static final String CLIMB_IMPULSE_ANIM_OBJECTIVE = "Venom.Anim.ClimbImpulse";
+    private static final String CLIMB_ENABLED_OBJECTIVE = "Throgy.Climbenable";
+    private static final String CAMERA_OBJECTIVE = VenomCameraHeightHandler.OBJECTIVE_NAME;
+    private static final String HUNGER_OBJECTIVE = "Venom.SymbioteHunger";
+    private static final String AUTO_HEAD_OBJECTIVE = "Venom.AutoHead";
+    private static final String AUTO_HEAD_DISABLED_OBJECTIVE = "Venom.AutoHead.Disabled";
+    private static final String BERSERK_OBJECTIVE = "Venom.Berserk";
+    private static final String BERSERK_PHASE_OBJECTIVE = "Venom.Berserk.Phase";
+    private static final String BERSERK_TICKS_OBJECTIVE = "Venom.Berserk.Ticks";
+    private static final String BERSERK_REGEN_OBJECTIVE = "Venom.Berserk.Regeneration";
+    private static final String VULNERABILITY_OBJECTIVE = "Venom.VulnerabilityLock";
+    private static final String SONIC_HITS_OBJECTIVE = "Venom.SonicHits";
+    private static final String LOCK_MOVEMENT_OBJECTIVE = "Venom.LockMovement";
+    private static final String NORMAL_REGEN_HUNGER_PAID = "Klyntar.NormalRegenHungerPaid";
+    private static final int MAX_HUNGER = 100;
+    private static final int HUNGER_RESTORE_FOOD = 20;
+    private static final int HUNGER_DRAIN_INTERVAL = 60;
+    private static final int AUTO_HEAD_START_HUNGER = 50;
+    private static final int AUTO_HEAD_STOP_HUNGER = 90;
+    private static final int BERSERK_STOP_HUNGER = 70;
+    private static final int BERSERK_FEND_TICKS = 20 * 20;
+    private static final int BERSERK_REGEN_TICKS = 40;
+    private static final double BERSERK_TARGET_RANGE = 32.0D;
+    private static final double BERSERK_REGEN_START_RANGE = 5.0D;
+    private static final double BERSERK_CHASE_STOP_RANGE = 3.25D;
+    private static final double BERSERK_CHASE_SPEED = 0.46D;
+    private static final int BERSERK_STUCK_JUMP_TICKS = 40;
+    private static final double BERSERK_STUCK_DISTANCE_SQR = 0.03D;
+    private static final double BERSERK_STUCK_JUMP_FORWARD_SPEED = 0.62D;
+    private static final double BERSERK_STUCK_JUMP_UP_SPEED = 0.48D;
+    private static final int VULNERABILITY_TICKS = 20 * 60 * 5;
+    private static final int AUTO_ATTACK_INTERVAL = 10;
+    private static final double AUTO_ATTACK_RANGE = 8.0D;
+    private static final double FOOD_SEARCH_RANGE = 8.0D;
+    private static final int FLIGHT_LAUNCH_MAX_TICKS = 28;
+    private static final int FLIGHT_COLLISION_LOCK_TICKS = 12;
+    private static final double FLIGHT_LAUNCH_HEIGHT = 5.0D;
+    private static final double FLIGHT_LAUNCH_SPEED = 0.72D;
+    private static final double FLIGHT_SPEED = 0.55D;
+    private static final double FLIGHT_SPRINT_SPEED = 0.85D;
+    private static final double FLIGHT_FIREWORK_TARGET_SPEED = 3.4D;
+    private static final double FLIGHT_FIREWORK_SPRINT_TARGET_SPEED = 5.0D;
+    private static final double FLIGHT_FIREWORK_DIRECT_THRUST = 0.45D;
+    private static final double FLIGHT_FIREWORK_TARGET_PULL = 1.0D;
+    private static final int CLIMB_HANG_AIR_BELOW_BLOCKS = 3;
+    private static final int CLIMB_WALL_STICK_TICKS = 8;
+    private static final double CLIMB_UP_SPEED = 0.46D;
+    private static final double CLIMB_DESCEND_SPEED = -0.12D;
+    private static final Random RANDOM = new Random();
+    private static final Set<Item> SYMBIOTE_FOODS = new HashSet<>();
+    private static final Map<UUID, ServerBossEvent> HUNGER_BARS = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> AUTO_ATTACK_TICKS = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> BERSERK_TARGETS = new ConcurrentHashMap<>();
+    private static final Map<UUID, BerserkStuckState> BERSERK_STUCK_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, FlightState> FLIGHT_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> CLIMB_DEBUG_STATE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> CLIMB_WALL_STICK_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, Boolean> CLIMB_SHIFT_MEMORY = new ConcurrentHashMap<>();
+    private static final Set<UUID> CLIMB_HANG_LOCKED = ConcurrentHashMap.newKeySet();
+
+    static {
+        SYMBIOTE_FOODS.add(Items.CHICKEN);
+        SYMBIOTE_FOODS.add(Items.COOKED_CHICKEN);
+        SYMBIOTE_FOODS.add(Items.PORKCHOP);
+        SYMBIOTE_FOODS.add(Items.COOKED_PORKCHOP);
+        SYMBIOTE_FOODS.add(Items.BEEF);
+        SYMBIOTE_FOODS.add(Items.COOKED_BEEF);
+        SYMBIOTE_FOODS.add(Items.MUTTON);
+        SYMBIOTE_FOODS.add(Items.COOKED_MUTTON);
+        SYMBIOTE_FOODS.add(Items.RABBIT);
+        SYMBIOTE_FOODS.add(Items.COOKED_RABBIT);
+        SYMBIOTE_FOODS.add(Items.COD);
+        SYMBIOTE_FOODS.add(Items.COOKED_COD);
+        SYMBIOTE_FOODS.add(Items.SALMON);
+        SYMBIOTE_FOODS.add(Items.COOKED_SALMON);
+        SYMBIOTE_FOODS.add(Items.ROTTEN_FLESH);
+    }
+
+    private VenomSymbioteSystemsHandler() {
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide) {
+            return;
+        }
+        if (!(event.player instanceof ServerPlayer player)) {
+            return;
+        }
+
+        tickFlightCollisionLock(player);
+
+        boolean flightRequested = getScore(player, FLIGHT_OBJECTIVE, false) > 0;
+        boolean hasVenom = hasVenomPower(player);
+        boolean bodyActive = getScore(player, VenomPlayerSizeHandler.SIZE_OBJECTIVE, false) > 0;
+        if (!bodyActive) {
+            resetTransformationBoundAbilities(player);
+        }
+
+        if (!hasVenom && !flightRequested) {
+            removeHungerBar(player);
+            AUTO_ATTACK_TICKS.remove(player.getUUID());
+            BERSERK_TARGETS.remove(player.getUUID());
+            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            FLIGHT_MEMORY.remove(player.getUUID());
+            clearClimbMemory(player);
+            return;
+        }
+
+        if (flightRequested) {
+            tickFlight(player);
+        }
+
+        if (!hasVenom) {
+            return;
+        }
+
+        tickVulnerability(player);
+        tickMovementLock(player);
+        tickNormalRegenerationHunger(player);
+        tickHunger(player);
+        if (!flightRequested) {
+            tickFlight(player);
+        }
+        tickClimbing(player);
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !hasVenomPower(player)) {
+            return;
+        }
+
+        if (event.getSource().is(DamageTypeTags.IS_FIRE) || player.isOnFire() || player.isInLava()) {
+            applyVulnerability(player, false);
+            return;
+        }
+
+        if (event.getSource().is(DamageTypes.SONIC_BOOM)) {
+            applyVulnerability(player, true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            removeHungerBar(player);
+            AUTO_ATTACK_TICKS.remove(player.getUUID());
+            BERSERK_TARGETS.remove(player.getUUID());
+            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            FLIGHT_MEMORY.remove(player.getUUID());
+            clearClimbMemory(player);
+        }
+    }
+
+    private static void tickFlight(ServerPlayer player) {
+        if (getScore(player, FLIGHT_OBJECTIVE, false) <= 0 || isVulnerable(player)) {
+            stopFallFlyingFlag(player);
+            ModNetwork.syncVenomFlightState(player, false);
+            FLIGHT_MEMORY.remove(player.getUUID());
+            return;
+        }
+
+        player.fallDistance = 0.0F;
+        Vec3 look = player.getLookAngle().normalize();
+        Vec3 current = player.getDeltaMovement();
+        UUID playerId = player.getUUID();
+        FlightState state = FLIGHT_MEMORY.computeIfAbsent(playerId, id -> {
+            LOGGER.info("Venom flight server active for {}. score={}", player.getGameProfile().getName(), getScore(player, FLIGHT_OBJECTIVE, false));
+            player.displayClientMessage(Component.literal("Venom Flight server active"), true);
+            ModNetwork.syncVenomFlightState(player, true);
+            return new FlightState(player.getY());
+        });
+        if (state.launching) {
+            stopFallFlyingFlag(player);
+            state.launchTicks++;
+            double gainedHeight = player.getY() - state.launchStartY;
+            if (gainedHeight >= FLIGHT_LAUNCH_HEIGHT || state.launchTicks >= FLIGHT_LAUNCH_MAX_TICKS) {
+                state.launching = false;
+            } else {
+                double forwardBoost = state.launchTicks > 8 ? FLIGHT_SPEED * 0.35D : FLIGHT_SPEED * 0.12D;
+                player.setDeltaMovement(
+                        current.x * 0.35D + look.x * forwardBoost,
+                        Math.max(current.y, FLIGHT_LAUNCH_SPEED),
+                        current.z * 0.35D + look.z * forwardBoost
+                );
+                player.hasImpulse = true;
+                return;
+            }
+        }
+
+        if (hasFlightBlockCollision(player)) {
+            disableFlightFromCollision(player);
+            return;
+        }
+
+        if (!player.isFallFlying()) {
+            Vec3 transition = player.getDeltaMovement();
+            player.setDeltaMovement(
+                    transition.x + look.x * FLIGHT_SPEED * 0.4D,
+                    Math.max(-0.04D, transition.y * 0.35D),
+                    transition.z + look.z * FLIGHT_SPEED * 0.4D
+            );
+        }
+
+        startFallFlyingFlag(player);
+        boolean forwardPressed = player.zza > 0.0F;
+        if (forwardPressed) {
+            state.propellerTicks = 2;
+            if (!state.forwardPressedLastTick) {
+                player.displayClientMessage(Component.literal("Venom propeller server"), true);
+                LOGGER.info("Venom flight propeller triggered server-side for {}. score={}, velocity={}", player.getGameProfile().getName(), getScore(player, FLIGHT_OBJECTIVE, false), player.getDeltaMovement());
+            }
+        }
+        state.forwardPressedLastTick = forwardPressed;
+
+        if (state.propellerTicks > 0) {
+            double targetSpeed = player.isSprinting() ? FLIGHT_FIREWORK_SPRINT_TARGET_SPEED : FLIGHT_FIREWORK_TARGET_SPEED;
+            Vec3 next = applyPermanentFireworkBoost(player.getDeltaMovement(), look, targetSpeed);
+            if (player.isShiftKeyDown()) {
+                next = next.add(0.0D, -0.12D, 0.0D);
+            }
+            player.setDeltaMovement(next);
+            state.propellerTicks--;
+        }
+        player.hasImpulse = true;
+    }
+
+    private static Vec3 applyPermanentFireworkBoost(Vec3 velocity, Vec3 look, double targetSpeed) {
+        return velocity.add(
+                look.x * FLIGHT_FIREWORK_DIRECT_THRUST + (look.x * targetSpeed - velocity.x) * FLIGHT_FIREWORK_TARGET_PULL,
+                look.y * FLIGHT_FIREWORK_DIRECT_THRUST + (look.y * targetSpeed - velocity.y) * FLIGHT_FIREWORK_TARGET_PULL,
+                look.z * FLIGHT_FIREWORK_DIRECT_THRUST + (look.z * targetSpeed - velocity.z) * FLIGHT_FIREWORK_TARGET_PULL
+        );
+    }
+
+    private static void tickFlightCollisionLock(ServerPlayer player) {
+        int lockTicks = getScore(player, FLIGHT_COLLISION_LOCK_OBJECTIVE, true);
+        if (lockTicks > 0) {
+            setScore(player, FLIGHT_COLLISION_LOCK_OBJECTIVE, lockTicks - 1);
+        }
+    }
+
+    private static boolean hasFlightBlockCollision(ServerPlayer player) {
+        return player.onGround() || player.horizontalCollision || (player.verticalCollision && player.getDeltaMovement().y > 0.0D);
+    }
+
+    private static void disableFlightFromCollision(ServerPlayer player) {
+        setScore(player, FLIGHT_COLLISION_LOCK_OBJECTIVE, FLIGHT_COLLISION_LOCK_TICKS);
+        setScore(player, FLIGHT_OBJECTIVE, 0);
+        stopFallFlyingFlag(player);
+        ModNetwork.syncVenomFlightState(player, false);
+        FLIGHT_MEMORY.remove(player.getUUID());
+        player.displayClientMessage(Component.literal("Venom Flight OFF"), true);
+        LOGGER.info("Venom flight disabled after block collision for {}", player.getGameProfile().getName());
+    }
+
+    private static void tickClimbing(ServerPlayer player) {
+        if (isVulnerable(player) || !hasVenomPower(player) || !isClimbAbilityEnabled(player)) {
+            setClimbAnimationState(player, 0);
+            logClimbState(player, 0, false);
+            clearClimbMemory(player);
+            return;
+        }
+
+        boolean touchingClimbWall = isTouchingClimbWall(player);
+        if (touchingClimbWall) {
+            updateClimbHangToggle(player, true);
+            boolean hanging = CLIMB_HANG_LOCKED.contains(player.getUUID());
+            int climbState = hanging ? 2 : 1;
+            setClimbAnimationState(player, climbState);
+            logClimbState(player, climbState, hanging);
+            Vec3 current = player.getDeltaMovement();
+            if (hanging) {
+                player.setDeltaMovement(current.x * 0.2D, 0.0D, current.z * 0.2D);
+                player.hurtMarked = true;
+            } else {
+                player.setDeltaMovement(current.x, Math.max(current.y, CLIMB_UP_SPEED), current.z);
+                player.hurtMarked = true;
+            }
+            player.fallDistance = 0.0F;
+            return;
+        }
+
+        setClimbAnimationState(player, 0);
+        logClimbState(player, 0, false);
+        updateClimbHangToggle(player, false);
+    }
+
+    private static void setClimbAnimationState(ServerPlayer player, int state) {
+        setScore(player, CLIMB_WALL_ANIM_OBJECTIVE, state == 1 ? 1 : 0);
+        setScore(player, CLIMB_HANG_ANIM_OBJECTIVE, state == 2 ? 1 : 0);
+        setScore(player, CLIMB_IMPULSE_ANIM_OBJECTIVE, state == 3 ? 1 : 0);
+    }
+
+    private static boolean isTouchingClimbWall(ServerPlayer player) {
+        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
+        boolean tryingToClimb = player.horizontalCollision
+                || !player.onGround()
+                || player.getDeltaMovement().horizontalDistanceSqr() > 0.0025D;
+        boolean directWallHit = nearWall && tryingToClimb;
+        if (directWallHit) {
+            CLIMB_WALL_STICK_MEMORY.put(player.getUUID(), CLIMB_WALL_STICK_TICKS);
+            return true;
+        }
+
+        int memoryTicks = CLIMB_WALL_STICK_MEMORY.getOrDefault(player.getUUID(), 0);
+        if (memoryTicks <= 0 || !nearWall) {
+            CLIMB_WALL_STICK_MEMORY.remove(player.getUUID());
+            return false;
+        }
+
+        CLIMB_WALL_STICK_MEMORY.put(player.getUUID(), memoryTicks - 1);
+        return true;
+    }
+
+    public static boolean shouldUseVanillaClimb(LivingEntity entity) {
+        if (!(entity instanceof Player player) || player.isSpectator() || !hasVenomPower(player) || !isClimbAbilityEnabled(player)) {
+            return false;
+        }
+
+        if (player.isFallFlying() || player.isInWaterOrBubble()) {
+            return false;
+        }
+
+        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
+        if (!nearWall) {
+            return false;
+        }
+
+        return player.horizontalCollision
+                || !player.onGround()
+                || player.getDeltaMovement().horizontalDistanceSqr() > 0.0025D;
+    }
+
+    private static void updateClimbHangToggle(ServerPlayer player, boolean canHang) {
+        UUID playerId = player.getUUID();
+        boolean shiftDown = player.isShiftKeyDown();
+        boolean shiftWasDown = CLIMB_SHIFT_MEMORY.getOrDefault(playerId, false);
+        CLIMB_SHIFT_MEMORY.put(playerId, shiftDown);
+
+        if (!canHang) {
+            CLIMB_HANG_LOCKED.remove(playerId);
+            return;
+        }
+
+        if (shiftDown && !shiftWasDown) {
+            if (CLIMB_HANG_LOCKED.remove(playerId)) {
+                LOGGER.info("Venom hang toggle OFF for {}", player.getGameProfile().getName());
+            } else {
+                CLIMB_HANG_LOCKED.add(playerId);
+                LOGGER.info("Venom hang toggle ON for {}", player.getGameProfile().getName());
+            }
+        }
+    }
+
+    private static void clearClimbMemory(ServerPlayer player) {
+        UUID playerId = player.getUUID();
+        CLIMB_WALL_STICK_MEMORY.remove(playerId);
+        CLIMB_SHIFT_MEMORY.remove(playerId);
+        CLIMB_HANG_LOCKED.remove(playerId);
+        CLIMB_DEBUG_STATE.remove(playerId);
+    }
+
+    private static void logClimbState(ServerPlayer player, int state, boolean hanging) {
+        Integer previous = CLIMB_DEBUG_STATE.put(player.getUUID(), state);
+        if (previous != null && previous == state) {
+            return;
+        }
+
+        String stateName = switch (state) {
+            case 1 -> "CLIMB";
+            case 2 -> "HANG";
+            case 3 -> "IMPULSE";
+            default -> "OFF";
+        };
+        LOGGER.info("Venom climb state {} for {}: horizontalCollision={}, onGround={}, hanging={}, airBelow{}={}, pos={}",
+                stateName,
+                player.getGameProfile().getName(),
+                player.horizontalCollision,
+                player.onGround(),
+                hanging,
+                CLIMB_HANG_AIR_BELOW_BLOCKS,
+                hasAirBelow(player, CLIMB_HANG_AIR_BELOW_BLOCKS),
+                player.blockPosition());
+    }
+
+    private static void tickHunger(ServerPlayer player) {
+        ensureHungerScore(player);
+        ServerBossEvent bar = HUNGER_BARS.computeIfAbsent(player.getUUID(), id -> createHungerBar(player));
+        if (!bar.getPlayers().contains(player)) {
+            bar.addPlayer(player);
+        }
+
+        int hunger = Math.max(0, Math.min(MAX_HUNGER, getScore(player, HUNGER_OBJECTIVE, false)));
+        bar.setProgress(hunger / (float) MAX_HUNGER);
+        bar.setName(Component.literal("Symbiote Hunger: " + hunger + "%"));
+
+        if (hunger <= 0 || getScore(player, BERSERK_OBJECTIVE, false) > 0) {
+            tickBerserkSymbiote(player, hunger);
+        } else if (!isBodyActive(player)) {
+            tickAutoVenomHeadFeeding(player, hunger);
+        } else {
+            setScore(player, AUTO_HEAD_OBJECTIVE, 0);
+            setScore(player, AUTO_HEAD_DISABLED_OBJECTIVE, 0);
+            clearCombatTargetsIfFree(player);
+        }
+    }
+
+    private static void tickAutoVenomHeadFeeding(ServerPlayer player, int hunger) {
+        if (hunger >= AUTO_HEAD_STOP_HUNGER) {
+            setScore(player, AUTO_HEAD_OBJECTIVE, 0);
+            setScore(player, AUTO_HEAD_DISABLED_OBJECTIVE, 0);
+            clearCombatTargetsIfFree(player);
+            return;
+        }
+
+        boolean disabledByPlayer = getScore(player, AUTO_HEAD_DISABLED_OBJECTIVE, false) > 0;
+        boolean active = getScore(player, AUTO_HEAD_OBJECTIVE, false) > 0;
+        if (!active && hunger <= AUTO_HEAD_START_HUNGER && !disabledByPlayer) {
+            setScore(player, AUTO_HEAD_OBJECTIVE, 1);
+            active = true;
+        }
+
+        if (!active || disabledByPlayer) {
+            clearCombatTargetsIfFree(player);
+            return;
+        }
+
+        tryHeadFeedFromGroundFood(player);
+    }
+
+    private static void tickNormalRegenerationHunger(ServerPlayer player) {
+        if (!player.getTags().contains("venom_feeding")) {
+            player.getPersistentData().remove(NORMAL_REGEN_HUNGER_PAID);
+            return;
+        }
+
+        if (player.getPersistentData().getBoolean(NORMAL_REGEN_HUNGER_PAID)) {
+            return;
+        }
+
+        LivingEntity target = findTaggedFeedTarget(player);
+        if (target == null || target.distanceToSqr(player) > 16.0D) {
+            return;
+        }
+
+        int restore = getFeedHungerValue(target);
+        addHunger(player, restore);
+        player.getPersistentData().putBoolean(NORMAL_REGEN_HUNGER_PAID, true);
+        LOGGER.info("Venom regeneration restored {} hunger from {} for {}", restore, EntityType.getKey(target.getType()), player.getGameProfile().getName());
+    }
+
+    private static void tickVulnerability(ServerPlayer player) {
+        if (player.isOnFire() || player.isInLava()) {
+            applyVulnerability(player, false);
+        }
+
+        int lockTicks = getScore(player, VULNERABILITY_OBJECTIVE, false);
+        if (lockTicks <= 0) {
+            return;
+        }
+
+        setScore(player, VULNERABILITY_OBJECTIVE, lockTicks - 1);
+        player.removeEffect(MobEffects.REGENERATION);
+        player.removeEffect(MobEffects.JUMP);
+        player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        lockActiveAbilities(player);
+    }
+
+    private static void tickMovementLock(ServerPlayer player) {
+        int ticks = getScore(player, LOCK_MOVEMENT_OBJECTIVE, false);
+        if (ticks <= 0) {
+            return;
+        }
+
+        setScore(player, LOCK_MOVEMENT_OBJECTIVE, ticks - 1);
+        Vec3 current = player.getDeltaMovement();
+        player.setDeltaMovement(0.0D, Math.min(current.y, 0.0D), 0.0D);
+        player.hurtMarked = true;
+    }
+
+    private static void tickBerserkSymbiote(ServerPlayer player, int hunger) {
+        if (hunger >= BERSERK_STOP_HUNGER) {
+            stopBerserk(player);
+            return;
+        }
+
+        if (getScore(player, BERSERK_OBJECTIVE, false) <= 0) {
+            setScore(player, BERSERK_OBJECTIVE, 1);
+            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
+            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+            LOGGER.info("Venom berserk started for {}", player.getGameProfile().getName());
+        }
+
+        if (!isBodyActive(player)) {
+            PlayerPowerCapability.transformPlayer(player, "venom");
+        }
+
+        int phase = getScore(player, BERSERK_PHASE_OBJECTIVE, true);
+        int ticks = getScore(player, BERSERK_TICKS_OBJECTIVE, true) + 1;
+        setScore(player, BERSERK_TICKS_OBJECTIVE, ticks);
+        LivingEntity lockedTarget = getOrFindBerserkTarget(player);
+
+        if (phase != 2) {
+            setScore(player, FEND_OFF_OBJECTIVE, 1);
+            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
+            if (lockedTarget != null) {
+                faceBerserkTarget(player, lockedTarget);
+                chaseBerserkTarget(player, lockedTarget);
+                if (isNonAggressiveBerserkTarget(player, lockedTarget)
+                        && lockedTarget.distanceToSqr(player) <= BERSERK_REGEN_START_RANGE * BERSERK_REGEN_START_RANGE) {
+                    setScore(player, BERSERK_PHASE_OBJECTIVE, 2);
+                    setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+                    setScore(player, FEND_OFF_OBJECTIVE, 0);
+                    LOGGER.info("Venom berserk forced regeneration on passive target {} for {}", EntityType.getKey(lockedTarget.getType()), player.getGameProfile().getName());
+                    return;
+                }
+            }
+            pullNearbyFoodLoot(player);
+            if (ticks >= BERSERK_FEND_TICKS) {
+                setScore(player, BERSERK_PHASE_OBJECTIVE, 2);
+                setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+            }
+            return;
+        }
+
+        setScore(player, FEND_OFF_OBJECTIVE, 0);
+        LivingEntity target = lockedTarget;
+        if (target == null) {
+            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
+            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
+            return;
+        }
+
+        if (target.distanceToSqr(player) > BERSERK_REGEN_START_RANGE * BERSERK_REGEN_START_RANGE) {
+            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
+            ModNetwork.syncVenomCombatTargets(player, java.util.List.of(getTargetCenter(target)));
+            faceBerserkTarget(player, target);
+            chaseBerserkTarget(player, target);
+            return;
+        }
+
+        faceBerserkTarget(player, target);
+        setScore(player, LOCK_MOVEMENT_OBJECTIVE, 2);
+        player.setDeltaMovement(0.0D, Math.min(player.getDeltaMovement().y, 0.0D), 0.0D);
+        player.hurtMarked = true;
+        setScore(player, BERSERK_REGEN_OBJECTIVE, 1);
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of(getTargetCenter(target)));
+        Vec3 pull = player.position().add(0.0D, player.getBbHeight() * 0.85D, 0.0D).subtract(target.position());
+        if (pull.lengthSqr() > 1.0D) {
+            target.setDeltaMovement(pull.normalize().scale(0.42D));
+            target.hasImpulse = true;
+            target.hurtMarked = true;
+        }
+        target.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 8, false, false, false));
+
+        if (ticks >= BERSERK_REGEN_TICKS || pull.lengthSqr() <= 1.3D) {
+            int restore = getFeedHungerValue(target);
+            target.hurt(player.damageSources().magic(), 100.0F);
+            player.heal(8.0F);
+            addHunger(player, restore);
+            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
+            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
+            BERSERK_TARGETS.remove(player.getUUID());
+            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
+            LOGGER.info("Venom berserk regeneration restored {} hunger from {} for {}", restore, EntityType.getKey(target.getType()), player.getGameProfile().getName());
+        }
+    }
+
+    private static void stopBerserk(ServerPlayer player) {
+        setScore(player, BERSERK_OBJECTIVE, 0);
+        setScore(player, BERSERK_PHASE_OBJECTIVE, 0);
+        setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+        setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
+        setScore(player, FEND_OFF_OBJECTIVE, 0);
+        BERSERK_TARGETS.remove(player.getUUID());
+        BERSERK_STUCK_MEMORY.remove(player.getUUID());
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
+        LOGGER.info("Venom berserk stopped for {}", player.getGameProfile().getName());
+    }
+
+    private static int getFeedHungerValue(LivingEntity target) {
+        if (target instanceof Villager || target instanceof Animal && !(target instanceof Allay)) {
+            return 40;
+        }
+        return 10;
+    }
+
+    private static void addHunger(ServerPlayer player, int amount) {
+        setScore(player, HUNGER_OBJECTIVE, Math.min(MAX_HUNGER, getScore(player, HUNGER_OBJECTIVE, false) + amount));
+    }
+
+    private static LivingEntity findTaggedFeedTarget(ServerPlayer player) {
+        return player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(12.0D),
+                        entity -> entity.isAlive() && entity.getTags().contains("venom_feed_target"))
+                .stream()
+                .min(Comparator.comparingDouble(entity -> entity.distanceToSqr(player)))
+                .orElse(null);
+    }
+
+    private static void pullNearbyFoodLoot(ServerPlayer player) {
+        ItemEntity food = findNearestFoodLoot(player);
+        if (food == null) {
+            return;
+        }
+
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of(food.position().add(0.0D, food.getBbHeight() * 0.5D, 0.0D)));
+        Vec3 pull = player.position().add(0.0D, player.getBbHeight() * 0.85D, 0.0D).subtract(food.position());
+        if (pull.lengthSqr() > 1.0D) {
+            food.setDeltaMovement(pull.normalize().scale(0.38D));
+            food.hasImpulse = true;
+            return;
+        }
+
+        food.getItem().shrink(1);
+        if (food.getItem().isEmpty()) {
+            food.discard();
+        }
+        addHunger(player, HUNGER_RESTORE_FOOD);
+    }
+
+    private static void tryHeadFeedFromGroundFood(ServerPlayer player) {
+        ItemEntity food = findNearestFoodLoot(player);
+        if (food == null) {
+            clearCombatTargetsIfFree(player);
+            return;
+        }
+
+        setScore(player, AUTO_HEAD_OBJECTIVE, 1);
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of(food.position().add(0.0D, food.getBbHeight() * 0.5D, 0.0D)));
+        Vec3 pull = player.position().add(0.0D, player.getBbHeight() * 0.85D, 0.0D).subtract(food.position());
+        if (pull.lengthSqr() > 1.0D) {
+            food.setDeltaMovement(pull.normalize().scale(0.35D));
+            food.hasImpulse = true;
+            return;
+        }
+
+        food.getItem().shrink(1);
+        if (food.getItem().isEmpty()) {
+            food.discard();
+        }
+        addHunger(player, HUNGER_RESTORE_FOOD);
+    }
+
+    private static void clearCombatTargetsIfFree(ServerPlayer player) {
+        if (getScore(player, FEND_OFF_OBJECTIVE, false) > 0 || getScore(player, BERSERK_REGEN_OBJECTIVE, false) > 0) {
+            return;
+        }
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
+    }
+
+    private static ItemEntity findNearestFoodLoot(ServerPlayer player) {
+        return player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(FOOD_SEARCH_RANGE),
+                        item -> item.isAlive() && SYMBIOTE_FOODS.contains(item.getItem().getItem()))
+                .stream()
+                .min(Comparator.comparingDouble(item -> item.distanceToSqr(player)))
+                .orElse(null);
+    }
+
+    private static void applyVulnerability(ServerPlayer player, boolean sonic) {
+        setScore(player, VULNERABILITY_OBJECTIVE, VULNERABILITY_TICKS);
+        lockActiveAbilities(player);
+        player.removeEffect(MobEffects.REGENERATION);
+        player.removeEffect(MobEffects.JUMP);
+        player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+
+        if (!sonic) {
+            return;
+        }
+
+        int hits = getScore(player, SONIC_HITS_OBJECTIVE, true) + 1;
+        setScore(player, SONIC_HITS_OBJECTIVE, hits);
+        if (hits < 3) {
+            return;
+        }
+
+        setScore(player, SONIC_HITS_OBJECTIVE, 0);
+        PlayerPowerCapability.revertPlayer(player);
+        spawnSymbioteNear(player);
+    }
+
+    private static void lockActiveAbilities(ServerPlayer player) {
+        setScore(player, FLIGHT_OBJECTIVE, 0);
+        setScore(player, LOCOMOTION_OBJECTIVE, 0);
+        setScore(player, "Venom.GrabTentacle", 0);
+        setScore(player, FEND_OFF_OBJECTIVE, 0);
+        setScore(player, "Venom.GrabTentacle.DistanceDelta", 0);
+        setScore(player, "Venom.GrabTentacle.ReleaseCharge", 0);
+    }
+
+    private static void resetTransformationBoundAbilities(ServerPlayer player) {
+        boolean hadClimb = getScore(player, CLIMB_ENABLED_OBJECTIVE, false) > 0;
+        boolean hadLocomotion = getScore(player, LOCOMOTION_OBJECTIVE, false) > 0;
+        boolean hadFendOff = getScore(player, FEND_OFF_OBJECTIVE, false) > 0;
+        if (!hadClimb && !hadLocomotion && !hadFendOff) {
+            return;
+        }
+
+        setScore(player, CLIMB_ENABLED_OBJECTIVE, 0);
+        setScore(player, LOCOMOTION_OBJECTIVE, 0);
+        setScore(player, FEND_OFF_OBJECTIVE, 0);
+        setClimbAnimationState(player, 0);
+        clearClimbMemory(player);
+        ModNetwork.syncVenomLocomotion(player, java.util.Collections.emptyList(), false);
+        ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
+        LOGGER.info("Venom transformation-bound abilities reset for {}: climb={}, locomotion={}, fendOff={}",
+                player.getGameProfile().getName(), hadClimb, hadLocomotion, hadFendOff);
+    }
+
+    private static LivingEntity findNearestLivingTarget(ServerPlayer player, double range) {
+        return player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(range),
+                        entity -> entity.isAlive() && !entity.isSpectator() && entity != player)
+                .stream()
+                .min(Comparator.comparingDouble(entity -> entity.distanceToSqr(player)))
+                .orElse(null);
+    }
+
+    private static LivingEntity getOrFindBerserkTarget(ServerPlayer player) {
+        Integer targetId = BERSERK_TARGETS.get(player.getUUID());
+        if (targetId != null) {
+            Entity entity = player.level().getEntity(targetId);
+            if (entity instanceof LivingEntity target && canUseBerserkTarget(player, target)) {
+                return target;
+            }
+        }
+
+        LivingEntity target = findNearestLivingTarget(player, BERSERK_TARGET_RANGE);
+        if (target == null) {
+            BERSERK_TARGETS.remove(player.getUUID());
+            return null;
+        }
+
+        BERSERK_TARGETS.put(player.getUUID(), target.getId());
+        BERSERK_STUCK_MEMORY.remove(player.getUUID());
+        faceBerserkTarget(player, target, true);
+        LOGGER.info("Venom berserk locked target {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
+        return target;
+    }
+
+    private static boolean canUseBerserkTarget(ServerPlayer player, LivingEntity target) {
+        return target.isAlive()
+                && !target.isSpectator()
+                && target != player
+                && target.distanceToSqr(player) <= BERSERK_TARGET_RANGE * BERSERK_TARGET_RANGE;
+    }
+
+    private static boolean isNonAggressiveBerserkTarget(ServerPlayer player, LivingEntity target) {
+        if (target instanceof Player) {
+            return false;
+        }
+        if (target instanceof Enemy) {
+            return false;
+        }
+        return !(target instanceof Mob mob) || mob.getTarget() != player;
+    }
+
+    private static void chaseBerserkTarget(ServerPlayer player, LivingEntity target) {
+        Vec3 targetCenter = getTargetCenter(target);
+        faceBerserkTarget(player, target);
+        Vec3 toTarget = targetCenter.subtract(player.position().add(0.0D, player.getBbHeight() * 0.45D, 0.0D));
+        Vec3 horizontal = new Vec3(toTarget.x, 0.0D, toTarget.z);
+        if (horizontal.lengthSqr() <= BERSERK_CHASE_STOP_RANGE * BERSERK_CHASE_STOP_RANGE) {
+            return;
+        }
+
+        Vec3 direction = horizontal.normalize();
+        Vec3 current = player.getDeltaMovement();
+        double verticalAssist = target.getY() > player.getY() + 1.0D ? 0.12D : Math.min(current.y, 0.08D);
+        if (shouldBerserkJumpForward(player, target, direction)) {
+            player.setDeltaMovement(
+                    direction.x * BERSERK_STUCK_JUMP_FORWARD_SPEED,
+                    Math.max(current.y, BERSERK_STUCK_JUMP_UP_SPEED),
+                    direction.z * BERSERK_STUCK_JUMP_FORWARD_SPEED
+            );
+            player.fallDistance = 0.0F;
+            player.hasImpulse = true;
+            player.hurtMarked = true;
+            LOGGER.info("Venom berserk unstuck jump toward {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
+            return;
+        }
+
+        player.setDeltaMovement(
+                current.x * 0.35D + direction.x * BERSERK_CHASE_SPEED,
+                verticalAssist,
+                current.z * 0.35D + direction.z * BERSERK_CHASE_SPEED
+        );
+        player.fallDistance = 0.0F;
+        player.hasImpulse = true;
+        player.hurtMarked = true;
+    }
+
+    private static void faceBerserkTarget(ServerPlayer player, LivingEntity target) {
+        faceBerserkTarget(player, target, false);
+    }
+
+    private static void faceBerserkTarget(ServerPlayer player, LivingEntity target, boolean syncRotation) {
+        Vec3 from = player.getEyePosition();
+        Vec3 to = getTargetCenter(target);
+        Vec3 delta = to.subtract(from);
+        double horizontal = Math.sqrt(delta.x * delta.x + delta.z * delta.z);
+        if (horizontal < 1.0E-4D) {
+            return;
+        }
+
+        float yaw = (float) (Math.toDegrees(Math.atan2(delta.z, delta.x)) - 90.0D);
+        float pitch = (float) -Math.toDegrees(Math.atan2(delta.y, horizontal));
+        player.setYRot(yaw);
+        player.setYHeadRot(yaw);
+        player.setYBodyRot(yaw);
+        player.setXRot(pitch);
+        if (syncRotation) {
+            player.connection.teleport(player.getX(), player.getY(), player.getZ(), yaw, pitch);
+        }
+        player.hurtMarked = true;
+    }
+
+    private static boolean shouldBerserkJumpForward(ServerPlayer player, LivingEntity target, Vec3 direction) {
+        UUID playerId = player.getUUID();
+        BerserkStuckState state = BERSERK_STUCK_MEMORY.computeIfAbsent(playerId,
+                id -> new BerserkStuckState(target.getId(), player.position()));
+        if (state.targetId != target.getId()) {
+            state.targetId = target.getId();
+            state.lastPosition = player.position();
+            state.stuckTicks = 0;
+            return false;
+        }
+
+        Vec3 delta = player.position().subtract(state.lastPosition);
+        double horizontalMoveSqr = delta.x * delta.x + delta.z * delta.z;
+        if (horizontalMoveSqr <= BERSERK_STUCK_DISTANCE_SQR && player.horizontalCollision) {
+            state.stuckTicks++;
+        } else {
+            state.stuckTicks = 0;
+            state.lastPosition = player.position();
+        }
+
+        if (state.stuckTicks < BERSERK_STUCK_JUMP_TICKS || direction.lengthSqr() < 1.0E-4D) {
+            return false;
+        }
+
+        state.stuckTicks = 0;
+        state.lastPosition = player.position().add(direction.scale(0.75D));
+        return true;
+    }
+
+    private static Vec3 getTargetCenter(LivingEntity target) {
+        return target.position().add(0.0D, target.getBbHeight() * 0.55D, 0.0D);
+    }
+
+    private static void spawnSymbioteNear(ServerPlayer player) {
+        if (!(player.level() instanceof ServerLevel level)) {
+            return;
+        }
+        Entity symbiote = MyMod.SYMBIOTE_ENTITY.get().create(level);
+        if (symbiote == null) {
+            return;
+        }
+
+        Vec3 look = player.getLookAngle();
+        Vec3 offset = new Vec3(look.x, 0.0D, look.z);
+        if (offset.lengthSqr() < 1.0E-4D) {
+            offset = new Vec3(1.0D, 0.0D, 0.0D);
+        }
+        Vec3 spawn = player.position().add(offset.normalize().scale(3.0D));
+        symbiote.moveTo(spawn.x, player.getY(), spawn.z, player.getYRot(), 0.0F);
+        level.addFreshEntity(symbiote);
+    }
+
+    private static boolean hasAirBelow(LivingEntity entity, int blocks) {
+        BlockPos feet = entity.blockPosition();
+        for (int i = 1; i <= blocks; i++) {
+            if (isSolid(entity, feet.below(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean hasWallInFront(LivingEntity entity) {
+        Vec3 look = entity.getLookAngle();
+        Vec3 horizontalLook = new Vec3(look.x, 0.0D, look.z);
+        if (horizontalLook.lengthSqr() < 1.0E-4D) {
+            return hasWallAround(entity);
+        }
+        Vec3 start = entity.getEyePosition();
+        Vec3 end = start.add(horizontalLook.normalize().scale(1.25D));
+        BlockHitResult hit = entity.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+        return hit.getType() != HitResult.Type.MISS && isValidClimbSurface(entity, hit.getBlockPos());
+    }
+
+    private static boolean hasWallAround(LivingEntity entity) {
+        BlockPos base = entity.blockPosition();
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            if (isValidClimbSurface(entity, base.relative(direction)) || isValidClimbSurface(entity, base.above().relative(direction))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasWallTouchingBoundingBox(LivingEntity entity) {
+        AABB entityBox = entity.getBoundingBox();
+        AABB box = entityBox.inflate(0.08D, 0.0D, 0.08D);
+        int minX = (int) Math.floor(box.minX);
+        int maxX = (int) Math.floor(box.maxX);
+        int minY = (int) Math.floor(box.minY + 0.1D);
+        int maxY = (int) Math.floor(box.maxY - 0.1D);
+        int minZ = (int) Math.floor(box.minZ);
+        int maxZ = (int) Math.floor(box.maxZ);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (!isValidClimbSurface(entity, pos)) {
+                        continue;
+                    }
+
+                    AABB blockBox = new AABB(pos);
+                    boolean sideTouch = blockBox.maxX <= entityBox.minX + 0.12D
+                            || blockBox.minX >= entityBox.maxX - 0.12D
+                            || blockBox.maxZ <= entityBox.minZ + 0.12D
+                            || blockBox.minZ >= entityBox.maxZ - 0.12D;
+                    if (sideTouch && blockBox.intersects(box)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasCeiling(ServerPlayer player) {
+        BlockPos above = player.blockPosition().above(2);
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            if (isSolid(player, above.relative(direction))) {
+                return true;
+            }
+        }
+        return isSolid(player, above);
+    }
+
+    private static boolean isValidClimbSurface(LivingEntity entity, BlockPos pos) {
+        BlockState state = entity.level().getBlockState(pos);
+        return isSolid(entity, pos) && !state.is(BlockTags.STAIRS) && !state.is(BlockTags.SLABS);
+    }
+
+    private static boolean isSolid(LivingEntity entity, BlockPos pos) {
+        BlockState state = entity.level().getBlockState(pos);
+        return !state.isAir() && !state.getCollisionShape(entity.level(), pos).isEmpty();
+    }
+
+    private static boolean hasVenomPower(Player player) {
+        return player.getTags().contains(PlayerPowerCapability.VENOM_TAG)
+                || player.getCapability(PlayerPowerCapability.PLAYER_POWER)
+                .map(power -> power.isTransformed() && "venom".equals(power.getForm()))
+                .orElse(false);
+    }
+
+    private static boolean isClimbAbilityEnabled(Player player) {
+        return getScore(player, CLIMB_ENABLED_OBJECTIVE, false) == 1;
+    }
+
+    private static boolean isBodyActive(ServerPlayer player) {
+        return getScore(player, CAMERA_OBJECTIVE, false) > 0;
+    }
+
+    private static boolean isVulnerable(ServerPlayer player) {
+        return getScore(player, VULNERABILITY_OBJECTIVE, false) > 0;
+    }
+
+    private static void ensureHungerScore(ServerPlayer player) {
+        if (getScore(player, HUNGER_OBJECTIVE, true) <= 0 && !player.getPersistentData().getBoolean("Klyntar.HungerInitialized")) {
+            setScore(player, HUNGER_OBJECTIVE, MAX_HUNGER);
+            player.getPersistentData().putBoolean("Klyntar.HungerInitialized", true);
+        }
+    }
+
+    private static ServerBossEvent createHungerBar(ServerPlayer player) {
+        ServerBossEvent event = new ServerBossEvent(Component.literal("Symbiote Hunger"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+        event.setDarkenScreen(false);
+        event.setCreateWorldFog(false);
+        event.addPlayer(player);
+        return event;
+    }
+
+    private static void removeHungerBar(ServerPlayer player) {
+        ServerBossEvent event = HUNGER_BARS.remove(player.getUUID());
+        if (event != null) {
+            event.removePlayer(player);
+        }
+    }
+
+    private static void startFallFlyingFlag(ServerPlayer player) {
+        setFallFlyingFlag(player, true);
+    }
+
+    private static void stopFallFlyingFlag(ServerPlayer player) {
+        if (player.isFallFlying()) {
+            setFallFlyingFlag(player, false);
+        }
+    }
+
+    private static void setFallFlyingFlag(ServerPlayer player, boolean value) {
+        try {
+            Method method = Entity.class.getDeclaredMethod("setSharedFlag", int.class, boolean.class);
+            method.setAccessible(true);
+            method.invoke(player, 7, value);
+        } catch (ReflectiveOperationException ignored) {
+        }
+    }
+
+    private static void addScore(ServerPlayer player, String objectiveName, int amount) {
+        setScore(player, objectiveName, getScore(player, objectiveName, true) + amount);
+    }
+
+    private static int getScore(Player player, String objectiveName, boolean create) {
+        Objective objective = getObjective(player, objectiveName, create);
+        if (objective == null) {
+            return 0;
+        }
+        Score score = player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective);
+        return score.getScore();
+    }
+
+    private static void setScore(ServerPlayer player, String objectiveName, int value) {
+        Objective objective = getObjective(player, objectiveName, true);
+        Score score = player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective);
+        score.setScore(value);
+    }
+
+    private static Objective getObjective(Player player, String objectiveName, boolean create) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective objective = scoreboard.getObjective(objectiveName);
+        if (objective == null && create) {
+            objective = scoreboard.addObjective(objectiveName, ObjectiveCriteria.DUMMY, Component.literal(objectiveName), ObjectiveCriteria.RenderType.INTEGER);
+        }
+        return objective;
+    }
+
+    private static final class BerserkStuckState {
+        private int targetId;
+        private Vec3 lastPosition;
+        private int stuckTicks;
+
+        private BerserkStuckState(int targetId, Vec3 lastPosition) {
+            this.targetId = targetId;
+            this.lastPosition = lastPosition;
+        }
+    }
+
+    private static final class FlightState {
+        private final double launchStartY;
+        private int launchTicks;
+        private int propellerTicks;
+        private boolean forwardPressedLastTick;
+        private boolean launching = true;
+
+        private FlightState(double launchStartY) {
+            this.launchStartY = launchStartY;
+        }
+    }
+}

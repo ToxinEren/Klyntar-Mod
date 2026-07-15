@@ -33,6 +33,9 @@ public final class VenomBedrockAnimationHandler {
             "Venom.Anim.Elytra"
     };
     private static final String FALLING_ATTACK_REQUEST_OBJECTIVE = "Venom.FallingAttack.Request";
+    private static final String CLIMB_WALL_OBJECTIVE = "Venom.Anim.ClimbWall";
+    private static final String CLIMB_HANG_OBJECTIVE = "Venom.Anim.ClimbHang";
+    private static final String CLIMB_IMPULSE_OBJECTIVE = "Venom.Anim.ClimbImpulse";
     private static final int FALLING_ATTACK_END_TICKS = 3;
     private static final int SPRINT_GRACE_TICKS = 6;
     private static final double MOVE_THRESHOLD_SQR = 1.0E-4D;
@@ -76,6 +79,13 @@ public final class VenomBedrockAnimationHandler {
         if (memory.fallingAttackEndTicks > 0) {
             switchObjective(player, memory, "Venom.Anim.FallingAttackEnd");
             memory.fallingAttackEndTicks--;
+            memory.lastPosition = player.position();
+            return;
+        }
+
+        if (isClimbAnimationActive(player)) {
+            clearPulseScores(player);
+            memory.objective = null;
             memory.lastPosition = player.position();
             return;
         }
@@ -164,6 +174,21 @@ public final class VenomBedrockAnimationHandler {
             score.setScore(0);
         }
         return requested;
+    }
+
+    private static boolean isClimbAnimationActive(ServerPlayer player) {
+        return getScore(player, CLIMB_WALL_OBJECTIVE) > 0
+                || getScore(player, CLIMB_HANG_OBJECTIVE) > 0
+                || getScore(player, CLIMB_IMPULSE_OBJECTIVE) > 0;
+    }
+
+    private static int getScore(Player player, String objectiveName) {
+        Objective objective = player.getScoreboard().getObjective(objectiveName);
+        if (objective == null) {
+            return 0;
+        }
+        Score score = player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective);
+        return score.getScore();
     }
 
     private static void clearPulseScores(ServerPlayer player) {
