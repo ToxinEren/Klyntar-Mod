@@ -1,9 +1,0 @@
-{
-    "type": "palladium:sword",
-    "tier": "minecraft:netherite",
-    "base_damage": 10,
-    "attack_speed": -2.2,
-    "tooltip": [
-        "The hammer of the God Of Frogs"
-    ]
-}

@@ -1,7 +1,0 @@
-{
-  "material": "minecraft:stone",
-  "sound_type": "minecraft:stone",
-  "destroy_time": 8,
-  "explosion_resistance": 24,
-  "creative_mode_tab": "mymod:throgaddon"
-}

@@ -1,5 +1,0 @@
-﻿{
-  "textures": "mymod:textures/models/armor/galactus_boots.png",
-  "model_layers": "mymod:galactus.geo",
-    "hide_second_layer": true
-}
