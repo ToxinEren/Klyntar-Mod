@@ -27,6 +27,7 @@ import modKlyntar.power.PlayersPowerProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -73,11 +74,25 @@ public class MyMod {
     public static final RegistryObject<Item> PROMETHIUMX_TNT_ITEM = ITEMS.register("promethium_x_tnt",
             () -> new BlockItem(PROMETHIUMX_TNT.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> CAPSULE = ITEMS.register("capsule",
+            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+    public static final RegistryObject<Item> VENOM_CAPSULE = ITEMS.register("venomcapsule",
+            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+    public static final RegistryObject<Item> ANTIVENOM_CAPSULE = ITEMS.register("antivenomcapsule",
+            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+    public static final RegistryObject<Item> CARNAGE_CAPSULE = ITEMS.register("carnagecapsule",
+            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+
     public static final RegistryObject<CreativeModeTab> KLYNTAR_TAB = CREATIVE_MODE_TABS.register("klyntar_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.mymod.klyntar_tab"))
             .icon(() -> PROMETHIUMX_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(PROMETHIUMX_BLOCK_ITEM.get());
                 output.accept(PROMETHIUMX_TNT_ITEM.get());
+                output.accept(CAPSULE.get());
+                output.accept(VENOM_CAPSULE.get());
+                output.accept(ANTIVENOM_CAPSULE.get());
+                output.accept(CARNAGE_CAPSULE.get());
             })
             .build());
 
