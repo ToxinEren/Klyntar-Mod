@@ -117,6 +117,7 @@
                                                       "falling_attack_trigger":  "animation.venom.falling.attack",
                                                       "falling_attack_end_trigger":  "animation.venom.falling.attack.end.java_safe",
                                                       "climb_trigger":  "animation.venom.escalar",
+                                                      "climb_ceiling_hold_trigger":  "animation.venom.climb_ceiling_hold.static",
                                                       "climb_wall_trigger":  "animation.venom.escalar_paredes",
                                                       "climb_impulse_trigger":  "animation.venom.escalar.impulso.java_safe",
                                                       "climb_hang_trigger":  "animation.venom.escalar.colgado",

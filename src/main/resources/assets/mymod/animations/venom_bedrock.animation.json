@@ -5024,6 +5024,143 @@
                                                                                             }
                                                                          }
                                                            },
+                       "animation.venom.climb_ceiling_hold.static":  {
+                                                                        "loop":  true,
+                                                                        "animation_length":  1,
+                                                                        "bones":  {
+                                                                                      "root_venom":  {
+                                                                                                         "position":  [
+                                                                                                                          0,
+                                                                                                                          0,
+                                                                                                                          12
+                                                                                                                      ]
+                                                                                                     },
+                                                                                      "rightLeg_venom":  {
+                                                                                                             "rotation":  [
+                                                                                                                              12.5,
+                                                                                                                              0,
+                                                                                                                              0
+                                                                                                                          ]
+                                                                                                         },
+                                                                                      "rl_venom":  {
+                                                                                                       "rotation":  [
+                                                                                                                        -15,
+                                                                                                                        0,
+                                                                                                                        0
+                                                                                                                    ]
+                                                                                                   },
+                                                                                      "rightFeet_venom":  {
+                                                                                                              "rotation":  [
+                                                                                                                               17.5,
+                                                                                                                               0,
+                                                                                                                               0
+                                                                                                                           ],
+                                                                                                              "position":  [
+                                                                                                                               0,
+                                                                                                                               0,
+                                                                                                                               0
+                                                                                                                           ]
+                                                                                                          },
+                                                                                      "leftLeg_venom":  {
+                                                                                                            "rotation":  [
+                                                                                                                             -67.5,
+                                                                                                                             10,
+                                                                                                                             0
+                                                                                                                         ]
+                                                                                                        },
+                                                                                      "ll_venom":  {
+                                                                                                       "rotation":  [
+                                                                                                                        10,
+                                                                                                                        0,
+                                                                                                                        0
+                                                                                                                    ]
+                                                                                                   },
+                                                                                      "leftFeet_venom":  {
+                                                                                                             "rotation":  [
+                                                                                                                              -22.5,
+                                                                                                                              0,
+                                                                                                                              0
+                                                                                                                          ],
+                                                                                                             "position":  [
+                                                                                                                              0,
+                                                                                                                              0,
+                                                                                                                              -1
+                                                                                                                          ]
+                                                                                                         },
+                                                                                      "waist_venom":  {
+                                                                                                          "rotation":  [
+                                                                                                                           -5,
+                                                                                                                           0,
+                                                                                                                           0
+                                                                                                                       ]
+                                                                                                      },
+                                                                                      "head_venom":  {
+                                                                                                         "rotation":  [
+                                                                                                                          -40,
+                                                                                                                          0,
+                                                                                                                          0
+                                                                                                                      ],
+                                                                                                         "position":  [
+                                                                                                                          0,
+                                                                                                                          0,
+                                                                                                                          0
+                                                                                                                      ],
+                                                                                                         "scale":  [
+                                                                                                                       1,
+                                                                                                                       1,
+                                                                                                                       1
+                                                                                                                   ]
+                                                                                                     },
+                                                                                      "leftArm_venom":  {
+                                                                                                            "rotation":  [
+                                                                                                                             -27.5,
+                                                                                                                             0,
+                                                                                                                             0
+                                                                                                                         ]
+                                                                                                        },
+                                                                                      "la_venom":  {
+                                                                                                       "rotation":  [
+                                                                                                                        17.5,
+                                                                                                                        0,
+                                                                                                                        0
+                                                                                                                    ],
+                                                                                                       "position":  [
+                                                                                                                        0,
+                                                                                                                        -2,
+                                                                                                                        -0.5
+                                                                                                                    ]
+                                                                                                   },
+                                                                                      "rightArm_venom":  {
+                                                                                                             "rotation":  [
+                                                                                                                              -157.5,
+                                                                                                                              0,
+                                                                                                                              -12.5
+                                                                                                                          ],
+                                                                                                             "position":  [
+                                                                                                                              0,
+                                                                                                                              0,
+                                                                                                                              0
+                                                                                                                          ],
+                                                                                                             "scale":  [
+                                                                                                                           1,
+                                                                                                                           1,
+                                                                                                                           1
+                                                                                                                       ]
+                                                                                                         },
+                                                                                      "ra_venom":  {
+                                                                                                       "rotation":  [
+                                                                                                                        0,
+                                                                                                                        0,
+                                                                                                                        0
+                                                                                                                    ],
+                                                                                                       "position":  [
+                                                                                                                        0,
+                                                                                                                        0,
+                                                                                                                        0
+                                                                                                                    ]
+                                                                                                   }
+                                                                                  }
+                                                                    },
                        "animation.venom.escalar":  {
                                                        "loop":  true,
                                                        "animation_length":  1,

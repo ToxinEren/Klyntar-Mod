@@ -36,6 +36,8 @@ public final class VenomBedrockAnimationHandler {
     private static final String CLIMB_WALL_OBJECTIVE = "Venom.Anim.ClimbWall";
     private static final String CLIMB_HANG_OBJECTIVE = "Venom.Anim.ClimbHang";
     private static final String CLIMB_IMPULSE_OBJECTIVE = "Venom.Anim.ClimbImpulse";
+    private static final String CLIMB_CEILING_OBJECTIVE = "Venom.Anim.ClimbCeiling";
+    private static final String CLIMB_CEILING_HOLD_OBJECTIVE = "Venom.Anim.ClimbCeilingHold";
     private static final int FALLING_ATTACK_END_TICKS = 3;
     private static final int SPRINT_GRACE_TICKS = 6;
     private static final double MOVE_THRESHOLD_SQR = 1.0E-4D;
@@ -179,7 +181,9 @@ public final class VenomBedrockAnimationHandler {
     private static boolean isClimbAnimationActive(ServerPlayer player) {
         return getScore(player, CLIMB_WALL_OBJECTIVE) > 0
                 || getScore(player, CLIMB_HANG_OBJECTIVE) > 0
-                || getScore(player, CLIMB_IMPULSE_OBJECTIVE) > 0;
+                || getScore(player, CLIMB_IMPULSE_OBJECTIVE) > 0
+                || getScore(player, CLIMB_CEILING_OBJECTIVE) > 0
+                || getScore(player, CLIMB_CEILING_HOLD_OBJECTIVE) > 0;
     }
 
     private static int getScore(Player player, String objectiveName) {

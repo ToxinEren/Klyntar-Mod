@@ -4,6 +4,7 @@ import modKlyntar.MyMod;
 import modKlyntar.client.ClientEventHandler;
 import modKlyntar.client.VenomLocomotionClientController;
 import modKlyntar.client.renderer.VenomLocomotionRenderer;
+import modKlyntar.player.VenomSymbioteSystemsHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +36,7 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle);
     }
 
     public static class SyncVenomModelPacket {
@@ -187,6 +189,45 @@ public class ModNetwork {
 
     public static void syncVenomFlightState(ServerPlayer player, boolean active) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomFlightStatePacket(active));
+    }
+
+    public static void syncVenomClimbInput(boolean forward, boolean ctrl, boolean shift) {
+        INSTANCE.sendToServer(new SyncVenomClimbInputPacket(forward, ctrl, shift));
+    }
+
+    public static class SyncVenomClimbInputPacket {
+        private final boolean forward;
+        private final boolean ctrl;
+        private final boolean shift;
+
+        public SyncVenomClimbInputPacket(boolean forward, boolean ctrl, boolean shift) {
+            this.forward = forward;
+            this.ctrl = ctrl;
+            this.shift = shift;
+        }
+
+        public SyncVenomClimbInputPacket(FriendlyByteBuf buf) {
+            this.forward = buf.readBoolean();
+            this.ctrl = buf.readBoolean();
+            this.shift = buf.readBoolean();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeBoolean(forward);
+            buf.writeBoolean(ctrl);
+            buf.writeBoolean(shift);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                ServerPlayer player = ctx.get().getSender();
+                if (player != null) {
+                    VenomSymbioteSystemsHandler.setClimbInput(player, forward, ctrl, shift);
+                }
+            });
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     public static class SyncVenomFlightStatePacket {

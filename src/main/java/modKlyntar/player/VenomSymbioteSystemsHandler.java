@@ -63,7 +63,9 @@ public final class VenomSymbioteSystemsHandler {
     private static final String CLIMB_WALL_ANIM_OBJECTIVE = "Venom.Anim.ClimbWall";
     private static final String CLIMB_HANG_ANIM_OBJECTIVE = "Venom.Anim.ClimbHang";
     private static final String CLIMB_IMPULSE_ANIM_OBJECTIVE = "Venom.Anim.ClimbImpulse";
-    private static final String CLIMB_ENABLED_OBJECTIVE = "Throgy.Climbenable";
+    private static final String CLIMB_CEILING_ANIM_OBJECTIVE = "Venom.Anim.ClimbCeiling";
+    private static final String CLIMB_CEILING_HOLD_ANIM_OBJECTIVE = "Venom.Anim.ClimbCeilingHold";
+    private static final String CLIMB_ENABLED_OBJECTIVE = "Venom.Climb.Enabled";
     private static final String CAMERA_OBJECTIVE = VenomCameraHeightHandler.OBJECTIVE_NAME;
     private static final String HUNGER_OBJECTIVE = "Venom.SymbioteHunger";
     private static final String AUTO_HEAD_OBJECTIVE = "Venom.AutoHead";
@@ -108,8 +110,12 @@ public final class VenomSymbioteSystemsHandler {
     private static final double FLIGHT_FIREWORK_TARGET_PULL = 1.0D;
     private static final int CLIMB_HANG_AIR_BELOW_BLOCKS = 3;
     private static final int CLIMB_WALL_STICK_TICKS = 8;
+    private static final int CLIMB_CEILING_STICK_TICKS = 10;
     private static final double CLIMB_UP_SPEED = 0.46D;
+    private static final double CLIMB_CEILING_SPEED = 0.32D;
     private static final double CLIMB_DESCEND_SPEED = -0.12D;
+    private static final double VENOM_VISUAL_COLLISION_WIDTH = 0.6D;
+    private static final double VENOM_VISUAL_COLLISION_HEIGHT = 4.0D;
     private static final Random RANDOM = new Random();
     private static final Set<Item> SYMBIOTE_FOODS = new HashSet<>();
     private static final Map<UUID, ServerBossEvent> HUNGER_BARS = new ConcurrentHashMap<>();
@@ -119,8 +125,14 @@ public final class VenomSymbioteSystemsHandler {
     private static final Map<UUID, FlightState> FLIGHT_MEMORY = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> CLIMB_DEBUG_STATE = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> CLIMB_WALL_STICK_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> CLIMB_CEILING_STICK_MEMORY = new ConcurrentHashMap<>();
     private static final Map<UUID, Boolean> CLIMB_SHIFT_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, Boolean> CLIMB_CEILING_CTRL_MEMORY = new ConcurrentHashMap<>();
+    private static final Map<UUID, Boolean> CLIMB_FORWARD_INPUT = new ConcurrentHashMap<>();
+    private static final Map<UUID, Boolean> CLIMB_CTRL_INPUT = new ConcurrentHashMap<>();
+    private static final Map<UUID, Boolean> CLIMB_SNEAK_INPUT = new ConcurrentHashMap<>();
     private static final Set<UUID> CLIMB_HANG_LOCKED = ConcurrentHashMap.newKeySet();
+    private static final Set<UUID> CLIMB_CEILING_HOLD_LOCKED = ConcurrentHashMap.newKeySet();
 
     static {
         SYMBIOTE_FOODS.add(Items.CHICKEN);
@@ -324,10 +336,33 @@ public final class VenomSymbioteSystemsHandler {
             setClimbAnimationState(player, 0);
             logClimbState(player, 0, false);
             clearClimbMemory(player);
+            player.setNoGravity(false);
             return;
         }
 
-        boolean touchingClimbWall = isTouchingClimbWall(player);
+        boolean pressingForward = isPressingForward(player);
+        boolean touchingClimbWall = isTouchingClimbWall(player, pressingForward);
+        updateClimbCeilingHoldToggle(player);
+        boolean holdingCeiling = isHoldingCeiling(player);
+        boolean touchingClimbCeiling = isTouchingClimbCeiling(player, pressingForward, holdingCeiling, touchingClimbWall);
+        if (touchingClimbCeiling) {
+            updateClimbHangToggle(player, false);
+            int climbState = holdingCeiling ? 5 : 4;
+            setClimbAnimationState(player, climbState);
+            logClimbState(player, climbState, false);
+            Vec3 current = player.getDeltaMovement();
+            Vec3 ceilingMotion = holdingCeiling ? Vec3.ZERO : getHorizontalLook(player).scale(pressingForward ? CLIMB_CEILING_SPEED : 0.0D);
+            player.setNoGravity(true);
+            player.setDeltaMovement(
+                    ceilingMotion.x,
+                    holdingCeiling ? 0.0D : Math.max(0.0D, Math.min(current.y, 0.02D)),
+                    ceilingMotion.z
+            );
+            player.hurtMarked = true;
+            player.fallDistance = 0.0F;
+            return;
+        }
+
         if (touchingClimbWall) {
             updateClimbHangToggle(player, true);
             boolean hanging = CLIMB_HANG_LOCKED.contains(player.getUUID());
@@ -336,9 +371,11 @@ public final class VenomSymbioteSystemsHandler {
             logClimbState(player, climbState, hanging);
             Vec3 current = player.getDeltaMovement();
             if (hanging) {
+                player.setNoGravity(true);
                 player.setDeltaMovement(current.x * 0.2D, 0.0D, current.z * 0.2D);
                 player.hurtMarked = true;
             } else {
+                player.setNoGravity(false);
                 player.setDeltaMovement(current.x, Math.max(current.y, CLIMB_UP_SPEED), current.z);
                 player.hurtMarked = true;
             }
@@ -349,19 +386,21 @@ public final class VenomSymbioteSystemsHandler {
         setClimbAnimationState(player, 0);
         logClimbState(player, 0, false);
         updateClimbHangToggle(player, false);
+        CLIMB_CEILING_HOLD_LOCKED.remove(player.getUUID());
+        player.setNoGravity(false);
     }
 
     private static void setClimbAnimationState(ServerPlayer player, int state) {
         setScore(player, CLIMB_WALL_ANIM_OBJECTIVE, state == 1 ? 1 : 0);
         setScore(player, CLIMB_HANG_ANIM_OBJECTIVE, state == 2 ? 1 : 0);
         setScore(player, CLIMB_IMPULSE_ANIM_OBJECTIVE, state == 3 ? 1 : 0);
+        setScore(player, CLIMB_CEILING_ANIM_OBJECTIVE, state == 4 ? 1 : 0);
+        setScore(player, CLIMB_CEILING_HOLD_ANIM_OBJECTIVE, state == 5 ? 1 : 0);
     }
 
-    private static boolean isTouchingClimbWall(ServerPlayer player) {
-        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
-        boolean tryingToClimb = player.horizontalCollision
-                || !player.onGround()
-                || player.getDeltaMovement().horizontalDistanceSqr() > 0.0025D;
+    private static boolean isTouchingClimbWall(ServerPlayer player, boolean pressingForward) {
+        boolean nearWall = hasWallInFront(player);
+        boolean tryingToClimb = pressingForward || CLIMB_HANG_LOCKED.contains(player.getUUID());
         boolean directWallHit = nearWall && tryingToClimb;
         if (directWallHit) {
             CLIMB_WALL_STICK_MEMORY.put(player.getUUID(), CLIMB_WALL_STICK_TICKS);
@@ -369,13 +408,45 @@ public final class VenomSymbioteSystemsHandler {
         }
 
         int memoryTicks = CLIMB_WALL_STICK_MEMORY.getOrDefault(player.getUUID(), 0);
-        if (memoryTicks <= 0 || !nearWall) {
+        if (memoryTicks <= 0 || !nearWall || !pressingForward) {
             CLIMB_WALL_STICK_MEMORY.remove(player.getUUID());
             return false;
         }
 
         CLIMB_WALL_STICK_MEMORY.put(player.getUUID(), memoryTicks - 1);
         return true;
+    }
+
+    private static boolean isTouchingClimbCeiling(ServerPlayer player, boolean pressingForward, boolean holdingCeiling, boolean touchingClimbWall) {
+        boolean ceiling = hasHeadCeilingCollision(player);
+        boolean wantsCeiling = pressingForward || holdingCeiling;
+        boolean canAttach = ceiling && !player.onGround() && wantsCeiling && (touchingClimbWall || CLIMB_CEILING_STICK_MEMORY.containsKey(player.getUUID()));
+        if (canAttach) {
+            CLIMB_CEILING_STICK_MEMORY.put(player.getUUID(), CLIMB_CEILING_STICK_TICKS);
+            return true;
+        }
+
+        int memoryTicks = CLIMB_CEILING_STICK_MEMORY.getOrDefault(player.getUUID(), 0);
+        if (memoryTicks <= 0 || !ceiling || !wantsCeiling) {
+            CLIMB_CEILING_STICK_MEMORY.remove(player.getUUID());
+            return false;
+        }
+
+        CLIMB_CEILING_STICK_MEMORY.put(player.getUUID(), memoryTicks - 1);
+        return true;
+    }
+
+    private static boolean hasHeadCeilingCollision(ServerPlayer player) {
+        AABB box = player.getBoundingBox();
+        AABB headProbe = new AABB(
+                box.minX + 0.05D,
+                box.maxY - 0.02D,
+                box.minZ + 0.05D,
+                box.maxX - 0.05D,
+                box.maxY + 0.16D,
+                box.maxZ - 0.05D
+        );
+        return !player.level().noCollision(player, headProbe);
     }
 
     public static boolean shouldUseVanillaClimb(LivingEntity entity) {
@@ -387,33 +458,89 @@ public final class VenomSymbioteSystemsHandler {
             return false;
         }
 
-        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
+        boolean nearWall = hasWallInFront(player);
         if (!nearWall) {
             return false;
         }
 
-        return player.horizontalCollision
-                || !player.onGround()
-                || player.getDeltaMovement().horizontalDistanceSqr() > 0.0025D;
+        return player instanceof ServerPlayer serverPlayer
+                && (isPressingForward(serverPlayer) || CLIMB_HANG_LOCKED.contains(player.getUUID()));
+    }
+
+    public static boolean isClimbingForCollision(Player player) {
+        if (player == null || player.isSpectator() || !hasVenomPower(player) || !isClimbAbilityEnabled(player)) {
+            return false;
+        }
+
+        return getScore(player, CLIMB_WALL_ANIM_OBJECTIVE, false) > 0
+                || getScore(player, CLIMB_HANG_ANIM_OBJECTIVE, false) > 0
+                || getScore(player, CLIMB_IMPULSE_ANIM_OBJECTIVE, false) > 0
+                || getScore(player, CLIMB_CEILING_ANIM_OBJECTIVE, false) > 0
+                || getScore(player, CLIMB_CEILING_HOLD_ANIM_OBJECTIVE, false) > 0
+                || CLIMB_HANG_LOCKED.contains(player.getUUID());
+    }
+
+    private static boolean isPressingForward(ServerPlayer player) {
+        if (CLIMB_FORWARD_INPUT.getOrDefault(player.getUUID(), false)) {
+            return true;
+        }
+
+        if (player.zza > 0.0F) {
+            return true;
+        }
+
+        Vec3 look = getHorizontalLook(player);
+        Vec3 motion = player.getDeltaMovement();
+        double forwardMotion = motion.x * look.x + motion.z * look.z;
+        return forwardMotion > 0.015D;
+    }
+
+    private static Vec3 getHorizontalLook(LivingEntity entity) {
+        Vec3 look = entity.getLookAngle();
+        Vec3 horizontalLook = new Vec3(look.x, 0.0D, look.z);
+        if (horizontalLook.lengthSqr() < 1.0E-4D) {
+            return Vec3.ZERO;
+        }
+        return horizontalLook.normalize();
+    }
+
+    private static boolean isHoldingCeiling(ServerPlayer player) {
+        return CLIMB_CEILING_HOLD_LOCKED.contains(player.getUUID());
+    }
+
+    private static void updateClimbCeilingHoldToggle(ServerPlayer player) {
+        UUID playerId = player.getUUID();
+        boolean ctrlDown = CLIMB_CTRL_INPUT.getOrDefault(playerId, false);
+        boolean ctrlWasDown = CLIMB_CEILING_CTRL_MEMORY.getOrDefault(playerId, false);
+        CLIMB_CEILING_CTRL_MEMORY.put(playerId, ctrlDown);
+
+        if (ctrlDown && !ctrlWasDown && hasHeadCeilingCollision(player)) {
+            if (CLIMB_CEILING_HOLD_LOCKED.remove(playerId)) {
+                LOGGER.info("Venom ceiling hold toggle OFF by ctrl for {}", player.getGameProfile().getName());
+            } else {
+                CLIMB_CEILING_HOLD_LOCKED.add(playerId);
+                LOGGER.info("Venom ceiling hold toggle ON by ctrl for {}", player.getGameProfile().getName());
+            }
+        }
     }
 
     private static void updateClimbHangToggle(ServerPlayer player, boolean canHang) {
         UUID playerId = player.getUUID();
-        boolean shiftDown = player.isShiftKeyDown();
-        boolean shiftWasDown = CLIMB_SHIFT_MEMORY.getOrDefault(playerId, false);
-        CLIMB_SHIFT_MEMORY.put(playerId, shiftDown);
+        boolean ctrlDown = CLIMB_CTRL_INPUT.getOrDefault(playerId, false);
+        boolean ctrlWasDown = CLIMB_SHIFT_MEMORY.getOrDefault(playerId, false);
+        CLIMB_SHIFT_MEMORY.put(playerId, ctrlDown);
 
         if (!canHang) {
             CLIMB_HANG_LOCKED.remove(playerId);
             return;
         }
 
-        if (shiftDown && !shiftWasDown) {
+        if (ctrlDown && !ctrlWasDown) {
             if (CLIMB_HANG_LOCKED.remove(playerId)) {
-                LOGGER.info("Venom hang toggle OFF for {}", player.getGameProfile().getName());
+                LOGGER.info("Venom hang toggle OFF by ctrl for {}", player.getGameProfile().getName());
             } else {
                 CLIMB_HANG_LOCKED.add(playerId);
-                LOGGER.info("Venom hang toggle ON for {}", player.getGameProfile().getName());
+                LOGGER.info("Venom hang toggle ON by ctrl for {}", player.getGameProfile().getName());
             }
         }
     }
@@ -421,9 +548,14 @@ public final class VenomSymbioteSystemsHandler {
     private static void clearClimbMemory(ServerPlayer player) {
         UUID playerId = player.getUUID();
         CLIMB_WALL_STICK_MEMORY.remove(playerId);
+        CLIMB_CEILING_STICK_MEMORY.remove(playerId);
         CLIMB_SHIFT_MEMORY.remove(playerId);
+        CLIMB_CEILING_CTRL_MEMORY.remove(playerId);
+        CLIMB_FORWARD_INPUT.remove(playerId);
+        CLIMB_CTRL_INPUT.remove(playerId);
+        CLIMB_SNEAK_INPUT.remove(playerId);
         CLIMB_HANG_LOCKED.remove(playerId);
-        CLIMB_DEBUG_STATE.remove(playerId);
+        CLIMB_CEILING_HOLD_LOCKED.remove(playerId);
     }
 
     private static void logClimbState(ServerPlayer player, int state, boolean hanging) {
@@ -436,11 +568,14 @@ public final class VenomSymbioteSystemsHandler {
             case 1 -> "CLIMB";
             case 2 -> "HANG";
             case 3 -> "IMPULSE";
+            case 4 -> "CEILING";
+            case 5 -> "CEILING_HOLD";
             default -> "OFF";
         };
-        LOGGER.info("Venom climb state {} for {}: horizontalCollision={}, onGround={}, hanging={}, airBelow{}={}, pos={}",
+        LOGGER.info("Venom climb state {} for {}: forward={}, horizontalCollision={}, onGround={}, hanging={}, airBelow{}={}, pos={}",
                 stateName,
                 player.getGameProfile().getName(),
+                isPressingForward(player),
                 player.horizontalCollision,
                 player.onGround(),
                 hanging,
@@ -945,15 +1080,21 @@ public final class VenomSymbioteSystemsHandler {
     }
 
     private static boolean hasWallInFront(LivingEntity entity) {
-        Vec3 look = entity.getLookAngle();
-        Vec3 horizontalLook = new Vec3(look.x, 0.0D, look.z);
+        Vec3 horizontalLook = getHorizontalLook(entity);
         if (horizontalLook.lengthSqr() < 1.0E-4D) {
-            return hasWallAround(entity);
+            return false;
         }
-        Vec3 start = entity.getEyePosition();
-        Vec3 end = start.add(horizontalLook.normalize().scale(1.25D));
-        BlockHitResult hit = entity.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
-        return hit.getType() != HitResult.Type.MISS && isValidClimbSurface(entity, hit.getBlockPos());
+
+        double[] heights = {0.25D, Math.min(1.2D, entity.getBbHeight() * 0.5D), Math.max(0.35D, entity.getBbHeight() - 0.2D)};
+        for (double height : heights) {
+            Vec3 start = entity.position().add(0.0D, height, 0.0D);
+            Vec3 end = start.add(horizontalLook.scale(1.35D));
+            BlockHitResult hit = entity.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+            if (hit.getType() != HitResult.Type.MISS && isValidClimbSurface(entity, hit.getBlockPos())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean hasWallAround(LivingEntity entity) {
@@ -1008,6 +1149,30 @@ public final class VenomSymbioteSystemsHandler {
         return isSolid(player, above);
     }
 
+    private static boolean canFitVenomVisualAt(ServerPlayer player, double y) {
+        double halfWidth = VENOM_VISUAL_COLLISION_WIDTH / 2.0D;
+        AABB visualBox = new AABB(
+                player.getX() - halfWidth,
+                y,
+                player.getZ() - halfWidth,
+                player.getX() + halfWidth,
+                y + VENOM_VISUAL_COLLISION_HEIGHT,
+                player.getZ() + halfWidth
+        ).deflate(1.0E-6D);
+        return player.level().noCollision(player, visualBox);
+    }
+
+    private static double findNearestVenomVisualFitY(ServerPlayer player) {
+        double currentY = player.getY();
+        for (int step = 1; step <= 12; step++) {
+            double testY = currentY - step * 0.125D;
+            if (canFitVenomVisualAt(player, testY)) {
+                return testY;
+            }
+        }
+        return currentY;
+    }
+
     private static boolean isValidClimbSurface(LivingEntity entity, BlockPos pos) {
         BlockState state = entity.level().getBlockState(pos);
         return isSolid(entity, pos) && !state.is(BlockTags.STAIRS) && !state.is(BlockTags.SLABS);
@@ -1027,6 +1192,26 @@ public final class VenomSymbioteSystemsHandler {
 
     private static boolean isClimbAbilityEnabled(Player player) {
         return getScore(player, CLIMB_ENABLED_OBJECTIVE, false) == 1;
+    }
+
+    public static void setClimbInput(ServerPlayer player, boolean forward, boolean ctrl, boolean shift) {
+        if (forward) {
+            CLIMB_FORWARD_INPUT.put(player.getUUID(), true);
+        } else {
+            CLIMB_FORWARD_INPUT.remove(player.getUUID());
+        }
+
+        if (ctrl) {
+            CLIMB_CTRL_INPUT.put(player.getUUID(), true);
+        } else {
+            CLIMB_CTRL_INPUT.remove(player.getUUID());
+        }
+
+        if (shift) {
+            CLIMB_SNEAK_INPUT.put(player.getUUID(), true);
+        } else {
+            CLIMB_SNEAK_INPUT.remove(player.getUUID());
+        }
     }
 
     private static boolean isBodyActive(ServerPlayer player) {

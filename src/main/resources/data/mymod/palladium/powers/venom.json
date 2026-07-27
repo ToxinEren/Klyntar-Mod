@@ -838,6 +838,54 @@
                                                                                                     ]
                                                                                    }
                                                                 },
+                      "venombedrockclimbceilingpassiveanimation":  {
+                                                                       "type":  "geckolib:render_layer_animation",
+                                                                       "icon":  "minecraft:bone",
+                                                                       "title":  "null",
+                                                                       "bar_color":  "black",
+                                                                       "hidden":  true,
+                                                                       "hidden_in_bar":  true,
+                                                                       "list_index":  -1,
+                                                                       "gui_position":  "null",
+                                                                       "description":  "null",
+                                                                       "render_layer":  "mymod:klyntar_venom_body",
+                                                                       "controller":  "venom_actions",
+                                                                       "animation_trigger":  "climb_trigger",
+                                                                       "conditions":  {
+                                                                                          "enabling":  [
+                                                                                                           {
+                                                                                                               "type":  "palladium:objective_score",
+                                                                                                               "objective":  "Venom.Anim.ClimbCeiling",
+                                                                                                               "min_score":  1,
+                                                                                                               "max_score":  1
+                                                                                                           }
+                                                                                                       ]
+                                                                                      }
+                                                                   },
+                      "venombedrockclimbceilingholdpassiveanimation":  {
+                                                                           "type":  "geckolib:render_layer_animation",
+                                                                           "icon":  "minecraft:bone",
+                                                                           "title":  "null",
+                                                                           "bar_color":  "black",
+                                                                           "hidden":  true,
+                                                                           "hidden_in_bar":  true,
+                                                                           "list_index":  -1,
+                                                                           "gui_position":  "null",
+                                                                           "description":  "null",
+                                                                           "render_layer":  "mymod:klyntar_venom_body",
+                                                                           "controller":  "venom_actions",
+                                                                           "animation_trigger":  "climb_ceiling_hold_trigger",
+                                                                           "conditions":  {
+                                                                                              "enabling":  [
+                                                                                                               {
+                                                                                                                   "type":  "palladium:objective_score",
+                                                                                                                   "objective":  "Venom.Anim.ClimbCeilingHold",
+                                                                                                                   "min_score":  1,
+                                                                                                                   "max_score":  1
+                                                                                                               }
+                                                                                                           ]
+                                                                                          }
+                                                                       },
                       "venombedrockclimbimpulsepassiveanimation":  {
                                                                        "type":  "geckolib:render_layer_animation",
                                                                        "icon":  "minecraft:bone",
@@ -5170,20 +5218,13 @@
                                                                              "power":  "mymod:venom",
                                                                              "ability":  "enablevenom"
                                                                          },
-                                                                         {
-                                                                             "type":  "palladium:objective_score",
-                                                                             "objective":  "Throgy.Climbenable",
-                                                                             "min_score":  1,
-                                                                             "max_score":  1
-                                                                         },
-                                                                         {
-                                                                             "type":  "palladium:command_result",
-                                                                             "command":  "execute rotated ~ 0 if block ^ ^ ^1.1 #mymod:block_pass",
-                                                                             "comparison":  "==",
-                                                                             "compare_to":  0,
-                                                                             "log":  false
-                                                                         }
-                                                                     ]
+                                                                          {
+                                                                              "type":  "palladium:objective_score",
+                                                                              "objective":  "Venom.Climb.Enabled",
+                                                                              "min_score":  1,
+                                                                              "max_score":  1
+                                                                          }
+                                                                      ]
                                                    }
                                 },
                       "climb_hanging":  {
@@ -5230,14 +5271,37 @@
                                                                                      "ability":  "climb"
                                                                                  },
                                                                                  {
-                                                                                     "type":  "mymod:is_climb_stage",
-                                                                                     "data":  "throggy.climb",
-                                                                                     "stage":  "ceiling"
+                                                                                     "type":  "palladium:objective_score",
+                                                                                     "objective":  "Venom.Anim.ClimbCeiling",
+                                                                                     "min_score":  1,
+                                                                                     "max_score":  1
                                                                                  }
                                                                              ]
                                                            },
                                             "hidden_in_bar":  true
                                         },
+                      "climb_ceiling_hold":  {
+                                               "type":  "palladium:dummy",
+                                               "hidden":  true,
+                                               "conditions":  {
+                                                                  "enabling":  [
+
+                                                                               ],
+                                                                  "unlocking":  [
+                                                                                    {
+                                                                                        "type":  "palladium:ability_enabled",
+                                                                                        "ability":  "climb"
+                                                                                    },
+                                                                                    {
+                                                                                        "type":  "palladium:objective_score",
+                                                                                        "objective":  "Venom.Anim.ClimbCeilingHold",
+                                                                                        "min_score":  1,
+                                                                                        "max_score":  1
+                                                                                    }
+                                                                                ]
+                                                              },
+                                               "hidden_in_bar":  true
+                                           },
                       "climb_move":  {
                                          "type":  "palladium:repeating_animation_timer",
                                          "hidden":  true,
@@ -5323,11 +5387,11 @@
                                                           ],
                                          "description":  "null",
                                          "first_tick_commands":  [
-                                                                     "scoreboard objectives add Throgy.Climbenable dummy",
+                                                                     "scoreboard objectives add Venom.Climb.Enabled dummy",
                                                                      "tag @s remove klyntar_climb_was_enabled",
-                                                                     "execute if score @s Throgy.Climbenable matches 1.. run tag @s add klyntar_climb_was_enabled",
-                                                                     "scoreboard players set @s Throgy.Climbenable 1",
-                                                                     "execute if entity @s[tag=klyntar_climb_was_enabled] run scoreboard players set @s Throgy.Climbenable 0",
+                                                                     "execute if score @s Venom.Climb.Enabled matches 1.. run tag @s add klyntar_climb_was_enabled",
+                                                                     "scoreboard players set @s Venom.Climb.Enabled 1",
+                                                                     "execute if entity @s[tag=klyntar_climb_was_enabled] run scoreboard players set @s Venom.Climb.Enabled 0",
                                                                      "tag @s remove klyntar_climb_was_enabled"
                                                                  ],
                                          "last_tick_commands":  [
@@ -5364,7 +5428,7 @@
                                                            ],
                                           "description":  "null",
                                           "first_tick_commands":  [
-                                                                      "scoreboard players set @s Throgy.Climbenable 0"
+                                                                      "scoreboard players set @s Venom.Climb.Enabled 0"
                                                                   ],
                                           "last_tick_commands":  [
                                                                      ""
@@ -5379,7 +5443,7 @@
                                                              "enabling":  [
                                                                               {
                                                                                   "type":  "palladium:objective_score",
-                                                                                  "objective":  "Throgy.Climbenable",
+                                                                                  "objective":  "Venom.Climb.Enabled",
                                                                                   "min_score":  2,
                                                                                   "max_score":  10
                                                                               }
@@ -7708,3 +7772,4 @@
                                                  }
                   }
 }
+

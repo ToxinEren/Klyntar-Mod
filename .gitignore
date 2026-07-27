@@ -23,3 +23,15 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+
+# JVM crash dumps
+hs_err_pid*.log
+replay_pid*.log
+
+# Nested duplicate project copy
+Klyntar-1.20.1-palladium/
+
+# Local asset backups
+**/backup_venomhead_import/
+*.bak
+*.before_klyntar_retexture.png

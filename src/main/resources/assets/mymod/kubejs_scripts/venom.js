@@ -56,21 +56,33 @@ PalladiumEvents.registerAnimations((event) => {
                     .moveY(22)
                     .moveZ(15)
 
-                builder.get('right_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().rightArm.xRot * -0.45)
-
-                builder.get('left_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().leftArm.xRot * -0.45)
-
                 builder.get('right_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().rightLeg.xRot * -0.3)
 
                 builder.get('left_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().leftLeg.xRot * -0.3)
+            }
+            if (builder.isFirstPerson()) {
+            }
+        };
+        if (abilityUtil.isEnabled(builder.getPlayer(), "mymod:venom", "climb_ceiling_hold")) {
+            if (!builder.isFirstPerson()) {
+                builder.get('head')
+                    .setXRotDegrees(-55)
+                    .setYRotDegrees(0)
+                    .setZRotDegrees(0)
+
+                builder.get('body')
+                    .setXRotDegrees(-90)
+                    .setZRotDegrees(180)
+                    .moveY(22)
+                    .moveZ(15)
+
+                builder.get('right_leg')
+                    .setXRot(-0.4)
+
+                builder.get('left_leg')
+                    .setXRot(-0.4)
             }
             if (builder.isFirstPerson()) {
             }
