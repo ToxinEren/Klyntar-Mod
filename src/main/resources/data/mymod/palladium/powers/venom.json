@@ -802,7 +802,7 @@
                                                                     "description":  "null",
                                                                     "render_layer":  "mymod:klyntar_venom_body",
                                                                     "controller":  "venom_actions",
-                                                                    "animation_trigger":  "climb_trigger",
+                                                                    "animation_trigger":  "climb_wall_trigger",
                                                                     "conditions":  {
                                                                                        "enabling":  [
                                                                                                         {

@@ -399,7 +399,7 @@ public final class VenomSymbioteSystemsHandler {
     }
 
     private static boolean isTouchingClimbWall(ServerPlayer player, boolean pressingForward) {
-        boolean nearWall = hasWallInFront(player);
+        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
         boolean tryingToClimb = pressingForward || CLIMB_HANG_LOCKED.contains(player.getUUID());
         boolean directWallHit = nearWall && tryingToClimb;
         if (directWallHit) {
@@ -458,7 +458,7 @@ public final class VenomSymbioteSystemsHandler {
             return false;
         }
 
-        boolean nearWall = hasWallInFront(player);
+        boolean nearWall = hasWallInFront(player) || hasWallAround(player) || hasWallTouchingBoundingBox(player);
         if (!nearWall) {
             return false;
         }
