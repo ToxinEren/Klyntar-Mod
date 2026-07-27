@@ -180,8 +180,8 @@
                                          "description":  "null",
                                          "first_tick_commands":  [
                                                                      "advancement grant @s only mymod:custom/carnage",
-                                                                     "scoreboard objectives add Throgy.Carnagejab dummy",
-                                                                     "scoreboard players add @s Throgy.Carnagejab 0",
+                                                                     "scoreboard objectives add Klyntars.Carnagejab dummy",
+                                                                     "scoreboard players add @s Klyntars.Carnagejab 0",
                                                                      "tag @s add Throg.Carnage",
                                                                      "scoreboard objectives add Throg.Symbiote.Saying dummy",
                                                                      "scoreboard players set @s Throg.Symbiote.Saying 1"
@@ -1098,7 +1098,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:objective_score",
-                                                                                    "objective":  "Throgy.Carnagejab",
+                                                                                    "objective":  "Klyntars.Carnagejab",
                                                                                     "min_score":  1,
                                                                                     "max_score":  1
                                                                                 }
@@ -1127,7 +1127,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:objective_score",
-                                                                                    "objective":  "Throgy.Carnagejab",
+                                                                                    "objective":  "Klyntars.Carnagejab",
                                                                                     "min_score":  2,
                                                                                     "max_score":  2
                                                                                 }
@@ -1156,7 +1156,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:objective_score",
-                                                                                    "objective":  "Throgy.Carnagejab",
+                                                                                    "objective":  "Klyntars.Carnagejab",
                                                                                     "min_score":  3,
                                                                                     "max_score":  3
                                                                                 }
@@ -1185,7 +1185,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:objective_score",
-                                                                                    "objective":  "Throgy.Carnagejab",
+                                                                                    "objective":  "Klyntars.Carnagejab",
                                                                                     "min_score":  4,
                                                                                     "max_score":  4
                                                                                 }
@@ -1270,7 +1270,7 @@
                                            "description":  "null",
                                            "min_value":  1,
                                            "max_value":  4,
-                                           "objective_score":  "Throgy.Carnagejab",
+                                           "objective_score":  "Klyntars.Carnagejab",
                                            "conditions":  {
                                                               "enabling":  [
                                                                                {
@@ -1401,7 +1401,7 @@
                                                                          },
                                                                          {
                                                                              "type":  "palladium:objective_score",
-                                                                             "objective":  "Throgy.Climbenable",
+                                                                             "objective":  "Klyntars.Climbenable",
                                                                              "min_score":  1,
                                                                              "max_score":  1
                                                                          },
@@ -2692,7 +2692,7 @@
                                                           ],
                                          "description":  "null",
                                          "first_tick_commands":  [
-                                                                     "scoreboard players add @s Throgy.Climbenable 1",
+                                                                     "scoreboard players add @s Klyntars.Climbenable 1",
                                                                      "function mymod:climbenable"
                                                                  ],
                                          "last_tick_commands":  [
@@ -2729,7 +2729,7 @@
                                                            ],
                                           "description":  "null",
                                           "first_tick_commands":  [
-                                                                      "scoreboard players set @s Throgy.Climbenable 0"
+                                                                      "scoreboard players set @s Klyntars.Climbenable 0"
                                                                   ],
                                           "last_tick_commands":  [
                                                                      ""
@@ -2744,7 +2744,7 @@
                                                              "enabling":  [
                                                                               {
                                                                                   "type":  "palladium:objective_score",
-                                                                                  "objective":  "Throgy.Climbenable",
+                                                                                  "objective":  "Klyntars.Climbenable",
                                                                                   "min_score":  2,
                                                                                   "max_score":  10
                                                                               }

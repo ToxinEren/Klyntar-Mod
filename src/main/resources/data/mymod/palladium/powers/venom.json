@@ -3290,7 +3290,7 @@
                                                              -0.5
                                                          ],
                                         "description":  "null",
-                                        "range_objective":  "Throgy.Range",
+                                        "range_objective":  "Klyntars.Range",
                                         "strength":  1,
                                         "damage":  5,
                                         "conditions":  {
@@ -3356,7 +3356,7 @@
                                         "gui_position":  "null",
                                         "description":  "null",
                                         "first_tick_commands":  [
-                                                                    "/scoreboard players set @s Throgy.Range 3"
+                                                                    "/scoreboard players set @s Klyntars.Range 3"
                                                                 ],
                                         "last_tick_commands":  [
 
