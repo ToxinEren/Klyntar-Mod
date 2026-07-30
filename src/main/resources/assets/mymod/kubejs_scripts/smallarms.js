@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/smallarms', 10, (builder) => {
+    event.register('klyntar/smallarms', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'smallarms', builder.getPartialTicks());
 

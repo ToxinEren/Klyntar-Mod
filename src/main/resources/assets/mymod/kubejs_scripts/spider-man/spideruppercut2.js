@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/spideruppercut2', 'mymod:spiderman', 10, (builder) => {
+    event.registerForPower('klyntar/spideruppercut2', 'mymod:spiderman', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spiderman', 'spideruppercut2', builder.getPartialTicks());
 

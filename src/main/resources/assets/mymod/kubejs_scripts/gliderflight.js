@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/glidepose', 'mymod:greengoblin', 10, (builder) => {
+    event.registerForPower('klyntar/glidepose', 'mymod:greengoblin', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:greengoblin', 'glidepose', builder.getPartialTicks());
 

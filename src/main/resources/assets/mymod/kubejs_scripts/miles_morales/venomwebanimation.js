@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/milesvenomweb', 'mymod:spidermanmiles', 10, (builder) => {
+    event.registerForPower('klyntar/milesvenomweb', 'mymod:spidermanmiles', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spidermanmiles', 'venomwebanimation', builder.getPartialTicks());
 

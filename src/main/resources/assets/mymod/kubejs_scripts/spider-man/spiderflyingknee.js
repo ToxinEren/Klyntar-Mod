@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/spiderflyingknee', 'mymod:spiderman', 10, (builder) => {
+    event.registerForPower('klyntar/spiderflyingknee', 'mymod:spiderman', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spiderman', 'flyingknee1', builder.getPartialTicks());
 

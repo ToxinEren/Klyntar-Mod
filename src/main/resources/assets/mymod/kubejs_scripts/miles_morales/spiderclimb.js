@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/spidermanmilesclimb', 5, (builder) => {
+    event.register('klyntar/spidermanmilesclimb', 5, (builder) => {
         if (abilityUtil.isEnabled(builder.getPlayer(), "mymod:spidermanmiles", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
@@ -53,7 +53,7 @@
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/spidermanmilesclimb1', 10, (builder) => {
+    event.register('klyntar/spidermanmilesclimb1', 10, (builder) => {
 
         let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spidermanmiles', 'climb_1', builder.getPartialTicks());
         if (progress_climb1 > 0 && !builder.isFirstPerson()) {
@@ -79,7 +79,7 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/spidermanmilesclimb2', 10, (builder) => {
+    event.register('klyntar/spidermanmilesclimb2', 10, (builder) => {
 
         let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spidermanmiles', 'climb_2', builder.getPartialTicks());
         if (progress_climb2 > 0 && !builder.isFirstPerson()) {

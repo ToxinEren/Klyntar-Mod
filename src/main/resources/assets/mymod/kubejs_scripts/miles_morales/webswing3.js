@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/webswinganimatiomiles3.2', 'mymod:spidermanmiles', 10, (builder) => {
+    event.registerForPower('klyntar/webswinganimatiomiles3.2', 'mymod:spidermanmiles', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spidermanmiles', 'webswinganimation3.2', builder.getPartialTicks());
 

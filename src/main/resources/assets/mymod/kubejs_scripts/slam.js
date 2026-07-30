@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/slam', 10, (builder) => {
+    event.register('klyntar/slam', 10, (builder) => {
         // animation part
 const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:ironfist', 'slam', builder.getPartialTicks());
 

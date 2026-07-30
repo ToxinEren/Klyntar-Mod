@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/spiderwebblossom4', 'mymod:spiderman', 10, (builder) => {
+    event.registerForPower('klyntar/spiderwebblossom4', 'mymod:spiderman', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spiderman', 'webblossomanimation4', builder.getPartialTicks());
 

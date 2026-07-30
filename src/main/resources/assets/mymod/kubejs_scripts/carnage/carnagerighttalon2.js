@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/carnagerighttalon2', 'mymod:carnage', 10, (builder) => {
+    event.registerForPower('klyntar/carnagerighttalon2', 'mymod:carnage', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:carnage', 'righttalon2', builder.getPartialTicks());
 

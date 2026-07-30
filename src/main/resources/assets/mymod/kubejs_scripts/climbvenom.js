@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomclimb', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomclimb', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'climbpassive', builder.getPartialTicks());
 

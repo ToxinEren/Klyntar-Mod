@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/antivenomslam2', 10, (builder) => {
+    event.register('klyntar/antivenomslam2', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:antivenom', 'venomslam2', builder.getPartialTicks());
 

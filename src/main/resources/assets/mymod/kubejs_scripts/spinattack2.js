@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
- event.registerForPower('throgaddon/spinattack2','mymod:venom', 10, (builder) => {
+ event.registerForPower('klyntar/spinattack2','mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'spinattack2', builder.getPartialTicks());
 

@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/duelpistolright', 'mymod:dp_duel_pistols', 10, (builder) => {
+    event.registerForPower('klyntar/duelpistolright', 'mymod:dp_duel_pistols', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:dp_duel_pistols', 'rightraise', builder.getPartialTicks());
 

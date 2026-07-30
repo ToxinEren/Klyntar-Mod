@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/carnageclimb', 5, (builder) => {
+    event.register('klyntar/carnageclimb', 5, (builder) => {
         if (abilityUtil.isEnabled(builder.getPlayer(), "mymod:carnage", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
@@ -53,7 +53,7 @@
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/carnageclimb1', 10, (builder) => {
+    event.register('klyntar/carnageclimb1', 10, (builder) => {
 
         let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:carnage', 'climb_1', builder.getPartialTicks());
         if (progress_climb1 > 0 && !builder.isFirstPerson()) {
@@ -79,7 +79,7 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/carnageclimb2', 10, (builder) => {
+    event.register('klyntar/carnageclimb2', 10, (builder) => {
 
         let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:carnage', 'climb_2', builder.getPartialTicks());
         if (progress_climb2 > 0 && !builder.isFirstPerson()) {

@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/carnageclimb2', 'mymod:carnage', 10, (builder) => {
+    event.registerForPower('klyntar/carnageclimb2', 'mymod:carnage', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:carnage', 'climbup2', builder.getPartialTicks());
 

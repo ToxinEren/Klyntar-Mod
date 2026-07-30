@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-   event.registerForPower('throgaddon/flyingknee','mymod:martialarts', 10, (builder) => {
+   event.registerForPower('klyntar/flyingknee','mymod:martialarts', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:martialarts', 'flyingknee', builder.getPartialTicks());
 

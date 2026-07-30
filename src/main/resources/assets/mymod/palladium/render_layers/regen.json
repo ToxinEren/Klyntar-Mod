@@ -18,7 +18,7 @@
                 "variables": {
                     "MASK": {
                         "type": "palladium:objective_score",
-                        "objective": "Throg.Regen"
+                        "objective": "Klyntars.Regen"
                     }
                 },
                 "conditions": [],

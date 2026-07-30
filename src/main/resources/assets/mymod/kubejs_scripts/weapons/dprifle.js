@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/rifleaim2', 'mymod:dp_rifle', 10, (builder) => {
+    event.registerForPower('klyntar/rifleaim2', 'mymod:dp_rifle', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:dp_rifle', 'aim', builder.getPartialTicks());
 
@@ -31,7 +31,7 @@
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/rifleaim3rd', 'mymod:dp_rifle', 10, (builder) => {
+    event.registerForPower('klyntar/rifleaim3rd', 'mymod:dp_rifle', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:dp_rifle', 'aim', builder.getPartialTicks());
 
@@ -91,7 +91,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/riflereload', 'mymod:dp_rifle', 10, (builder) => {
+    event.registerForPower('klyntar/riflereload', 'mymod:dp_rifle', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:dp_rifle', 'aim2', builder.getPartialTicks());
 

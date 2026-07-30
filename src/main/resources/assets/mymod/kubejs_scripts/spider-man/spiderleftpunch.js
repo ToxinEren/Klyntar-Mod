@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-event.registerForPower('throgaddon/spiderleftpunch','mymod:spiderman', 10, (builder) => {
+event.registerForPower('klyntar/spiderleftpunch','mymod:spiderman', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:spiderman', 'leftpunch', builder.getPartialTicks());
 

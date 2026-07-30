@@ -8,7 +8,7 @@ PalladiumEvents.renderPowerScreen(event => {
     let width = event.screen.width / 2
     if (event.tab.toString().includes("mymod:")) {
         let power = event.tab.toString().replace("mymod:", "")
-        let colour = palladium.getProperty(entity, `throgaddon.${power}Colour`)
+        let colour = palladium.getProperty(entity, `klyntar.${power}Colour`)
         let size = 257
         event.guiGraphics.blit(new ResourceLocation(`mymod:textures/gui/skilltrees/${power}/hud${colour}.png`),
             ((width) - 126), ((height) - 100), (0), (0), (size), (size), (size), (size));

@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/ironarmblock', 'mymod:ironspider', 10, (builder) => {
+    event.registerForPower('klyntar/ironarmblock', 'mymod:ironspider', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:ironspider', 'ironblock', builder.getPartialTicks());
 

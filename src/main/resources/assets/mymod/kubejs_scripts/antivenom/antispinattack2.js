@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/antispinattack2', 10, (builder) => {
+    event.register('klyntar/antispinattack2', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:antivenom', 'spinattack2', builder.getPartialTicks());
 

@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/antivenompunch', 'mymod:antivenom', 10, (builder) => {
+    event.registerForPower('klyntar/antivenompunch', 'mymod:antivenom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:antivenom', 'venompunch1', builder.getPartialTicks());
 
@@ -46,7 +46,7 @@
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/antivenompunch2', 'mymod:antivenom', 10, (builder) => {
+    event.registerForPower('klyntar/antivenompunch2', 'mymod:antivenom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:antivenom', 'venompunch2', builder.getPartialTicks());
 

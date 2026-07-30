@@ -42,7 +42,7 @@
                                                                "enabling":  [
                                                                                 {
                                                                                     "type":  "palladium:objective_score",
-                                                                                    "objective":  "Throg.Regen",
+                                                                                    "objective":  "Klyntars.Regen",
                                                                                     "min_score":  0,
                                                                                     "max_score":  7
                                                                                 }
@@ -71,7 +71,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:scoreboard_score_buyable",
-                                                                                    "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                    "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                     "score":  5,
                                                                                     "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                     "description":  {
@@ -155,7 +155,7 @@
                                                                                 },
                                                                                 {
                                                                                     "type":  "palladium:scoreboard_score_buyable",
-                                                                                    "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                    "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                     "score":  8,
                                                                                     "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                     "description":  {
@@ -182,12 +182,12 @@
                                                                      "advancement grant @s only mymod:custom/carnage",
                                                                      "scoreboard objectives add Klyntars.Carnagejab dummy",
                                                                      "scoreboard players add @s Klyntars.Carnagejab 0",
-                                                                     "tag @s add Throg.Carnage",
-                                                                     "scoreboard objectives add Throg.Symbiote.Saying dummy",
-                                                                     "scoreboard players set @s Throg.Symbiote.Saying 1"
+                                                                     "tag @s add Klyntars.Carnage",
+                                                                     "scoreboard objectives add Klyntars.Symbiote.Saying dummy",
+                                                                     "scoreboard players set @s Klyntars.Symbiote.Saying 1"
                                                                  ],
                                          "last_tick_commands":  [
-                                                                    "tag @s remove Throg.Carnage"
+                                                                    "tag @s remove Klyntars.Carnage"
                                                                 ],
                                          "commands":  [
 
@@ -264,7 +264,6 @@
                                                                                                        "mymod:antivenom",
                                                                                                        "mymod:agentvenom",
                                                                                                        "mymod:ironfist",
-                                                                                                       "mymod:throg",
                                                                                                        "mymod:venom",
                                                                                                        "mymod:spidermanmiles",
                                                                                                        "mymod:spiderman"
@@ -1243,7 +1242,7 @@
                                                                        },
                                                                        {
                                                                            "type":  "palladium:scoreboard_score_buyable",
-                                                                           "objective":  "Throg.Symbiote.Skillpoints",
+                                                                           "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                            "score":  2,
                                                                            "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                            "description":  {
@@ -1315,7 +1314,7 @@
                                  },
                       "hitsound1":  {
                                         "type":  "palladium:command",
-                                        "icon":  "mymod:textures/icon/throg_hammer.png",
+                                        "icon":  "mymod:textures/icon/klyntar_hammer.png",
                                         "title":  "Throw Hammer",
                                         "bar_color":  "red",
                                         "hidden":  true,
@@ -1391,7 +1390,7 @@
                                     "list_index":  1,
                                     "climb_speed":  0.45,
                                     "block_distance":  2.2,
-                                    "data":  "throggy.climb",
+                                    "data":  "klyntar.climb",
                                     "conditions":  {
                                                        "unlocking":  [
                                                                          {
@@ -1432,12 +1431,12 @@
                                                                                      "conditions":  [
                                                                                                         {
                                                                                                             "type":  "mymod:is_climb_stage",
-                                                                                                            "data":  "throggy.climb",
+                                                                                                            "data":  "klyntar.climb",
                                                                                                             "stage":  "hanging"
                                                                                                         },
                                                                                                         {
                                                                                                             "type":  "mymod:is_climb_stage",
-                                                                                                            "data":  "throggy.climb",
+                                                                                                            "data":  "klyntar.climb",
                                                                                                             "stage":  "hanging_move"
                                                                                                         }
                                                                                                     ]
@@ -1459,7 +1458,7 @@
                                                                                  },
                                                                                  {
                                                                                      "type":  "mymod:is_climb_stage",
-                                                                                     "data":  "throggy.climb",
+                                                                                     "data":  "klyntar.climb",
                                                                                      "stage":  "ceiling"
                                                                                  }
                                                                              ]
@@ -1481,7 +1480,7 @@
                                                                               },
                                                                               {
                                                                                   "type":  "mymod:is_climb_stage",
-                                                                                  "data":  "throggy.climb",
+                                                                                  "data":  "klyntar.climb",
                                                                                   "stage":  "hanging_move"
                                                                               }
                                                                           ]
@@ -1578,7 +1577,7 @@
                                                                                        },
                                                                                        {
                                                                                            "type":  "palladium:scoreboard_score_buyable",
-                                                                                           "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                           "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                            "score":  5,
                                                                                            "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                            "description":  {
@@ -1684,7 +1683,7 @@
                                                                         },
                                                                         {
                                                                             "type":  "palladium:scoreboard_score_buyable",
-                                                                            "objective":  "Throg.Symbiote.Skillpoints",
+                                                                            "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                             "score":  3,
                                                                             "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                             "description":  {
@@ -1863,7 +1862,7 @@
                                        },
                       "roarsound4":  {
                                          "type":  "palladium:command",
-                                         "icon":  "mymod:textures/icon/throg_hammer.png",
+                                         "icon":  "mymod:textures/icon/klyntar_hammer.png",
                                          "title":  "Throw Hammer",
                                          "bar_color":  "red",
                                          "hidden":  true,
@@ -1946,7 +1945,7 @@
                                                                 "unlocking":  [
                                                                                   {
                                                                                       "type":  "palladium:scoreboard_score_buyable",
-                                                                                      "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                      "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                       "score":  2,
                                                                                       "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                       "description":  {
@@ -1989,7 +1988,7 @@
                                                                  "unlocking":  [
                                                                                    {
                                                                                        "type":  "palladium:scoreboard_score_buyable",
-                                                                                       "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                       "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                        "score":  3,
                                                                                        "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                        "description":  {
@@ -2032,7 +2031,7 @@
                                                                "unlocking":  [
                                                                                  {
                                                                                      "type":  "palladium:scoreboard_score_buyable",
-                                                                                     "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                     "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                      "score":  2,
                                                                                      "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                      "description":  {
@@ -2075,7 +2074,7 @@
                                                                 "unlocking":  [
                                                                                   {
                                                                                       "type":  "palladium:scoreboard_score_buyable",
-                                                                                      "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                      "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                       "score":  3,
                                                                                       "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                       "description":  {
@@ -2145,7 +2144,7 @@
                                                                    "unlocking":  [
                                                                                      {
                                                                                          "type":  "palladium:scoreboard_score_buyable",
-                                                                                         "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                         "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                          "score":  2,
                                                                                          "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                          "description":  {
@@ -2188,7 +2187,7 @@
                                                                     "unlocking":  [
                                                                                       {
                                                                                           "type":  "palladium:scoreboard_score_buyable",
-                                                                                          "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                          "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                           "score":  3,
                                                                                           "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                           "description":  {
@@ -2292,7 +2291,7 @@
                                                              "unlocking":  [
                                                                                {
                                                                                    "type":  "palladium:scoreboard_score_buyable",
-                                                                                   "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                   "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                    "score":  1,
                                                                                    "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                    "description":  {
@@ -2335,7 +2334,7 @@
                                                               "unlocking":  [
                                                                                 {
                                                                                     "type":  "palladium:scoreboard_score_buyable",
-                                                                                    "objective":  "Throg.Symbiote.Skillpoints",
+                                                                                    "objective":  "Klyntars.Symbiote.Skillpoints",
                                                                                     "score":  2,
                                                                                     "icon":  "mymod:textures/icon/carnageskillpoint.png",
                                                                                     "description":  {
@@ -3227,7 +3226,7 @@
                                                                      "enabling":  [
                                                                                       {
                                                                                           "type":  "palladium:objective_score",
-                                                                                          "objective":  "Throg.Regen",
+                                                                                          "objective":  "Klyntars.Regen",
                                                                                           "min_score":  0,
                                                                                           "max_score":  6
                                                                                       }
@@ -3298,7 +3297,7 @@
                                              "description":  "null",
                                              "min_value":  1,
                                              "max_value":  8,
-                                             "objective_score":  "Throg.Symbiote.Saying",
+                                             "objective_score":  "Klyntars.Symbiote.Saying",
                                              "conditions":  {
                                                                 "unlocking":  [
                                                                                   {

@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
- event.registerForPower('throgaddon/lefttalon2','mymod:venom', 10, (builder) => {
+ event.registerForPower('klyntar/lefttalon2','mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'lefttalon2', builder.getPartialTicks());
 

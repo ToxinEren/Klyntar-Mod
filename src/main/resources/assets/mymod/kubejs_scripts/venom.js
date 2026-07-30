@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomblock', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomblock', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomblock', builder.getPartialTicks());
 
@@ -25,7 +25,7 @@
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/venomclimb', 5, (builder) => {
+    event.register('klyntar/venomclimb', 5, (builder) => {
         if (abilityUtil.isEnabled(builder.getPlayer(), "mymod:venom", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
@@ -91,7 +91,7 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/venomclimb1', 10, (builder) => {
+    event.register('klyntar/venomclimb1', 10, (builder) => {
 
         let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'climb_1', builder.getPartialTicks());
         if (progress_climb1 > 0 && !builder.isFirstPerson()) {
@@ -117,7 +117,7 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/venomclimb2', 10, (builder) => {
+    event.register('klyntar/venomclimb2', 10, (builder) => {
 
         let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'climb_2', builder.getPartialTicks());
         if (progress_climb2 > 0 && !builder.isFirstPerson()) {
@@ -142,7 +142,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomcrush', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomcrush', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomcrush', builder.getPartialTicks());
 
@@ -166,7 +166,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomgrab', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomgrab', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomgrabani', builder.getPartialTicks());
 
@@ -190,7 +190,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomslam', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomslam', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomslam', builder.getPartialTicks());
 
@@ -239,7 +239,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomslam2', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomslam2', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomslam2', builder.getPartialTicks());
 
@@ -292,7 +292,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomsmash', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomsmash', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomsmash', builder.getPartialTicks());
 
@@ -352,7 +352,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomsmash2', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venomsmash2', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venomsmash2', builder.getPartialTicks());
 
@@ -414,7 +414,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venompunch', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venompunch', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venompunch1', builder.getPartialTicks());
 
@@ -461,7 +461,7 @@ PalladiumEvents.registerAnimations((event) => {
     });
 });
 PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venompunch2', 'mymod:venom', 10, (builder) => {
+    event.registerForPower('klyntar/venompunch2', 'mymod:venom', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venom', 'venompunch2', builder.getPartialTicks());
 

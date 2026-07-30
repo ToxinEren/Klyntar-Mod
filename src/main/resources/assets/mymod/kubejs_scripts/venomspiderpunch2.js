@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/venomspiderpunch2', 'mymod:venomspidey', 10, (builder) => {
+    event.registerForPower('klyntar/venomspiderpunch2', 'mymod:venomspidey', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:venomspidey', 'venompunch2', builder.getPartialTicks());
 

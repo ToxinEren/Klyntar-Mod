@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-   event.registerForPower('throgaddon/aimedpunch','mymod:martialarts', 10, (builder) => {
+   event.registerForPower('klyntar/aimedpunch','mymod:martialarts', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:martialarts', 'aimedpunch', builder.getPartialTicks());
 

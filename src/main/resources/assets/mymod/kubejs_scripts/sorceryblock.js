@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('throgaddon/sorceryblock', 'mymod:sorcery', 10, (builder) => {
+    event.registerForPower('klyntar/sorceryblock', 'mymod:sorcery', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:sorcery', 'sorceryblock', builder.getPartialTicks());
 

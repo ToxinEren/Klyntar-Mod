@@ -1,5 +1,5 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
-    event.register('throgaddon/antilefttalon2', 10, (builder) => {
+    event.register('klyntar/antilefttalon2', 10, (builder) => {
         // animation part
         const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'mymod:antivenom', 'lefttalon2', builder.getPartialTicks());
 
