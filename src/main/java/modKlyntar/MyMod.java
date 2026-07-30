@@ -58,7 +58,7 @@ import software.bernie.geckolib.GeckoLib;
 
 @Mod(MyMod.MOD_ID)
 public class MyMod {
-    public static final String MOD_ID = "mymod";
+    public static final String MOD_ID = "klyntars";
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
@@ -84,7 +84,7 @@ public class MyMod {
             () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
 
     public static final RegistryObject<CreativeModeTab> KLYNTAR_TAB = CREATIVE_MODE_TABS.register("klyntar_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.mymod.klyntar_tab"))
+            .title(Component.translatable("itemGroup.klyntars.klyntar_tab"))
             .icon(() -> PROMETHIUMX_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(PROMETHIUMX_BLOCK_ITEM.get());

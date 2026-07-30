@@ -1,0 +1,22 @@
+﻿{
+    "model_layer": "klyntars:venomweb",
+    "texture": {
+        "base": "klyntars:textures/models/venomweb.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/spidey/venomwebmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:spidermanmiles",
+                "ability": "enablevenomweb",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/spidersense_#MASK.png"
+    },
+    "render_type": "glow"
+}

@@ -1,0 +1,5 @@
+﻿{
+    "model": "klyntars:geo/glider.geo.json",
+    "type": "geckolib:default",
+    "texture": "klyntars:textures/models/glider.png"
+}

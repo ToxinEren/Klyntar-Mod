@@ -1,0 +1,5 @@
+﻿{
+    "model": "klyntars:geo/symbiotearcreactor.geo.json",
+    "type": "geckolib:default",
+    "texture": "klyntars:textures/models/symbiotearcreactor.png"
+}

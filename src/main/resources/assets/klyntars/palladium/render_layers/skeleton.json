@@ -1,0 +1,7 @@
+﻿{
+    "model": "klyntars:geo/skeleton.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/skeletonorganic.png"
+    }
+}

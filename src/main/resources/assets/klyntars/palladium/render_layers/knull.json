@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/knullbody.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/knullbody.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/knullmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:knull",
+                "ability": "enableknull",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/knullbody_#MASK.png"
+    }
+}

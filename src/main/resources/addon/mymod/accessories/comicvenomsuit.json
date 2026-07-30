@@ -1,6 +1,0 @@
-{
-  "type": "palladium:render_layer",
-  "slot": "mymod:symbiotesuit",
-  "render_layer": "mymod:comicsymbiote",
-  "disable_rendering": false
-}

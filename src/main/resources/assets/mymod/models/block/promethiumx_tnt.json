@@ -1,9 +1,0 @@
-{
-	"parent": "minecraft:block/tnt",
-	"textures": {
-	  "side": "mymod:block/promethiumx_tnt",
-	  "top": "mymod:block/promethiumx_tnt_top",
-	  "bottom": "mymod:block/promethiumx_tnt_top"
-	}
-  }
-  

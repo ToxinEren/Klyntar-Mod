@@ -1,7 +1,0 @@
-{
-  "icon": "mymod:textures/icon/carnage_symbol.png",
-  "menu_visibility": {
-    "type": "palladium:has_power",
-    "power": "mymod:carnage"
-  }
-}

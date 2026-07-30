@@ -1,0 +1,29 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model": "klyntars:geo/symbiotepicaxe.geo.json",
+      "type": "geckolib:default",
+      "bones": {
+        "right_arm": "armorRightArm"
+      },
+      "texture": {
+        "base": "klyntars:textures/models/symbiotepicaxe.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/utility/symbiotepickaxemask_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablesymbiotepicaxe"
+          }
+        },
+        "output": "klyntars:textures/models/symbiotepicaxe_#MASK.png"
+      }
+    }
+  ]
+}

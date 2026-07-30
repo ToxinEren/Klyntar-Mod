@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/agentsword.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/agentsword.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/agentvenom/agentswordmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:agentvenom",
+                "ability": "enableagentsword",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/agentsword_#MASK.png"
+    }
+}

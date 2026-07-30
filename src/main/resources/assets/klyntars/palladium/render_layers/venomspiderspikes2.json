@@ -1,0 +1,21 @@
+﻿{
+    "model_layer": "klyntars:spikes",
+    "texture": {
+        "base": "klyntars:textures/models/bluespikes.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:venomspidey",
+                "ability": "enablespiderspikes",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/spiderspikes2_#MASK.png"
+    }
+}

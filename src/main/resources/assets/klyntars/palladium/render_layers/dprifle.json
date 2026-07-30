@@ -1,0 +1,28 @@
+﻿{
+    "model": "klyntars:geo/dprifle.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/dprifleentity.png",
+        "output": "klyntars:textures/models/dprifle_#MASK.png"
+    },
+    "animation_file": "klyntars:animations/dprifle.animation.json",
+    "animation_controller": [
+        {
+            "name": "triggerable_controller",
+            "transition_tick_time": 10,
+            "triggers": {
+                "straight_trigger": "animation.dprifle.straight",
+                "bump_trigger": "animation.dprifle.bump",
+                "angle_trigger": "animation.dprifle.angle"
+            }
+        }
+    ],
+    "bones": {
+        "head": "armorHead",
+        "body": "armorBody",
+        "right_arm": "armorRightArm",
+        "left_arm": "armorLeftArm",
+        "right_leg": "armorRightLeg",
+        "left_leg": "armorLeftLeg"
+    }
+}

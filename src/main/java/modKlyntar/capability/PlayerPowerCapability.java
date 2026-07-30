@@ -117,14 +117,14 @@ public class PlayerPowerCapability {
         callPalladiumSuperpower("removeSuperpower", player, "carnage");
         if (!callPalladiumSuperpower("addSuperpower", player, powerPath)
                 && !callPalladiumSuperpower("hasSuperpower", player, powerPath)) {
-            LOGGER.error("Palladium did not add superpower mymod:{} to {}", powerPath, player.getGameProfile().getName());
-            player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato mymod:" + powerPath), false);
+            LOGGER.error("Palladium did not add superpower klyntars:{} to {}", powerPath, player.getGameProfile().getName());
+            player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato klyntars:" + powerPath), false);
         } else {
-            LOGGER.info("Palladium superpower mymod:{} synced to {}", powerPath, player.getGameProfile().getName());
-            player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: mymod:" + powerPath), false);
+            LOGGER.info("Palladium superpower klyntars:{} synced to {}", powerPath, player.getGameProfile().getName());
+            player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: klyntars:" + powerPath), false);
             player.getPersistentData().putString(PALLADIUM_SYNC_KEY, powerPath);
         }
-        runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " mymod:" + powerPath + " all");
+        runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " klyntars:" + powerPath + " all");
     }
 
     private static void removePalladiumPower(ServerPlayer player, String powerPath) {
@@ -141,7 +141,7 @@ public class PlayerPowerCapability {
             Object result = method.invoke(null, player, new ResourceLocation(MyMod.MOD_ID, powerPath));
             return !(result instanceof Boolean booleanResult) || booleanResult;
         } catch (ReflectiveOperationException exception) {
-            LOGGER.error("Unable to call Palladium SuperpowerUtil.{} for mymod:{}", methodName, powerPath, exception);
+            LOGGER.error("Unable to call Palladium SuperpowerUtil.{} for klyntars:{}", methodName, powerPath, exception);
             return false;
         }
     }

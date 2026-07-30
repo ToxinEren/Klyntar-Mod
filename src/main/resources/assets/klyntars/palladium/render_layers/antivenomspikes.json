@@ -1,0 +1,20 @@
+﻿{
+    "model_layer": "klyntars:spikes",
+    "texture": {
+        "base": "klyntars:textures/models/antispikes.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "klyntars:antivenom",
+                    "ability": "enableantivenomspikes",
+                    "property": "value"
+                }
+            },
+            "output": "klyntars:textures/models/antispikes_#MASK.png"
+}
+}

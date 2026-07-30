@@ -1,6 +1,0 @@
-﻿{
-    "model": "mymod:geo/symbiotearcreactor.geo.json",
-    "type": "geckolib:default",
-    "texture": "mymod:textures/models/symbiotearcreactorglow.png",
-      "render_type": "glow"
-}

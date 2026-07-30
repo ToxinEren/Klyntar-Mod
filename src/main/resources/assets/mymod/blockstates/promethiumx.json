@@ -1,7 +1,0 @@
-{
-	"variants": {
-	  "full=false": { "model": "mymod:block/promethiumx" },
-	  "full=true": { "model": "mymod:block/promethiumx" }
-	}
-  }
-  

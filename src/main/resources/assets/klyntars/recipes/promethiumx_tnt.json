@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PTP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "klyntars:promethiumx"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "klyntars:promethiumx_tnt",
+    "count": 1
+  }
+}

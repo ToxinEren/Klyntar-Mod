@@ -1,0 +1,5 @@
+﻿{
+  "model_layer": "klyntars:handsorcery",
+  "texture": "klyntars:textures/models/handsorcery.png",
+  "render_type": "glow"
+}

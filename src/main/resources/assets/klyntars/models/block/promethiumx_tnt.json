@@ -1,0 +1,9 @@
+{
+	"parent": "minecraft:block/tnt",
+	"textures": {
+	  "side": "klyntars:block/promethiumx_tnt",
+	  "top": "klyntars:block/promethiumx_tnt_top",
+	  "bottom": "klyntars:block/promethiumx_tnt_top"
+	}
+  }
+  

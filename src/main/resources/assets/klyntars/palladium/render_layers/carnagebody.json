@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/carnagebody.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/carnagebody.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/carnage/carnagebodymask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:carnage",
+                "ability": "enablecarnage",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/carnagebody_#MASK.png"
+    }
+}

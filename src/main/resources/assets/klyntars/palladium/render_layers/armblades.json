@@ -1,0 +1,21 @@
+﻿{
+    "model": "klyntars:geo/armblades.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/armblades.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/armbladesmask_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "klyntars:armorsymbiote",
+                    "ability": "enableblades",
+                    "property": "value"
+                }
+            },
+            "output": "klyntars:textures/models/armblades_#MASK.png"
+}
+}

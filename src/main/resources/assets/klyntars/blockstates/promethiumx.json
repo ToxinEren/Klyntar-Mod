@@ -1,0 +1,7 @@
+{
+	"variants": {
+	  "full=false": { "model": "klyntars:block/promethiumx" },
+	  "full=true": { "model": "klyntars:block/promethiumx" }
+	}
+  }
+  

@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/agentvenom.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/agentvenom.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/agentvenom/agentmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:agentvenom",
+                "ability": "enableagentvenom",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/agentvenom_#MASK.png"
+    }
+}

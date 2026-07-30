@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod.EventBusSubscriber(modid = "mymod", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "klyntars", value = Dist.CLIENT)
 public class KeyInputHandler {
 
     private static final Logger LOGGER = LogManager.getLogger();

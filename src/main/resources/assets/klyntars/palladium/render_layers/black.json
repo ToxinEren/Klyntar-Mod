@@ -1,0 +1,20 @@
+﻿{
+    "type": "palladium:skin_overlay",
+    "texture": {
+        "base": "klyntars:textures/models/black.png",
+        "transformers": [
+            {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+            }],
+            "variables": {
+                "MASK": {
+                    "type": "palladium:ability_integer_property",
+                    "power": "klyntars:venom",
+                    "ability": "enablevenombody",
+                    "property": "value"
+                }
+            },
+            "output": "klyntars:textures/models/black_#MASK.png"
+}
+}

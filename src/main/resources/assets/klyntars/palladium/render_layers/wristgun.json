@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/wristgun.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/wristgun.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/agentvenom/wristgunmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:agentvenom",
+                "ability": "enablewristgun",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/wristgun_#MASK.png"
+    }
+}

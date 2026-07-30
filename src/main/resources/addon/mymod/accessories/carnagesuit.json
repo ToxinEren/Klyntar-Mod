@@ -1,6 +1,0 @@
-{
-  "type": "palladium:render_layer",
-  "slot": "mymod:carnagesuit",
-  "render_layer": "mymod:carnagesuit",
-  "disable_rendering": false
-}

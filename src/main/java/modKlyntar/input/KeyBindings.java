@@ -15,10 +15,10 @@ import org.lwjgl.glfw.GLFW;
 public class KeyBindings {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static final String CATEGORY = "key.categories.mymod";
-    public static final String TOGGLE_ABILITY_1 = "key.mymod.toggle_ability_1";
-    public static final String TOGGLE_ABILITY_2 = "key.mymod.toggle_ability_2";
-    public static final String TOGGLE_ABILITY_3 = "key.mymod.toggle_ability_3";
+    public static final String CATEGORY = "key.categories.klyntars";
+    public static final String TOGGLE_ABILITY_1 = "key.klyntars.toggle_ability_1";
+    public static final String TOGGLE_ABILITY_2 = "key.klyntars.toggle_ability_2";
+    public static final String TOGGLE_ABILITY_3 = "key.klyntars.toggle_ability_3";
 
     public static final KeyMapping toggleAbility1 = new KeyMapping(TOGGLE_ABILITY_1, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY);
     public static final KeyMapping toggleAbility2 = new KeyMapping(TOGGLE_ABILITY_2, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_P, CATEGORY);

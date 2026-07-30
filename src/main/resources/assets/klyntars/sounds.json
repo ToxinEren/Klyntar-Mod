@@ -1,0 +1,12 @@
+﻿{
+    "symbiotepulser": {
+        "sounds": [
+            "klyntars:symbiotepulser"
+        ]
+    },
+    "electricity": {
+        "sounds": [
+            "klyntars:electricity"
+        ]
+    }
+}

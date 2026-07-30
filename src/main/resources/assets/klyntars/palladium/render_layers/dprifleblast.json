@@ -1,0 +1,9 @@
+﻿{
+    "model": "klyntars:geo/dprifleblast.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/riflefire.png",
+        "output": "klyntars:textures/models/rifleblast_#MASK.png"
+    },
+    "render_type": "glow"
+}

@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "klyntars:symbiotesuit",
+  "render_layer": "klyntars:samraimisymbiote",
+  "disable_rendering": false
+}

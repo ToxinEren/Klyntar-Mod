@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "klyntars:carnageblades",
+  "render_layer": "klyntars:carnageblades2",
+  "disable_rendering": false
+}

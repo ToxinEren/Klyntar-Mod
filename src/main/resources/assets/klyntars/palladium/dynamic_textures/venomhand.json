@@ -1,0 +1,11 @@
+{
+    "type": "palladium:default",
+    "base": "klyntars:textures/icon/venomhand#tool.png",
+    "variables": {
+        "tool": {
+            "type": "palladium:integer_property",
+            "property": "tool",
+            "fallback": 0
+        }
+    }
+}
