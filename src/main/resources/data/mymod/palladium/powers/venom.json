@@ -1658,13 +1658,7 @@
                                                                                   {
                                                                                       "type":  "mymod:disable_if_have_power_or_namespace",
                                                                                       "powers":  [
-                                                                                                     "mymod:knull",
-                                                                                                     "mymod:antivenom",
-                                                                                                     "mymod:agentvenom",
-                                                                                                     "mymod:ironfist",
-                                                                                                     "mymod:carnage",
-                                                                                                     "mymod:spiderman",
-                                                                                                     "mymod:spidermanmiles"
+                                                                                                     "mymod:carnage"
                                                                                                  ],
                                                                                       "namespaces":  [
                                                                                                          "fsang",

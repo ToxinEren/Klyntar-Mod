@@ -260,13 +260,7 @@
                                                                                     {
                                                                                         "type":  "mymod:disable_if_have_power_or_namespace",
                                                                                         "powers":  [
-                                                                                                       "mymod:knull",
-                                                                                                       "mymod:antivenom",
-                                                                                                       "mymod:agentvenom",
-                                                                                                       "mymod:ironfist",
-                                                                                                       "mymod:venom",
-                                                                                                       "mymod:spidermanmiles",
-                                                                                                       "mymod:spiderman"
+                                                                                                       "mymod:venom"
                                                                                                    ],
                                                                                         "namespaces":  [
                                                                                                            "fsang",
@@ -1400,7 +1394,7 @@
                                                                          },
                                                                          {
                                                                              "type":  "palladium:objective_score",
-                                                                             "objective":  "Klyntars.Climbenable",
+                                                                             "objective":  "Venom.Climb.Enabled",
                                                                              "min_score":  1,
                                                                              "max_score":  1
                                                                          },
@@ -2691,7 +2685,8 @@
                                                           ],
                                          "description":  "null",
                                          "first_tick_commands":  [
-                                                                     "scoreboard players add @s Klyntars.Climbenable 1",
+                                                                     "scoreboard objectives add Venom.Climb.Enabled dummy",
+                                                                     "scoreboard players add @s Venom.Climb.Enabled 1",
                                                                      "function mymod:climbenable"
                                                                  ],
                                          "last_tick_commands":  [
@@ -2728,7 +2723,7 @@
                                                            ],
                                           "description":  "null",
                                           "first_tick_commands":  [
-                                                                      "scoreboard players set @s Klyntars.Climbenable 0"
+                                                                      "scoreboard players set @s Venom.Climb.Enabled 0"
                                                                   ],
                                           "last_tick_commands":  [
                                                                      ""
@@ -2743,7 +2738,7 @@
                                                              "enabling":  [
                                                                               {
                                                                                   "type":  "palladium:objective_score",
-                                                                                  "objective":  "Klyntars.Climbenable",
+                                                                                  "objective":  "Venom.Climb.Enabled",
                                                                                   "min_score":  2,
                                                                                   "max_score":  10
                                                                               }
