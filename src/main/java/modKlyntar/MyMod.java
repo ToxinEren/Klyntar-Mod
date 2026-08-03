@@ -21,6 +21,7 @@ import modKlyntar.entity.custom.TentacleSegmentEntity;
 import modKlyntar.entity.custom.VenomEntity;
 import modKlyntar.entity.custom.WebProjectileEntity;
 import modKlyntar.input.KeyInputHandler;
+import modKlyntar.item.CapsuleItem;
 import modKlyntar.network.ModNetwork;
 import modKlyntar.power.PlayersPower;
 import modKlyntar.power.PlayersPowerProvider;
@@ -75,9 +76,9 @@ public class MyMod {
             () -> new BlockItem(PROMETHIUMX_TNT.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> CAPSULE = ITEMS.register("capsule",
-            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "capsule", false));
     public static final RegistryObject<Item> VENOM_CAPSULE = ITEMS.register("venomcapsule",
-            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "venomcapsule", true));
     public static final RegistryObject<Item> ANTIVENOM_CAPSULE = ITEMS.register("antivenomcapsule",
             () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
     public static final RegistryObject<Item> CARNAGE_CAPSULE = ITEMS.register("carnagecapsule",
