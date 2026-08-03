@@ -2,6 +2,7 @@ package modKlyntar.entity.custom;
 
 import javax.annotation.Nullable;
 
+import modKlyntar.MyMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
@@ -20,8 +21,34 @@ public class PrimedPromethiumXTnt extends PrimedTnt implements GeoEntity {
     }
 
     public PrimedPromethiumXTnt(Level level, double x, double y, double z, @Nullable LivingEntity igniter) {
-        super(level, x, y, z, igniter);
+        // il costruttore di PrimedTnt userebbe EntityType.TNT, e il renderer sarebbe quello vanilla
+        this(MyMod.PROMETHIUMX_TNT_ENTITY.get(), level);
+        this.setPos(x, y, z);
+        double angle = level.random.nextDouble() * (Math.PI * 2D);
+        this.setDeltaMovement(-Math.sin(angle) * 0.02D, 0.2D, -Math.cos(angle) * 0.02D);
         this.setFuse(80); // Imposta il tempo di fuso della tua TNT personalizzata
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
+        assignOwner(igniter);
+    }
+
+    private void assignOwner(@Nullable LivingEntity igniter) {
+        if (igniter == null) {
+            return;
+        }
+        for (java.lang.reflect.Field field : PrimedTnt.class.getDeclaredFields()) {
+            if (!LivingEntity.class.isAssignableFrom(field.getType())) {
+                continue;
+            }
+            try {
+                field.setAccessible(true);
+                field.set(this, igniter);
+            } catch (ReflectiveOperationException | RuntimeException ignored) {
+                // l'attribuzione dell'esplosione e' un extra: se fallisce la TNT funziona comunque
+            }
+            return;
+        }
     }
 
     @Override

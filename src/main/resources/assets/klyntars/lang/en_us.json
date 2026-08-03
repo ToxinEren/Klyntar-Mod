@@ -23,5 +23,17 @@
   "accessory.klyntars.samraimivenomsuit": "Sam Raimi's Symbiote Suit",
   "accessory.klyntars.spectacularvenomsuit2": "Spectacular Symbiote Webbed Suit",
   "accessory_slot.klyntars.carnageblades": "Carnage Blades",
-  "itemGroup.klyntars.klyntar_tab": "Klyntars mod"
+  "itemGroup.klyntars.klyntar_tab": "Klyntars mod",
+  "block.klyntars.promethiumx": "Promethium X",
+  "item.klyntars.promethium_x": "Promethium X",
+  "block.klyntars.promethiumx_tnt": "Promethium X TNT",
+  "item.klyntars.promethium_x_tnt": "Promethium X TNT",
+  "entity.klyntars.primed_promethiumx_tnt": "Primed Promethium X TNT",
+  "entity.klyntars.venom": "Venom",
+  "entity.klyntars.symbiote": "Symbiote",
+  "entity.klyntars.ghast_projectile": "Meteor",
+  "entity.klyntars.smoke_trail": "Smoke Trail",
+  "entity.klyntars.custom_arrow": "Symbiote Arrow",
+  "entity.klyntars.tentacle_segment": "Tentacle",
+  "entity.klyntars.web_projectile": "Web"
 }
