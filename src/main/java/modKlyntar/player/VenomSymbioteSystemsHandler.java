@@ -126,6 +126,13 @@ public final class VenomSymbioteSystemsHandler {
     private static final Map<UUID, FlightState> FLIGHT_MEMORY = new ConcurrentHashMap<>();
     private static final double STANDING_THRESHOLD_SQR = 1.0E-4D;
     private static final Map<UUID, Vec3> STANDING_LAST_POS = new ConcurrentHashMap<>();
+    /**
+     * Quanti tick di immobilita' servono prima di dichiarare fermo il giocatore. Sul server il
+     * movimento arriva per pacchetti: se in un tick non ne arriva nessuno, posizione e velocita'
+     * risultano identiche e un giocatore in corsa sembrerebbe fermo per un istante.
+     */
+    private static final int STANDING_CONFIRM_TICKS = 4;
+    private static final Map<UUID, Integer> STANDING_STILL_TICKS = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> CLIMB_DEBUG_STATE = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> CLIMB_WALL_STICK_MEMORY = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> CLIMB_CEILING_STICK_MEMORY = new ConcurrentHashMap<>();
@@ -229,6 +236,8 @@ public final class VenomSymbioteSystemsHandler {
             BERSERK_TARGETS.remove(player.getUUID());
             BERSERK_STUCK_MEMORY.remove(player.getUUID());
             FLIGHT_MEMORY.remove(player.getUUID());
+            STANDING_STILL_TICKS.remove(player.getUUID());
+            STANDING_LAST_POS.remove(player.getUUID());
             clearClimbMemory(player);
         }
     }
@@ -323,10 +332,14 @@ public final class VenomSymbioteSystemsHandler {
             Vec3 delta = player.position().subtract(last);
             movedSqr = delta.x * delta.x + delta.z * delta.z;
         }
-        boolean standing = velocitySqr <= STANDING_THRESHOLD_SQR
+        boolean stillNow = velocitySqr <= STANDING_THRESHOLD_SQR
                 && movedSqr <= STANDING_THRESHOLD_SQR
                 && player.onGround();
-        setScore(player, STANDING_OBJECTIVE, standing ? 1 : 0);
+        // il movimento vale subito, l'immobilita' va confermata: cosi' un buco di pacchetti non
+        // fa passare per fermo chi sta camminando
+        int stillTicks = stillNow ? STANDING_STILL_TICKS.getOrDefault(player.getUUID(), 0) + 1 : 0;
+        STANDING_STILL_TICKS.put(player.getUUID(), stillTicks);
+        setScore(player, STANDING_OBJECTIVE, stillTicks >= STANDING_CONFIRM_TICKS ? 1 : 0);
     }
 
     private static void tickFlightCollisionLock(ServerPlayer player) {

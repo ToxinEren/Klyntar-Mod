@@ -4,6 +4,7 @@ import modKlyntar.MyMod;
 import modKlyntar.client.ClientEventHandler;
 import modKlyntar.client.VenomLocomotionClientController;
 import modKlyntar.client.renderer.VenomLocomotionRenderer;
+import modKlyntar.player.VenomAttackBarrageHandler;
 import modKlyntar.player.VenomSymbioteSystemsHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -37,6 +38,34 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle);
+    }
+
+    public static void syncVenomAttackClick() {
+        INSTANCE.sendToServer(new SyncVenomAttackClickPacket());
+    }
+
+    /** un clic sinistro: il pacchetto non porta dati, conta solo il fatto che sia avvenuto */
+    public static class SyncVenomAttackClickPacket {
+        public SyncVenomAttackClickPacket() {
+        }
+
+        public SyncVenomAttackClickPacket(FriendlyByteBuf buf) {
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                ServerPlayer player = ctx.get().getSender();
+                if (player != null) {
+                    VenomAttackBarrageHandler.onAttackClick(player);
+                }
+            });
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     public static class SyncVenomModelPacket {

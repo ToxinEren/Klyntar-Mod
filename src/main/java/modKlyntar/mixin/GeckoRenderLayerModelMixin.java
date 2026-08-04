@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.compat.geckolib.renderlayer.GeckoLayerState;
 import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import org.slf4j.Logger;
@@ -58,7 +59,11 @@ public abstract class GeckoRenderLayerModelMixin {
     private void klyntar$reapplyBaseWalkRunPose(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
                                                 float red, float green, float blue, float alpha, CallbackInfo callbackInfo) {
         AnimationController<GeckoLayerState> controller = klyntar$getVenomActionsController();
-        if (!klyntar$isWalkOrRunAnimation(controller) || this.baseModel == null) {
+        boolean walkOrRun = klyntar$isWalkOrRunAnimation(controller);
+        // le varianti senza gambe lasciano il passo al player: vanno riapplicate anche loro,
+        // ma solo sulle gambe, perche' braccia e busto devono restare nella posa del colpo
+        boolean legFree = klyntar$isLegFreeAnimation(controller) || klyntar$legsShouldFollowPlayer(controller);
+        if ((!walkOrRun && !legFree) || this.baseModel == null) {
             return;
         }
         if (!klyntar$loggedWalkRunReapply) {
@@ -66,14 +71,14 @@ public abstract class GeckoRenderLayerModelMixin {
             KLYNTAR_LOGGER.info("Venom walk/run render reapply active. animation={}", klyntar$getAnimationName(controller.getCurrentRawAnimation()));
         }
 
-        if ("rightArm_player_anchor".equals(this.rightArmBone) && this.rightArm != null) {
+        if (walkOrRun && "rightArm_player_anchor".equals(this.rightArmBone) && this.rightArm != null) {
             ModelPart modelPart = this.baseModel.rightArm;
             RenderUtils.matchModelPartRot(modelPart, this.rightArm);
             GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.rightArm);
             this.rightArm.updatePosition(modelPart.x + 5.0F, 2.0F - modelPart.y, modelPart.z);
         }
 
-        if ("leftArm_player_anchor".equals(this.leftArmBone) && this.leftArm != null) {
+        if (walkOrRun && "leftArm_player_anchor".equals(this.leftArmBone) && this.leftArm != null) {
             ModelPart modelPart = this.baseModel.leftArm;
             RenderUtils.matchModelPartRot(modelPart, this.leftArm);
             GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.leftArm);
@@ -288,7 +293,7 @@ public abstract class GeckoRenderLayerModelMixin {
         if (triggered && this.currentEntity != null && this.currentEntity.tickCount - klyntar$lastOverrideLogTick >= 40) {
             klyntar$lastOverrideLogTick = this.currentEntity.tickCount;
             KLYNTAR_LOGGER.info("Venom right arm vanilla rotation suppressed during triggered animation. state={}, raw={}",
-                    controller.getAnimationState(), controller.getCurrentRawAnimation());
+                    controller.getAnimationState(), klyntar$getAnimationName(controller.getTriggeredAnimation()));
         }
 
         return triggered;
@@ -307,7 +312,8 @@ public abstract class GeckoRenderLayerModelMixin {
         if (controller == null) {
             return false;
         }
-        if (klyntar$isWalkOrRunAnimation(controller)) {
+        if (klyntar$isWalkOrRunAnimation(controller) || klyntar$isLegFreeAnimation(controller)
+                || klyntar$legsShouldFollowPlayer(controller)) {
             return false;
         }
 
@@ -315,7 +321,7 @@ public abstract class GeckoRenderLayerModelMixin {
         if (triggered && this.currentEntity != null && this.currentEntity.tickCount - klyntar$lastLegOverrideLogTick >= 40) {
             klyntar$lastLegOverrideLogTick = this.currentEntity.tickCount;
             KLYNTAR_LOGGER.info("Venom right leg vanilla rotation suppressed during triggered animation. state={}, raw={}",
-                    controller.getAnimationState(), controller.getCurrentRawAnimation());
+                    controller.getAnimationState(), klyntar$getAnimationName(controller.getTriggeredAnimation()));
         }
 
         return triggered;
@@ -339,7 +345,7 @@ public abstract class GeckoRenderLayerModelMixin {
         if (triggered && this.currentEntity != null && this.currentEntity.tickCount - klyntar$lastLeftOverrideLogTick >= 40) {
             klyntar$lastLeftOverrideLogTick = this.currentEntity.tickCount;
             KLYNTAR_LOGGER.info("Venom left arm vanilla rotation suppressed during triggered animation. state={}, raw={}",
-                    controller.getAnimationState(), controller.getCurrentRawAnimation());
+                    controller.getAnimationState(), klyntar$getAnimationName(controller.getTriggeredAnimation()));
         }
 
         return triggered;
@@ -355,7 +361,8 @@ public abstract class GeckoRenderLayerModelMixin {
         }
 
         AnimationController<GeckoLayerState> controller = klyntar$getVenomActionsController();
-        if (controller == null || klyntar$isWalkOrRunAnimation(controller)) {
+        if (controller == null || klyntar$isWalkOrRunAnimation(controller) || klyntar$isLegFreeAnimation(controller)
+                || klyntar$legsShouldFollowPlayer(controller)) {
             return false;
         }
 
@@ -363,7 +370,7 @@ public abstract class GeckoRenderLayerModelMixin {
         if (triggered && this.currentEntity != null && this.currentEntity.tickCount - klyntar$lastLeftLegOverrideLogTick >= 40) {
             klyntar$lastLeftLegOverrideLogTick = this.currentEntity.tickCount;
             KLYNTAR_LOGGER.info("Venom left leg vanilla rotation suppressed during triggered animation. state={}, raw={}",
-                    controller.getAnimationState(), controller.getCurrentRawAnimation());
+                    controller.getAnimationState(), klyntar$getAnimationName(controller.getTriggeredAnimation()));
         }
 
         return triggered;
@@ -381,6 +388,41 @@ public abstract class GeckoRenderLayerModelMixin {
         String currentName = klyntar$getAnimationName(controller.getCurrentRawAnimation());
         String triggeredName = klyntar$getAnimationName(controller.getTriggeredAnimation());
         return klyntar$isWalkOrRunAnimationName(currentName) || klyntar$isWalkOrRunAnimationName(triggeredName);
+    }
+
+    /**
+     * Le copie ".nolegs" delle animazioni d'attacco non toccano le ossa delle gambe apposta: qui
+     * gli anchor devono continuare a seguire il player, altrimenti il passo sparisce comunque.
+     */
+    /**
+     * Le gambe non vanno bloccate mentre il player cammina: la lista bianca per nome non basta,
+     * perche' nei tick fra il clic e l'arrivo del trigger al client resta in scena l'idle, che
+     * congelerebbe il passo proprio all'inizio del colpo. Vale solo per attacchi e idle: le
+     * animazioni di arrampicata e presa le gambe devono poterle piantare davvero.
+     */
+    private boolean klyntar$legsShouldFollowPlayer(AnimationController<GeckoLayerState> controller) {
+        if (controller == null || !(this.currentEntity instanceof LivingEntity living)) {
+            return false;
+        }
+        if (living.walkAnimation.speed() <= 0.01F) {
+            return false;
+        }
+
+        return klyntar$isAttackOrIdle(klyntar$getAnimationName(controller.getCurrentRawAnimation()))
+                || klyntar$isAttackOrIdle(klyntar$getAnimationName(controller.getTriggeredAnimation()));
+    }
+
+    private boolean klyntar$isAttackOrIdle(String animationName) {
+        return animationName.contains(".attack.") || animationName.startsWith("animation.venom.idle");
+    }
+
+    private boolean klyntar$isLegFreeAnimation(AnimationController<GeckoLayerState> controller) {
+        if (controller == null) {
+            return false;
+        }
+
+        return klyntar$getAnimationName(controller.getCurrentRawAnimation()).endsWith(".nolegs")
+                || klyntar$getAnimationName(controller.getTriggeredAnimation()).endsWith(".nolegs");
     }
 
     private boolean klyntar$isWalkOrRunAnimationName(String animationName) {

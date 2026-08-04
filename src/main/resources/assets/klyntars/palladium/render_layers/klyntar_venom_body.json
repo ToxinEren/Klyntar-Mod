@@ -133,7 +133,10 @@
                 "elytra_stop_trigger": "animation.venom.elytra.stop",
                 "changes_skin_trigger": "animation.venom.changes_skin",
                 "growl_trigger": "animation.venom.idle2",
-                "assimilate_trigger": "animation.venom.transformation"
+                "assimilate_trigger": "animation.venom.transformation",
+                "attack_2_nolegs_trigger": "animation.venom.attack.2.nolegs",
+                "attack_3_nolegs_trigger": "animation.venom.attack.3.nolegs",
+                "attack_1_nolegs_trigger": "animation.venom.attack.1.nolegs"
             }
         },
         {

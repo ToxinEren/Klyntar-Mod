@@ -34,7 +34,7 @@ public final class VenomBedrockAnimationHandler {
             "Venom.Anim.Elytra"
     };
     private static final String FALLING_ATTACK_REQUEST_OBJECTIVE = "Venom.FallingAttack.Request";
-    private static final String CLIMB_WALL_OBJECTIVE = "Venom.Anim.ClimbWall";
+    private static final String CLIMB_WALL_OBJECTIVE = "Venom.Anim.ClimbWall";
     private static final String SHIELD_OBJECTIVE = "Venom.Anim.Shield";
     private static final String CLIMB_HANG_OBJECTIVE = "Venom.Anim.ClimbHang";
     private static final String CLIMB_IMPULSE_OBJECTIVE = "Venom.Anim.ClimbImpulse";
@@ -87,7 +87,7 @@ public final class VenomBedrockAnimationHandler {
             return;
         }
 
-        if (isShieldAnimationActive(player) || isClimbAnimationActive(player)) {
+        if (isShieldAnimationActive(player) || isClimbAnimationActive(player) || isBarrageAnimationActive(player)) {
             clearPulseScores(player);
             memory.objective = null;
             memory.lastPosition = player.position();
@@ -180,10 +180,18 @@ public final class VenomBedrockAnimationHandler {
         return requested;
     }
 
-    private static boolean isShieldAnimationActive(ServerPlayer player) {
-        return getScore(player, SHIELD_OBJECTIVE) > 0;
-    }
-
+    private static boolean isShieldAnimationActive(ServerPlayer player) {
+        return getScore(player, SHIELD_OBJECTIVE) > 0;
+    }
+
+    /**
+     * Le animazioni del moveset girano sullo stesso controller di idle, walk e run: se questi
+     * continuassero a pulsare durante un colpo, il controller le fonderebbe insieme.
+     */
+    private static boolean isBarrageAnimationActive(ServerPlayer player) {
+        return getScore(player, VenomAttackBarrageHandler.PLAYING_OBJECTIVE) > 0;
+    }
+
     private static boolean isClimbAnimationActive(ServerPlayer player) {
         return getScore(player, CLIMB_WALL_OBJECTIVE) > 0
                 || getScore(player, CLIMB_HANG_OBJECTIVE) > 0
