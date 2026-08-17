@@ -4050,16 +4050,13 @@
     "enablevenomspikes": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomspikeicon.png",
-      "list_index": 3,
+      "list_index": -1,
       "title": "Tendril explosion",
       "bar_color": "black",
-      "hidden_in_bar": false,
-      "hidden": false,
+      "hidden_in_bar": true,
+      "hidden": true,
       "start_value": 0,
-      "gui_position": [
-        0,
-        1.5
-      ],
+      "gui_position": "null",
       "max_value": 8,
       "conditions": {
         "enabling": [
@@ -8571,6 +8568,468 @@
                 "max_score": 1
               }
             ]
+          }
+        ]
+      }
+    },
+    "symbiontpull": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/tentaclejabicon.png",
+      "list_index": 5,
+      "title": "Symbiont Pull",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "Symbiote tendrils seize up to 10 foes within 12 blocks, hoist them 5 blocks high and slam them down for 28 damage. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Pull dummy",
+        "scoreboard players set @s Venom.Sym.Pull 1",
+        "playsound minecraft:entity.wither.shoot player @a ~ ~ ~ 0.7 0.6"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "symbiotestrike": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venomscratchmark.png",
+      "list_index": 10,
+      "title": "Symbiote Strike",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "Rides the tendrils upward, then dashes through up to 8 foes within 9 blocks for 5 damage each, ending on a 24 damage strike. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Strike dummy",
+        "scoreboard players set @s Venom.Sym.Strike 1",
+        "playsound minecraft:entity.warden.sonic_boom player @a ~ ~ ~ 0.6 1.4"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "antivenomtempest": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venomsmash.png",
+      "list_index": 15,
+      "title": "Antivenom Tempest",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "A symbiote vortex lifts everything within 8 blocks, drops it and detonates for 26 damage. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Tempest dummy",
+        "scoreboard players set @s Venom.Sym.Tempest 1",
+        "playsound minecraft:entity.evoker.cast_spell player @a ~ ~ ~ 0.8 0.7"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "antivenombomb": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/impactweb.png",
+      "list_index": 16,
+      "title": "Antivenom Bomb",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "Hurls a symbiote bomb that bursts on impact, dealing 18 damage in a 4 block radius. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Bomb dummy",
+        "scoreboard players set @s Venom.Sym.Bomb 1",
+        "playsound minecraft:entity.snowball.throw player @a ~ ~ ~ 0.9 0.6"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "ragemode": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "list_index": 17,
+      "title": "Rage Mode",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "Unleashes the symbiote's fury for 20 seconds: regeneration, absorption and strength, and every other symbiote power recharges four times faster. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Rage dummy",
+        "scoreboard players set @s Venom.Sym.Rage 1",
+        "playsound minecraft:entity.warden.roar player @a ~ ~ ~ 1.0 0.7"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "symbioteblast": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venomsmash.png",
+      "list_index": 3,
+      "title": "Symbiote Blast",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "description": "Detonates the symbiote twice in quick succession, 30 damage each within 6 blocks. No cooldown.",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Sym.Blast dummy",
+        "scoreboard players set @s Venom.Sym.Blast 1",
+        "playsound minecraft:entity.wither.break_block player @a ~ ~ ~ 0.9 0.6"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venom",
+            "ability": "enablevenom",
+            "min": 20,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:venom",
+                "ability": "attack"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 5,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "venombedrocksymbiontpullanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_pull_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 1,
+            "max_score": 1
+          }
+        ]
+      }
+    },
+    "venombedrocksymbiotestrikeanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_strike_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 2,
+            "max_score": 2
+          }
+        ]
+      }
+    },
+    "venombedrockantivenomtempestanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_tempest_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 3,
+            "max_score": 3
+          }
+        ]
+      }
+    },
+    "venombedrockantivenombombanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_bomb_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 4,
+            "max_score": 4
+          }
+        ]
+      }
+    },
+    "venombedrocksymbioteblastanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_blast_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 5,
+            "max_score": 5
+          }
+        ]
+      }
+    },
+    "venombedrockragemodeanimation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "sym_rage_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Sym.Anim",
+            "min_score": 6,
+            "max_score": 6
           }
         ]
       }

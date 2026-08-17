@@ -878,7 +878,8 @@ public final class VenomSymbioteSystemsHandler {
     }
 
     private static void clearCombatTargetsIfFree(ServerPlayer player) {
-        if (getScore(player, FEND_OFF_OBJECTIVE, false) > 0 || getScore(player, BERSERK_REGEN_OBJECTIVE, false) > 0) {
+        if (getScore(player, FEND_OFF_OBJECTIVE, false) > 0 || getScore(player, BERSERK_REGEN_OBJECTIVE, false) > 0
+                || VenomSymbiotePowersHandler.isShowingTentacles(player)) {
             return;
         }
         ModNetwork.syncVenomCombatTargets(player, java.util.List.of());

@@ -28,9 +28,40 @@ import java.util.concurrent.ConcurrentHashMap;
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID, value = Dist.CLIENT)
 public final class VenomLocomotionRenderer {
     private static final ResourceLocation ARM_TEXTURE = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/venom_tentacle_segment.png");
+    /** la stessa texture in bianco, per la forma anti-venom */
+    private static final ResourceLocation ARM_TEXTURE_ANTI = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/antivenom_tentacle_segment.png");
+    /**
+     * Texture del giocatore che si sta disegnando. I tentacoli si disegnano anche per gli altri
+     * giocatori, quindi non basta sapere la forma di chi guarda: la si legge dall'obiettivo che
+     * il server tiene aggiornato per ciascuno.
+     */
+    private static ResourceLocation armTexture = ARM_TEXTURE;
+
+    /** forma simbionte di ogni giocatore, aggiornata dal server via SyncSymbioteFormPacket */
+    private static final Map<Integer, String> FORMS = new ConcurrentHashMap<>();
+
+    public static void updateForm(int entityId, String form) {
+        if (form == null || form.isEmpty()) {
+            FORMS.remove(entityId);
+        } else {
+            FORMS.put(entityId, form);
+        }
+    }
+
+    /** bianca in forma anti-venom, nera altrimenti */
+    public static ResourceLocation textureFor(Player player) {
+        return "antivenom".equals(FORMS.get(player.getId())) ? ARM_TEXTURE_ANTI : ARM_TEXTURE;
+    }
     private static final int ARM_SEGMENTS = 18;
     private static final int VISIBLE_ARMS = 6;
     private static final int ARM_COLOR = 18;
+    /**
+     * I vertici vengono tinti di questo colore, che moltiplica la texture: con 18 su tutti i
+     * canali qualunque immagine esce nera. Per anti-venom serve il valore chiaro, altrimenti la
+     * texture bianca non si vedrebbe comunque.
+     */
+    private static final int ARM_COLOR_ANTI = 235;
+    private static int armColor = ARM_COLOR;
     private static final float TENTACLE_THICKNESS_SCALE = 1.5F;
     private static final float TENTACLE_RADIUS = 0.085F * TENTACLE_THICKNESS_SCALE;
     private static final float TENTACLE_TIP_RADIUS = 0.018F * TENTACLE_THICKNESS_SCALE;
@@ -109,7 +140,10 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
+                armTexture = textureFor(player);
+                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
                 renderPlayerArms(player, state.anchors, event.getPartialTick(), poseStack, buffer, gameTime);
+                buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
         }
         List<Integer> staleGrabTargets = new ArrayList<>();
@@ -121,7 +155,10 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
+                armTexture = textureFor(player);
+                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
                 renderPlayerGrabTentacle(player, state.target, event.getPartialTick(), poseStack, buffer, gameTime);
+                buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
         }
         List<Integer> staleCombatTargets = new ArrayList<>();
@@ -133,14 +170,16 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
+                armTexture = textureFor(player);
+                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
                 renderPlayerCombatTentacles(player, state.targets, event.getPartialTick(), poseStack, buffer, gameTime);
+                buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
         }
         poseStack.popPose();
         staleEntries.forEach(ANCHORS::remove);
         staleGrabTargets.forEach(GRAB_TARGETS::remove);
         staleCombatTargets.forEach(COMBAT_TARGETS::remove);
-        buffer.endBatch(RenderType.entityCutoutNoCull(ARM_TEXTURE));
     }
 
     private static void renderPlayerArms(Player player, List<Vec3> anchors, float partialTick, PoseStack poseStack, MultiBufferSource buffer, long gameTime) {
@@ -204,7 +243,7 @@ public final class VenomLocomotionRenderer {
     }
 
     private static void renderArmPath(Vec3 start, Vec3 end, int armIndex, PoseStack poseStack, MultiBufferSource buffer, long gameTime) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(ARM_TEXTURE));
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(armTexture));
         Vec3 delta = end.subtract(start);
         if (delta.lengthSqr() < 0.01D) {
             return;
@@ -282,10 +321,10 @@ public final class VenomLocomotionRenderer {
         float nx = (float) normalVector.x;
         float ny = (float) normalVector.y;
         float nz = (float) normalVector.z;
-        consumer.vertex(matrix, (float) a.x, (float) a.y, (float) a.z).color(ARM_COLOR, ARM_COLOR, ARM_COLOR, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) b.x, (float) b.y, (float) b.z).color(ARM_COLOR, ARM_COLOR, ARM_COLOR, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) c.x, (float) c.y, (float) c.z).color(ARM_COLOR, ARM_COLOR, ARM_COLOR, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) d.x, (float) d.y, (float) d.z).color(ARM_COLOR, ARM_COLOR, ARM_COLOR, 255).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) a.x, (float) a.y, (float) a.z).color(armColor, armColor, armColor, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) b.x, (float) b.y, (float) b.z).color(armColor, armColor, armColor, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) c.x, (float) c.y, (float) c.z).color(armColor, armColor, armColor, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) d.x, (float) d.y, (float) d.z).color(armColor, armColor, armColor, 255).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
     }
 
     private record AnchorState(List<Vec3> anchors, long gameTime) {

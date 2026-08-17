@@ -1,0 +1,909 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.antivenom_bomb",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 3.5,
+        "visible_bounds_offset": [
+          0,
+          1.25,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "ball",
+          "pivot": [
+            0,
+            8,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                0,
+                -6
+              ],
+              "size": [
+                12,
+                12,
+                12
+              ],
+              "pivot": [
+                0,
+                6,
+                0
+              ],
+              "rotation": [
+                -45,
+                45,
+                90
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -6,
+                0,
+                -6
+              ],
+              "size": [
+                12,
+                12,
+                12
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "symbiote_powers3",
+          "parent": "ball",
+          "pivot": [
+            0,
+            14,
+            1
+          ],
+          "rotation": [
+            90,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "regene23",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            1.5,
+            20,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                18.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_86",
+          "parent": "regene23",
+          "pivot": [
+            1.5,
+            20,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                18.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_87",
+          "parent": "regene0_86",
+          "pivot": [
+            1.5,
+            20,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0.5,
+                19,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_88",
+          "parent": "regene0_87",
+          "pivot": [
+            1,
+            20.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0.5,
+                19,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_89",
+          "parent": "regene0_88",
+          "pivot": [
+            1,
+            20.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                1,
+                19.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene27",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            -2.5,
+            20,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                18.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_102",
+          "parent": "regene27",
+          "pivot": [
+            -2.5,
+            20,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                18.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_103",
+          "parent": "regene0_102",
+          "pivot": [
+            -2.5,
+            20,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3.5,
+                19,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_104",
+          "parent": "regene0_103",
+          "pivot": [
+            -3,
+            20.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3.5,
+                19,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_105",
+          "parent": "regene0_104",
+          "pivot": [
+            -3,
+            20.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                19.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene28",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            -2.5,
+            10,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                8.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_106",
+          "parent": "regene28",
+          "pivot": [
+            -2.5,
+            10,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                8.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_107",
+          "parent": "regene0_106",
+          "pivot": [
+            -2.5,
+            10,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3.5,
+                9,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_108",
+          "parent": "regene0_107",
+          "pivot": [
+            -3,
+            10.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3.5,
+                9,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_109",
+          "parent": "regene0_108",
+          "pivot": [
+            -3,
+            10.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                9.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene29",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            1.5,
+            10,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                8.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_110",
+          "parent": "regene29",
+          "pivot": [
+            1.5,
+            10,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                8.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_111",
+          "parent": "regene0_110",
+          "pivot": [
+            1.5,
+            10,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0.5,
+                9,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_112",
+          "parent": "regene0_111",
+          "pivot": [
+            1,
+            10.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0.5,
+                9,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_113",
+          "parent": "regene0_112",
+          "pivot": [
+            1,
+            10.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                1,
+                9.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene30",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            5.5,
+            15,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                4,
+                13.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_114",
+          "parent": "regene30",
+          "pivot": [
+            5.5,
+            15,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                4,
+                13.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_115",
+          "parent": "regene0_114",
+          "pivot": [
+            5.5,
+            15,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                4.5,
+                14,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_116",
+          "parent": "regene0_115",
+          "pivot": [
+            5,
+            15.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                4.5,
+                14,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_117",
+          "parent": "regene0_116",
+          "pivot": [
+            5,
+            15.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                5,
+                14.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene31",
+          "parent": "symbiote_powers3",
+          "pivot": [
+            -5.5,
+            15,
+            1
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -7,
+                13.5,
+                -5
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "uv": [
+                0,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_118",
+          "parent": "regene31",
+          "pivot": [
+            -5.5,
+            15,
+            -5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -7,
+                13.5,
+                -10.75
+              ],
+              "size": [
+                3,
+                3,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                18,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_119",
+          "parent": "regene0_118",
+          "pivot": [
+            -5.5,
+            15,
+            -10.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -6.5,
+                14,
+                -16.5
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "uv": [
+                36,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_120",
+          "parent": "regene0_119",
+          "pivot": [
+            -6,
+            15.5,
+            -16.5
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -6.5,
+                14,
+                -22.25
+              ],
+              "size": [
+                2,
+                2,
+                6
+              ],
+              "inflate": -0.25,
+              "uv": [
+                36,
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "name": "regene0_121",
+          "parent": "regene0_120",
+          "pivot": [
+            -6,
+            15.5,
+            -22
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                14.5,
+                -28
+              ],
+              "size": [
+                1,
+                1,
+                6
+              ],
+              "uv": [
+                0,
+                41
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -87,7 +87,8 @@ public final class VenomBedrockAnimationHandler {
             return;
         }
 
-        if (isShieldAnimationActive(player) || isClimbAnimationActive(player) || isBarrageAnimationActive(player)) {
+        if (isShieldAnimationActive(player) || isClimbAnimationActive(player) || isBarrageAnimationActive(player)
+                || isSymbiotePowerAnimationActive(player)) {
             clearPulseScores(player);
             memory.objective = null;
             memory.lastPosition = player.position();
@@ -188,6 +189,11 @@ public final class VenomBedrockAnimationHandler {
      * Le animazioni del moveset girano sullo stesso controller di idle, walk e run: se questi
      * continuassero a pulsare durante un colpo, il controller le fonderebbe insieme.
      */
+    /** anche i poteri simbionte girano su venom_actions: idle, walk e run li coprirebbero */
+    private static boolean isSymbiotePowerAnimationActive(ServerPlayer player) {
+        return getScore(player, VenomSymbiotePowersHandler.ANIM_PLAYING) > 0;
+    }
+
     private static boolean isBarrageAnimationActive(ServerPlayer player) {
         return getScore(player, VenomAttackBarrageHandler.PLAYING_OBJECTIVE) > 0;
     }

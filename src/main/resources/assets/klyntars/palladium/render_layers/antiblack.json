@@ -1,20 +1,20 @@
 {
-    "model_layer": "klyntars:spikes",
+    "type": "palladium:skin_overlay",
     "texture": {
-        "base": "klyntars:textures/models/antispikes.png",
+        "base": "klyntars:textures/models/black.png",
         "transformers": [
             {
             "type": "palladium:alpha_mask",
-            "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
+            "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
             }],
             "variables": {
                 "MASK": {
                     "type": "palladium:ability_integer_property",
                     "power": "klyntars:antivenom",
-                    "ability": "enablevenomspikes",
+                    "ability": "enablevenombody",
                     "property": "value"
                 }
             },
-            "output": "klyntars:textures/models/antispikes_#MASK.png"
+            "output": "klyntars:textures/models/anti_black_#MASK.png"
 }
 }

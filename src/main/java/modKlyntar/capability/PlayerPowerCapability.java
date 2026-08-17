@@ -40,6 +40,8 @@ public class PlayerPowerCapability {
 
     public static final String VENOM_TAG = "Klyntar.Venom";
     public static final String CARNAGE_TAG = "Klyntar.Carnage";
+    /** 1 mentre il giocatore e' in forma anti-venom: lo leggono i renderer dei tentacoli */
+    public static final String ANTIVENOM_OBJECTIVE = "Klyntar.AntiVenom";
     private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
 
     @SubscribeEvent
@@ -115,6 +117,7 @@ public class PlayerPowerCapability {
     private static void syncPalladiumPower(ServerPlayer player, String powerPath) {
         callPalladiumSuperpower("removeSuperpower", player, "venom");
         callPalladiumSuperpower("removeSuperpower", player, "carnage");
+        callPalladiumSuperpower("removeSuperpower", player, "antivenom");
         if (!callPalladiumSuperpower("addSuperpower", player, powerPath)
                 && !callPalladiumSuperpower("hasSuperpower", player, powerPath)) {
             LOGGER.error("Palladium did not add superpower klyntars:{} to {}", powerPath, player.getGameProfile().getName());
@@ -155,6 +158,17 @@ public class PlayerPowerCapability {
     private static void setInfectionScore(ServerPlayer player, boolean infected) {
         runServerCommand(player, "scoreboard objectives add Klyntar.SymbioteInfected dummy");
         runServerCommand(player, "scoreboard players set " + player.getGameProfile().getName() + " Klyntar.SymbioteInfected " + (infected ? 1 : 0));
+    }
+
+    /**
+     * Segna la forma anti-venom su un obiettivo, che il client legge per disegnare i tentacoli
+     * bianchi invece che neri. Serve un obiettivo perche' i tentacoli si disegnano anche per gli
+     * altri giocatori, non solo per il proprio.
+     */
+    private static void setAntiVenomScore(ServerPlayer player, boolean anti) {
+        runServerCommand(player, "scoreboard objectives add " + ANTIVENOM_OBJECTIVE + " dummy");
+        runServerCommand(player, "scoreboard players set " + player.getGameProfile().getName()
+                + " " + ANTIVENOM_OBJECTIVE + " " + (anti ? 1 : 0));
     }
 
     private static void applyVenomSuperpowerBridge(ServerPlayer player) {
@@ -221,14 +235,16 @@ public class PlayerPowerCapability {
             if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
                 player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(carnage ? 10.0D : 8.0D);
             }
-            String powerPath = carnage ? "carnage" : "venom";
+            String powerPath = carnage ? "carnage" : ("antivenom".equals(form) ? "antivenom" : "venom");
             if (!powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
                 syncPalladiumPower(player, powerPath);
             }
             if (!carnage) {
                 applyVenomSuperpowerBridge(player);
             }
-            ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(carnage ? "carnage" : "venom"));
+            setAntiVenomScore(player, "antivenom".equals(powerPath));
+            ModNetwork.syncSymbioteForm(player, powerPath);
+            ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(powerPath));
             player.refreshDimensions();
         }
 
@@ -255,7 +271,10 @@ public class PlayerPowerCapability {
             }
             removePalladiumPower(player, "venom");
             removePalladiumPower(player, "carnage");
+            removePalladiumPower(player, "antivenom");
             setInfectionScore(player, false);
+            setAntiVenomScore(player, false);
+            ModNetwork.syncSymbioteForm(player, "");
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(""));
             player.refreshDimensions();
         }
@@ -300,7 +319,14 @@ public class PlayerPowerCapability {
                 return "";
             }
             String normalized = form.trim().toLowerCase();
-            return "carnage".equals(normalized) ? "carnage" : "venom";
+            if ("carnage".equals(normalized)) {
+                return "carnage";
+            }
+            // anti-venom e' Venom con un'altra pelle: stesse abilita', stesse statistiche
+            if ("antivenom".equals(normalized) || "anti-venom".equals(normalized)) {
+                return "antivenom";
+            }
+            return "venom";
         }
     }
 

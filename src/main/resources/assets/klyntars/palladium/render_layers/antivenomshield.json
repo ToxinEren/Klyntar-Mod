@@ -1,4 +1,4 @@
-﻿{
+{
     "model": "klyntars:geo/venomshield.geo.json",
     "type": "geckolib:default",
     "texture": {
@@ -13,7 +13,7 @@
             "MASK": {
                 "type": "palladium:ability_integer_property",
                 "power": "klyntars:antivenom",
-                "ability": "enableantivenomshield",
+                "ability": "enablevenomshield",
                 "property": "value"
             }
         },

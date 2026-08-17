@@ -39,6 +39,7 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle);
+        INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle);
     }
 
     public static void syncVenomAttackClick() {
@@ -100,6 +101,7 @@ public class ModNetwork {
     }
 
     public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors, boolean active) {
+        assicuraForma(player);
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomLocomotionPacket(player.getId(), anchors, active));
     }
 
@@ -179,6 +181,7 @@ public class ModNetwork {
 
 
     public static void syncVenomGrabTentacle(ServerPlayer player, Vec3 target) {
+        assicuraForma(player);
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomGrabTentaclePacket(player.getId(), target));
     }
 
@@ -213,6 +216,7 @@ public class ModNetwork {
         }
     }
     public static void syncVenomCombatTargets(ServerPlayer player, List<Vec3> targets) {
+        assicuraForma(player);
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
     }
 
@@ -326,5 +330,57 @@ public class ModNetwork {
             return false;
         }
         return player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective).getScore() > 0;
+    }
+
+    /**
+     * Dice ai client quale forma simbionte ha un giocatore, per disegnargli i tentacoli del
+     * colore giusto. Va in broadcast perche' i tentacoli si vedono anche addosso agli altri:
+     * la scoreboard non serviva, gli obiettivi dummy non arrivano ai client.
+     */
+    public static void syncSymbioteForm(ServerPlayer player, String form) {
+        INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncSymbioteFormPacket(player.getId(), form));
+    }
+
+    public static class SyncSymbioteFormPacket {
+        private final int entityId;
+        private final String form;
+
+        public SyncSymbioteFormPacket(int entityId, String form) {
+            this.entityId = entityId;
+            this.form = form == null ? "" : form;
+        }
+
+        public SyncSymbioteFormPacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readVarInt();
+            this.form = buf.readUtf();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeVarInt(entityId);
+            buf.writeUtf(form);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateForm(entityId, form));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
+    /** ultima forma comunicata a ciascun giocatore, per non ripetere il pacchetto ogni tick */
+    private static final java.util.Map<Integer, String> ULTIMA_FORMA = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /**
+     * Assicura che i client sappiano la forma di questo giocatore prima di disegnargli i
+     * tentacoli. Mandarla solo al momento della trasformazione non basta: chi entra dopo, o chi
+     * era gia' trasformato al login, non la riceverebbe mai.
+     */
+    public static void assicuraForma(ServerPlayer player) {
+        String forma = player.getCapability(modKlyntar.capability.PlayerPowerCapability.PLAYER_POWER)
+                .map(modKlyntar.capability.PlayerPowerCapability.PlayerPower::getForm).orElse("");
+        if (!forma.equals(ULTIMA_FORMA.get(player.getId()))) {
+            ULTIMA_FORMA.put(player.getId(), forma);
+            syncSymbioteForm(player, forma);
+        }
     }
 }

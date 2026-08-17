@@ -68,6 +68,21 @@ public class MyMod {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
+    /** ricalco di spidermanaddon:venom_particle dello Spider-Man pack */
+    public static final RegistryObject<net.minecraft.core.particles.SimpleParticleType> VENOM_PARTICLE =
+            PARTICLE_TYPES.register("venom_particle",
+                    () -> new net.minecraft.core.particles.SimpleParticleType(false));
+
+    /** variante chiara usata dai poteri antivenom */
+    public static final RegistryObject<net.minecraft.core.particles.SimpleParticleType> ANTIVENOM_PARTICLE =
+            PARTICLE_TYPES.register("antivenom_particle",
+                    () -> new net.minecraft.core.particles.SimpleParticleType(false));
+
+    /** lo schizzo grosso che la bomba lascia sul terreno */
+    public static final RegistryObject<net.minecraft.core.particles.SimpleParticleType> SYMBIOTE_SPLASH =
+            PARTICLE_TYPES.register("antivenom_splash",
+                    () -> new net.minecraft.core.particles.SimpleParticleType(false));
+
     public static final RegistryObject<Block> PROMETHIUMX_BLOCK = BLOCKS.register("promethiumx", PromethiumXBlock::new);
     public static final RegistryObject<Item> PROMETHIUMX_BLOCK_ITEM = ITEMS.register("promethium_x",
             () -> new BlockItem(PROMETHIUMX_BLOCK.get(), new Item.Properties()));
@@ -105,6 +120,17 @@ public class MyMod {
                     .setTrackingRange(10)
                     .setUpdateInterval(10)
                     .build(new ResourceLocation(MOD_ID, "primed_promethiumx_tnt").toString()));
+
+    /** la bomba simbiotica dell'Antivenom Bomb, col modello preso dallo Spider-Man pack */
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.AntivenomBombEntity>> ANTIVENOM_BOMB_ENTITY =
+            ENTITY_TYPES.register("antivenom_bomb",
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.AntivenomBombEntity>of(
+                                    modKlyntar.entity.custom.AntivenomBombEntity::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .setTrackingRange(64)
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .build("antivenom_bomb"));
 
     public static final RegistryObject<EntityType<GhastProjectileEntity>> GHAST_PROJECTILE_ENTITY = ENTITY_TYPES.register("ghast_projectile",
             () -> EntityType.Builder.<GhastProjectileEntity>of(GhastProjectileEntity::new, MobCategory.MISC)

@@ -39,6 +39,8 @@ public final class VenomFendOffEnemiesHandler {
     private static final int ATTACK_INTERVAL_TICKS = 10;
     private static final Map<UUID, Map<Integer, Long>> TARGET_COOLDOWNS = new ConcurrentHashMap<>();
     private static final Map<UUID, Set<UUID>> PLAYER_AGGRESSORS = new ConcurrentHashMap<>();
+    /** chi ha braccia in scena adesso: serve a non calpestare i poteri simbionte */
+    private static final Set<UUID> SHOWING_ARMS = ConcurrentHashMap.newKeySet();
 
     private VenomFendOffEnemiesHandler() {
     }
@@ -56,7 +58,11 @@ public final class VenomFendOffEnemiesHandler {
         if (active <= 0) {
             TARGET_COOLDOWNS.remove(player.getUUID());
             PLAYER_AGGRESSORS.remove(player.getUUID());
-            ModNetwork.syncVenomCombatTargets(player, List.of());
+            // il canale dei tentacoli e' in comune con i poteri simbionte: va svuotato una
+            // volta sola allo spegnimento, non a ogni tick, o cancella i loro bersagli
+            if (SHOWING_ARMS.remove(player.getUUID())) {
+                ModNetwork.syncVenomCombatTargets(player, List.of());
+            }
             return;
         }
 
@@ -99,6 +105,11 @@ public final class VenomFendOffEnemiesHandler {
         }
 
         cleanupCooldowns(cooldowns, gameTime);
+        if (targetCenters.isEmpty()) {
+            SHOWING_ARMS.remove(player.getUUID());
+        } else {
+            SHOWING_ARMS.add(player.getUUID());
+        }
         ModNetwork.syncVenomCombatTargets(player, targetCenters);
     }
 

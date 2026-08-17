@@ -38,7 +38,8 @@ public class ClientSetup {
     	EntityRenderers.register(MyMod.SYMBIOTE_ENTITY.get(), SymbioteRenderer::new);
     	EntityRenderers.register(MyMod.VENOM_ENTITY2.get(), VenomRenderer::new);
     	EntityRenderers.register(MyMod.SMOKE_TRAIL_ENTITY.get(), SmokeTrailRenderer::new);
-    	EntityRenderers.register(MyMod.GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
+    	EntityRenderers.register(MyMod.GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
+    	EntityRenderers.register(MyMod.ANTIVENOM_BOMB_ENTITY.get(), modKlyntar.client.renderer.AntivenomBombRenderer::new);
     	EntityRenderers.register(MyMod.PROMETHIUMX_TNT_ENTITY.get(), PrimedPromethiumXTntRenderer::new);
     	EntityRenderers.register(MyMod.CUSTOM_ARROW.get(), CustomArrowRenderer::new);
     	EntityRenderers.register(MyMod.TENTACLE_SEGMENT.get(), TentacleSegmentRenderer::new);
@@ -52,13 +53,24 @@ public class ClientSetup {
         event.registerEntityRenderer(MyMod.SYMBIOTE_ENTITY.get(), SymbioteRenderer::new);
         event.registerEntityRenderer(MyMod.VENOM_ENTITY2.get(), VenomRenderer::new);
         event.registerEntityRenderer(MyMod.SMOKE_TRAIL_ENTITY.get(), SmokeTrailRenderer::new);
-        event.registerEntityRenderer(MyMod.GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
+        event.registerEntityRenderer(MyMod.GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
+        event.registerEntityRenderer(MyMod.ANTIVENOM_BOMB_ENTITY.get(), modKlyntar.client.renderer.AntivenomBombRenderer::new);
         event.registerEntityRenderer(MyMod.PROMETHIUMX_TNT_ENTITY.get(), PrimedPromethiumXTntRenderer::new);
         event.registerEntityRenderer(MyMod.CUSTOM_ARROW.get(), CustomArrowRenderer::new);
         event.registerEntityRenderer(MyMod.TENTACLE_SEGMENT.get(), TentacleSegmentRenderer::new);
         //event.registerEntityRenderer(MyMod.VENOM_PLAYER_ENTITY.get(), VenomPlayerRenderer::new);
     }
 
+
+    @SubscribeEvent
+    public static void onRegisterParticleProviders(net.minecraftforge.client.event.RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(MyMod.VENOM_PARTICLE.get(),
+                modKlyntar.client.particle.VenomSymbioteParticle.Provider::new);
+        event.registerSpriteSet(MyMod.ANTIVENOM_PARTICLE.get(),
+                modKlyntar.client.particle.VenomSymbioteParticle.Provider::new);
+        event.registerSpriteSet(MyMod.SYMBIOTE_SPLASH.get(),
+                modKlyntar.client.particle.SymbioteSplashParticle.Provider::new);
+    }
 
     /** i modelli piatti usati nell'inventario non sono referenziati da nessun item: vanno registrati a mano */
     @SubscribeEvent

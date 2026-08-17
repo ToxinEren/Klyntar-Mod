@@ -1,0 +1,47 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "type": "palladium:skin_overlay",
+            "texture": {
+                "base": "klyntars:textures/models/blackcover.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "klyntars:antivenom",
+                        "ability": "enablesymbiotecover",
+                        "property": "value"
+                    }
+                },
+                "output": "klyntars:textures/models/anti_blackcover_#MASK.png"
+            }
+        },
+        {
+            "type": "palladium:skin_overlay",
+            "texture": {
+                "base": "klyntars:textures/models/redcover.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                    }
+                ],
+                "variables": {
+                    "MASK": {
+                        "type": "palladium:ability_integer_property",
+                        "power": "klyntars:carnage",
+                        "ability": "enablesymbiotecover",
+                        "property": "value"
+                    }
+                },
+                "output": "klyntars:textures/models/anti_redcover_#MASK.png"
+            }
+        }
+    ]
+}

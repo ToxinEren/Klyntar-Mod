@@ -1,7 +1,7 @@
 {
     "model": "klyntars:geo/venom_bedrock_my_teeth.geo.json",
     "type": "geckolib:default",
-    "texture": "klyntars:textures/entity/venom/venom2.png",
+    "texture": "klyntars:textures/entity/venom/antivenom2.png",
     "animation_file": "klyntars:animations/venom_bedrock.animation.json",
     "animation_controller": [
         {
