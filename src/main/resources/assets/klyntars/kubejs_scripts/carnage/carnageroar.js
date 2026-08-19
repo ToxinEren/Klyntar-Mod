@@ -1,7 +1,7 @@
-﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('klyntar/carnageroar','klyntars:carnage', 10, (builder) => {
+PalladiumEvents.registerAnimations((event) => {
+    event.registerForPower('klyntar/carnageroar','klyntars:wip', 10, (builder) => {
         // animation part
-        const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'roar', builder.getPartialTicks());
+        const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:wip', 'roar', builder.getPartialTicks());
 
         if (builder.isFirstPerson()) {
             if (progress > 0.0) {

@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,7 +20,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
+import java.lang.reflect.Method;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,8 @@ public final class VenomLocomotionRenderer {
     private static final ResourceLocation ARM_TEXTURE = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/venom_tentacle_segment.png");
     /** la stessa texture in bianco, per la forma anti-venom */
     private static final ResourceLocation ARM_TEXTURE_ANTI = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/antivenom_tentacle_segment.png");
+    /** e in rosso, per la forma carnage */
+    private static final ResourceLocation ARM_TEXTURE_CARN = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/carnage_tentacle_segment.png");
     /**
      * Texture del giocatore che si sta disegnando. I tentacoli si disegnano anche per gli altri
      * giocatori, quindi non basta sapere la forma di chi guarda: la si legge dall'obiettivo che
@@ -48,9 +54,53 @@ public final class VenomLocomotionRenderer {
         }
     }
 
-    /** bianca in forma anti-venom, nera altrimenti */
+    private static Method metodoPoteri;
+    private static boolean poteriCercati;
+
+    /**
+     * Legge il superpotere che Palladium ha davvero assegnato al giocatore.
+     *
+     * <p>Piu' affidabile del messaggio mandato al momento della trasformazione: quello arriva
+     * una sola volta, quindi chi era gia' trasformato al login, o chi riceve il potere per altre
+     * vie, non verrebbe mai riconosciuto.</p>
+     */
+    private static String formaDaPalladium(Player player) {
+        if (!poteriCercati) {
+            poteriCercati = true;
+            try {
+                metodoPoteri = Class.forName("net.threetag.palladium.power.SuperpowerUtil")
+                        .getMethod("getSuperpowerIds", LivingEntity.class);
+            } catch (ReflectiveOperationException ignorata) {
+                metodoPoteri = null;
+            }
+        }
+        if (metodoPoteri == null) {
+            return null;
+        }
+        try {
+            if (metodoPoteri.invoke(null, player) instanceof Collection<?> poteri) {
+                for (Object p : poteri) {
+                    String id = String.valueOf(p);
+                    if (id.endsWith(":antivenom")) return "antivenom";
+                    if (id.endsWith(":carnage")) return "carnage";
+                    if (id.endsWith(":venom")) return "venom";
+                }
+            }
+        } catch (ReflectiveOperationException ignorata) {
+            // Palladium assente o firma cambiata: si ricade sulla forma sincronizzata
+        }
+        return null;
+    }
+
+    /** una texture per forma: bianca per anti-venom, rossa per carnage, nera altrimenti */
     public static ResourceLocation textureFor(Player player) {
-        return "antivenom".equals(FORMS.get(player.getId())) ? ARM_TEXTURE_ANTI : ARM_TEXTURE;
+        String forma = formaDaPalladium(player);
+        if (forma == null) {
+            forma = FORMS.get(player.getId());
+        }
+        if ("antivenom".equals(forma)) return ARM_TEXTURE_ANTI;
+        if ("carnage".equals(forma)) return ARM_TEXTURE_CARN;
+        return ARM_TEXTURE;
     }
     private static final int ARM_SEGMENTS = 18;
     private static final int VISIBLE_ARMS = 6;
@@ -61,7 +111,9 @@ public final class VenomLocomotionRenderer {
      * texture bianca non si vedrebbe comunque.
      */
     private static final int ARM_COLOR_ANTI = 235;
-    private static int armColor = ARM_COLOR;
+    /** il rosso di Carnage va espresso sui tre canali: un solo valore darebbe solo un grigio */
+    private static final int[] ARM_COLOR_CARN = {190, 42, 46};
+    private static int armR = ARM_COLOR, armG = ARM_COLOR, armB = ARM_COLOR;
     private static final float TENTACLE_THICKNESS_SCALE = 1.5F;
     private static final float TENTACLE_RADIUS = 0.085F * TENTACLE_THICKNESS_SCALE;
     private static final float TENTACLE_TIP_RADIUS = 0.018F * TENTACLE_THICKNESS_SCALE;
@@ -141,7 +193,13 @@ public final class VenomLocomotionRenderer {
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
                 armTexture = textureFor(player);
-                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
+                if (armTexture == ARM_TEXTURE_ANTI) {
+                    armR = armG = armB = ARM_COLOR_ANTI;
+                } else if (armTexture == ARM_TEXTURE_CARN) {
+                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
+                } else {
+                    armR = armG = armB = ARM_COLOR;
+                }
                 renderPlayerArms(player, state.anchors, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
@@ -156,7 +214,13 @@ public final class VenomLocomotionRenderer {
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
                 armTexture = textureFor(player);
-                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
+                if (armTexture == ARM_TEXTURE_ANTI) {
+                    armR = armG = armB = ARM_COLOR_ANTI;
+                } else if (armTexture == ARM_TEXTURE_CARN) {
+                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
+                } else {
+                    armR = armG = armB = ARM_COLOR;
+                }
                 renderPlayerGrabTentacle(player, state.target, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
@@ -171,7 +235,13 @@ public final class VenomLocomotionRenderer {
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
                 armTexture = textureFor(player);
-                armColor = armTexture == ARM_TEXTURE_ANTI ? ARM_COLOR_ANTI : ARM_COLOR;
+                if (armTexture == ARM_TEXTURE_ANTI) {
+                    armR = armG = armB = ARM_COLOR_ANTI;
+                } else if (armTexture == ARM_TEXTURE_CARN) {
+                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
+                } else {
+                    armR = armG = armB = ARM_COLOR;
+                }
                 renderPlayerCombatTentacles(player, state.targets, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
@@ -321,10 +391,10 @@ public final class VenomLocomotionRenderer {
         float nx = (float) normalVector.x;
         float ny = (float) normalVector.y;
         float nz = (float) normalVector.z;
-        consumer.vertex(matrix, (float) a.x, (float) a.y, (float) a.z).color(armColor, armColor, armColor, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) b.x, (float) b.y, (float) b.z).color(armColor, armColor, armColor, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) c.x, (float) c.y, (float) c.z).color(armColor, armColor, armColor, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
-        consumer.vertex(matrix, (float) d.x, (float) d.y, (float) d.z).color(armColor, armColor, armColor, 255).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) a.x, (float) a.y, (float) a.z).color(armR, armG, armB, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) b.x, (float) b.y, (float) b.z).color(armR, armG, armB, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) c.x, (float) c.y, (float) c.z).color(armR, armG, armB, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, (float) d.x, (float) d.y, (float) d.z).color(armR, armG, armB, 255).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, nx, ny, nz).endVertex();
     }
 
     private record AnchorState(List<Vec3> anchors, long gameTime) {

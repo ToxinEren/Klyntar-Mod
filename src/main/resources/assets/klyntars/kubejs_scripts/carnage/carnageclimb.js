@@ -1,6 +1,6 @@
-﻿PalladiumEvents.registerAnimations((event) => {
+PalladiumEvents.registerAnimations((event) => {
     event.register('klyntar/carnageclimb', 5, (builder) => {
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:carnage", "climb_hanging")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:wip", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
                     .setXRotDegrees(-105)
@@ -17,7 +17,7 @@
             if (builder.isFirstPerson()) {
             }
         };
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:carnage", "climb_ceiling")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:wip", "climb_ceiling")) {
             if (!builder.isFirstPerson()) {
                 builder.get('head')
                     .setXRotDegrees(-55)
@@ -55,7 +55,7 @@
 PalladiumEvents.registerAnimations((event) => {
     event.register('klyntar/carnageclimb1', 10, (builder) => {
 
-        let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'climb_1', builder.getPartialTicks());
+        let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:wip', 'climb_1', builder.getPartialTicks());
         if (progress_climb1 > 0 && !builder.isFirstPerson()) {
             builder.get('right_arm')
                 .setXRotDegrees(-105 + 15)
@@ -81,7 +81,7 @@ PalladiumEvents.registerAnimations((event) => {
 PalladiumEvents.registerAnimations((event) => {
     event.register('klyntar/carnageclimb2', 10, (builder) => {
 
-        let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'climb_2', builder.getPartialTicks());
+        let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:wip', 'climb_2', builder.getPartialTicks());
         if (progress_climb2 > 0 && !builder.isFirstPerson()) {
             builder.get('right_arm')
                 .setXRotDegrees(-105 - 15)

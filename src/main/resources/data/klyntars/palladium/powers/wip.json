@@ -1,0 +1,3319 @@
+{
+  "name": "WIP",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/red_concrete.png",
+  "icon": "klyntars:textures/icon/carnage_symbol.png",
+  "ability_bar_texture": "klyntars:textures/gui/wipredabilitybar.png",
+  "gui_display_type": "tree",
+  "primary_color": "#A60000",
+  "secondary_color": "#380000",
+  "abilities": {
+    "carnagebody": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Carnage",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "null",
+      "default_layer": "klyntars:carnagebody",
+      "accessory_slot": "klyntars:carnagesuit"
+    },
+    "symbiotecover": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:symbiote/symbiotecover",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Regen",
+            "min_score": 0,
+            "max_score": 7
+          }
+        ]
+      }
+    },
+    "carnagebond1": {
+      "type": "palladium:dummy",
+      "icon": "klyntars:textures/icon/carnagetransformation.png",
+      "title": "Carnage Bond Level 1",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "Carnage will now be more attached to you, and will help you with certain tasks outisde of battle mode.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          },
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 5,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          }
+        ]
+      }
+    },
+    "carnagepicaxe": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:symbiote/symbiotepicaxe",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablesymbiotepicaxe",
+            "min": 1,
+            "max": 10
+          }
+        ]
+      }
+    },
+    "carnageaxe": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:symbiote/symbioteaxe",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablesymbioteaxe",
+            "min": 1,
+            "max": 10
+          }
+        ]
+      }
+    },
+    "carnagebond2": {
+      "type": "palladium:dummy",
+      "icon": "klyntars:textures/icon/carnagetransformation.png",
+      "title": "Carnage Bond Level 2",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "description": "Carnage will now consider you his partner, and will protect you with his life.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebond1"
+          },
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 8,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          }
+        ]
+      }
+    },
+    "carnagetag": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/impactweb.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "advancement grant @s only klyntars:custom/carnage",
+        "scoreboard objectives add Klyntars.Carnagejab dummy",
+        "scoreboard players add @s Klyntars.Carnagejab 0",
+        "tag @s add Klyntars.Carnage",
+        "scoreboard objectives add Klyntars.Symbiote.Saying dummy",
+        "scoreboard players set @s Klyntars.Symbiote.Saying 1"
+      ],
+      "last_tick_commands": [
+        "tag @s remove Klyntars.Carnage"
+      ],
+      "commands": []
+    },
+    "carnageblades": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "default_layer": "klyntars:carnageblades",
+      "accessory_slot": "klyntars:carnageblades"
+    },
+    "carnagetentacles": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:carnagetentacles"
+    },
+    "redbody": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:red"
+    },
+    "enablecarnagebody": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnagetransformation.png",
+      "list_index": 4,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": false,
+      "bar_color": "red",
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        0
+      ],
+      "max_value": 10,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind"
+          },
+          {
+            "type": "klyntars:disable_if_have_power_or_namespace",
+            "powers": [
+              "klyntars:venom"
+            ],
+            "namespaces": [
+              "fsang",
+              "fsang_secondary"
+            ],
+            "ignore_powers": [
+              "fsang:space_power"
+            ]
+          }
+        ]
+      }
+    },
+    "enablecarnage": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 4,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": true,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 16,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "enablecarnagebody",
+            "min": 10,
+            "max": 10
+          }
+        ]
+      }
+    },
+    "venomarmor": {
+      "type": "palladium:restrict_slots",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "slots": [
+        "chest",
+        "legs",
+        "feet",
+        "head",
+        "mainhand",
+        "offhand",
+        "curios:hands",
+        "curios:ring",
+        "curios:belt",
+        "curios:body",
+        "curios:back"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "hidebody": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "head",
+        "head_overlay",
+        "chest",
+        "chest_overlay",
+        "right_arm",
+        "right_arm_overlay",
+        "left_arm",
+        "left_arm_overlay",
+        "right_leg",
+        "right_leg_overlay",
+        "left_leg",
+        "left_leg_overlay",
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:animation_timer_ability",
+          "power": "klyntars:wip",
+          "ability": "enablecarnage",
+          "min": 16,
+          "max": 16
+        }
+      }
+    },
+    "carnageattack": {
+      "type": "palladium:repeating_animation_timer",
+      "icon": "klyntars:textures/icon/carnagescratchmark.png",
+      "list_index": 0,
+      "title": "Attack barrage",
+      "bar_color": "red",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -3
+      ],
+      "max_value": 50,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "key_type": "key_bind"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:crouching"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "enableblades": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 4,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": true,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 7,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 1,
+            "max": 40
+          }
+        ]
+      }
+    },
+    "righttalon": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 1,
+            "max": 6
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_on_cooldown",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "righttalon2": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 4,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 6,
+            "max": 10
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "power": "null",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lefttalon": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 11,
+            "max": 16
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "power": "null",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lefttalon2": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 4,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 16,
+            "max": 20
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "power": "null",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "rightstab": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 21,
+            "max": 25
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_on_cooldown",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "rightstab2": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 4,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 26,
+            "max": 30
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "power": "null",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "doubleslash": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 31,
+            "max": 35
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_on_cooldown",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "doubleslash2": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 4,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "carnageattack",
+            "min": 36,
+            "max": 40
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "power": "null",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "bodysize": {
+      "type": "palladium:size",
+      "icon": "palladium:textures/icon/size.png",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "scale": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "enablecarnagetentacles": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 4,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": true,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 16,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "enablecarnage",
+            "min": 16,
+            "max": 16
+          }
+        ]
+      }
+    },
+    "carnageshield": {
+      "type": "palladium:animation_timer",
+      "icon": "minecraft:shield",
+      "title": "Block",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -3
+      ],
+      "description": "null",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "carnageblock"
+          }
+        ]
+      },
+      "start_value": 0,
+      "max_value": 1
+    },
+    "carnageblock": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 4,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": true,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 8,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "key_type": "right_click"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage",
+            "min": 16,
+            "max": 16
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "carnageattack"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tentaclesblock": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "block_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "carnageblock"
+          }
+        ]
+      }
+    },
+    "tentacleidle": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "idle_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_last_tick",
+                "ability": "jab"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tentaclesblockreverse": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "blockreverse_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_last_tick",
+            "ability": "carnageblock"
+          }
+        ]
+      }
+    },
+    "righttalondmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "hidden": true,
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 1.5,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 4,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false
+      },
+      "swinging_arm": "none",
+      "damage_from_player": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "righttalon2",
+            "min": 3,
+            "max": 3
+          }
+        ]
+      }
+    },
+    "lefttalondmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Render Layer",
+      "list_index": 2,
+      "hidden": true,
+      "velocity": 1.5,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 4,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false
+      },
+      "swinging_arm": "none",
+      "damage_from_player": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "lefttalon2",
+            "min": 3,
+            "max": 3
+          }
+        ]
+      }
+    },
+    "spinattackdmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Render Layer",
+      "list_index": 2,
+      "hidden": true,
+      "velocity": 1.5,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 4,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false
+      },
+      "swinging_arm": "none",
+      "damage_from_player": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "rightstab2",
+            "min": 3,
+            "max": 3
+          }
+        ]
+      }
+    },
+    "doubleslashdmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 1.5,
+      "hidden": true,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 4,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false
+      },
+      "swinging_arm": "none",
+      "damage_from_player": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "doubleslash2",
+            "min": 3,
+            "max": 4
+          }
+        ]
+      }
+    },
+    "showtalons": {
+      "type": "palladium:show_both_arms",
+      "icon": "klyntars:textures/icon/ironfistsymbol.png",
+      "title": "Passive skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "carnageattack"
+          }
+        ]
+      }
+    },
+    "carnagedmg": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Attack damage skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        1
+      ],
+      "description": "This skill tree allows you to grant yourself strength.",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "728be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "carnageattack"
+          }
+        ]
+      }
+    },
+    "jab1animation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "jab1_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Carnagejab",
+            "min_score": 1,
+            "max_score": 1
+          }
+        ]
+      }
+    },
+    "jab2animation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "jab2_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Carnagejab",
+            "min_score": 2,
+            "max_score": 2
+          }
+        ]
+      }
+    },
+    "jab3animation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "jab3_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Carnagejab",
+            "min_score": 3,
+            "max_score": 3
+          }
+        ]
+      }
+    },
+    "jab4animation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "jab4_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Carnagejab",
+            "min_score": 4,
+            "max_score": 4
+          }
+        ]
+      }
+    },
+    "jab": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/tentaclejabicon.png",
+      "list_index": 1,
+      "title": "Tentacle Jab",
+      "hidden_in_bar": false,
+      "hidden": false,
+      "start_value": 0,
+      "gui_position": [
+        -1.5,
+        -0.5
+      ],
+      "max_value": 10,
+      "bar_color": "red",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 12,
+            "cooldown": 10,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "ability": "carnageattack"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "grab"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "carnageblock"
+              }
+            ]
+          },
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 2,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ]
+      }
+    },
+    "scorerandom1": {
+      "type": "klyntars:random_scoreboard",
+      "icon": "minecraft:clock",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "min_value": 1,
+      "max_value": 4,
+      "objective_score": "Klyntars.Carnagejab",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_on_cooldown",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          }
+        ]
+      }
+    },
+    "jabdmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "hidden": true,
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 3,
+      "damage": 10,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 12,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false,
+        "CommandOnEntityHit": "/particle dust 0.82 0 0 1 ^ ^ ^ 0.01 0.01 0.01 0 5"
+      },
+      "swinging_arm": "none",
+      "damage_from_player": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_first_tick",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "jab"
+          }
+        ]
+      }
+    },
+    "hitsound1": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/klyntar_hammer.png",
+      "title": "Throw Hammer",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "playsound minecraft:entity.player.attack.sweep ambient @s ~ ~ ~ 0.7 0.8"
+      ],
+      "last_tick_commands": [
+        ""
+      ],
+      "commands": [
+        ""
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "lefttalon2",
+                "min": 1,
+                "max": 5
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "rightstab2",
+                "min": 2,
+                "max": 5
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "null",
+                "ability": "doubleslash2",
+                "min": 2,
+                "max": 4
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "righttalon2",
+                "min": 1,
+                "max": 5
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "jab"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "climb": {
+      "type": "klyntars:climb",
+      "icon": "minecraft:ladder",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "climb_speed": 0.45,
+      "block_distance": 2.2,
+      "data": "klyntar.climb",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Climb.Enabled",
+            "min_score": 1,
+            "max_score": 1
+          },
+          {
+            "type": "palladium:command_result",
+            "command": "execute rotated ~ 0 if block ^ ^ ^1.1 #klyntars:block_pass",
+            "comparison": "==",
+            "compare_to": 0,
+            "log": false
+          }
+        ]
+      }
+    },
+    "climb_hanging": {
+      "type": "palladium:dummy",
+      "hidden": true,
+      "conditions": {
+        "enabling": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "climb"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "klyntars:is_climb_stage",
+                "data": "klyntar.climb",
+                "stage": "hanging"
+              },
+              {
+                "type": "klyntars:is_climb_stage",
+                "data": "klyntar.climb",
+                "stage": "hanging_move"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "climb_ceiling": {
+      "type": "palladium:dummy",
+      "hidden": true,
+      "conditions": {
+        "enabling": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "climb"
+          },
+          {
+            "type": "klyntars:is_climb_stage",
+            "data": "klyntar.climb",
+            "stage": "ceiling"
+          }
+        ]
+      }
+    },
+    "climb_move": {
+      "type": "palladium:repeating_animation_timer",
+      "hidden": true,
+      "start_value": 0,
+      "max_value": 20,
+      "conditions": {
+        "enabling": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "climb"
+          },
+          {
+            "type": "klyntars:is_climb_stage",
+            "data": "klyntar.climb",
+            "stage": "hanging_move"
+          }
+        ]
+      }
+    },
+    "climb_1": {
+      "type": "palladium:animation_timer",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "start_value": 0,
+      "max_value": 10,
+      "conditions": {
+        "enabling": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "climb_hanging"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "climb_move",
+            "min": 1,
+            "max": 10
+          }
+        ]
+      }
+    },
+    "climb_2": {
+      "type": "palladium:animation_timer",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "start_value": 0,
+      "max_value": 10,
+      "conditions": {
+        "enabling": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "climb_hanging"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "climb_move",
+            "min": 11,
+            "max": 20
+          }
+        ]
+      }
+    },
+    "enablecarnagespikes": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnagespikes.png",
+      "list_index": 3,
+      "title": "Tendril explosion",
+      "hidden_in_bar": false,
+      "bar_color": "red",
+      "hidden": false,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "max_value": 8,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 15,
+            "cooldown": 200,
+            "key_type": "key_bind"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage",
+            "min": 16,
+            "max": 16
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "carnageattack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 5,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ]
+      }
+    },
+    "spikes": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Powers skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "This skill tree allows you to grant yourself more powers.",
+      "render_layer": "klyntars:carnagespikes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "enablecarnagespikes",
+            "min": 1,
+            "max": 8
+          }
+        ]
+      }
+    },
+    "grabdmg": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "hidden": true,
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 3,
+      "damage": 10,
+      "entity_data": {
+        "Size": 3,
+        "Lifetime": 6,
+        "DieOnEntityHit": true,
+        "DieOnBlockHit": true,
+        "Damage": 10,
+        "CommandOnEntityHit": "/tag @e[distance=..3,limit=1,sort=nearest,type=!palladium:custom_projectile,type=!#minecraft:impact_projectiles,tag=!carnagegrabbing] add carnagegrabbed"
+      },
+      "swinging_arm": "none",
+      "damage_from_player": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_first_tick",
+            "power": "klyntars:wip",
+            "ability": "grab"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "grab"
+          }
+        ]
+      }
+    },
+    "grab": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/carnagegrab.png",
+      "title": "Tentacle Grab",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        1.5,
+        -0.5
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "tag @s add carnagegrabbing"
+      ],
+      "last_tick_commands": [
+        "tag @e[distance=..10] remove carnagegrabbed",
+        "tag @s remove carnagegrabbing"
+      ],
+      "commands": [
+        "execute anchored eyes run tp @e[tag=carnagegrabbed] ^ ^-0.5 ^3"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          },
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 3,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "carnageblock"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 50,
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "tentaclegrab": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "grab_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "grab"
+          }
+        ],
+        "unlocking": []
+      }
+    },
+    "tentaclegrabreverse": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:carnagetentacles",
+      "controller": "triggerable_controller",
+      "animation_trigger": "grabreverse_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_last_tick",
+            "power": "klyntars:wip",
+            "ability": "grab"
+          }
+        ]
+      }
+    },
+    "roar": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 3,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 8,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnagespikes"
+          }
+        ]
+      }
+    },
+    "carnagesound": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/symbioteblade.png",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        ""
+      ],
+      "last_tick_commands": [],
+      "commands": [
+        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.5 0.4"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablecarnage",
+                "min": 1,
+                "max": 15
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablecarnagebody",
+                "min": 1,
+                "max": 9
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablecarnagespikes",
+                "min": 1,
+                "max": 8
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablecarnagetentacles",
+                "min": 1,
+                "max": 15
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablesymbioteaxe",
+                "min": 1,
+                "max": 9
+              },
+              {
+                "type": "palladium:animation_timer_ability",
+                "power": "klyntars:wip",
+                "ability": "enablesymbiotepicaxe",
+                "min": 1,
+                "max": 9
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "roarsound4": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/klyntar_hammer.png",
+      "title": "Throw Hammer",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "playsound minecraft:entity.warden.roar ambient @s ~ ~ ~ 1 2"
+      ],
+      "last_tick_commands": [
+        ""
+      ],
+      "commands": [
+        ""
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "null",
+            "ability": "enablecarnagespikes",
+            "min": 1,
+            "max": 8
+          }
+        ]
+      }
+    },
+    "carnagedura": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Passive skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "attribute": "minecraft:generic.armor",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "898be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagepassive": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:diamond_chestplate",
+      "title": "Enhanced durability",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 9,
+      "operation": 0,
+      "uuid": "998be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 2,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagepassive2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:netherite_chestplate",
+      "title": "Enhanced durability lvl 2",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1.5,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 9,
+      "operation": 0,
+      "uuid": "ca1c2b18-9dfe-4403-97bb-6e2465e91b0b",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 3,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagepassive"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagehealth": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/heart.png",
+      "title": "Enhanced health",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "38be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 2,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagehealth2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/heart.png",
+      "title": "Enhanced health lvl 2",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1.5,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "61b7fc8d-33bc-4b31-912d-8899d77cf24e",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 3,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagehealth"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagedmgpassive": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:netherite_sword",
+      "title": "Enhanced damage",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        2
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "718be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagedmgupgrade": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:diamond_sword",
+      "title": "Enhanced damage",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.75,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "458be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 2,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagedmgupgrade2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:netherite_sword",
+      "title": "Enhanced damage lvl 2",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1.5,
+        -1.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "ff05cf8e-e648-4785-a149-23b521c97944",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 3,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagedmgupgrade"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagetoughness": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:golden_chestplate",
+      "title": "Enhanced toughness lvl 1",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        3,
+        1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "d6baff15-3c27-43fa-bb27-ca6d941e4ede",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagepassive"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagetoughnesspassive": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:golden_chestplate",
+      "title": "Enhanced toughness lvl 1",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        3,
+        1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "41be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagejump": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced movement",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -0.75,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:jump_power",
+      "amount": 0.75,
+      "operation": 0,
+      "uuid": "958be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 1,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagebody"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagejump2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced movement lvl 2",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1.5,
+        -1.5
+      ],
+      "description": "null",
+      "attribute": "palladium:jump_power",
+      "amount": 0.75,
+      "operation": 0,
+      "uuid": "bdf938d9-32f4-436e-84a5-9343c8900489",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:scoreboard_score_buyable",
+            "objective": "Klyntars.Symbiote.Skillpoints",
+            "score": 2,
+            "icon": "klyntars:textures/icon/carnageskillpoint.png",
+            "description": {
+              "text": "Carnage Skill Points"
+            }
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagejump"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagespeed": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced Speed",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.125,
+      "operation": 0,
+      "uuid": "958be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagejump"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnageleap": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced Leaps",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -4,
+        0
+      ],
+      "description": "null",
+      "attribute": "palladium:leaping",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "958be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagejump"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagespeed2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced Speed",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.125,
+      "operation": 0,
+      "uuid": "6689a647-9a3e-41cf-9ad9-1ca8ecbda615",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagejump2"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnageleap2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enhanced Leaps",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -4,
+        0
+      ],
+      "description": "null",
+      "attribute": "palladium:leaping",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b4d2dfa9-a960-4159-ae5c-bde9b1dbf9db",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:wip",
+            "ability": "carnagejump2"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagelheal": {
+      "type": "palladium:healing",
+      "icon": "minecraft:apple",
+      "title": "null",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "frequency": 10,
+      "amount": 1,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "carnagefall": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Movement skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "This skill tree allows you to grant yourself movement capabilities.",
+      "attribute": "palladium:fall_resistance",
+      "amount": 1000,
+      "operation": 0,
+      "uuid": "518be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablecarnage"
+          }
+        ]
+      }
+    },
+    "actionremover": {
+      "type": "palladium:repeating_animation_timer",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "list_index": 0,
+      "title": "Godlike Appearance",
+      "hidden_in_bar": false,
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "max_value": 1,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "attack"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 0,
+            "key_type": "left_click",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "carnagereach": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Passive skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "attribute": "forge:entity_reach",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "898be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "attack"
+          }
+        ]
+      }
+    },
+    "carnagereachblock": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Passive skill tree",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "attribute": "forge:block_reach",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "898be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "attack"
+          }
+        ]
+      }
+    },
+    "carnagespikedmg": {
+      "type": "palladium:command",
+      "icon": "minecraft:fire_charge",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "commands": [
+        "execute at @s run damage @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb] 38 minecraft:generic by @s"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablecarnagespikes",
+            "min": 8,
+            "max": 8
+          }
+        ]
+      }
+    },
+    "carnagespikeknockback": {
+      "type": "palladium:command",
+      "icon": "minecraft:fire_charge",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "commands": [
+        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb] facing entity @p[distance=..8] feet run tp @s ^ ^ ^-0.8"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:wip",
+            "ability": "enablecarnagespikes",
+            "min": 8,
+            "max": 8
+          }
+        ]
+      }
+    },
+    "climbscore": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 0,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "scoreboard objectives add Venom.Climb.Enabled dummy",
+        "scoreboard players add @s Venom.Climb.Enabled 1",
+        "function klyntars:climbenable"
+      ],
+      "last_tick_commands": [
+        ""
+      ],
+      "commands": [
+        ""
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "key_bind"
+          }
+        ]
+      }
+    },
+    "climbscore2": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/carnage_symbol.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "scoreboard players set @s Venom.Climb.Enabled 0"
+      ],
+      "last_tick_commands": [
+        ""
+      ],
+      "commands": [
+        ""
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Climb.Enabled",
+            "min_score": 2,
+            "max_score": 10
+          }
+        ]
+      }
+    },
+    "toolwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "klyntars:textures/icon/carnagehand.png",
+      "title": "Symbiote Tool Wheel",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "venompicprop",
+        "venomaxeprop"
+      ],
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebond1"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "key_type": "key_bind"
+          }
+        ]
+      }
+    },
+    "venompicprop": {
+      "type": "klyntars:palladium_property_modifier",
+      "icon": "klyntars:textures/icon/carnagehandpic.png",
+      "title": "Symbiote Pickaxe",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "property_name": "symbiotepicaxe",
+      "adjustment_type": "add",
+      "adjustment_amount": 1,
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel"
+          }
+        ]
+      }
+    },
+    "venomaxeprop": {
+      "type": "klyntars:palladium_property_modifier",
+      "icon": "klyntars:textures/icon/carnagehandaxe.png",
+      "title": "Symbiote Axe",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "property_name": "symbioteaxe",
+      "adjustment_type": "add",
+      "adjustment_amount": 1,
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel"
+          }
+        ]
+      }
+    },
+    "enablesymbiotepicaxe": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/venomtransformation.png",
+      "list_index": 4,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": false,
+      "bar_color": "black",
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        0
+      ],
+      "max_value": 10,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:integer_property",
+            "property": "symbiotepicaxe",
+            "min": 1,
+            "max": 1
+          }
+        ]
+      }
+    },
+    "enablesymbioteaxe": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/venomtransformation.png",
+      "list_index": 4,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": false,
+      "bar_color": "black",
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        0
+      ],
+      "max_value": 10,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:integer_property",
+            "property": "symbioteaxe",
+            "min": 1,
+            "max": 1
+          }
+        ]
+      }
+    },
+    "venompicpropreset": {
+      "type": "klyntars:palladium_property_modifier",
+      "icon": "klyntars:textures/icon/impactweb.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "property_name": "symbiotepicaxe",
+      "adjustment_type": "set",
+      "adjustment_amount": 0,
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:integer_property",
+                "property": "symbiotepicaxe",
+                "min": 2,
+                "max": 100
+              },
+              {
+                "type": "palladium:integer_property",
+                "property": "symbioteaxe",
+                "min": 1,
+                "max": 100
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "venomaxepropreset": {
+      "type": "klyntars:palladium_property_modifier",
+      "icon": "klyntars:textures/icon/impactweb.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "property_name": "symbioteaxe",
+      "adjustment_type": "set",
+      "adjustment_amount": 0,
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:integer_property",
+                "property": "symbioteaxe",
+                "min": 2,
+                "max": 100
+              },
+              {
+                "type": "palladium:integer_property",
+                "property": "symbiotepicaxe",
+                "min": 1,
+                "max": 100
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "venomaxetool": {
+      "type": "palladium:tool_hands",
+      "icon": "minecraft:wooden_pickaxe",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "drop_block_tags": [
+        "minecraft:mineable/axe",
+        "minecraft:needs_iron_tool"
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablesymbioteaxe"
+          }
+        ]
+      }
+    },
+    "venompictool": {
+      "type": "palladium:tool_hands",
+      "icon": "minecraft:wooden_pickaxe",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "drop_block_tags": [
+        "minecraft:mineable/pickaxe",
+        "minecraft:needs_iron_tool"
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "enablesymbiotepicaxe"
+          }
+        ]
+      }
+    },
+    "venomtooldmg": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:netherite_sword",
+      "title": "Enhanced damage",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        2
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "418be4fb-af04-42f2-8948-e6ccdc0d99e9",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "enablesymbiotepicaxe"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "enablesymbioteaxe"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "restricttools": {
+      "type": "palladium:restrict_slots",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "slots": [
+        "mainhand",
+        "offhand"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "enablesymbiotepicaxe"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "klyntars:wip",
+                "ability": "enablesymbioteaxe"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "bulletdmg": {
+      "type": "palladium:projectile",
+      "icon": "klyntars:textures/icon/tentaclejab.png",
+      "entity_type": "palladium:custom_projectile",
+      "hidden": true,
+      "title": "Symbiotic Bullet",
+      "bar_color": "red",
+      "list_index": 0,
+      "velocity": 3,
+      "entity_data": {
+        "Damage": 10,
+        "Size": 3,
+        "Lifetime": 12,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": false,
+        "CommandOnEntityHit": "/particle dust 0.82 0 0 1 ^ ^ ^ 0.01 0.01 0.01 0 5",
+        "Appearances": [
+          {
+            "Type": "particles",
+            "ParticleType": "minecraft:dust",
+            "options": " 0.69 0.13 0.15 1.0 ",
+            "Spread": 0
+          }
+        ]
+      },
+      "swinging_arm": "right_arm",
+      "damage_from_player": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebond1"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 20,
+            "key_type": "key_bind"
+          }
+        ]
+      }
+    },
+    "enablesymbiotecover": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/venomtransformation.png",
+      "list_index": 0,
+      "title": "Unleash the symbiote",
+      "hidden_in_bar": false,
+      "bar_color": "black",
+      "hidden": true,
+      "start_value": 0,
+      "gui_position": [
+        0,
+        0
+      ],
+      "max_value": 16,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebond2"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntars.Regen",
+            "min_score": 0,
+            "max_score": 6
+          }
+        ]
+      }
+    },
+    "symbiotearmor": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:diamond_chestplate",
+      "title": "Enhanced durability",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "938be4fb-af04-42f2-8948-e6ccdc0d99e5",
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "enablesymbiotecover"
+          }
+        ]
+      }
+    },
+    "bondheal": {
+      "type": "palladium:healing",
+      "icon": "minecraft:apple",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "frequency": 20,
+      "amount": 1,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebond2"
+          }
+        ]
+      }
+    },
+    "carnagesaying1": {
+      "type": "klyntars:random_scoreboard",
+      "icon": "minecraft:clock",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "min_value": 1,
+      "max_value": 8,
+      "objective_score": "Klyntars.Symbiote.Saying",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "carnagebond1"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:chat_action",
+            "chat_message": "Carnage",
+            "cooldown": 30
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "enablecarnagebody"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "carnagesaying2": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/impactweb.png",
+      "title": "Enable/Disable Climbing",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        -1
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "/function klyntars:symbiote/carnagesay"
+      ],
+      "last_tick_commands": [],
+      "commands": [
+        ""
+      ],
+      "conditions": {
+        "unlocking": [],
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:wip",
+            "ability": "carnagesaying1"
+          }
+        ]
+      }
+    }
+  }
+}

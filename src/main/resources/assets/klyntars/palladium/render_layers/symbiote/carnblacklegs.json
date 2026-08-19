@@ -4,7 +4,7 @@
         {
             "type": "palladium:skin_overlay",
             "texture": {
-                "base": "klyntars:textures/models/whitelegs.png",
+                "base": "klyntars:textures/models/redlegs.png",
                 "transformers": [
                     {
                         "type": "palladium:alpha_mask",
@@ -14,12 +14,12 @@
                 "variables": {
                     "MASK": {
                         "type": "palladium:ability_integer_property",
-                        "power": "klyntars:antivenom",
+                        "power": "klyntars:carnage",
                         "ability": "enablevenomlegs",
                         "property": "value"
                     }
                 },
-                "output": "klyntars:textures/models/anti_blacklegs_#MASK.png"
+                "output": "klyntars:textures/models/carn_blacklegs_#MASK.png"
             }
         },
         {
@@ -40,7 +40,7 @@
                         "property": "value"
                     }
                 },
-                "output": "klyntars:textures/models/anti_blacklegs_#MASK.png"
+                "output": "klyntars:textures/models/carn_blacklegs_#MASK.png"
             }
         },
         {
@@ -61,7 +61,7 @@
                         "property": "value"
                     }
                 },
-                "output": "klyntars:textures/models/anti_whitelegs_#MASK.png"
+                "output": "klyntars:textures/models/carn_whitelegs_#MASK.png"
             }
         }
     ]

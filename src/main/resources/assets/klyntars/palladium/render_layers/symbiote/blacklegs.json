@@ -1,4 +1,4 @@
-﻿{
+{
     "type": "palladium:compound",
     "layers": [
         {
@@ -35,7 +35,7 @@
                 "variables": {
                     "MASK": {
                         "type": "palladium:ability_integer_property",
-                        "power": "klyntars:carnage",
+                        "power": "klyntars:wip",
                         "ability": "enablecarnagelegs",
                         "property": "value"
                     }

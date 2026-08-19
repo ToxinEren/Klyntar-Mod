@@ -2,6 +2,6 @@
   "icon": "klyntars:textures/icon/carnage_symbol.png",
   "menu_visibility": {
     "type": "palladium:has_power",
-    "power": "klyntars:carnage"
+    "power": "klyntars:wip"
   }
 }

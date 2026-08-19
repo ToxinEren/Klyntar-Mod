@@ -1,7 +1,7 @@
-﻿PalladiumEvents.registerAnimations((event) => {
-    event.registerForPower('klyntar/carnagerightstab2', 'klyntars:carnage', 10, (builder) => {
+PalladiumEvents.registerAnimations((event) => {
+    event.registerForPower('klyntar/carnagerightstab2', 'klyntars:wip', 10, (builder) => {
         // animation part
-        const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'rightstab2', builder.getPartialTicks());
+        const progress = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:wip', 'rightstab2', builder.getPartialTicks());
 
 
 

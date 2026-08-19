@@ -41,9 +41,10 @@ public class TransformCommand {
         }
 
         if (!normalized.equals("venom") && !normalized.equals("carnage")
-                && !normalized.equals("antivenom") && !normalized.equals("anti-venom")) {
+                && !normalized.equals("antivenom") && !normalized.equals("anti-venom")
+                && !normalized.equals("wip")) {
             context.getSource().sendFailure(Component.literal(
-                    "Use /transform venom, /transform antivenom, /transform carnage, or /transform off"));
+                    "Use /transform venom, /transform antivenom, /transform carnage, /transform wip, or /transform off"));
             return 0;
         }
 

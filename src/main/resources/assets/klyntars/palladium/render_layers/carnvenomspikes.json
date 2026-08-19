@@ -5,16 +5,16 @@
         "transformers": [
             {
             "type": "palladium:alpha_mask",
-            "mask": "klyntars:textures/models/alpha_masks/carnage/carnagespikesmask_#MASK.png"
+            "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
             }],
             "variables": {
                 "MASK": {
                     "type": "palladium:ability_integer_property",
-                    "power": "klyntars:wip",
-                    "ability": "enablecarnagespikes",
+                    "power": "klyntars:carnage",
+                    "ability": "enablevenomspikes",
                     "property": "value"
                 }
             },
-            "output": "klyntars:textures/models/carnagespikes_#MASK.png"
+            "output": "klyntars:textures/models/carn_spikes_#MASK.png"
 }
 }

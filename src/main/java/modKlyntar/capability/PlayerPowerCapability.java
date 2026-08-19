@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 @Mod.EventBusSubscriber
 public class PlayerPowerCapability {
@@ -43,6 +44,8 @@ public class PlayerPowerCapability {
     /** 1 mentre il giocatore e' in forma anti-venom: lo leggono i renderer dei tentacoli */
     public static final String ANTIVENOM_OBJECTIVE = "Klyntar.AntiVenom";
     private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
+    /** tutti i simbionti della mod: se Palladium ne riconosce gia' uno non se ne assegna un altro */
+    private static final String[] FORME_SIMBIONTE = {"venom", "carnage", "antivenom", "toxin", "wip"};
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -114,10 +117,35 @@ public class PlayerPowerCapability {
         });
     }
 
+    /**
+     * Il simbionte che Palladium riconosce davvero al giocatore, o null se non ne ha nessuno.
+     * E' la fonte autorevole: la capability puo' essere rimasta indietro, Palladium no.
+     */
+    private static String formaSuPalladium(ServerPlayer player) {
+        try {
+            Method metodo = Class.forName("net.threetag.palladium.power.SuperpowerUtil")
+                    .getMethod("getSuperpowerIds", LivingEntity.class);
+            if (metodo.invoke(null, player) instanceof Collection<?> poteri) {
+                for (Object potere : poteri) {
+                    String id = String.valueOf(potere);
+                    for (String forma : FORME_SIMBIONTE) {
+                        if (id.endsWith(":" + forma)) {
+                            return forma;
+                        }
+                    }
+                }
+            }
+        } catch (ReflectiveOperationException eccezione) {
+            LOGGER.error("Impossibile leggere i superpoteri di Palladium per {}",
+                    player.getGameProfile().getName(), eccezione);
+        }
+        return null;
+    }
+
     private static void syncPalladiumPower(ServerPlayer player, String powerPath) {
-        callPalladiumSuperpower("removeSuperpower", player, "venom");
-        callPalladiumSuperpower("removeSuperpower", player, "carnage");
-        callPalladiumSuperpower("removeSuperpower", player, "antivenom");
+        for (String forma : FORME_SIMBIONTE) {
+            callPalladiumSuperpower("removeSuperpower", player, forma);
+        }
         if (!callPalladiumSuperpower("addSuperpower", player, powerPath)
                 && !callPalladiumSuperpower("hasSuperpower", player, powerPath)) {
             LOGGER.error("Palladium did not add superpower klyntars:{} to {}", powerPath, player.getGameProfile().getName());
@@ -213,7 +241,9 @@ public class PlayerPowerCapability {
         }
 
         public void applyTransformation(ServerPlayer player) {
-            boolean carnage = "carnage".equals(form);
+            // il vecchio carnage e' diventato WIP: la forma "carnage" ora e' una copia di Venom,
+            // e le sue abilita' passano dai gestori Java che cercano il tag di Venom
+            boolean carnage = "wip".equals(form);
             player.getTags().remove(VENOM_TAG);
             player.getTags().remove(CARNAGE_TAG);
             player.addTag(carnage ? CARNAGE_TAG : VENOM_TAG);
@@ -235,7 +265,7 @@ public class PlayerPowerCapability {
             if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
                 player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(carnage ? 10.0D : 8.0D);
             }
-            String powerPath = carnage ? "carnage" : ("antivenom".equals(form) ? "antivenom" : "venom");
+            String powerPath = form.isEmpty() ? "venom" : form;
             if (!powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
                 syncPalladiumPower(player, powerPath);
             }
@@ -269,9 +299,9 @@ public class PlayerPowerCapability {
             if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
                 player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
             }
-            removePalladiumPower(player, "venom");
-            removePalladiumPower(player, "carnage");
-            removePalladiumPower(player, "antivenom");
+            for (String forma : FORME_SIMBIONTE) {
+                removePalladiumPower(player, forma);
+            }
             setInfectionScore(player, false);
             setAntiVenomScore(player, false);
             ModNetwork.syncSymbioteForm(player, "");
@@ -319,8 +349,18 @@ public class PlayerPowerCapability {
                 return "";
             }
             String normalized = form.trim().toLowerCase();
+            // forma vuota vuol dire "nessuna trasformazione": non va tradotta in venom
+            if (normalized.isEmpty()) {
+                return "";
+            }
             if ("carnage".equals(normalized)) {
                 return "carnage";
+            }
+            if ("wip".equals(normalized)) {
+                return "wip";
+            }
+            if ("toxin".equals(normalized)) {
+                return "toxin";
             }
             // anti-venom e' Venom con un'altra pelle: stesse abilita', stesse statistiche
             if ("antivenom".equals(normalized) || "anti-venom".equals(normalized)) {
@@ -347,13 +387,22 @@ public class PlayerPowerCapability {
             return;
         }
         player.getCapability(PLAYER_POWER).ifPresent(power -> {
-            if (power.isInfected()) {
-                if (!power.isTransformed()) {
-                    power.setForm("venom");
-                    power.setTransformed(true);
-                }
+            if (!power.isInfected()) {
+                return;
+            }
+            setInfectionScore(player, true);
+            String giaAttivo = formaSuPalladium(player);
+            if (giaAttivo != null) {
+                // Palladium conserva il potere tra una sessione e l'altra: se il giocatore e' gia'
+                // carnage, toxin o anti-venom non gli si rimette Venom, si allinea la capability
+                power.setForm(giaAttivo);
+                power.setTransformed(true);
+                player.getPersistentData().putString(PALLADIUM_SYNC_KEY, giaAttivo);
+            }
+            // chi si e' ritrasformato indietro deve restare tale: prima di questa guardia
+            // ogni rientro nel mondo rimetteva addosso Venom a un giocatore solo infetto
+            if (power.isTransformed()) {
                 power.applyTransformation(player);
-                setInfectionScore(player, true);
             }
         });
     }

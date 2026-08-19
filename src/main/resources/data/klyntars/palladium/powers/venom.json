@@ -1856,7 +1856,7 @@
           {
             "type": "klyntars:disable_if_have_power_or_namespace",
             "powers": [
-              "klyntars:carnage"
+              "klyntars:wip"
             ],
             "namespaces": [
               "fsang",

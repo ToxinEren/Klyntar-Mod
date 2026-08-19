@@ -1,4 +1,4 @@
-﻿{
+{
     "model": "klyntars:geo/carnagebody.geo.json",
     "type": "geckolib:default",
     "texture": {
@@ -12,7 +12,7 @@
         "variables": {
             "MASK": {
                 "type": "palladium:ability_integer_property",
-                "power": "klyntars:carnage",
+                "power": "klyntars:wip",
                 "ability": "enableblades",
                 "property": "value"
             }

@@ -1,4 +1,4 @@
-﻿{
+{
     "type": "palladium:skin_overlay",
     "texture": {
         "base": "klyntars:textures/models/red.png",
@@ -11,7 +11,7 @@
         "variables": {
             "MASK": {
                 "type": "palladium:ability_integer_property",
-                "power": "klyntars:carnage",
+                "power": "klyntars:wip",
                 "ability": "enablecarnagebody",
                 "property": "value"
             }
