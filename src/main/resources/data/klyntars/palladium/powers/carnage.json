@@ -3870,6 +3870,17 @@
                 "type": "palladium:crouching"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -4098,6 +4109,17 @@
             "type": "palladium:ability_unlocked",
             "power": "klyntars:carnage",
             "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -5023,6 +5045,17 @@
                 "type": "palladium:crouching"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -5057,6 +5090,19 @@
           {
             "type": "palladium:ability_wheel"
           }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          }
         ]
       }
     },
@@ -5083,6 +5129,19 @@
         "enabling": [
           {
             "type": "palladium:ability_wheel"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -5111,6 +5170,19 @@
           {
             "type": "palladium:ability_wheel"
           }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          }
         ]
       }
     },
@@ -5137,6 +5209,19 @@
         "enabling": [
           {
             "type": "palladium:ability_wheel"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -5876,6 +5961,17 @@
         "unlocking": [
           {
             "type": "palladium:crouching"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -5984,6 +6080,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6190,6 +6297,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6350,6 +6468,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6525,6 +6654,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6581,6 +6721,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6610,7 +6761,19 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_wheel"
@@ -6638,7 +6801,19 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_wheel"
@@ -7152,6 +7327,17 @@
             "type": "palladium:ability_unlocked",
             "power": "klyntars:carnage",
             "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7367,6 +7553,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7530,6 +7727,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -7780,6 +7988,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7842,6 +8061,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7898,6 +8128,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -7957,6 +8198,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -8024,6 +8276,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -8613,6 +8876,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -8664,6 +8938,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -8719,6 +9004,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -8770,6 +9066,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -8825,6 +9132,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -8876,6 +9194,17 @@
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:carnage",
                 "ability": "attack"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }

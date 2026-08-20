@@ -27,7 +27,9 @@ import modKlyntar.MyMod;
 public class PromethiumXBlock extends FallingBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
     private static final VoxelShape COLLISION_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 7.0D, 16.0D);
-    public static final int SMOKE_TRAIL_INTERVAL_TICKS = 10 * 20;
+    public static final int SMOKE_TRAIL_INTERVAL_TICKS = 10 * 20;
+    /** quante volte su una il blocco pieno libera un simbionte */
+    public static final float SYMBIOTE_SPAWN_CHANCE = 0.5F;
 
     public PromethiumXBlock() {
         super(BlockBehaviour.Properties.of()
@@ -92,7 +94,9 @@ public class PromethiumXBlock extends FallingBlock {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, net.minecraft.world.level.block.entity.BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && state.getValue(FULL) && isCorrectToolForDrops(state, player)) {
+        // il simbionte esce una volta su due, non a ogni blocco rotto
+        if (!level.isClientSide && state.getValue(FULL) && isCorrectToolForDrops(state, player)
+                && level.getRandom().nextFloat() < SYMBIOTE_SPAWN_CHANCE) {
             spawnSymbiote(level, Vec3.atCenterOf(pos));
         }
     }

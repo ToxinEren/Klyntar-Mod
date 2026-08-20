@@ -4,6 +4,7 @@ import modKlyntar.MyMod;
 import modKlyntar.network.ModNetwork;
 import modKlyntar.network.ModNetwork.SyncVenomModelPacket;
 import modKlyntar.player.VenomPlayerSizeHandler;
+import modKlyntar.player.VenomSymbioteSystemsHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -97,16 +99,61 @@ public class PlayerPowerCapability {
         }
     }
 
-    public static void transformPlayer(ServerPlayer player) {
-        transformPlayer(player, "venom");
+    /**
+     * Riallinea il giocatore al superpotere che Palladium gli riconosce davvero.
+     *
+     * <p>E' il cuore del sistema da quando il comando {@code /transform} non esiste piu': la
+     * forma non la decide piu' nessun comando nostro, la si legge da Palladium e la si
+     * insegue. Vale per qualunque strada il potere sia arrivato — la barra, un comando di
+     * Palladium, un altro addon.</p>
+     */
+    private static void seguiPalladium(ServerPlayer player) {
+        String daPalladium = formaSuPalladium(player);
+        player.getCapability(PLAYER_POWER).ifPresent(power -> {
+            String attuale = power.isTransformed() ? power.getForm() : "";
+
+            if (daPalladium == null) {
+                if (!attuale.isEmpty()) {
+                    power.setTransformed(false);
+                    power.setForm("");
+                    power.removeTransformation(player);
+                }
+                return;
+            }
+
+            if (daPalladium.equals(attuale)) {
+                return;
+            }
+
+            power.setInfected(true);
+            power.setForm(daPalladium);
+            power.setTransformed(true);
+            // il potere ce l'ha gia': si allinea la chiave perche' non venga riassegnato
+            player.getPersistentData().putString(PALLADIUM_SYNC_KEY, daPalladium);
+            power.applyTransformation(player);
+            LOGGER.info("Forma allineata a klyntars:{} per {}",
+                    daPalladium, player.getGameProfile().getName());
+        });
     }
 
-    public static void transformPlayer(ServerPlayer player, String form) {
-        PlayerPower power = player.getCapability(PLAYER_POWER).orElse(new PlayerPower());
-        power.setInfected(true);
-        power.setForm(form);
-        power.setTransformed(true);
-        power.applyTransformation(player);
+    /** Rimette in scena la forma che il giocatore ha gia', senza cambiarla. */
+    public static void riapplicaForma(ServerPlayer player) {
+        player.getCapability(PLAYER_POWER).ifPresent(power -> {
+            if (power.isTransformed()) {
+                power.applyTransformation(player);
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) {
+            return;
+        }
+        // mezzo secondo di passo: seguire il potere non richiede di guardarlo a ogni tick
+        if (player.tickCount % 10 == 0) {
+            seguiPalladium(player);
+        }
     }
 
     public static void revertPlayer(ServerPlayer player) {
@@ -121,7 +168,7 @@ public class PlayerPowerCapability {
      * Il simbionte che Palladium riconosce davvero al giocatore, o null se non ne ha nessuno.
      * E' la fonte autorevole: la capability puo' essere rimasta indietro, Palladium no.
      */
-    private static String formaSuPalladium(ServerPlayer player) {
+    public static String formaSuPalladium(ServerPlayer player) {
         try {
             Method metodo = Class.forName("net.threetag.palladium.power.SuperpowerUtil")
                     .getMethod("getSuperpowerIds", LivingEntity.class);
@@ -199,6 +246,13 @@ public class PlayerPowerCapability {
                 + " " + ANTIVENOM_OBJECTIVE + " " + (anti ? 1 : 0));
     }
 
+    /**
+     * Accende l'effetto {@code klyntars:venom_infection}, che dallo script del pack assegna
+     * il superpotere Venom finche' dura.
+     *
+     * <p>Chiamarlo per una forma diversa da venom significa assegnare Venom a chi ha gia'
+     * un altro simbionte.</p>
+     */
     private static void applyVenomSuperpowerBridge(ServerPlayer player) {
         MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(MyMod.MOD_ID, "venom_infection"));
         if (effect != null) {
@@ -269,10 +323,14 @@ public class PlayerPowerCapability {
             if (!powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
                 syncPalladiumPower(player, powerPath);
             }
-            if (!carnage) {
+            // il ponte mette addosso l'effetto venom_infection, e quell'effetto assegna
+            // klyntars:venom a ogni tick: va acceso solo quando la forma e' davvero venom,
+            // altrimenti carnage e anti-venom si ritrovano venom appiccicato sopra
+            if ("venom".equals(powerPath)) {
                 applyVenomSuperpowerBridge(player);
             }
             setAntiVenomScore(player, "antivenom".equals(powerPath));
+            VenomSymbioteSystemsHandler.resetHunger(player);
             ModNetwork.syncSymbioteForm(player, powerPath);
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(powerPath));
             player.refreshDimensions();
@@ -304,6 +362,10 @@ public class PlayerPowerCapability {
             }
             setInfectionScore(player, false);
             setAntiVenomScore(player, false);
+            VenomSymbioteSystemsHandler.resetHunger(player);
+            // senza simbionte l'indebolimento non ha piu' oggetto, e lasciarlo acceso
+            // significherebbe ritrovarselo addosso alla prossima trasformazione
+            VenomSymbioteSystemsHandler.clearWeakness(player);
             ModNetwork.syncSymbioteForm(player, "");
             ModNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomModelPacket(""));
             player.refreshDimensions();

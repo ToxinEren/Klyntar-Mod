@@ -11,7 +11,6 @@ import modKlyntar.client.renderer.SmokeTrailRenderer;
 import modKlyntar.client.renderer.SymbioteRenderer;
 import modKlyntar.client.renderer.VenomRenderer;
 import modKlyntar.client.renderer.WebProjectileRenderer;
-import modKlyntar.commands.TransformCommand;
 import modKlyntar.entity.custom.CustomArrowEntity;
 import modKlyntar.entity.custom.GhastProjectileEntity;
 import modKlyntar.entity.custom.PrimedPromethiumXTnt;
@@ -165,6 +164,16 @@ public class MyMod {
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(MOD_ID, "tentacle_segment").toString()));
 
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ThrownCapsuleEntity>> THROWN_CAPSULE_ENTITY =
+            ENTITY_TYPES.register("thrown_capsule",
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.ThrownCapsuleEntity>of(
+                                    modKlyntar.entity.custom.ThrownCapsuleEntity::new, MobCategory.MISC)
+                            .sized(0.4F, 0.4F)
+                            .setTrackingRange(64)
+                            .setUpdateInterval(10)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .build(new ResourceLocation(MOD_ID, "thrown_capsule").toString()));
+
     public static final RegistryObject<EntityType<WebProjectileEntity>> WEB_PROJECTILE_ENTITY = ENTITY_TYPES.register("web_projectile",
             () -> EntityType.Builder.<WebProjectileEntity>of(WebProjectileEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
@@ -179,6 +188,7 @@ public class MyMod {
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         PARTICLE_TYPES.register(modEventBus);
+        modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::setup);
@@ -208,11 +218,12 @@ public class MyMod {
         EntityRenderers.register(PROMETHIUMX_TNT_ENTITY.get(), PrimedPromethiumXTntRenderer::new);
         EntityRenderers.register(SMOKE_TRAIL_ENTITY.get(), SmokeTrailRenderer::new);
         EntityRenderers.register(GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
-        EntityRenderers.register(WEB_PROJECTILE_ENTITY.get(), WebProjectileRenderer::new);
+        EntityRenderers.register(WEB_PROJECTILE_ENTITY.get(), WebProjectileRenderer::new);
+        EntityRenderers.register(THROWN_CAPSULE_ENTITY.get(),
+                context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context));
     }
 
     private void onServerStarting(ServerStartingEvent event) {
-        TransformCommand.register(event.getServer().getCommands().getDispatcher());
     }
 
     @SubscribeEvent

@@ -39,7 +39,8 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle);
         INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle);
-        INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle);
+        INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle);
+        INSTANCE.registerMessage(id++, SyncSymbioteMiningPacket.class, SyncSymbioteMiningPacket::encode, SyncSymbioteMiningPacket::new, SyncSymbioteMiningPacket::handle);
     }
 
     public static void syncVenomAttackClick() {
@@ -367,6 +368,45 @@ public class ModNetwork {
         }
     }
 
+    /** Dice al client se il corpo simbionte e' fuori e quale attrezzo ha in pugno. */
+    public static void syncSymbioteMining(ServerPlayer player, boolean corpoAttivo, int attrezzo) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                new SyncSymbioteMiningPacket(corpoAttivo, attrezzo));
+    }
+
+    /**
+     * Lo stato che serve al client per scavare allo stesso ritmo del server.
+     *
+     * <p>Va solo al diretto interessato: nessun altro ha bisogno di sapere con che velocita'
+     * sta scavando.</p>
+     */
+    public static class SyncSymbioteMiningPacket {
+        private final boolean corpoAttivo;
+        private final int attrezzo;
+
+        public SyncSymbioteMiningPacket(boolean corpoAttivo, int attrezzo) {
+            this.corpoAttivo = corpoAttivo;
+            this.attrezzo = attrezzo;
+        }
+
+        public SyncSymbioteMiningPacket(FriendlyByteBuf buf) {
+            this.corpoAttivo = buf.readBoolean();
+            this.attrezzo = buf.readVarInt();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeBoolean(corpoAttivo);
+            buf.writeVarInt(attrezzo);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() ->
+                    modKlyntar.client.ClientSymbioteMiningState.aggiorna(corpoAttivo, attrezzo));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
     /** ultima forma comunicata a ciascun giocatore, per non ripetere il pacchetto ogni tick */
     private static final java.util.Map<Integer, String> ULTIMA_FORMA = new java.util.concurrent.ConcurrentHashMap<>();
 

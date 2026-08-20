@@ -35,5 +35,7 @@
   "entity.klyntars.smoke_trail": "Smoke Trail",
   "entity.klyntars.custom_arrow": "Symbiote Arrow",
   "entity.klyntars.tentacle_segment": "Tentacle",
-  "entity.klyntars.web_projectile": "Web"
+  "entity.klyntars.web_projectile": "Web",
+  "effect.klyntars.anti_venom": "Anti-Venom",
+  "entity.klyntars.thrown_capsule": "Thrown Capsule"
 }

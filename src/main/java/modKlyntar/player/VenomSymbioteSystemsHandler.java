@@ -184,8 +184,19 @@ public final class VenomSymbioteSystemsHandler {
             resetTransformationBoundAbilities(player);
         }
 
-        if (!hasVenom && !flightRequested) {
+        if (!hasVenom) {
+            // senza simbionte la barra non deve restare a schermo nemmeno mentre il volo
+            // e' ancora richiesto: prima in quel caso rimaneva ferma sull'ultimo valore
             removeHungerBar(player);
+            // e il conto dell'indebolimento deve comunque scorrere: tickVulnerability sta
+            // oltre l'uscita anticipata qui sotto, quindi restando senza simbionte il conto
+            // si congelava e il giocatore tornava indebolito appena ne riprendeva uno
+            int lockRimasti = getScore(player, VULNERABILITY_OBJECTIVE, false);
+            if (lockRimasti > 0) {
+                setScore(player, VULNERABILITY_OBJECTIVE, lockRimasti - 1);
+            }
+        }
+        if (!hasVenom && !flightRequested) {
             AUTO_ATTACK_TICKS.remove(player.getUUID());
             BERSERK_TARGETS.remove(player.getUUID());
             BERSERK_STUCK_MEMORY.remove(player.getUUID());
@@ -696,7 +707,6 @@ public final class VenomSymbioteSystemsHandler {
         player.removeEffect(MobEffects.REGENERATION);
         player.removeEffect(MobEffects.JUMP);
         player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        lockActiveAbilities(player);
     }
 
     private static void tickMovementLock(ServerPlayer player) {
@@ -725,7 +735,8 @@ public final class VenomSymbioteSystemsHandler {
         }
 
         if (!isBodyActive(player)) {
-            PlayerPowerCapability.transformPlayer(player, "venom");
+            // rimette in scena la forma che il giocatore ha davvero, non sempre venom
+            PlayerPowerCapability.riapplicaForma(player);
         }
 
         int phase = getScore(player, BERSERK_PHASE_OBJECTIVE, true);
@@ -893,9 +904,28 @@ public final class VenomSymbioteSystemsHandler {
                 .orElse(null);
     }
 
+    /**
+     * Indebolisce il simbionte come farebbe il fuoco: stessa durata, stesse abilita' bloccate.
+     * La usa l'Anti-Venom, che nella lista degli indebolimenti sta accanto a fuoco e suono,
+     * ma senza far scattare il conteggio delle prese sonore.
+     */
+    /**
+     * Cancella ogni indebolimento in corso, da fuoco o da suono, contatori compresi.
+     * La chiama chi diventa Anti-Venom: il siero ripulisce tutto quello che c'era prima.
+     */
+    public static void clearWeakness(ServerPlayer player) {
+        setScore(player, VULNERABILITY_OBJECTIVE, 0);
+        setScore(player, SONIC_HITS_OBJECTIVE, 0);
+    }
+
+    public static void applyAntiVenomWeakness(ServerPlayer player) {
+        applyVulnerability(player, false);
+    }
+
     private static void applyVulnerability(ServerPlayer player, boolean sonic) {
+        // le abilita' non si spengono piu' da qui: mentre l'indebolimento e' acceso Palladium
+        // le tiene chiuse col lucchetto, quindi i punteggi non vengono nemmeno scritti
         setScore(player, VULNERABILITY_OBJECTIVE, VULNERABILITY_TICKS);
-        lockActiveAbilities(player);
         player.removeEffect(MobEffects.REGENERATION);
         player.removeEffect(MobEffects.JUMP);
         player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
@@ -913,15 +943,6 @@ public final class VenomSymbioteSystemsHandler {
         setScore(player, SONIC_HITS_OBJECTIVE, 0);
         PlayerPowerCapability.revertPlayer(player);
         spawnSymbioteNear(player);
-    }
-
-    private static void lockActiveAbilities(ServerPlayer player) {
-        setScore(player, FLIGHT_OBJECTIVE, 0);
-        setScore(player, LOCOMOTION_OBJECTIVE, 0);
-        setScore(player, "Venom.GrabTentacle", 0);
-        setScore(player, FEND_OFF_OBJECTIVE, 0);
-        setScore(player, "Venom.GrabTentacle.DistanceDelta", 0);
-        setScore(player, "Venom.GrabTentacle.ReleaseCharge", 0);
     }
 
     private static void resetTransformationBoundAbilities(ServerPlayer player) {
@@ -1253,6 +1274,35 @@ public final class VenomSymbioteSystemsHandler {
 
     private static boolean isVulnerable(ServerPlayer player) {
         return getScore(player, VULNERABILITY_OBJECTIVE, false) > 0;
+    }
+
+    /**
+     * Riporta la fame al massimo e fa sparire la barra. La chiamano la trasformazione e il
+     * ritorno umano: ogni volta che il superpotere viene messo o tolto si riparte sazi.
+     */
+    public static void resetHunger(ServerPlayer player) {
+        setScore(player, HUNGER_OBJECTIVE, MAX_HUNGER);
+        setScore(player, BERSERK_OBJECTIVE, 0);
+        setScore(player, BERSERK_PHASE_OBJECTIVE, 0);
+        setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+        setScore(player, AUTO_HEAD_OBJECTIVE, 0);
+        player.getPersistentData().putBoolean("Klyntar.HungerInitialized", true);
+        removeHungerBar(player);
+    }
+
+    /** La fame del simbionte in percentuale, da 0 a 100. */
+    public static int getHunger(ServerPlayer player) {
+        return Math.max(0, Math.min(MAX_HUNGER, getScore(player, HUNGER_OBJECTIVE, false)));
+    }
+
+    /** Indebolito da fuoco o suono? Lo leggono i passivi che vivono negli altri gestori. */
+    public static boolean isPlayerVulnerable(ServerPlayer player) {
+        return isVulnerable(player);
+    }
+
+    /** Fa comparire un simbionte a tre blocchi dal giocatore. */
+    public static void spawnSymbioteNearPlayer(ServerPlayer player) {
+        spawnSymbioteNear(player);
     }
 
     private static void ensureHungerScore(ServerPlayer player) {

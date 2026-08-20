@@ -4,7 +4,8 @@ import com.mojang.logging.LogUtils;
 
 import modKlyntar.MyMod;
 import modKlyntar.entity.custom.AntivenomBombEntity;
-import modKlyntar.network.ModNetwork;
+import modKlyntar.network.ModNetwork;
+import modKlyntar.symbiote.ColpoLocalizzato;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -109,6 +110,10 @@ public final class VenomSymbiotePowersHandler {
     private static final double STRIKE_FINAL_VERTICAL = 0.9D;
     private static final float STRIKE_SMALL_DAMAGE = 5.0F;
     private static final float STRIKE_FINAL_DAMAGE = 24.0F;
+    /** quanto avanti arriva la mano nel momento del colpo: il punto d'aggancio piu' il braccio */
+    private static final double STRIKE_HAND_REACH = STRIKE_POINT_DISTANCE + 1.2D;
+    /** quanto e' grosso il pugno del simbionte */
+    private static final double STRIKE_HAND_THICKNESS = 1.1D;
     private static final int STRIKE_COOLDOWN = 0;   // nessuna ricarica
 
     // --- Antivenom Tempest: solleva in aria il giocatore e chi gli sta attorno ---
@@ -325,7 +330,8 @@ public final class VenomSymbiotePowersHandler {
                 target.hurtMarked = true;
             }
         } else if (t == PULL_IMPACT_TICK) {
-            for (LivingEntity target : state.captured) {
+            // solo chi il tendine sta ancora tenendo: chi si e' allontanato non prende lo schianto
+            for (LivingEntity target : ColpoLocalizzato.soloRaggiunti(player, state.captured, PULL_RANGE)) {
                 target.hurt(player.damageSources().playerAttack(player), PULL_DAMAGE);
                 spawnBurst(player, target.position(), 30);
             }
@@ -380,7 +386,9 @@ public final class VenomSymbiotePowersHandler {
 
         for (int hitTick : STRIKE_HIT_TICKS) {
             if (t == hitTick) {
-                for (LivingEntity target : state.captured) {
+                // il colpo lo tira la mano: prende chi e' davvero sotto il braccio
+                for (LivingEntity target : ColpoLocalizzato.soloToccati(player, state.captured,
+                        STRIKE_HAND_REACH, STRIKE_HAND_THICKNESS)) {
                     target.hurt(player.damageSources().playerAttack(player), STRIKE_SMALL_DAMAGE);
                     spawnBurst(player, target.position(), 12);
                 }
@@ -392,7 +400,8 @@ public final class VenomSymbiotePowersHandler {
 
         if (t == STRIKE_FINAL_TICK) {
             Vec3 sguardo = player.getLookAngle();
-            for (LivingEntity target : state.captured) {
+            for (LivingEntity target : ColpoLocalizzato.soloToccati(player, state.captured,
+                    STRIKE_HAND_REACH, STRIKE_HAND_THICKNESS)) {
                 target.hurt(player.damageSources().playerAttack(player), STRIKE_FINAL_DAMAGE);
                 // la stoccata li spara nella direzione in cui guardi, non li allontana e basta
                 target.setDeltaMovement(sguardo.x * STRIKE_FINAL_KNOCKBACK, STRIKE_FINAL_VERTICAL,
@@ -482,6 +491,8 @@ public final class VenomSymbiotePowersHandler {
         }
 
         if (t == TEMPEST_DAMAGE_TICK) {
+            // la tempesta di Anti-Venom avvelena i simbionti che investe
+            AntiVenomEffectHandler.colpisci(targets, player);
             levita(player, TEMPEST_SECOND_LIFT_LEVEL);
             for (LivingEntity target : targets) {
                 target.hurt(player.damageSources().playerAttack(player), TEMPEST_DAMAGE);
@@ -577,11 +588,14 @@ public final class VenomSymbiotePowersHandler {
 
     private static void detonate(ServerPlayer player, Vec3 centro) {
         AABB area = new AABB(centro, centro).inflate(BOMB_BLAST_RADIUS);
-        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, area,
-                e -> e != player && e.isAlive() && !e.isSpectator())) {
+        List<LivingEntity> investiti = player.level().getEntitiesOfClass(LivingEntity.class, area,
+                e -> e != player && e.isAlive() && !e.isSpectator());
+        for (LivingEntity target : investiti) {
             target.hurt(player.damageSources().playerAttack(player), BOMB_DAMAGE);
             pushAway(player, target, 0.7D, 0.3D);
         }
+        // la bomba di Anti-Venom avvelena i simbionti presi dallo scoppio
+        AntiVenomEffectHandler.colpisci(investiti, player);
         if (player.level() instanceof ServerLevel level) {
             // stesse emissioni del pack: due schizzi e tre sbuffi, ad altezze diverse
             level.sendParticles(MyMod.SYMBIOTE_SPLASH.get(), centro.x, centro.y + 1.0D, centro.z,
