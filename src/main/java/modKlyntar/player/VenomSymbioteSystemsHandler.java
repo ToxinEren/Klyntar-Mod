@@ -77,6 +77,21 @@ public final class VenomSymbioteSystemsHandler {
     private static final String BERSERK_REGEN_OBJECTIVE = "Venom.Berserk.Regeneration";
     private static final String VULNERABILITY_OBJECTIVE = "Venom.VulnerabilityLock";
     private static final String SONIC_HITS_OBJECTIVE = "Venom.SonicHits";
+    /** conto alla rovescia della posa di scossa: la leggono le abilita' che la fanno partire */
+    public static final String VIBRANT_OBJECTIVE = "Venom.Anim.Vibrant";
+    /** quanto dura la posa di scossa: la durata piena dell'animazione del pack */
+    private static final int VIBRANT_TICKS = 89;
+    /** alzato mentre il modello si ritira: regge la maschera del ritorno finche' dura */
+    public static final String REVERT_OBJECTIVE = "Venom.Revert";
+    /** quanto dura il ritiro del modello, cioe' l'animazione inversa della trasformazione */
+    private static final int REVERT_TICKS = 20;
+    /** ultimo stato del corpo simbionte, per accorgersi del momento in cui si spegne */
+    private static final Map<UUID, Boolean> CORPO_PRECEDENTE = new ConcurrentHashMap<>();
+
+    /** costringe alla forma umana: chiude col lucchetto "Unleash the symbiote" per un istante */
+    public static final String FORCE_HUMAN_OBJECTIVE = "Venom.ForceHuman";
+    /** basta un secondo di lucchetto perche' il corpo simbionte rientri */
+    private static final int FORCE_HUMAN_TICKS = 20;
     private static final String LOCK_MOVEMENT_OBJECTIVE = "Venom.LockMovement";
     private static final String NORMAL_REGEN_HUNGER_PAID = "Klyntar.NormalRegenHungerPaid";
     private static final int MAX_HUNGER = 100;
@@ -191,10 +206,9 @@ public final class VenomSymbioteSystemsHandler {
             // e il conto dell'indebolimento deve comunque scorrere: tickVulnerability sta
             // oltre l'uscita anticipata qui sotto, quindi restando senza simbionte il conto
             // si congelava e il giocatore tornava indebolito appena ne riprendeva uno
-            int lockRimasti = getScore(player, VULNERABILITY_OBJECTIVE, false);
-            if (lockRimasti > 0) {
-                setScore(player, VULNERABILITY_OBJECTIVE, lockRimasti - 1);
-            }
+            scalaContatore(player, VULNERABILITY_OBJECTIVE);
+            tickVibrant(player);
+            tickRevert(player);
         }
         if (!hasVenom && !flightRequested) {
             AUTO_ATTACK_TICKS.remove(player.getUUID());
@@ -214,6 +228,8 @@ public final class VenomSymbioteSystemsHandler {
         }
 
         tickVulnerability(player);
+        tickVibrant(player);
+        tickRevert(player);
         tickMovementLock(player);
         tickNormalRegenerationHunger(player);
         tickHunger(player);
@@ -918,11 +934,30 @@ public final class VenomSymbioteSystemsHandler {
         setScore(player, SONIC_HITS_OBJECTIVE, 0);
     }
 
+    /**
+     * Un colpo di sonic damage: indebolisce e fa avanzare il conto delle prese sonore,
+     * la terza delle quali strappa via il simbionte. La chiama chi suona una campana.
+     */
+    public static void applySonicWeakness(ServerPlayer player) {
+        applyVulnerability(player, true);
+    }
+
     public static void applyAntiVenomWeakness(ServerPlayer player) {
         applyVulnerability(player, false);
     }
 
     private static void applyVulnerability(ServerPlayer player, boolean sonic) {
+        // Anti-Venom non si indebolisce: ne' fuoco, ne' suono, ne' il suo stesso veleno.
+        // La guardia sta qui, alla sorgente, cosi' vale per ogni strada che porti a indebolire
+        if (modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
+            return;
+        }
+        // la posa di scossa vale per ogni indebolimento — fuoco, suono, Anti-Venom — e parte
+        // solo se non e' gia' in scena: cosi' restare nel fuoco non la fa ricominciare da capo
+        // a ogni tick di fiamma, ma un colpo nuovo dopo che e' finita la rilancia
+        if (getScore(player, VIBRANT_OBJECTIVE, false) <= 0) {
+            setScore(player, VIBRANT_OBJECTIVE, VIBRANT_TICKS);
+        }
         // le abilita' non si spengono piu' da qui: mentre l'indebolimento e' acceso Palladium
         // le tiene chiuse col lucchetto, quindi i punteggi non vengono nemmeno scritti
         setScore(player, VULNERABILITY_OBJECTIVE, VULNERABILITY_TICKS);
@@ -1270,6 +1305,58 @@ public final class VenomSymbioteSystemsHandler {
 
     private static boolean isBodyActive(ServerPlayer player) {
         return getScore(player, CAMERA_OBJECTIVE, false) > 0;
+    }
+
+    /** Fa scendere di uno un contatore in tick, se e' ancora acceso. */
+    private static void scalaContatore(ServerPlayer player, String objective) {
+        int rimasti = getScore(player, objective, false);
+        if (rimasti > 0) {
+            setScore(player, objective, rimasti - 1);
+        }
+    }
+
+    /**
+     * Porta avanti la posa di scossa e, quando finisce, rimanda il giocatore in forma umana.
+     *
+     * <p>La scossa scaccia il simbionte: chi la subisce trasformato guarda l'animazione fino in
+     * fondo e poi si ritrova uomo. Il rientro passa da un lucchetto di un secondo su "Unleash
+     * the symbiote", perche' quella e' un'abilita' a interruttore di Palladium e spegnerla
+     * scrivendo un punteggio non basterebbe: la riaccenderebbe da sola al tick dopo.</p>
+     */
+    /**
+     * Sorveglia il momento in cui il corpo simbionte si spegne e apre la finestra del ritorno.
+     *
+     * <p>Per quella finestra la maschera del ritorno sale a 16 restando nascosta sotto il
+     * modello che si ritira; quando la finestra si chiude il timer ridiscende, ed e' quella
+     * discesa che si vede sulla pelle. Cosi' la maschera esce dopo l'animazione e non insieme,
+     * come invece fa quella legata al timer della trasformazione.</p>
+     */
+    private static void tickRevert(ServerPlayer player) {
+        boolean corpo = getScore(player, VenomPlayerSizeHandler.SIZE_OBJECTIVE, false) > 0;
+        Boolean prima = CORPO_PRECEDENTE.put(player.getUUID(), corpo);
+
+        if (Boolean.TRUE.equals(prima) && !corpo) {
+            setScore(player, REVERT_OBJECTIVE, REVERT_TICKS);
+            LOGGER.info("Il simbionte di {} si sta ritirando",
+                    player.getGameProfile().getName());
+        } else {
+            scalaContatore(player, REVERT_OBJECTIVE);
+        }
+    }
+
+    private static void tickVibrant(ServerPlayer player) {
+        int rimasti = getScore(player, VIBRANT_OBJECTIVE, false);
+        if (rimasti <= 0) {
+            scalaContatore(player, FORCE_HUMAN_OBJECTIVE);
+            return;
+        }
+
+        setScore(player, VIBRANT_OBJECTIVE, rimasti - 1);
+        if (rimasti == 1 && getScore(player, VenomPlayerSizeHandler.SIZE_OBJECTIVE, false) > 0) {
+            setScore(player, FORCE_HUMAN_OBJECTIVE, FORCE_HUMAN_TICKS);
+            LOGGER.info("La scossa ha ricacciato dentro il simbionte di {}",
+                    player.getGameProfile().getName());
+        }
     }
 
     private static boolean isVulnerable(ServerPlayer player) {

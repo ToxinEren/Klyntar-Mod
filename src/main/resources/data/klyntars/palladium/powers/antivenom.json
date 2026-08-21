@@ -1845,6 +1845,17 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombody"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.ForceHuman",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -9359,6 +9370,73 @@
             "objective": "Venom.Sym.Anim",
             "min_score": 6,
             "max_score": 6
+          }
+        ]
+      }
+    },
+    "venomrevertmask": {
+      "type": "palladium:animation_timer",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.Revert",
+            "min_score": 1,
+            "max_score": 2147483647
+          }
+        ]
+      }
+    },
+    "blackbodyrevert": {
+      "type": "palladium:render_layer",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:antiblackrevert"
+    },
+    "venombedrockreverttransformation": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "render_layer": "klyntars:klyntar_antivenom_body",
+      "controller": "venom_actions",
+      "animation_trigger": "transform_revert_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:antivenom",
+            "ability": "enablevenombody",
+            "min": 1,
+            "max": 15
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:antivenom",
+            "ability": "enablevenom",
+            "min": 1,
+            "max": 19
           }
         ]
       }

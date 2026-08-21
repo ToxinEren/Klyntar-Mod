@@ -1,169 +1,170 @@
 {
-    "model": "klyntars:geo/venom_bedrock_my_teeth.geo.json",
-    "type": "geckolib:default",
-    "texture": "klyntars:textures/entity/venom/antivenom2.png",
-    "animation_file": "klyntars:animations/venom_bedrock.animation.json",
-    "animation_controller": [
-        {
-            "name": "venom_base_idle",
-            "transition_tick_time": 5,
-            "animation": "animation.venom.idle.java_safe"
-        },
-        {
-            "name": "venom_base_look",
-            "transition_tick_time": 2,
-            "animation": "animation.venom.look"
-        },
-        {
-            "name": "venom_default_wings_off",
-            "transition_tick_time": 0,
-            "animation": "animation.venom.wings.off"
-        },
-        {
-            "name": "venom_wings_visibility",
-            "transition_tick_time": 2,
-            "triggers": {
-                "wings_show_trigger": "animation.venom.wings.on.java_safe",
-                "wings_active_show_trigger": "animation.venom.wings.active",
-                "wings_flight_trigger": "animation.venom.wings.fly",
-                "wings_hide_trigger": "animation.venom.wings.off"
-            }
-        },
-        {
-            "name": "venom_default_axe_off",
-            "transition_tick_time": 0,
-            "animation": "animation.venom.axe_off"
-        },
-        {
-            "name": "venom_axe_visibility",
-            "transition_tick_time": 0,
-            "triggers": {
-                "axe_visible_trigger": "animation.venom.axe_on",
-                "axe_hidden_trigger": "animation.venom.axe_off"
-            }
-        },
-        {
-            "name": "venom_mace_visibility",
-            "transition_tick_time": 0,
-            "triggers": {
-                "mace_visible_trigger": "animation.venom.mace_on",
-                "mace_hidden_trigger": "animation.venom.mace_off"
-            }
-        },
-        {
-            "name": "venom_default_arm_tentacles_off",
-            "transition_tick_time": 0,
-            "animation": "animation.venom.whip.idle"
-        },
-        {
-            "name": "venom_whip_visibility",
-            "transition_tick_time": 0,
-            "triggers": {
-                "whip_visible_trigger": "animation.venom.whip.rotation",
-                "whip_hidden_trigger": "animation.venom.whip.idle"
-            }
-        },
-        {
-            "name": "venom_default_head_tentacles_off",
-            "transition_tick_time": 0,
-            "animation": "animation.venom_head.tentacles_attack.off.java"
-        },
-        {
-            "name": "venom_head_tentacles",
-            "transition_tick_time": 2,
-            "triggers": {
-                "head_tentacles_attack_trigger": "animation.venom_head.tentacles_attack.idle.java",
-                "head_tentacles_off_trigger": "animation.venom_head.tentacles_attack.off.java"
-            }
-        },
-        {
-            "name": "venom_actions",
-            "transition_tick_time": 5,
-            "triggers": {
-                "idle_trigger": "animation.venom.idle.java_safe",
-                "idle_2_trigger": "animation.venom.idle2",
-                "look_trigger": "animation.venom.look",
-                "walk_trigger": "animation.venom.walk",
-                "run_trigger": "animation.venom.run.java_combined",
-                "sneak_trigger": "animation.venom.sneaking",
-                "walk_sneak_trigger": "animation.venom.walk.sneaking",
-                "falling_trigger": "animation.venom.falling",
-                "water_trigger": "animation.venom.in_water",
-                "swim_trigger": "animation.venom.swim.java",
-                "transform_trigger": "animation.venom.transformation",
-                "transform_player_trigger": "animation.player.venom.transformation",
-                "transform_off_trigger": "animation.player.venom.transform.off",
-                "attack_trigger": "animation.venom.attack.1",
-                "attack_2_trigger": "animation.venom.attack.2",
-                "attack_3_trigger": "animation.venom.attack.3.java_safe",
-                "attack_4_trigger": "animation.venom.attack.4.java_safe",
-                "attack_time_trigger": "animation.venom.attack.time",
-                "attack_time_2_trigger": "animation.venom.attack.time.2",
-                "axe_on_trigger": "animation.venom.axe_on",
-                "axe_off_trigger": "animation.venom.axe_off",
-                "axe_attack_trigger": "animation.venom.axe.attack.1",
-                "axe_attack_2_trigger": "animation.venom.axe.attack.2",
-                "whip_idle_trigger": "animation.venom.whip.idle",
-                "whip_rotation_trigger": "animation.venom.whip.rotation",
-                "whip_attack_trigger": "animation.venom.whip.attack.1.java_safe",
-                "whip_attack_2_trigger": "animation.venom.whip.attack.2.java_safe",
-                "whip_attack_3_trigger": "animation.venom.whip.attack.3.java_safe",
-                "whip_attack_4_trigger": "animation.venom.whip.attack.4.java_safe",
-                "impulse_whip_trigger": "animation.venom.impulse_whip.java_safe",
-                "take_on_trigger": "animation.venom.take.on",
-                "smash_trigger": "animation.venom.smash",
-                "super_jump_trigger": "animation.venom.super_jump.java_safe",
-                "special_attack_trigger": "animation.venom.special_attack.java_safe",
-                "falling_attack_trigger": "animation.venom.falling.attack",
-                "falling_attack_end_trigger": "animation.venom.falling.attack.end.java_safe",
-                "climb_trigger": "animation.venom.escalar",
-                "climb_ceiling_hold_trigger": "animation.venom.climb_ceiling_hold.static",
-                "climb_wall_trigger": "animation.venom.escalar_paredes",
-                "climb_impulse_trigger": "animation.venom.escalar.impulso.java_safe",
-                "climb_hang_trigger": "animation.venom.escalar.colgado",
-                "hang_trigger": "animation.venom.colgado",
-                "regeneration_trigger": "animation.venom.regeneration.java_safe",
-                "wings_on_trigger": "animation.venom.wings.on.java_safe",
-                "wings_active_trigger": "animation.venom.wings.active",
-                "wings_fly_trigger": "animation.venom.wings.fly",
-                "wings_off_trigger": "animation.venom.wings.off",
-                "wings_apagar_trigger": "animation.venom.wings.apagar.java_safe",
-                "elytra_trigger": "animation.venom.elytra",
-                "elytra_impulse_trigger": "animation.venom.elytra.impulse",
-                "elytra_stop_trigger": "animation.venom.elytra.stop",
-                "changes_skin_trigger": "animation.venom.changes_skin",
-                "growl_trigger": "animation.venom.idle2",
-                "assimilate_trigger": "animation.venom.transformation",
-                "attack_2_nolegs_trigger": "animation.venom.attack.2.nolegs",
-                "attack_3_nolegs_trigger": "animation.venom.attack.3.nolegs",
-                "attack_1_nolegs_trigger": "animation.venom.attack.1.nolegs",
-                "sym_blast_trigger": "animation.venom.sym.blast",
-                "sym_pull_trigger": "animation.venom.sym.pull",
-                "sym_strike_trigger": "animation.venom.sym.strike",
-                "sym_bomb_trigger": "animation.venom.sym.bomb",
-                "sym_tempest_trigger": "animation.venom.sym.tempest",
-                "sym_rage_trigger": "animation.venom.sym.rage"
-            }
-        },
-        {
-            "name": "venom_default_shield_off",
-            "transition_tick_time": 0,
-            "animation": "animation.venom.shield_hidden"
-        },
-        {
-            "name": "venom_shield_visibility",
-            "transition_tick_time": 5,
-            "triggers": {
-                "shield_on_trigger": "animation.venom.shield",
-                "shield_off_trigger": "animation.venom.shieldoff"
-            }
-        }
-    ],
-    "bones": {
-        "head": "head_venom",
-        "right_arm": "rightArm_player_anchor",
-        "left_arm": "leftArm_player_anchor",
-        "right_leg": "rightLeg_player_anchor",
-        "left_leg": "leftLeg_player_anchor"
+  "model": "klyntars:geo/venom_bedrock_my_teeth.geo.json",
+  "type": "geckolib:default",
+  "texture": "klyntars:textures/entity/venom/antivenom2.png",
+  "animation_file": "klyntars:animations/venom_bedrock.animation.json",
+  "animation_controller": [
+    {
+      "name": "venom_base_idle",
+      "transition_tick_time": 5,
+      "animation": "animation.venom.idle.java_safe"
+    },
+    {
+      "name": "venom_base_look",
+      "transition_tick_time": 2,
+      "animation": "animation.venom.look"
+    },
+    {
+      "name": "venom_default_wings_off",
+      "transition_tick_time": 0,
+      "animation": "animation.venom.wings.off"
+    },
+    {
+      "name": "venom_wings_visibility",
+      "transition_tick_time": 2,
+      "triggers": {
+        "wings_show_trigger": "animation.venom.wings.on.java_safe",
+        "wings_active_show_trigger": "animation.venom.wings.active",
+        "wings_flight_trigger": "animation.venom.wings.fly",
+        "wings_hide_trigger": "animation.venom.wings.off"
+      }
+    },
+    {
+      "name": "venom_default_axe_off",
+      "transition_tick_time": 0,
+      "animation": "animation.venom.axe_off"
+    },
+    {
+      "name": "venom_axe_visibility",
+      "transition_tick_time": 0,
+      "triggers": {
+        "axe_visible_trigger": "animation.venom.axe_on",
+        "axe_hidden_trigger": "animation.venom.axe_off"
+      }
+    },
+    {
+      "name": "venom_mace_visibility",
+      "transition_tick_time": 0,
+      "triggers": {
+        "mace_visible_trigger": "animation.venom.mace_on",
+        "mace_hidden_trigger": "animation.venom.mace_off"
+      }
+    },
+    {
+      "name": "venom_default_arm_tentacles_off",
+      "transition_tick_time": 0,
+      "animation": "animation.venom.whip.idle"
+    },
+    {
+      "name": "venom_whip_visibility",
+      "transition_tick_time": 0,
+      "triggers": {
+        "whip_visible_trigger": "animation.venom.whip.rotation",
+        "whip_hidden_trigger": "animation.venom.whip.idle"
+      }
+    },
+    {
+      "name": "venom_default_head_tentacles_off",
+      "transition_tick_time": 0,
+      "animation": "animation.venom_head.tentacles_attack.off.java"
+    },
+    {
+      "name": "venom_head_tentacles",
+      "transition_tick_time": 2,
+      "triggers": {
+        "head_tentacles_attack_trigger": "animation.venom_head.tentacles_attack.idle.java",
+        "head_tentacles_off_trigger": "animation.venom_head.tentacles_attack.off.java"
+      }
+    },
+    {
+      "name": "venom_actions",
+      "transition_tick_time": 5,
+      "triggers": {
+        "idle_trigger": "animation.venom.idle.java_safe",
+        "idle_2_trigger": "animation.venom.idle2",
+        "look_trigger": "animation.venom.look",
+        "walk_trigger": "animation.venom.walk",
+        "run_trigger": "animation.venom.run.java_combined",
+        "sneak_trigger": "animation.venom.sneaking",
+        "walk_sneak_trigger": "animation.venom.walk.sneaking",
+        "falling_trigger": "animation.venom.falling",
+        "water_trigger": "animation.venom.in_water",
+        "swim_trigger": "animation.venom.swim.java",
+        "transform_trigger": "animation.venom.transformation",
+        "transform_player_trigger": "animation.player.venom.transformation",
+        "transform_off_trigger": "animation.player.venom.transform.off",
+        "attack_trigger": "animation.venom.attack.1",
+        "attack_2_trigger": "animation.venom.attack.2",
+        "attack_3_trigger": "animation.venom.attack.3.java_safe",
+        "attack_4_trigger": "animation.venom.attack.4.java_safe",
+        "attack_time_trigger": "animation.venom.attack.time",
+        "attack_time_2_trigger": "animation.venom.attack.time.2",
+        "axe_on_trigger": "animation.venom.axe_on",
+        "axe_off_trigger": "animation.venom.axe_off",
+        "axe_attack_trigger": "animation.venom.axe.attack.1",
+        "axe_attack_2_trigger": "animation.venom.axe.attack.2",
+        "whip_idle_trigger": "animation.venom.whip.idle",
+        "whip_rotation_trigger": "animation.venom.whip.rotation",
+        "whip_attack_trigger": "animation.venom.whip.attack.1.java_safe",
+        "whip_attack_2_trigger": "animation.venom.whip.attack.2.java_safe",
+        "whip_attack_3_trigger": "animation.venom.whip.attack.3.java_safe",
+        "whip_attack_4_trigger": "animation.venom.whip.attack.4.java_safe",
+        "impulse_whip_trigger": "animation.venom.impulse_whip.java_safe",
+        "take_on_trigger": "animation.venom.take.on",
+        "smash_trigger": "animation.venom.smash",
+        "super_jump_trigger": "animation.venom.super_jump.java_safe",
+        "special_attack_trigger": "animation.venom.special_attack.java_safe",
+        "falling_attack_trigger": "animation.venom.falling.attack",
+        "falling_attack_end_trigger": "animation.venom.falling.attack.end.java_safe",
+        "climb_trigger": "animation.venom.escalar",
+        "climb_ceiling_hold_trigger": "animation.venom.climb_ceiling_hold.static",
+        "climb_wall_trigger": "animation.venom.escalar_paredes",
+        "climb_impulse_trigger": "animation.venom.escalar.impulso.java_safe",
+        "climb_hang_trigger": "animation.venom.escalar.colgado",
+        "hang_trigger": "animation.venom.colgado",
+        "regeneration_trigger": "animation.venom.regeneration.java_safe",
+        "wings_on_trigger": "animation.venom.wings.on.java_safe",
+        "wings_active_trigger": "animation.venom.wings.active",
+        "wings_fly_trigger": "animation.venom.wings.fly",
+        "wings_off_trigger": "animation.venom.wings.off",
+        "wings_apagar_trigger": "animation.venom.wings.apagar.java_safe",
+        "elytra_trigger": "animation.venom.elytra",
+        "elytra_impulse_trigger": "animation.venom.elytra.impulse",
+        "elytra_stop_trigger": "animation.venom.elytra.stop",
+        "changes_skin_trigger": "animation.venom.changes_skin",
+        "growl_trigger": "animation.venom.idle2",
+        "assimilate_trigger": "animation.venom.transformation",
+        "attack_2_nolegs_trigger": "animation.venom.attack.2.nolegs",
+        "attack_3_nolegs_trigger": "animation.venom.attack.3.nolegs",
+        "attack_1_nolegs_trigger": "animation.venom.attack.1.nolegs",
+        "sym_blast_trigger": "animation.venom.sym.blast",
+        "sym_pull_trigger": "animation.venom.sym.pull",
+        "sym_strike_trigger": "animation.venom.sym.strike",
+        "sym_bomb_trigger": "animation.venom.sym.bomb",
+        "sym_tempest_trigger": "animation.venom.sym.tempest",
+        "sym_rage_trigger": "animation.venom.sym.rage",
+        "transform_revert_trigger": "animation.venom.transformation.reverse"
+      }
+    },
+    {
+      "name": "venom_default_shield_off",
+      "transition_tick_time": 0,
+      "animation": "animation.venom.shield_hidden"
+    },
+    {
+      "name": "venom_shield_visibility",
+      "transition_tick_time": 5,
+      "triggers": {
+        "shield_on_trigger": "animation.venom.shield",
+        "shield_off_trigger": "animation.venom.shieldoff"
+      }
     }
+  ],
+  "bones": {
+    "head": "head_venom",
+    "right_arm": "rightArm_player_anchor",
+    "left_arm": "leftArm_player_anchor",
+    "right_leg": "rightLeg_player_anchor",
+    "left_leg": "leftLeg_player_anchor"
+  }
 }

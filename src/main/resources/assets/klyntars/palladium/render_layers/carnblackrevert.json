@@ -12,10 +12,10 @@
       "MASK": {
         "type": "palladium:ability_integer_property",
         "power": "klyntars:carnage",
-        "ability": "enablevenombody",
+        "ability": "venomrevertmask",
         "property": "value"
       }
     },
-    "output": "klyntars:textures/models/carn_black_#MASK.png"
+    "output": "klyntars:textures/models/carn_black_revert_#MASK.png"
   }
 }

@@ -1,7 +1,7 @@
 {
   "type": "palladium:skin_overlay",
   "texture": {
-    "base": "klyntars:textures/models/black_carnage.png",
+    "base": "klyntars:textures/models/black_antivenom.png",
     "transformers": [
       {
         "type": "palladium:alpha_mask",
@@ -11,11 +11,11 @@
     "variables": {
       "MASK": {
         "type": "palladium:ability_integer_property",
-        "power": "klyntars:carnage",
-        "ability": "enablevenombody",
+        "power": "klyntars:antivenom",
+        "ability": "venomrevertmask",
         "property": "value"
       }
     },
-    "output": "klyntars:textures/models/carn_black_#MASK.png"
+    "output": "klyntars:textures/models/anti_black_revert_#MASK.png"
   }
 }
