@@ -104,6 +104,10 @@ public final class SymbioteWallBreakHandler {
         if (stato.getDestroySpeed(livello, posizione) == DUREZZA_INFRANGIBILE) {
             return;
         }
+        // il frammento va rotto di proposito, non raccolto di striscio dal buco tre per tre
+        if (stato.is(MyMod.KNULLS_FRAGMENT_BLOCK.get())) {
+            return;
+        }
         // destroyBlock con il giocatore fa cadere i drop giusti per l'attrezzo che ha in mano
         giocatore.gameMode.destroyBlock(posizione);
     }

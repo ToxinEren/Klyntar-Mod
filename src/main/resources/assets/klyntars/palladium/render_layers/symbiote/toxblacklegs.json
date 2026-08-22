@@ -1,0 +1,68 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "klyntars:textures/models/blacklegs.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:ability_integer_property",
+            "power": "klyntars:toxin",
+            "ability": "enablevenomlegs",
+            "property": "value"
+          }
+        },
+        "output": "klyntars:textures/models/tox_blacklegs_#MASK.png"
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "klyntars:textures/models/redlegs.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:ability_integer_property",
+            "power": "klyntars:wip",
+            "ability": "enablecarnagelegs",
+            "property": "value"
+          }
+        },
+        "output": "klyntars:textures/models/tox_blacklegs_#MASK.png"
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "klyntars:textures/models/whitelegs.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:ability_integer_property",
+            "power": "klyntars:antivenom",
+            "ability": "enablevenomlegs",
+            "property": "value"
+          }
+        },
+        "output": "klyntars:textures/models/tox_whitelegs_#MASK.png"
+      }
+    }
+  ]
+}

@@ -37,5 +37,10 @@
   "entity.klyntars.tentacle_segment": "Tentacle",
   "entity.klyntars.web_projectile": "Web",
   "effect.klyntars.anti_venom": "Anti-Venom",
-  "entity.klyntars.thrown_capsule": "Thrown Capsule"
+  "entity.klyntars.thrown_capsule": "Thrown Capsule",
+  "block.klyntars.knulls_fragment": "Knull's Fragment",
+  "entity.klyntars.grendels_fragment": "Grendel's Fragment",
+  "entity.klyntars.carnage_symbiote": "Carnage Symbiote",
+  "entity.klyntars.antivenom_symbiote": "Anti-Venom Symbiote",
+  "entity.klyntars.toxin_symbiote": "Toxin Symbiote"
 }

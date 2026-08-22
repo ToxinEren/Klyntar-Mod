@@ -84,7 +84,16 @@ public class PlayerPowerCapability {
         });
     }
 
-    public static void infectPlayer(ServerPlayer player) {
+    public static void infectPlayer(ServerPlayer player) {
+        infectPlayer(player, "venom");
+    }
+
+    /**
+     * Infetta il giocatore con una forma precisa.
+     *
+     * <p>La usano i simbionti colorati: quello comune porta Venom, gli altri il proprio.</p>
+     */
+    public static void infectPlayer(ServerPlayer player, String forma) {
         PlayerPower fallbackPower = new PlayerPower();
         PlayerPower power = player.getCapability(PLAYER_POWER).orElse(fallbackPower);
         if (power == fallbackPower) {
@@ -92,7 +101,7 @@ public class PlayerPowerCapability {
         }
         {
             power.setInfected(true);
-            power.setForm("venom");
+            power.setForm(forma);
             power.setTransformed(true);
             power.applyTransformation(player);
             setInfectionScore(player, true);

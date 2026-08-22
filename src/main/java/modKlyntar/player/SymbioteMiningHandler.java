@@ -68,7 +68,7 @@ public final class SymbioteMiningHandler {
      * del server e non viene sincronizzato. Ci si fida invece dello stato appena arrivato, che
      * il server manda solo per chi un simbionte ce l'ha davvero.</p>
      */
-    private static boolean scavaComeNetherite(Player giocatore) {
+    public static boolean scavaComeNetherite(Player giocatore) {
         if (giocatore.level().isClientSide) {
             return ClientSymbioteMiningState.corpoAttivo()
                     || ClientSymbioteMiningState.attrezzo() == ATTREZZO_PICCONE;

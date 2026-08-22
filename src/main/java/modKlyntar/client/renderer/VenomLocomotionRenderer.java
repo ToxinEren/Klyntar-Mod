@@ -35,7 +35,9 @@ public final class VenomLocomotionRenderer {
     /** la stessa texture in bianco, per la forma anti-venom */
     private static final ResourceLocation ARM_TEXTURE_ANTI = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/antivenom_tentacle_segment.png");
     /** e in rosso, per la forma carnage */
-    private static final ResourceLocation ARM_TEXTURE_CARN = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/carnage_tentacle_segment.png");
+    private static final ResourceLocation ARM_TEXTURE_CARN = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/carnage_tentacle_segment.png");
+    /** i tentacoli di Toxin, arancioni */
+    private static final ResourceLocation ARM_TEXTURE_TOX = new ResourceLocation(MyMod.MOD_ID, "textures/models/locomotion/toxin_tentacle_segment.png");
     /**
      * Texture del giocatore che si sta disegnando. I tentacoli si disegnano anche per gli altri
      * giocatori, quindi non basta sapere la forma di chi guarda: la si legge dall'obiettivo che
@@ -82,7 +84,8 @@ public final class VenomLocomotionRenderer {
                 for (Object p : poteri) {
                     String id = String.valueOf(p);
                     if (id.endsWith(":antivenom")) return "antivenom";
-                    if (id.endsWith(":carnage")) return "carnage";
+                    if (id.endsWith(":carnage")) return "carnage";
+                    if (id.endsWith(":toxin")) return "toxin";
                     if (id.endsWith(":venom")) return "venom";
                 }
             }
@@ -92,7 +95,30 @@ public final class VenomLocomotionRenderer {
         return null;
     }
 
-    /** una texture per forma: bianca per anti-venom, rossa per carnage, nera altrimenti */
+    /**
+     * Sceglie pelle e tinta dei tentacoli secondo il simbionte indossato.
+     *
+     * <p>La tinta serve perche' la texture da sola non basta: il colore del vertice la
+     * moltiplica, e lasciandolo sul grigio scuro di Venom ogni altra forma verrebbe spenta.</p>
+     */
+    private static void scegliAspetto(Player player) {
+        armTexture = textureFor(player);
+        int[] tinta;
+        if (armTexture == ARM_TEXTURE_ANTI) {
+            tinta = new int[]{ARM_COLOR_ANTI, ARM_COLOR_ANTI, ARM_COLOR_ANTI};
+        } else if (armTexture == ARM_TEXTURE_CARN) {
+            tinta = ARM_COLOR_CARN;
+        } else if (armTexture == ARM_TEXTURE_TOX) {
+            tinta = ARM_COLOR_TOX;
+        } else {
+            tinta = new int[]{ARM_COLOR, ARM_COLOR, ARM_COLOR};
+        }
+        armR = tinta[0];
+        armG = tinta[1];
+        armB = tinta[2];
+    }
+
+    /** una texture per forma: bianca per anti-venom, rossa per carnage, arancione per toxin */
     public static ResourceLocation textureFor(Player player) {
         String forma = formaDaPalladium(player);
         if (forma == null) {
@@ -100,6 +126,7 @@ public final class VenomLocomotionRenderer {
         }
         if ("antivenom".equals(forma)) return ARM_TEXTURE_ANTI;
         if ("carnage".equals(forma)) return ARM_TEXTURE_CARN;
+        if ("toxin".equals(forma)) return ARM_TEXTURE_TOX;
         return ARM_TEXTURE;
     }
     private static final int ARM_SEGMENTS = 18;
@@ -112,7 +139,9 @@ public final class VenomLocomotionRenderer {
      */
     private static final int ARM_COLOR_ANTI = 235;
     /** il rosso di Carnage va espresso sui tre canali: un solo valore darebbe solo un grigio */
-    private static final int[] ARM_COLOR_CARN = {190, 42, 46};
+    private static final int[] ARM_COLOR_CARN = {190, 42, 46};
+    /** l'arancio di Toxin */
+    private static final int[] ARM_COLOR_TOX = {224, 90, 20};
     private static int armR = ARM_COLOR, armG = ARM_COLOR, armB = ARM_COLOR;
     private static final float TENTACLE_THICKNESS_SCALE = 1.5F;
     private static final float TENTACLE_RADIUS = 0.085F * TENTACLE_THICKNESS_SCALE;
@@ -192,14 +221,7 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
-                armTexture = textureFor(player);
-                if (armTexture == ARM_TEXTURE_ANTI) {
-                    armR = armG = armB = ARM_COLOR_ANTI;
-                } else if (armTexture == ARM_TEXTURE_CARN) {
-                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
-                } else {
-                    armR = armG = armB = ARM_COLOR;
-                }
+                scegliAspetto(player);
                 renderPlayerArms(player, state.anchors, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
@@ -213,14 +235,7 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
-                armTexture = textureFor(player);
-                if (armTexture == ARM_TEXTURE_ANTI) {
-                    armR = armG = armB = ARM_COLOR_ANTI;
-                } else if (armTexture == ARM_TEXTURE_CARN) {
-                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
-                } else {
-                    armR = armG = armB = ARM_COLOR;
-                }
+                scegliAspetto(player);
                 renderPlayerGrabTentacle(player, state.target, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
@@ -234,14 +249,7 @@ public final class VenomLocomotionRenderer {
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
             if (entity instanceof Player player) {
-                armTexture = textureFor(player);
-                if (armTexture == ARM_TEXTURE_ANTI) {
-                    armR = armG = armB = ARM_COLOR_ANTI;
-                } else if (armTexture == ARM_TEXTURE_CARN) {
-                    armR = ARM_COLOR_CARN[0]; armG = ARM_COLOR_CARN[1]; armB = ARM_COLOR_CARN[2];
-                } else {
-                    armR = armG = armB = ARM_COLOR;
-                }
+                scegliAspetto(player);
                 renderPlayerCombatTentacles(player, state.targets, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
             }
