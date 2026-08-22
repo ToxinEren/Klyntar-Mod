@@ -231,8 +231,14 @@ public final class VenomSymbioteSystemsHandler {
         tickVibrant(player);
         tickRevert(player);
         tickMovementLock(player);
-        tickNormalRegenerationHunger(player);
-        tickHunger(player);
+        // Anti-Venom non ha la fame del simbionte: niente barra, niente digiuno, niente
+        // berserk. Le sue abilita' pesano invece sulla fame normale del giocatore
+        if (modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
+            removeHungerBar(player);
+        } else {
+            tickNormalRegenerationHunger(player);
+            tickHunger(player);
+        }
         if (!flightRequested) {
             tickFlight(player);
         }
@@ -747,6 +753,8 @@ public final class VenomSymbioteSystemsHandler {
             setScore(player, BERSERK_OBJECTIVE, 1);
             setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
             setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
+            // averlo lasciato a digiuno fino alla furia costa fiducia
+            SymbioteAffinityHandler.penalizza(player, SymbioteAffinityHandler.PENALITA_BERSERK);
             LOGGER.info("Venom berserk started for {}", player.getGameProfile().getName());
         }
 

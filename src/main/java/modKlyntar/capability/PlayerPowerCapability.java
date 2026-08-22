@@ -153,6 +153,7 @@ public class PlayerPowerCapability {
         // mezzo secondo di passo: seguire il potere non richiede di guardarlo a ogni tick
         if (player.tickCount % 10 == 0) {
             seguiPalladium(player);
+            modKlyntar.symbiote.SymbioteState.assicuraAffinita(player);
         }
     }
 

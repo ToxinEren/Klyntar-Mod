@@ -19,8 +19,10 @@ import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 public final class SymbioteState {
     /** alzato mentre il giocatore e' indebolito da fuoco o suono: blocca quasi tutto */
     public static final String VULNERABILITY_OBJECTIVE = "Venom.VulnerabilityLock";
-    /** quanto il giocatore e' in sintonia col simbionte: lo alzera' l'albero degli avanzamenti */
+    /** quanto il giocatore e' in sintonia col simbionte: apre i Venom Bond a 50 e a 100 */
     public static final String AFFINITY_OBJECTIVE = "Klyntar.Affinity";
+    /** 1 quando il giocatore si e' guadagnato il Knull's Bond, il nodo che regge il volo */
+    public static final String KNULL_BOND_OBJECTIVE = "Klyntar.KnullBond";
 
     private SymbioteState() {
     }
@@ -80,6 +82,24 @@ public final class SymbioteState {
     /** Indebolito da fuoco o da suono: in questa finestra i poteri passivi non lavorano. */
     public static boolean isVulnerabile(Player player) {
         return getScore(player, VULNERABILITY_OBJECTIVE) > 0;
+    }
+
+    /**
+     * Crea l'obiettivo dell'affinita' se manca, a zero.
+     *
+     * <p>Serve perche' un obiettivo mai scritto non esiste: i comandi che lo interrogano
+     * falliscono e le condizioni di Palladium che lo leggono non trovano niente.</p>
+     */
+    public static void assicuraAffinita(Player player) {
+        assicuraObiettivo(player, AFFINITY_OBJECTIVE);
+        assicuraObiettivo(player, KNULL_BOND_OBJECTIVE);
+    }
+
+    /** Crea un obiettivo a zero se non esiste ancora. */
+    public static void assicuraObiettivo(Player player, String objectiveName) {
+        if (player.getScoreboard().getObjective(objectiveName) == null) {
+            setScore(player, objectiveName, 0);
+        }
     }
 
     /**

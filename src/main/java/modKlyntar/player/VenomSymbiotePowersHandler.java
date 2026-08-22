@@ -241,35 +241,83 @@ public final class VenomSymbiotePowersHandler {
         }
     }
 
+    /**
+     * C'e' qualcosa da afferrare nel raggio dell'abilita'?
+     *
+     * <p>Pull e Strike sono sequenze che lavorano su bersagli: senza nessuno attorno partirebbero
+     * a vuoto, muovendo il giocatore e consumando la ricarica per niente.</p>
+     */
+    private static boolean bersagliVicini(ServerPlayer player, double range, int max) {
+        if (!findTargets(player, range, max).isEmpty()) {
+            return true;
+        }
+        player.displayClientMessage(
+                net.minecraft.network.chat.Component.literal("Nessun bersaglio vicino"), true);
+        return false;
+    }
+
+    /** sotto questa fame Anti-Venom non riesce piu' a spendere il simbionte */
+    private static final int FAME_MINIMA = 6;
+    /** quanto pesa un'abilita' sulla fame del giocatore: circa una coscia e mezza */
+    private static final float COSTO_FAME = 6.0F;
+
+    /**
+     * Anti-Venom non ha una fame propria, quindi le sue abilita' le paga il giocatore.
+     *
+     * <p>Per le altre forme non cambia niente: hanno la loro barra e questa non le tocca.</p>
+     *
+     * @return true se l'abilita' puo' partire
+     */
+    private static boolean pagaFame(ServerPlayer player) {
+        if (!modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
+            return true;
+        }
+        if (player.getFoodData().getFoodLevel() < FAME_MINIMA) {
+            player.displayClientMessage(
+                    net.minecraft.network.chat.Component.literal("Troppa fame per il simbionte"), true);
+            return false;
+        }
+        player.getFoodData().addExhaustion(COSTO_FAME);
+        return true;
+    }
+
     private static void consumeRequests(ServerPlayer player, PowerState state) {
-        if (consume(player, PULL_REQUEST) && state.pullTick < 0 && state.pullCooldown <= 0) {
+        if (consume(player, PULL_REQUEST) && state.pullTick < 0 && state.pullCooldown <= 0
+                && bersagliVicini(player, PULL_RANGE, PULL_MAX_TARGETS)
+                && pagaFame(player)) {
             state.pullTick = 0;
             state.pullCooldown = PULL_COOLDOWN;
             playAnim(player, state, 1);
             state.captured.clear();
         }
-        if (consume(player, STRIKE_REQUEST) && state.strikeTick < 0 && state.strikeCooldown <= 0) {
+        if (consume(player, STRIKE_REQUEST) && state.strikeTick < 0 && state.strikeCooldown <= 0
+                && bersagliVicini(player, STRIKE_RANGE, STRIKE_MAX_TARGETS)
+                && pagaFame(player)) {
             state.strikeTick = 0;
             state.strikeCooldown = STRIKE_COOLDOWN;
             playAnim(player, state, 2);
             state.struck.clear();
         }
-        if (consume(player, TEMPEST_REQUEST) && state.tempestTick < 0 && state.tempestCooldown <= 0) {
+        if (consume(player, TEMPEST_REQUEST) && state.tempestTick < 0 && state.tempestCooldown <= 0
+                && pagaFame(player)) {
             state.tempestTick = 0;
             state.tempestCooldown = TEMPEST_COOLDOWN;
             playAnim(player, state, 3);
         }
-        if (consume(player, BOMB_REQUEST) && state.bombTick < 0 && state.bombCooldown <= 0) {
+        if (consume(player, BOMB_REQUEST) && state.bombTick < 0 && state.bombCooldown <= 0
+                && pagaFame(player)) {
             state.bombTick = 0;
             state.bombCooldown = BOMB_COOLDOWN;
             playAnim(player, state, 4);
         }
-        if (consume(player, BLAST_REQUEST) && state.blastTick < 0 && state.blastCooldown <= 0) {
+        if (consume(player, BLAST_REQUEST) && state.blastTick < 0 && state.blastCooldown <= 0
+                && pagaFame(player)) {
             state.blastTick = 0;
             state.blastCooldown = BLAST_COOLDOWN;
             playAnim(player, state, 5);
         }
-        if (consume(player, RAGE_REQUEST) && state.rageTicks <= 0 && state.rageCooldown <= 0) {
+        if (consume(player, RAGE_REQUEST) && state.rageTicks <= 0 && state.rageCooldown <= 0
+                && pagaFame(player)) {
             startRage(player, state);
             playAnim(player, state, 6);
         }

@@ -11,16 +11,16 @@
     "venombody": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom",
+      "title": "Symbiote",
       "bar_color": "red",
       "hidden": false,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
         0,
-        0.5
+        2.5
       ],
-      "description": "",
+      "description": "The symbiote that has bonded with you.",
       "render_layer": "klyntars:klyntar_venom_body",
       "conditions": {
         "enabling": [
@@ -37,7 +37,7 @@
     "venomfinalbody": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom Final Form",
+      "title": "Symbiote Final Form",
       "bar_color": "red",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1508,31 +1508,22 @@
     "venombond1": {
       "type": "palladium:dummy",
       "icon": "klyntars:textures/icon/venomtransformation.png",
-      "title": "Venom Bond Level 1",
+      "title": "Symbiote Bond Level 1",
       "bar_color": "red",
       "hidden": false,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
         0,
-        -1.5
+        1.5
       ],
-      "description": "Venom will now be more attached to you, and will help you with certain tasks outisde of battle mode.",
+      "description": "The symbiote grows attached to you, and begins helping outside of battle.",
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombody"
-          },
-          {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 5,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
           }
         ]
       }
@@ -1540,16 +1531,16 @@
     "venombond2": {
       "type": "palladium:dummy",
       "icon": "klyntars:textures/icon/venomtransformation.png",
-      "title": "Venom Bond Level 2",
+      "title": "Symbiote Bond Level 2",
       "bar_color": "red",
       "hidden": false,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
         0,
-        -2
+        0
       ],
-      "description": "Venom will now be deeply attached to you, and will protect you with his life.",
+      "description": "The bond runs deep: the symbiote shields you with its own body.",
       "conditions": {
         "unlocking": [
           {
@@ -1558,13 +1549,10 @@
             "ability": "venombond1"
           },
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 8,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.Affinity",
+            "min_score": 50,
+            "max_score": 2147483647
           }
         ]
       }
@@ -1572,7 +1560,7 @@
     "venomhead": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom Head Model",
+      "title": "Symbiote Head Model",
       "bar_color": "red",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1835,8 +1823,8 @@
       "hidden": false,
       "start_value": 0,
       "gui_position": [
-        0,
-        0
+        -0.75,
+        2.5
       ],
       "max_value": 16,
       "conditions": {
@@ -1878,7 +1866,8 @@
             ]
           }
         ]
-      }
+      },
+      "description": "Let the symbiote take over your body."
     },
     "venomarmor": {
       "type": "palladium:restrict_slots",
@@ -3827,9 +3816,9 @@
       "list_index": 1,
       "gui_position": [
         1.5,
-        -0.5
+        -2.0
       ],
-      "description": "null",
+      "description": "Seize a foe in both hands and crush it.",
       "range_objective": "Klyntars.Range",
       "strength": 1,
       "damage": 5,
@@ -3843,6 +3832,11 @@
           }
         ],
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
@@ -3859,20 +3853,6 @@
                 "ability": "attack"
               }
             ]
-          },
-          {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 2,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -4091,6 +4071,11 @@
         ],
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
@@ -4106,20 +4091,6 @@
                 "ability": "attack"
               }
             ]
-          },
-          {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 5,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -4270,10 +4241,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        -1,
-        0.5
+        1.5,
+        0
       ],
-      "description": "null",
+      "description": "The symbiote hardens around you and absorbs the impact of blows.",
       "attribute": "minecraft:generic.armor",
       "amount": 10,
       "operation": 0,
@@ -4281,18 +4252,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 2,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "venombond2"
           }
         ],
         "enabling": [
@@ -4313,10 +4275,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        -1.5,
-        0.5
+        2.25,
+        -2.0
       ],
-      "description": "null",
+      "description": "The symbiote hardens further.",
       "attribute": "minecraft:generic.armor",
       "amount": 10,
       "operation": 0,
@@ -4324,13 +4286,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 3,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
           },
           {
             "type": "palladium:ability_unlocked",
@@ -4356,10 +4314,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        1,
-        0.5
+        0.75,
+        0
       ],
-      "description": "null",
+      "description": "The symbiote thickens your flesh, raising your health.",
       "attribute": "minecraft:generic.max_health",
       "amount": 10,
       "operation": 0,
@@ -4367,18 +4325,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 2,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "venombond2"
           }
         ],
         "enabling": [
@@ -4399,10 +4348,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        1.5,
-        0.5
+        -2.25,
+        -2.0
       ],
-      "description": "null",
+      "description": "The symbiote thickens your flesh further.",
       "attribute": "minecraft:generic.max_health",
       "amount": 10,
       "operation": 0,
@@ -4410,13 +4359,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 3,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
           },
           {
             "type": "palladium:ability_unlocked",
@@ -4469,10 +4414,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        0.75,
-        -1
+        -0.75,
+        0
       ],
-      "description": "null",
+      "description": "Your blows land harder.",
       "attribute": "minecraft:generic.attack_damage",
       "amount": 6,
       "operation": 0,
@@ -4480,18 +4425,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 2,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "venombond2"
           }
         ],
         "enabling": [
@@ -4512,10 +4448,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        1.5,
-        -1.5
+        -1.5,
+        -2.0
       ],
-      "description": "null",
+      "description": "Your blows land harder still.",
       "attribute": "minecraft:generic.attack_damage",
       "amount": 6,
       "operation": 0,
@@ -4523,13 +4459,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 3,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
           },
           {
             "type": "palladium:ability_unlocked",
@@ -4648,10 +4580,10 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        -0.75,
-        -1
+        -1.5,
+        1.5
       ],
-      "description": "null",
+      "description": "The symbiote carries you faster and further.",
       "attribute": "palladium:jump_power",
       "amount": 0.75,
       "operation": 0,
@@ -4659,18 +4591,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 1,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "venombond1"
           }
         ],
         "enabling": [
@@ -4692,9 +4615,9 @@
       "list_index": -1,
       "gui_position": [
         -1.5,
-        -1.5
+        0
       ],
-      "description": "null",
+      "description": "The symbiote carries you faster and further still.",
       "attribute": "palladium:jump_power",
       "amount": 0.75,
       "operation": 0,
@@ -4702,13 +4625,9 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 2,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
           },
           {
             "type": "palladium:ability_unlocked",
@@ -5005,8 +4924,8 @@
       "hidden_in_bar": false,
       "hidden": false,
       "gui_position": [
-        -1.5,
-        -0.5
+        -2.25,
+        0
       ],
       "abilities": [
         "symbiontwhipprop",
@@ -5018,6 +4937,11 @@
       "disable_center_icon": false,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
@@ -5034,20 +4958,6 @@
                 "ability": "attack"
               }
             ]
-          },
-          {
-            "type": "palladium:scoreboard_score_buyable",
-            "objective": "Klyntars.Symbiote.Skillpoints",
-            "score": 4,
-            "icon": "klyntars:textures/icon/venomskillpoint.png",
-            "description": {
-              "text": "Venom Skill Points"
-            }
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -5075,7 +4985,8 @@
             "key_type": "key_bind"
           }
         ]
-      }
+      },
+      "description": "Choose the shape the symbiote takes in combat."
     },
     "symbiontwhipprop": {
       "type": "palladium:command",
@@ -5103,6 +5014,11 @@
           }
         ],
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -5144,6 +5060,11 @@
         ],
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -5184,6 +5105,11 @@
         ],
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -5223,6 +5149,11 @@
           }
         ],
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -5971,6 +5902,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          },
+          {
             "type": "palladium:crouching"
           },
           {
@@ -6016,7 +5952,13 @@
         ""
       ],
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:objective_score",
@@ -6027,56 +5969,27 @@
         ]
       }
     },
-    "skillpointadd": {
-      "type": "palladium:command",
-      "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
-      "bar_color": "red",
-      "hidden": true,
-      "hidden_in_bar": true,
-      "list_index": 1,
-      "gui_position": [
-        0,
-        -1
-      ],
-      "description": "null",
-      "first_tick_commands": [
-        "scoreboard players set @s Klyntars.Symbiote.Kills 0",
-        "scoreboard players add @s Klyntars.Symbiote.Skillpoints 1"
-      ],
-      "last_tick_commands": [
-        ""
-      ],
-      "commands": [
-        ""
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:objective_score",
-            "objective": "Klyntars.Symbiote.Kills",
-            "min_score": 30,
-            "max_score": 1000
-          }
-        ]
-      }
-    },
     "enablevenomhead": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 3,
-      "title": "Venom Head",
+      "title": "Symbiote Head",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": false,
       "start_value": 0,
       "gui_position": [
-        0,
-        0
+        0.75,
+        1.5
       ],
       "max_value": 12,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -6086,11 +5999,6 @@
                 "ability": "enablevenombody"
               }
             ]
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "venombond1"
           },
           {
             "type": "palladium:not",
@@ -6122,12 +6030,13 @@
             ]
           }
         ]
-      }
+      },
+      "description": "Grow the symbiote head, which feeds on its own when hunger runs low."
     },
     "venomheadenable": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Venom Head Chat Trigger",
+      "title": "Symbiote Head Chat Trigger",
       "bar_color": "red",
       "hidden": true,
       "hidden_in_bar": true,
@@ -6144,7 +6053,7 @@
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "power": "null",
+            "power": "klyntars:venom",
             "ability": "venombond1"
           }
         ],
@@ -6225,7 +6134,7 @@
     "venomheadautofeeddisable": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom Head Auto Feed Disable",
+      "title": "Symbiote Head Auto Feed Disable",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -6247,6 +6156,13 @@
             "type": "palladium:chat_action",
             "chat_message": "Get back inside",
             "cooldown": 20
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
           }
         ]
       }
@@ -6384,7 +6300,13 @@
       "operation": 0,
       "uuid": "958be7fb-af04-42f2-8948-e6ccdc0d99e9",
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
@@ -6403,16 +6325,22 @@
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": [
-        -0.75,
-        -1
+        1.5,
+        1.5
       ],
-      "description": "null",
+      "description": "Symbiote legs soften every landing and push you higher.",
       "attribute": "palladium:jump_power",
       "amount": 0.75,
       "operation": 0,
       "uuid": "978be4fb-af04-42f2-8948-e6ccdc0d99e9",
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
@@ -6466,6 +6394,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -6474,11 +6407,6 @@
                 "ability": "enablevenombody"
               }
             ]
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "venombond1"
           },
           {
             "type": "palladium:not",
@@ -6517,7 +6445,13 @@
       ],
       "max_value": 6,
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
@@ -6652,6 +6586,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -6660,11 +6599,6 @@
                 "ability": "enablevenombody"
               }
             ]
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "venombond1"
           },
           {
             "type": "palladium:not",
@@ -6719,6 +6653,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -6727,11 +6666,6 @@
                 "ability": "enablevenombody"
               }
             ]
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "venombond1"
           },
           {
             "type": "palladium:not",
@@ -6774,6 +6708,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -6813,6 +6752,11 @@
       "commands": [],
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -7009,7 +6953,13 @@
         "minecraft:needs_iron_tool"
       ],
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
@@ -7034,7 +6984,13 @@
         "minecraft:needs_iron_tool"
       ],
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
@@ -7132,6 +7088,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -7140,11 +7101,6 @@
                 "ability": "enablevenombody"
               }
             ]
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "venombond2"
           }
         ],
         "enabling": [
@@ -7175,7 +7131,13 @@
       "operation": 0,
       "uuid": "938be4fb-af04-42f2-8948-e6ccdc0d99e5",
       "conditions": {
-        "unlocking": [],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          }
+        ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
@@ -7287,10 +7249,10 @@
       "hidden_in_bar": false,
       "list_index": 7,
       "gui_position": [
-        -1.5,
-        -0.5
+        -0.75,
+        1.5
       ],
-      "description": "Feeds on a nearby mob to regenerate Venom.",
+      "description": "Feed on a nearby creature to heal the symbiote.",
       "first_tick_commands": [
         "team add venom_feed_nocollision",
         "team modify venom_feed_nocollision collisionRule never",
@@ -7328,16 +7290,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond1"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -7528,10 +7490,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        -0.75,
+        -1.5
       ],
-      "description": "Deploys F-Tech style locomotion arms. Toggle on/off; no countdown.",
+      "description": "Raise symbiote arms that carry you above the ground.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Locomotion dummy",
         "tag @s remove venom_locomotion_was_active",
@@ -7544,16 +7506,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -7699,10 +7661,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        -0.75,
+        -3.5
       ],
-      "description": "Deploys Venom wings and enables Bedrock-style flight control.",
+      "description": "Spread the symbiote wings and take to the air.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Flight dummy",
         "scoreboard players set @s Venom.Flight 1",
@@ -7720,16 +7682,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "knullsbond"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -7964,10 +7926,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        0.75,
+        -1.5
       ],
-      "description": "Automatically lashes nearby enemies with symbiote tendrils. Each hit deals 10 damage.",
+      "description": "The symbiote lashes at nearby enemies on its own.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.FendOffEnemies dummy",
         "scoreboard players set @s Venom.FendOffEnemies 1",
@@ -7979,16 +7941,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -8031,10 +7993,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        -1.5,
+        -1.5
       ],
-      "description": "Uses a F-Tech style tentacle to grab and hold the target in front of Venom.",
+      "description": "Seize a target with a tendril and hold it in front of you.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle dummy",
         "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
@@ -8052,16 +8014,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -8104,10 +8066,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        0,
-        0
+        1.5,
+        -1.5
       ],
-      "description": "Moves the grabbed target closer, matching F-Tech EntityHoldDistanceHandler.",
+      "description": "Draw the held target closer.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
         "scoreboard players remove @s Venom.GrabTentacle.DistanceDelta 1",
@@ -8116,16 +8078,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:ability_enabled",
@@ -8174,10 +8136,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        0,
-        0
+        -2.25,
+        -1.5
       ],
-      "description": "Moves the grabbed target farther away, matching F-Tech EntityHoldDistanceHandler.",
+      "description": "Push the held target further away.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
         "scoreboard players add @s Venom.GrabTentacle.DistanceDelta 1",
@@ -8186,16 +8148,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:ability_enabled",
@@ -8244,10 +8206,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        0,
-        0
+        2.25,
+        -1.5
       ],
-      "description": "Releases and throws the grabbed target, matching F-Tech EntityReleaseHandler full charge.",
+      "description": "Hurl the held target away.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.ReleaseCharge dummy",
         "scoreboard players set @s Venom.GrabTentacle.ReleaseCharge 40",
@@ -8264,16 +8226,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:ability_enabled",
@@ -8398,7 +8360,7 @@
     "venomcameraheight": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom Camera Height",
+      "title": "Symbiote Camera Height",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -8429,7 +8391,7 @@
     "venomcameraheightreset": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Venom Camera Height Reset",
+      "title": "Symbiote Camera Height Reset",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -8855,10 +8817,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        3.0,
+        -1.5
       ],
-      "description": "Symbiote tendrils seize up to 10 foes within 12 blocks, hoist them 5 blocks high and slam them down for 28 damage. No cooldown.",
+      "description": "Tendrils seize nearby foes, lift them high and slam them into the ground.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Pull dummy",
         "scoreboard players set @s Venom.Sym.Pull 1",
@@ -8867,16 +8829,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -8919,10 +8881,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        0.75,
+        -2.0
       ],
-      "description": "Rides the tendrils upward, then dashes through up to 8 foes within 9 blocks for 5 damage each, ending on a 24 damage strike. No cooldown.",
+      "description": "Ride the tendrils upward, then dash through everything ahead of you.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Strike dummy",
         "scoreboard players set @s Venom.Sym.Strike 1",
@@ -8931,144 +8893,16 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:animation_timer_ability",
-            "power": "klyntars:venom",
-            "ability": "enablevenom",
-            "min": 20,
-            "max": 20
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "venombond3"
           },
-          {
-            "type": "palladium:not",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "klyntars:venom",
-                "ability": "attack"
-              }
-            ]
-          },
-          {
-            "type": "palladium:not",
-            "conditions": [
-              {
-                "type": "palladium:objective_score",
-                "objective": "Venom.VulnerabilityLock",
-                "min_score": 1,
-                "max_score": 2147483647
-              }
-            ]
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:activation",
-            "ticks": 5,
-            "key_type": "key_bind",
-            "needs_empty_hand": false
-          }
-        ]
-      }
-    },
-    "antivenomtempest": {
-      "type": "palladium:command",
-      "icon": "klyntars:textures/icon/venomsmash.png",
-      "list_index": 15,
-      "title": "Antivenom Tempest",
-      "bar_color": "black",
-      "hidden": false,
-      "hidden_in_bar": false,
-      "gui_position": [
-        1.5,
-        -0.5
-      ],
-      "description": "A symbiote vortex lifts everything within 8 blocks, drops it and detonates for 26 damage. No cooldown.",
-      "first_tick_commands": [
-        "scoreboard objectives add Venom.Sym.Tempest dummy",
-        "scoreboard players set @s Venom.Sym.Tempest 1",
-        "playsound minecraft:entity.evoker.cast_spell player @a ~ ~ ~ 0.8 0.7"
-      ],
-      "conditions": {
-        "unlocking": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
-          },
-          {
-            "type": "palladium:not",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "klyntars:venom",
-                "ability": "attack"
-              }
-            ]
-          },
-          {
-            "type": "palladium:not",
-            "conditions": [
-              {
-                "type": "palladium:objective_score",
-                "objective": "Venom.VulnerabilityLock",
-                "min_score": 1,
-                "max_score": 2147483647
-              }
-            ]
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:activation",
-            "ticks": 5,
-            "key_type": "key_bind",
-            "needs_empty_hand": false
-          }
-        ]
-      }
-    },
-    "antivenombomb": {
-      "type": "palladium:command",
-      "icon": "klyntars:textures/icon/impactweb.png",
-      "list_index": 16,
-      "title": "Antivenom Bomb",
-      "bar_color": "black",
-      "hidden": false,
-      "hidden_in_bar": false,
-      "gui_position": [
-        1.5,
-        -0.5
-      ],
-      "description": "Hurls a symbiote bomb that bursts on impact, dealing 18 damage in a 4 block radius. No cooldown.",
-      "first_tick_commands": [
-        "scoreboard objectives add Venom.Sym.Bomb dummy",
-        "scoreboard players set @s Venom.Sym.Bomb 1",
-        "playsound minecraft:entity.snowball.throw player @a ~ ~ ~ 0.9 0.6"
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:animation_timer_ability",
-            "power": "klyntars:venom",
-            "ability": "enablevenom",
-            "min": 20,
-            "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -9111,10 +8945,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        1.5,
-        -0.5
+        -3.0,
+        -1.5
       ],
-      "description": "Unleashes the symbiote's fury for 20 seconds: regeneration, absorption and strength, and every other symbiote power recharges four times faster. No cooldown.",
+      "description": "Unleash the symbiote's fury for twenty seconds.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Rage dummy",
         "scoreboard players set @s Venom.Sym.Rage 1",
@@ -9123,16 +8957,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -9175,10 +9009,10 @@
       "hidden": false,
       "hidden_in_bar": false,
       "gui_position": [
-        0,
-        1.5
+        -0.75,
+        -2.0
       ],
-      "description": "Detonates the symbiote twice in quick succession, 30 damage each within 6 blocks. No cooldown.",
+      "description": "Detonate the symbiote twice in quick succession.",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Blast dummy",
         "scoreboard players set @s Venom.Sym.Blast 1",
@@ -9187,16 +9021,16 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond3"
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
             "ability": "enablevenom",
             "min": 20,
             "max": 20
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "klyntars:venom",
-            "ability": "venombody"
           },
           {
             "type": "palladium:not",
@@ -9470,6 +9304,59 @@
       "gui_position": "null",
       "description": "null",
       "render_layer": "klyntars:blackrevert"
+    },
+    "venombond3": {
+      "type": "palladium:dummy",
+      "icon": "klyntars:textures/icon/venomtransformation.png",
+      "title": "Symbiote Bond Level 3",
+      "bar_color": "red",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "The bond is complete. The symbiote holds nothing back.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "klyntars:venom",
+            "ability": "venombond2"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.Affinity",
+            "min_score": 100,
+            "max_score": 2147483647
+          }
+        ]
+      }
+    },
+    "knullsbond": {
+      "type": "palladium:dummy",
+      "icon": "klyntars:textures/icon/knull_symbol.png",
+      "title": "Knull's Bond",
+      "bar_color": "black",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        -3.5
+      ],
+      "description": "Knull's legacy. The symbiote learns to carry you through the air.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.KnullBond",
+            "min_score": 1,
+            "max_score": 2147483647
+          }
+        ]
+      }
     }
   }
 }
