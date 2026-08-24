@@ -84,6 +84,22 @@ public class PlayerPowerCapability {
         });
     }
 
+    /** resistenza I: il livello si conta da zero */
+    private static final int RESISTENZA_BOND1 = 0;
+    /** salto IV */
+    private static final int SALTO_BOND1 = 3;
+    /** quanta forza da' ogni simbionte, sempre contata da zero */
+    private static final java.util.Map<String, Integer> FORZA_PER_FORMA = java.util.Map.of(
+            "venom", 1,        // forza II
+            "antivenom", 1,    // forza II
+            "wip", 1,          // forza II
+            "carnage", 2,      // forza III
+            "toxin", 4);       // forza V
+
+    private static int forzaDi(String forma) {
+        return FORZA_PER_FORMA.getOrDefault(forma, 1);
+    }
+
     public static void infectPlayer(ServerPlayer player) {
         infectPlayer(player, "venom");
     }
@@ -145,6 +161,44 @@ public class PlayerPowerCapability {
         });
     }
 
+    /** durata dei bonus, piu' lunga del rinfresco cosi' non lampeggiano */
+    private static final int DURATA_BONUS = 80;
+    /** ogni quanti tick si rinfrescano */
+    private static final int RINFRESCO_BONUS = 20;
+
+    /**
+     * I bonus appartengono al corpo simbionte, non al potere: valgono finche' il modello e'
+     * fuori e si spengono da soli qualche istante dopo che rientra.
+     *
+     * <p>Rinfrescarli a intervalli invece di darli infiniti risolve due cose insieme: da umani
+     * non restano addosso, e dopo un indebolimento tornano da soli — prima venivano strappati
+     * e nessuno li rimetteva fino alla trasformazione successiva.</p>
+     */
+    private static void tickEffettiDelCorpo(ServerPlayer player) {
+        if (player.tickCount % RINFRESCO_BONUS != 0) {
+            return;
+        }
+        if (!modKlyntar.player.SymbioteMiningHandler.corpoAttivo(player)) {
+            return;
+        }
+        // mentre il simbionte e' indebolito i bonus non si rinnovano: e' tutto il senso
+        // dell'indebolimento, e senza questo controllo tornerebbero dopo un attimo
+        if (modKlyntar.player.VenomSymbioteSystemsHandler.isPlayerVulnerable(player)) {
+            return;
+        }
+
+        String forma = player.getCapability(PLAYER_POWER)
+                .map(PlayerPower::getForm).orElse("");
+        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATA_BONUS, 0, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, DURATA_BONUS, RESISTENZA_BOND1, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.JUMP, DURATA_BONUS, SALTO_BOND1, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, DURATA_BONUS, forzaDi(forma), false, false));
+        // la rigenerazione continua e' solo di Anti-Venom: gli altri se la guadagnano mangiando
+        if ("antivenom".equals(forma)) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, DURATA_BONUS, 1, false, false));
+        }
+    }
+
     /** Rimette in scena la forma che il giocatore ha gia', senza cambiarla. */
     public static void riapplicaForma(ServerPlayer player) {
         player.getCapability(PLAYER_POWER).ifPresent(power -> {
@@ -164,6 +218,7 @@ public class PlayerPowerCapability {
             seguiPalladium(player);
             modKlyntar.symbiote.SymbioteState.assicuraAffinita(player);
         }
+        tickEffettiDelCorpo(player);
     }
 
     public static void revertPlayer(ServerPlayer player) {
@@ -312,23 +367,13 @@ public class PlayerPowerCapability {
             player.getTags().remove(CARNAGE_TAG);
             player.addTag(carnage ? CARNAGE_TAG : VENOM_TAG);
 
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, Integer.MAX_VALUE, carnage ? 3 : 2, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, carnage ? 2 : 3, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, Integer.MAX_VALUE, carnage ? 5 : 4, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, Integer.MAX_VALUE, carnage ? 1 : 0, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.JUMP, Integer.MAX_VALUE, carnage ? 3 : 4, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false));
+            // gli effetti non stanno piu' qui: li tiene accesi il corpo simbionte finche' e'
+            // fuori, in tickEffettiDelCorpo. Legarli alla trasformazione li rendeva permanenti
+            // anche da umani, e una volta strappati dall'indebolimento non tornavano piu'
 
-            if (player.getAttribute(Attributes.MAX_HEALTH) != null) {
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(carnage ? 36.0D : 40.0D);
-                player.setHealth(player.getMaxHealth());
-            }
-            if (player.getAttribute(Attributes.ARMOR) != null) {
-                player.getAttribute(Attributes.ARMOR).setBaseValue(carnage ? 10.0D : 15.0D);
-            }
-            if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-                player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(carnage ? 10.0D : 8.0D);
-            }
+            // vita, armatura e danno non si scrivono piu' da qui: li governano i modificatori
+            // di Palladium, legati ai Symbiote Bond. Scrivere il valore base significava
+            // sommarsi a quei modificatori invece di sostituirli, e i totali finivano fuori scala
             String powerPath = form.isEmpty() ? "venom" : form;
             if (!powerPath.equals(player.getPersistentData().getString(PALLADIUM_SYNC_KEY))) {
                 syncPalladiumPower(player, powerPath);
@@ -357,16 +402,8 @@ public class PlayerPowerCapability {
             player.removeEffect(MobEffects.JUMP);
             player.setInvulnerable(false);
 
-            if (player.getAttribute(Attributes.MAX_HEALTH) != null) {
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
-                player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
-            }
-            if (player.getAttribute(Attributes.ARMOR) != null) {
-                player.getAttribute(Attributes.ARMOR).setBaseValue(0.0D);
-            }
-            if (player.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-                player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-            }
+            // e non c'e' piu' niente da rimettere a posto: i valori base restano quelli
+            // del giocatore, e i modificatori se li ritira Palladium togliendo il potere
             for (String forma : FORME_SIMBIONTE) {
                 removePalladiumPower(player, forma);
             }

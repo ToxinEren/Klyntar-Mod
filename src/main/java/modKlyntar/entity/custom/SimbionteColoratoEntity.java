@@ -31,9 +31,7 @@ public abstract class SimbionteColoratoEntity extends SymbioteEntity {
         giocatore.displayClientMessage(
                 Component.literal("Un simbionte si e' legato a te."), false);
         PlayerPowerCapability.infectPlayer(giocatore, forma());
-        giocatore.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(potere -> {
-            potere.addSymbiote(1);
-            potere.applyPowers(giocatore);
-        });
+        giocatore.getCapability(PlayersPowerProvider.PLAYERS_POWER)
+                .ifPresent(potere -> potere.addSymbiote(1));
     }
 }

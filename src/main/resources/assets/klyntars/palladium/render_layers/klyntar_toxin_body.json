@@ -2,7 +2,7 @@
   "model": "klyntars:geo/toxin_bedrock.geo.json",
   "type": "geckolib:default",
   "texture": "klyntars:textures/entity/venom/toxin.png",
-  "animation_file": "klyntars:animations/venom_bedrock.animation.json",
+  "animation_file": "klyntars:animations/toxin_bedrock.animation.json",
   "animation_controller": [
     {
       "name": "venom_base_idle",

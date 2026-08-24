@@ -33,7 +33,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class VenomGrabTentacleHandler {
     private static final String OBJECTIVE_NAME = "Venom.GrabTentacle";
     private static final String DISTANCE_DELTA_OBJECTIVE = "Venom.GrabTentacle.DistanceDelta";
-    private static final String RELEASE_CHARGE_OBJECTIVE = "Venom.GrabTentacle.ReleaseCharge";
+    private static final String RELEASE_CHARGE_OBJECTIVE = "Venom.GrabTentacle.ReleaseCharge";
+    /**
+     * Alzato per qualche tick dopo un lancio: chiude l'abilita' del grab, e Palladium
+     * spegnendola riporta giu' anche il suo interruttore. Azzerare il punteggio non basta,
+     * perche' l'abilita' resterebbe attiva dal suo lato finche' non la ripremi.
+     */
+    private static final String THROW_LOCK_OBJECTIVE = "Venom.GrabTentacle.ThrowLock";
+    /** quanto dura quel blocco: il tempo che Palladium se ne accorga */
+    private static final int THROW_LOCK_TICKS = 10;
     private static final double GRAB_RANGE = 20.0D;
     private static final double LOCK_ON_CONE_DOT = 0.78D;
     private static final int EXTEND_TICKS = 6;
@@ -60,6 +68,11 @@ public final class VenomGrabTentacleHandler {
             return;
         }
 
+        int blocco = getScore(player, THROW_LOCK_OBJECTIVE, false);
+        if (blocco > 0) {
+            setScore(player, THROW_LOCK_OBJECTIVE, blocco - 1);
+        }
+
         int active = getScore(player, OBJECTIVE_NAME, false);
         if (active <= 0) {
             clearGrab(player);
@@ -76,9 +89,13 @@ public final class VenomGrabTentacleHandler {
         if (!canGrabEntity(target, player)) {
             target = getLookedAtEntity(player);
             if (target == null) {
+                // niente da afferrare: l'abilita' si spegne subito invece di restare accesa
+                // a vuoto, e lo dice, come fanno Pull e Strike
                 setScore(player, OBJECTIVE_NAME, 0);
                 ACTIVE_GRABS.remove(playerId);
                 ModNetwork.syncVenomGrabTentacle(player, null);
+                player.displayClientMessage(
+                        net.minecraft.network.chat.Component.literal("Nessun bersaglio da afferrare"), true);
                 return;
             }
             state = new GrabState(target.getId(), 0, 0.0D);
@@ -130,6 +147,7 @@ public final class VenomGrabTentacleHandler {
 
         setScore(player, RELEASE_CHARGE_OBJECTIVE, 0);
         setScore(player, OBJECTIVE_NAME, 0);
+        setScore(player, THROW_LOCK_OBJECTIVE, THROW_LOCK_TICKS);
         clearGrab(player);
     }
 

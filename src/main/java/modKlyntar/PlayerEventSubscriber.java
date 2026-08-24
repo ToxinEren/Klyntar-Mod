@@ -28,7 +28,6 @@ public class PlayerEventSubscriber {
         		event.getOriginal().getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(oldStore -> {
         			event.getEntity().getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(newStore -> {
         				newStore.copyFrom(oldStore);
-                        newStore.applyPowers(event.getEntity());
         			});
         		});
         	}
@@ -57,11 +56,7 @@ public class PlayerEventSubscriber {
                 Player player = (Player) event.getEntity();
                 player.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(power -> {
                     if (power.getSymbioteLevel() == 1) {
-                        // Visione notturna
-                        if (!player.hasEffect(MobEffects.NIGHT_VISION)) {
-                            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false));
-                        }
-                        // Arrampicarsi come un ragno
+                        // la visione notturna la da' gia' la trasformazione, a durata infinita
                         if (player.horizontalCollision && power.canClimbWalls()) {
                             player.setDeltaMovement(player.getDeltaMovement().x, 0.2D, player.getDeltaMovement().z);
                         }
@@ -73,10 +68,6 @@ public class PlayerEventSubscriber {
         @SubscribeEvent
         public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             Player player = event.getEntity();
-            player.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(power -> {
-                if (power.getSymbioteLevel() == 1) {
-                    power.applyPowers(player);
-                }
-            });
+            // niente da riapplicare: i bonus li rimette la trasformazione, al login
         }
 }

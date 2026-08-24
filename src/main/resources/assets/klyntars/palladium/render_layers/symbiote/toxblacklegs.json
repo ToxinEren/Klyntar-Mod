@@ -4,7 +4,7 @@
     {
       "type": "palladium:skin_overlay",
       "texture": {
-        "base": "klyntars:textures/models/blacklegs.png",
+        "base": "klyntars:textures/models/orangelegs.png",
         "transformers": [
           {
             "type": "palladium:alpha_mask",

@@ -152,17 +152,11 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         LOGGER.info("Symbiote infection triggered for {}", player.getGameProfile().getName());
         player.displayClientMessage(Component.literal("You have bonded with a symbiote."), false);
         PlayerPowerCapability.infectPlayer(player);
-        player.getCapability(PlayersPowerProvider.PLAYERS_POWER).ifPresent(power -> {
-            power.addSymbiote(1);
-            power.applyPowers(player);
-        });
+        // il livello di simbionte serve ad arrampicata e caduta; effetti e attributi
+        // li mette gia' la trasformazione, che sa di che forma si tratta
+        player.getCapability(PlayersPowerProvider.PLAYERS_POWER)
+                .ifPresent(power -> power.addSymbiote(1));
     }
-
-    private void applyPowers(Player player) {
-        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, Integer.MAX_VALUE, 4, false, false));
-        player.displayClientMessage(Component.literal("DEBUG: Powers Applied"), false); // Aggiungi messaggio di debug
-    }
-
 
     @Override
     public boolean hurt(DamageSource source, float amount) {

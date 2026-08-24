@@ -8,7 +8,7 @@
         "right_arm": "armorRightArm"
       },
       "texture": {
-        "base": "klyntars:textures/models/symbiotepicaxe.png",
+        "base": "klyntars:textures/models/toxinpickaxe.png",
         "transformers": [
           {
             "type": "palladium:alpha_mask",

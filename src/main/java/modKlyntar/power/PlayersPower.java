@@ -3,11 +3,8 @@ package modKlyntar.power;
 import modKlyntar.MyMod;
 import modKlyntar.entity.custom.TentacleSegmentEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -16,7 +13,6 @@ public class PlayersPower {
 	private int symbiote;
 	private final int MIN_SYMBIOTE = 0;
 	private final int MAX_SYMBIOTE = 1;
-	private int tickCounter = 0;
 	
 	public int getSymbioteLevel() {
 		return symbiote;
@@ -42,25 +38,6 @@ public class PlayersPower {
 		symbiote = nbt.getInt("symbiote");
 	}
 	
-	public void applyPowers(Player player) {
-        if (symbiote == 1) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, Integer.MAX_VALUE, 4, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 4, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, Integer.MAX_VALUE, 0, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, Integer.MAX_VALUE, 4, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.JUMP, Integer.MAX_VALUE, 4, false, false));
-
-
-            player.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D);
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.0D); // Setting base max health to 40.0
-            player.setHealth(40.0F);
-            player.getAttribute(Attributes.ARMOR).setBaseValue(15.0D);
-            
-         // Genera il tentacolo
-            //generateTentacle(player);
-        }
-    }
 	
 	public boolean isImmuneToFallDamage() {
         return symbiote == 1;
@@ -70,36 +47,18 @@ public class PlayersPower {
 	    return symbiote == 1;
 	}
 	
+	/**
+	 * Questa capability tiene solo il livello di simbionte, che dice se il giocatore puo'
+	 * arrampicarsi e se cade senza farsi male.
+	 *
+	 * <p>Effetti e attributi li assegna {@code PlayerPowerCapability.applyTransformation}, che
+	 * sa anche di che forma si tratta. Prima li metteva pure questa classe, con valori diversi
+	 * e arrivando dopo: vinceva lei, e i valori per forma non contavano nulla. Il fuoco che
+	 * toglieva i bonus lo gestisce ora il sistema di indebolimento.</p>
+	 */
 	public void tick(Player player) {
-        if (symbiote == 1) {
-            // Controlla se il giocatore è in fiamme o nella lava
-            if (player.isOnFire() || player.isInLava()) {
-                // Rimuovi i poteri
-                removePowers(player);
-                return;
-            }
-
-            tickCounter++;
-            
-            // Aggiorna i poteri ogni 3 minuti (3600 tick)
-            if (tickCounter >= 1600) {
-                applyPowers(player);
-                tickCounter = 0; // Reset del contatore
-            }
-        }
     }
 
-    public void removePowers(Player player) {
-        player.removeEffect(MobEffects.REGENERATION);
-        player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        player.removeEffect(MobEffects.DAMAGE_BOOST);
-        player.removeEffect(MobEffects.MOVEMENT_SPEED);
-        player.removeEffect(MobEffects.NIGHT_VISION);
-        player.removeEffect(MobEffects.JUMP);
-
-        player.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D); // Valore predefinito
-        player.getAttribute(Attributes.ARMOR).setBaseValue(8.0D); // Valore predefinito
-    }
     
 	private void generateTentacle(Player player) {
         Level level = player.level();
