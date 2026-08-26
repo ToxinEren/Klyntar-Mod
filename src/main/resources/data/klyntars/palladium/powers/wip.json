@@ -1014,7 +1014,6 @@
     },
     "showtalons": {
       "type": "palladium:show_both_arms",
-      "icon": "klyntars:textures/icon/ironfistsymbol.png",
       "title": "Passive skill tree",
       "bar_color": "red",
       "hidden": true,
