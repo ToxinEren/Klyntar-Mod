@@ -47,7 +47,7 @@ public class PlayerPowerCapability {
     public static final String ANTIVENOM_OBJECTIVE = "Klyntar.AntiVenom";
     private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
     /** tutti i simbionti della mod: se Palladium ne riconosce gia' uno non se ne assegna un altro */
-    private static final String[] FORME_SIMBIONTE = {"venom", "carnage", "antivenom", "toxin", "wip"};
+    private static final String[] FORME_SIMBIONTE = {"venom", "venomspidey", "carnage", "antivenom", "toxin", "wip"};
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -90,7 +90,8 @@ public class PlayerPowerCapability {
     private static final int SALTO_BOND1 = 3;
     /** quanta forza da' ogni simbionte, sempre contata da zero */
     private static final java.util.Map<String, Integer> FORZA_PER_FORMA = java.util.Map.of(
-            "venom", 1,        // forza II
+            "venom", 1,        // forza II
+            "venomspidey", 1,  // forza II, come venom
             "antivenom", 1,    // forza II
             "wip", 1,          // forza II
             "carnage", 2,      // forza III
@@ -461,6 +462,11 @@ public class PlayerPowerCapability {
             // forma vuota vuol dire "nessuna trasformazione": non va tradotta in venom
             if (normalized.isEmpty()) {
                 return "";
+            }
+            // venom col dono del ragno e una forma a parte: se ricadesse nel ramo finale
+            // il sync riporterebbe klyntars:venom e il potere si annullerebbe da solo
+            if ("venomspidey".equals(normalized)) {
+                return "venomspidey";
             }
             if ("carnage".equals(normalized)) {
                 return "carnage";

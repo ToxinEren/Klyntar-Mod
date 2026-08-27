@@ -2,7 +2,7 @@
   "name": "anti-venom",
   "persistent_data": true,
   "background": "minecraft:textures/block/white_concrete.png",
-  "icon": "klyntars:textures/icon/antivenom_symbol.png",
+  "icon": "klyntars:textures/icon/antivenom/venomtransformation.png",
   "ability_bar_texture": "klyntars:textures/gui/wipwhiteabilitybar.png",
   "primary_color": "#ffffff",
   "secondary_color": "#9aa0a8",

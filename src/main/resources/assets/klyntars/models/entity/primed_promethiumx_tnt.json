@@ -1,6 +1,6 @@
 {
   "parent": "builtin/entity",
   "textures": {
-    "layer0": "klyntars:textures/entity/promethiumx_tnt.png"
+    "layer0": "klyntars:textures/entity/primed_promethiumx_tnt.png"
   }
 }

@@ -2,7 +2,7 @@
   "name": "toxin",
   "persistent_data": true,
   "background": "minecraft:textures/block/orange_concrete.png",
-  "icon": "klyntars:textures/icon/venom_symbol.png",
+  "icon": "klyntars:textures/icon/toxin/venomtransformation.png",
   "ability_bar_texture": "klyntars:textures/gui/wiporangeabilitybar.png",
   "primary_color": "#e05a14",
   "secondary_color": "#3a0e00",

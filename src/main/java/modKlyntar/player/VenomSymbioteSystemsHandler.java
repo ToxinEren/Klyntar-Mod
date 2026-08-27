@@ -1283,7 +1283,9 @@ public final class VenomSymbioteSystemsHandler {
     private static boolean hasVenomPower(Player player) {
         return player.getTags().contains(PlayerPowerCapability.VENOM_TAG)
                 || player.getCapability(PlayerPowerCapability.PLAYER_POWER)
-                .map(power -> power.isTransformed() && "venom".equals(power.getForm()))
+                .map(power -> power.isTransformed()
+                        && ("venom".equals(power.getForm())
+                            || "venomspidey".equals(power.getForm())))
                 .orElse(false);
     }
 
