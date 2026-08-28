@@ -41,6 +41,7 @@ public class ModNetwork {
         INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle);
         INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle);
         INSTANCE.registerMessage(id++, SyncSymbioteMiningPacket.class, SyncSymbioteMiningPacket::encode, SyncSymbioteMiningPacket::new, SyncSymbioteMiningPacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomSizePacket.class, SyncVenomSizePacket::encode, SyncVenomSizePacket::new, SyncVenomSizePacket::handle);
     }
 
     public static void syncVenomAttackClick() {
@@ -407,6 +408,51 @@ public class ModNetwork {
         }
     }
 
+    /**
+     * Dice a tutti quelli che vedono questo giocatore quanto e' alto il suo simbionte.
+     *
+     * <p>Serve perche' la taglia dipende da Klyntar.VenomSize, che e' un obiettivo fittizio e
+     * come tale non raggiunge mai i client: senza pacchetto il client terrebbe l'altezza
+     * vanilla e la telecamera in prima persona resterebbe all'altezza di un umano.</p>
+     */
+    public static void syncVenomSize(ServerPlayer player, int stato) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                new SyncVenomSizePacket(player.getId(), stato));
+    }
+
+    /** La stessa taglia, ma a un solo destinatario: serve a chi inizia a vedere il giocatore. */
+    public static void syncVenomSizeA(ServerPlayer destinatario, int idEntita, int stato) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> destinatario),
+                new SyncVenomSizePacket(idEntita, stato));
+    }
+
+    public static class SyncVenomSizePacket {
+        private final int entityId;
+        private final int stato;
+
+        public SyncVenomSizePacket(int entityId, int stato) {
+            this.entityId = entityId;
+            this.stato = stato;
+        }
+
+        public SyncVenomSizePacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readVarInt();
+            this.stato = buf.readVarInt();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeVarInt(entityId);
+            buf.writeVarInt(stato);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() ->
+                    modKlyntar.client.ClientVenomSize.applica(entityId, stato));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
     /** ultima forma comunicata a ciascun giocatore, per non ripetere il pacchetto ogni tick */
     private static final java.util.Map<Integer, String> ULTIMA_FORMA = new java.util.concurrent.ConcurrentHashMap<>();
 

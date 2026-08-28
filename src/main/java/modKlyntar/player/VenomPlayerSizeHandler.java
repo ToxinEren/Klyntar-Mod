@@ -33,6 +33,27 @@ public final class VenomPlayerSizeHandler {
     private static final double SIZE_GROW_MARGIN_Y = 0.08D;
     private static final Map<UUID, Integer> LAST_SIZE_STATE = new ConcurrentHashMap<>();
     private static final Map<UUID, Long> LAST_SIZE_CHANGE_TICK = new ConcurrentHashMap<>();
+    /**
+     * Lo stato che il server ha comunicato, per id di entita'.
+     *
+     * <p>Klyntar.VenomSize e' un obiettivo fittizio e quelli non arrivano ai client: senza
+     * questa mappa il client calcolerebbe sempre stato 0, terrebbe l'altezza vanilla e la
+     * telecamera in prima persona resterebbe a 1.62 mentre il modello e' alto 4.</p>
+     */
+    private static final Map<Integer, Integer> STATO_DAL_SERVER = new ConcurrentHashMap<>();
+
+    /** Chiamato dal pacchetto di sincronizzazione, solo lato client. */
+    public static void aggiornaStatoDalServer(int idEntita, int stato) {
+        if (stato <= 0) {
+            STATO_DAL_SERVER.remove(idEntita);
+        } else {
+            STATO_DAL_SERVER.put(idEntita, stato);
+        }
+    }
+
+    public static int statoDalServer(int idEntita) {
+        return STATO_DAL_SERVER.getOrDefault(idEntita, 0);
+    }
 
     private VenomPlayerSizeHandler() {
     }
@@ -57,6 +78,7 @@ public final class VenomPlayerSizeHandler {
             LAST_SIZE_CHANGE_TICK.remove(playerId);
             if (previousState != 0) {
                 player.refreshDimensions();
+                annuncia(player, 0);
             }
             return;
         }
@@ -65,19 +87,29 @@ public final class VenomPlayerSizeHandler {
         if (previousState != currentState) {
             LAST_SIZE_CHANGE_TICK.put(playerId, player.level().getGameTime());
             player.refreshDimensions();
-            if (!player.level().isClientSide) {
-                LOGGER.info("Venom size changed for {}: {} -> {}", player.getScoreboardName(), stateName(previousState), stateName(currentState));
-            }
+            annuncia(player, currentState);
         }
     }
 
     @SubscribeEvent
     public static void onEntitySize(EntityEvent.Size event) {
-        if (!(event.getEntity() instanceof Player player) || !isVenom(player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
 
-        int sizeState = LAST_SIZE_STATE.getOrDefault(player.getUUID(), getSizeState(player));
+        int sizeState;
+        if (player.level() != null && player.level().isClientSide) {
+            // il client non vede l'obiettivo fittizio: si fida di quello che gli e' stato detto
+            sizeState = statoDalServer(player.getId());
+            if (sizeState <= 0) {
+                return;
+            }
+        } else {
+            if (!isVenom(player)) {
+                return;
+            }
+            sizeState = LAST_SIZE_STATE.getOrDefault(player.getUUID(), getSizeState(player));
+        }
         float height = switch (sizeState) {
             case 1 -> VENOM_HEIGHT;
             case 2 -> VENOM_SNEAKING_HEIGHT;
@@ -93,6 +125,36 @@ public final class VenomPlayerSizeHandler {
 
         event.setNewSize(EntityDimensions.scalable(VENOM_WIDTH, height));
         event.setNewEyeHeight(eyeHeight);
+    }
+
+    /**
+     * Al rientro nel mondo lo stato memorizzato non vale piu': il client e' nuovo e non sa
+     * niente. Dimenticandolo, il primo tick lo ricalcola e lo riannuncia.
+     */
+    @SubscribeEvent
+    public static void onLogin(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        LAST_SIZE_STATE.remove(event.getEntity().getUUID());
+        LAST_SIZE_CHANGE_TICK.remove(event.getEntity().getUUID());
+    }
+
+    /** Chi comincia a vedere un giocatore gia' trasformato deve saperne la taglia. */
+    @SubscribeEvent
+    public static void onStartTracking(net.minecraftforge.event.entity.player.PlayerEvent.StartTracking event) {
+        if (!(event.getTarget() instanceof Player bersaglio)
+                || !(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer osservatore)) {
+            return;
+        }
+        int stato = LAST_SIZE_STATE.getOrDefault(bersaglio.getUUID(), 0);
+        if (stato > 0) {
+            modKlyntar.network.ModNetwork.syncVenomSizeA(osservatore, bersaglio.getId(), stato);
+        }
+    }
+
+    /** Manda la taglia a chi vede questo giocatore, se stesso compreso. */
+    private static void annuncia(Player player, int stato) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            modKlyntar.network.ModNetwork.syncVenomSize(serverPlayer, stato);
+        }
     }
 
     public static boolean isVenom(Player player) {
