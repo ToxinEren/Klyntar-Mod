@@ -53,6 +53,18 @@ vettori (`[1,1,1]`): un numero nudo fa crashare il caricamento con `Not a JSON O
 Un controller GeckoLib riproduce una sola animazione: se un controller ha 64 trigger, qualsiasi
 trigger interrompe quello in corso.
 
+**L'id del potere negli script KubeJS compare con due punteggiature diverse.** In
+`registerForPower` e `getAnimationTimerAbilityValue` sta fra apici singoli, in
+`abilityUtil.isEnabled` sta fra virgolette doppie. Una sostituzione che ne cerca una sola lascia
+l'altra puntata al potere di partenza, e il ramo che ne dipende semplicemente non parte: è così
+che la rotazione orizzontale sul soffitto è rimasta muta in una forma derivata.
+
+**`runClient` serve le risorse da `build/resources/main`, non da `src`.** Una modifica a uno
+script KubeJS o a una texture non si vede con un reload a caldo se il client era gia' avviato:
+`/kubejs reload client_scripts` ricarica diligentemente la copia stantia in `build`. Per vedere
+la modifica bisogna rilanciare, cosi' Gradle riesegue `processResources`. Nel dubbio, confrontare
+il file in `build` con quello in `src` prima di concludere che la correzione non funziona.
+
 **I fine riga dei JSON sono misti** (`\n`, `\r\n`, `\r\r\n`). Le modifiche vanno fatte sui byte
 con sostituzione di sottostringa, mai riscrivendo il file riga per riga: altrimenti il diff
 esplode in migliaia di righe di solo cambio di terminatore.

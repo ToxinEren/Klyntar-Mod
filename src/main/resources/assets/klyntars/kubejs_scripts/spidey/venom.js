@@ -1,6 +1,6 @@
 ﻿PalladiumEvents.registerAnimations((event) => {
     event.register('klyntar/spideyvenomclimb', 5, (builder) => {
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venom", "climb_hanging")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venomspidey", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
                     .setXRotDegrees(-105)
@@ -17,7 +17,7 @@
             if (builder.isFirstPerson()) {
             }
         };
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venom", "climb_ceiling")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venomspidey", "climb_ceiling")) {
             if (!builder.isFirstPerson()) {
                 builder.get('head')
                     .setXRotDegrees(-55)
@@ -39,7 +39,7 @@
             if (builder.isFirstPerson()) {
             }
         };
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venom", "climb_ceiling_hold")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:venomspidey", "climb_ceiling_hold")) {
             if (!builder.isFirstPerson()) {
                 builder.get('head')
                     .setXRotDegrees(-55)

@@ -1,6 +1,6 @@
-PalladiumEvents.registerAnimations((event) => {
-    event.register('klyntar/carnageclimb', 5, (builder) => {
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:carnage", "climb_hanging")) {
+﻿PalladiumEvents.registerAnimations((event) => {
+    event.register('klyntar/toxinclimb', 5, (builder) => {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:toxin", "climb_hanging")) {
             if (!builder.isFirstPerson()) {
                 builder.get('right_arm')
                     .setXRotDegrees(-105)
@@ -17,7 +17,7 @@ PalladiumEvents.registerAnimations((event) => {
             if (builder.isFirstPerson()) {
             }
         };
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:carnage", "climb_ceiling")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:toxin", "climb_ceiling")) {
             if (!builder.isFirstPerson()) {
                 builder.get('head')
                     .setXRotDegrees(-55)
@@ -30,26 +30,16 @@ PalladiumEvents.registerAnimations((event) => {
                     .moveY(22)
                     .moveZ(15)
 
-                builder.get('right_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().rightArm.xRot * -0.45)
-
-                builder.get('left_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().leftArm.xRot * -0.45)
-
                 builder.get('right_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().rightLeg.xRot * -0.3)
 
                 builder.get('left_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().leftLeg.xRot * -0.3)
             }
             if (builder.isFirstPerson()) {
             }
         };
-        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:carnage", "climb_ceiling_hold")) {
+        if (abilityUtil.isEnabled(builder.getPlayer(), "klyntars:toxin", "climb_ceiling_hold")) {
             if (!builder.isFirstPerson()) {
                 builder.get('head')
                     .setXRotDegrees(-55)
@@ -62,21 +52,11 @@ PalladiumEvents.registerAnimations((event) => {
                     .moveY(22)
                     .moveZ(15)
 
-                builder.get('right_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().rightArm.xRot * -0.45)
-
-                builder.get('left_arm')
-                    .setXRot(-1.8)
-                    .rotateX(builder.getModel().leftArm.xRot * -0.45)
-
                 builder.get('right_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().rightLeg.xRot * -0.3)
 
                 builder.get('left_leg')
                     .setXRot(-0.4)
-                    .rotateX(builder.getModel().leftLeg.xRot * -0.3)
             }
             if (builder.isFirstPerson()) {
             }
@@ -85,9 +65,9 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('klyntar/carnageclimb1', 10, (builder) => {
+    event.register('klyntar/toxinclimb1', 10, (builder) => {
 
-        let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'climb_1', builder.getPartialTicks());
+        let progress_climb1 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:toxin', 'climb_1', builder.getPartialTicks());
         if (progress_climb1 > 0 && !builder.isFirstPerson()) {
             builder.get('right_arm')
                 .setXRotDegrees(-105 + 15)
@@ -111,9 +91,9 @@ PalladiumEvents.registerAnimations((event) => {
 });
 
 PalladiumEvents.registerAnimations((event) => {
-    event.register('klyntar/carnageclimb2', 10, (builder) => {
+    event.register('klyntar/toxinclimb2', 10, (builder) => {
 
-        let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:carnage', 'climb_2', builder.getPartialTicks());
+        let progress_climb2 = animationUtil.getAnimationTimerAbilityValue(builder.getPlayer(), 'klyntars:toxin', 'climb_2', builder.getPartialTicks());
         if (progress_climb2 > 0 && !builder.isFirstPerson()) {
             builder.get('right_arm')
                 .setXRotDegrees(-105 - 15)
