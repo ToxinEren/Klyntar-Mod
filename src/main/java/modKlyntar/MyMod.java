@@ -98,10 +98,16 @@ public class MyMod {
             () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "capsule", false));
     public static final RegistryObject<Item> VENOM_CAPSULE = ITEMS.register("venomcapsule",
             () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "venomcapsule", true));
+    // le altre forme riusano la geometria di venom e cambiano solo la texture del simbionte
     public static final RegistryObject<Item> ANTIVENOM_CAPSULE = ITEMS.register("antivenomcapsule",
-            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
+                    "antivenomcapsule", true, "venomcapsule", "capsule_model_antivenom"));
     public static final RegistryObject<Item> CARNAGE_CAPSULE = ITEMS.register("carnagecapsule",
-            () -> new Item(new Item.Properties().stacksTo(1).fireResistant()));
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
+                    "carnagecapsule", true, "venomcapsule", "capsule_model_carnage"));
+    public static final RegistryObject<Item> TOXIN_CAPSULE = ITEMS.register("toxincapsule",
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
+                    "toxincapsule", true, "venomcapsule", "capsule_model_toxin"));
 
     public static final RegistryObject<CreativeModeTab> KLYNTAR_TAB = CREATIVE_MODE_TABS.register("klyntar_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.klyntars.klyntar_tab"))
@@ -112,7 +118,8 @@ public class MyMod {
                 output.accept(CAPSULE.get());
                 output.accept(VENOM_CAPSULE.get());
                 output.accept(ANTIVENOM_CAPSULE.get());
-                output.accept(CARNAGE_CAPSULE.get());
+                output.accept(CARNAGE_CAPSULE.get());
+                output.accept(TOXIN_CAPSULE.get());
                 output.accept(KNULLS_FRAGMENT_ITEM.get());
             })
             .build());

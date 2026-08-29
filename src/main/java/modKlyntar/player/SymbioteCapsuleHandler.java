@@ -1,6 +1,7 @@
 package modKlyntar.player;
 
 import modKlyntar.MyMod;
+import modKlyntar.entity.custom.SimbionteColoratoEntity;
 import modKlyntar.entity.custom.SymbioteEntity;
 import modKlyntar.entity.custom.ThrownCapsuleEntity;
 import net.minecraft.server.level.ServerLevel;
@@ -10,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +52,7 @@ public final class SymbioteCapsuleHandler {
         giocatore.level().playSound(null, giocatore.blockPosition(),
                 SoundEvents.BOTTLE_FILL_DRAGONBREATH, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-        ItemStack piena = new ItemStack(MyMod.VENOM_CAPSULE.get());
+        ItemStack piena = new ItemStack(capsulaPer(simbionte));
         if (!giocatore.isCreative()) {
             inMano.shrink(1);
         }
@@ -59,12 +61,39 @@ public final class SymbioteCapsuleHandler {
         }
     }
 
+    /**
+     * La capsula che spetta al simbionte catturato.
+     *
+     * <p>Solo le forme colorate dichiarano una forma propria; il mob {@code symbiote} di base
+     * e' venom, e resta il ripiego anche per chi ne eredita senza essere una forma, come il
+     * frammento di Grendel.</p>
+     */
+    private static Item capsulaPer(SymbioteEntity simbionte) {
+        if (simbionte instanceof SimbionteColoratoEntity colorato) {
+            switch (colorato.forma()) {
+                case "carnage":
+                    return MyMod.CARNAGE_CAPSULE.get();
+                case "antivenom":
+                    return MyMod.ANTIVENOM_CAPSULE.get();
+                case "toxin":
+                    return MyMod.TOXIN_CAPSULE.get();
+                default:
+                    break;
+            }
+        }
+        return MyMod.VENOM_CAPSULE.get();
+    }
+
     /** Capsula piena in mano: si lancia come una palla di neve. */
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player giocatore = event.getEntity();
         ItemStack inMano = event.getItemStack();
-        if (!inMano.is(MyMod.VENOM_CAPSULE.get()) && !inMano.is(MyMod.CARNAGE_CAPSULE.get())) {
+        // ogni capsula piena si lancia, non solo quelle di venom e carnage
+        if (!inMano.is(MyMod.VENOM_CAPSULE.get())
+                && !inMano.is(MyMod.CARNAGE_CAPSULE.get())
+                && !inMano.is(MyMod.ANTIVENOM_CAPSULE.get())
+                && !inMano.is(MyMod.TOXIN_CAPSULE.get())) {
             return;
         }
 

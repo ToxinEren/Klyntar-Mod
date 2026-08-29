@@ -59,8 +59,28 @@ public class ThrownCapsuleEntity extends ThrowableItemProjectile {
         this.discard();
     }
 
+    /**
+     * Che simbionte c'era dentro, letto dalla capsula che la boccetta si porta dietro.
+     *
+     * <p>Il mob {@code symbiote} e' venom: e' quello che esce dalla capsula di venom e da una
+     * capsula senza item riconoscibile.</p>
+     */
+    private EntityType<?> tipoSimbionte() {
+        Item capsula = this.getItem().getItem();
+        if (capsula == MyMod.CARNAGE_CAPSULE.get()) {
+            return MyMod.CARNAGE_SYMBIOTE_ENTITY.get();
+        }
+        if (capsula == MyMod.ANTIVENOM_CAPSULE.get()) {
+            return MyMod.ANTIVENOM_SYMBIOTE_ENTITY.get();
+        }
+        if (capsula == MyMod.TOXIN_CAPSULE.get()) {
+            return MyMod.TOXIN_SYMBIOTE_ENTITY.get();
+        }
+        return MyMod.SYMBIOTE_ENTITY.get();
+    }
+
     private void liberaSimbionte(ServerLevel livello, Vec3 dove) {
-        Entity simbionte = MyMod.SYMBIOTE_ENTITY.get().create(livello);
+        Entity simbionte = tipoSimbionte().create(livello);
         if (simbionte == null) {
             return;
         }

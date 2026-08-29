@@ -24,9 +24,21 @@ public class CapsuleItem extends Item implements GeoItem {
     private final boolean animated;
 
     public CapsuleItem(Properties properties, String modelName, boolean animated) {
+        this(properties, modelName, animated, modelName, "capsule_model");
+    }
+
+    /**
+     * Variante che separa il modello dalla texture.
+     *
+     * <p>Le capsule delle altre forme riusano la geometria di venom e cambiano solo il colore
+     * del simbionte che gira dentro, quindi il nome del geo e quello della texture non
+     * coincidono piu' con il nome dell'oggetto.</p>
+     */
+    public CapsuleItem(Properties properties, String modelName, boolean animated,
+                       String geoName, String textureName) {
         super(properties);
-        this.model = new ResourceLocation(MyMod.MOD_ID, "geo/" + modelName + ".geo.json");
-        this.texture = new ResourceLocation(MyMod.MOD_ID, "textures/item/capsule_model.png");
+        this.model = new ResourceLocation(MyMod.MOD_ID, "geo/" + geoName + ".geo.json");
+        this.texture = new ResourceLocation(MyMod.MOD_ID, "textures/item/" + textureName + ".png");
         this.guiModelName = modelName + "_gui";
         this.animated = animated;
     }
