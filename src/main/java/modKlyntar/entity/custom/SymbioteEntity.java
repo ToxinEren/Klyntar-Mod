@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import modKlyntar.symbiote.SymbioteState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
@@ -49,6 +50,32 @@ public class SymbioteEntity extends Mob implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
+    /**
+     * Un ospite valido: chi porta gia' un simbionte non ne accetta un altro.
+     *
+     * <p>Vale per tutte le forme, comprese quelle derivate, perche' la verifica passa dal
+     * superpotere di Palladium e non da un elenco di nomi.</p>
+     */
+    public static boolean puoOspitare(Player giocatore) {
+        return !giocatore.isCreative() && !giocatore.isSpectator()
+                && !SymbioteState.haSimbionte(giocatore);
+    }
+
+    /**
+     * Se questo mob cerca un ospite da infettare.
+     *
+     * <p>Il frammento di Grendel no: non cerca ospiti, consegna il Knull's Bond a chi un
+     * simbionte ce l'ha gia'.</p>
+     */
+    protected boolean cercaOspite() {
+        return true;
+    }
+
+    /** Chi vale la pena raggiungere. Le sottoclassi possono ribaltare il criterio. */
+    protected boolean bersaglioValido(Player giocatore) {
+        return puoOspitare(giocatore);
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -69,15 +96,20 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         @Override
         public boolean canUse() {
             if (this.symbiote.hostAnimal == null) {
-                this.targetPlayer = this.symbiote.level().getNearestPlayer(this.symbiote, 10.0D);
-                return this.targetPlayer != null && !this.targetPlayer.isCreative() && this.targetPlayer.distanceTo(this.symbiote) > 1.0D;
+                this.targetPlayer = this.symbiote.level().getNearestPlayer(
+                        TargetingConditions.forNonCombat().range(10.0D)
+                                .selector(e -> e instanceof Player p && puoOspitare(p)),
+                        this.symbiote);
+                return this.targetPlayer != null && puoOspitare(this.targetPlayer)
+                    && this.targetPlayer.distanceTo(this.symbiote) > 1.0D;
             }
             return false;
         }
 
         @Override
         public boolean canContinueToUse() {
-            return this.targetPlayer != null && !this.targetPlayer.isCreative() && this.targetPlayer.distanceTo(this.symbiote) > 1.0D;
+            return this.targetPlayer != null && puoOspitare(this.targetPlayer)
+                    && this.targetPlayer.distanceTo(this.symbiote) > 1.0D;
         }
 
         @Override
@@ -160,9 +192,15 @@ public class SymbioteEntity extends Mob implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (!cercaOspite()) {
+            return super.hurt(source, amount);
+        }
         if (source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE) || source.isCreativePlayer()) {
             return super.hurt(source, amount);
         } else if (source.getEntity() instanceof ServerPlayer player) {
+            if (!puoOspitare(player)) {
+                return super.hurt(source, amount);
+            }
             this.doPlayerEffect(player);
             this.remove(RemovalReason.DISCARDED);
             return false;
@@ -173,7 +211,7 @@ public class SymbioteEntity extends Mob implements GeoEntity {
     @Override
     public boolean doHurtTarget(Entity target) {
         boolean hurt = super.doHurtTarget(target);
-        if (!this.level().isClientSide && target instanceof ServerPlayer player && !player.isCreative()) {
+        if (!this.level().isClientSide && target instanceof ServerPlayer player && puoOspitare(player)) {
             this.doPlayerEffect(player);
             this.remove(RemovalReason.DISCARDED);
             return true;
@@ -186,7 +224,7 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         super.aiStep();
         if (this.hostAnimal == null) {
             for (Player player : this.level().players()) {
-                if (!player.isCreative() && player.distanceTo(this) <= 1.0D) {
+                if (bersaglioValido(player) && player.distanceTo(this) <= 1.0D) {
                     this.doHurtTarget(player);
                     break;
                 }

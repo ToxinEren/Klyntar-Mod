@@ -38,6 +38,16 @@ public class GrendelsFragmentEntity extends SymbioteEntity {
     }
 
     @Override
+    protected boolean cercaOspite() {
+        return false;   // non infetta nessuno: colpirlo non deve legarti a un simbionte
+    }
+
+    @Override
+    protected boolean bersaglioValido(Player giocatore) {
+        return ePreda(giocatore);   // il criterio opposto: solo chi e' gia' legato
+    }
+
+    @Override
     protected void registerGoals() {
         // niente goal del simbionte comune: quello cerca un ospite qualsiasi o un animale,
         // questo insegue solo chi gli interessa
@@ -52,6 +62,11 @@ public class GrendelsFragmentEntity extends SymbioteEntity {
      */
     @Override
     public boolean doHurtTarget(Entity bersaglio) {
+        // il goal di caccia e la prossimita' in aiStep possono chiamarlo nello stesso
+        // tick: senza questa guardia il frammento consegna due volte prima di sparire
+        if (this.isRemoved()) {
+            return false;
+        }
         if (!(bersaglio instanceof Player giocatore) || !ePreda(giocatore)) {
             return false;
         }
