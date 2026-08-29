@@ -131,6 +131,15 @@ public final class VenomLocomotionRenderer {
     }
     private static final int ARM_SEGMENTS = 18;
     private static final int VISIBLE_ARMS = 6;
+    /**
+     * Quanto le braccia della locomozione stanno davanti al centro del giocatore,
+     * in frazione dell'altezza del modello.
+     *
+     * <p>L'animazione della locomozione porta il modello in avanti rispetto alla
+     * posizione dell'entita': con l'origine dietro, i tentacoli restavano staccati.
+     * E' l'unico numero da toccare: positivo le porta avanti, negativo indietro.</p>
+     */
+    private static final double SPORGENZA_AVANTI = -0.03D;
     private static final int ARM_COLOR = 18;
     /**
      * I vertici vengono tinti di questo colore, che moltiplica la texture: con 18 su tutti i
@@ -266,13 +275,29 @@ public final class VenomLocomotionRenderer {
         double yawRadians = Math.toRadians(bodyYaw);
         Vec3 horizontalLook = new Vec3(-Math.sin(yawRadians), 0.0D, Math.cos(yawRadians)).normalize();
         Vec3 right = new Vec3(-horizontalLook.z, 0.0D, horizontalLook.x);
-        Vec3 back = horizontalLook.scale(-0.46D);
+        // le braccia devono uscire dal torso del modello indossato, non da un'altezza
+        // fissa: il corpo del simbionte e' alto piu' del doppio di un giocatore vanilla,
+        // e con gli offset originali i tentacoli spuntavano all'altezza della vita
+        double altezza = player.getBbHeight();
+        double scala = altezza / 1.8D;
         double[] sideOffsets = new double[] { -0.18D, 0.18D, -0.11D, 0.11D, -0.04D, 0.04D };
-        double[] heightOffsets = new double[] { 1.12D, 1.12D, 1.42D, 1.42D, 1.72D, 1.72D };
+        // frazioni dell'altezza del modello, non offset fissi: la fascia del torso.
+        // Scalare i valori vanilla non andava bene perche' 1.72 su un giocatore alto
+        // 1.8 e' gia' sopra gli occhi, e sul simbionte finiva dietro la testa
+        double[] heightOffsets = new double[] { 0.56D, 0.56D, 0.63D, 0.63D, 0.70D, 0.70D };
+        for (int i = 0; i < sideOffsets.length; i++) {
+            sideOffsets[i] *= scala;
+            heightOffsets[i] *= altezza;
+        }
 
-        for (int i = 0; i < VISIBLE_ARMS; i++) {
-            Vec3 start = playerPos.add(right.scale(sideOffsets[i])).add(back).add(0.0D, heightOffsets[i], 0.0D);
-            Vec3 root = start.add(horizontalLook.scale(0.22D));
+        // solo le braccia aggrappate: le altre venivano disegnate a riposo dietro la
+        // schiena, e sembravano tentacoli inutili che ondeggiano
+        Vec3 avanti = horizontalLook.scale(SPORGENZA_AVANTI * altezza);
+        int braccia = Math.min(VISIBLE_ARMS, anchors.size());
+        for (int i = 0; i < braccia; i++) {
+            Vec3 start = playerPos.add(right.scale(sideOffsets[i]))
+                    .add(avanti).add(0.0D, heightOffsets[i], 0.0D);
+            Vec3 root = start;
             Vec3 end = resolveTentacleEnd(playerPos, root, horizontalLook, right, anchors, i, gameTime);
             renderArmPath(root, end, i, poseStack, buffer, gameTime);
         }

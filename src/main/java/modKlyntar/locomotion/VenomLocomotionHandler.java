@@ -68,11 +68,23 @@ public final class VenomLocomotionHandler {
     }
 
 
+    /** Quanto ci si e' spostati sul piano, ignorando la quota. */
+    private static double distanzaOrizzontaleSqr(Vec3 a, Vec3 b) {
+        double dx = a.x - b.x;
+        double dz = a.z - b.z;
+        return dx * dx + dz * dz;
+    }
+
     private static List<Vec3> getStableGrabSurfaces(ServerPlayer player) {
         UUID playerId = player.getUUID();
         Vec3 currentPosition = player.position();
         AnchorMemory memory = ANCHOR_MEMORY.get(playerId);
-        if (memory != null && currentPosition.distanceToSqr(memory.playerPosition()) < STATIONARY_ANCHOR_DISTANCE_SQR) {
+        // il confronto guarda solo il piano orizzontale: la locomozione spinge in alto a
+        // ogni tick, quindi la quota cambia sempre e con la distanza piena la memoria non
+        // reggerebbe mai. Restando fermi e muovendo solo la telecamera gli appigli restano
+        // quelli, invece di inseguire lo sguardo
+        if (memory != null && distanzaOrizzontaleSqr(currentPosition, memory.playerPosition())
+                < STATIONARY_ANCHOR_DISTANCE_SQR) {
             return memory.anchors();
         }
 
