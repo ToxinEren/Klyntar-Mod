@@ -67,7 +67,17 @@ public class MeteorCommand {
     }
 
     private static int spawnMeteor(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        ServerPlayer player = context.getSource().getPlayerOrException();
+        lanciaMeteore(context.getSource().getPlayerOrException());
+        return 1;
+    }
+
+    /**
+     * Fa cadere le meteore addosso a un giocatore.
+     *
+     * <p>Separato dal comando perche' lo chiama anche il server per conto suo, quando arriva
+     * il giorno sorteggiato: non passa da Brigadier e non serve alcun permesso.</p>
+     */
+    public static void lanciaMeteore(ServerPlayer player) {
         ServerLevel world = player.serverLevel();
         Vec3 playerPos = player.position();
         
@@ -93,8 +103,6 @@ public class MeteorCommand {
         spawnGhastProjectile(world, meteorPos1, impactPos);
         spawnGhastProjectile(world, meteorPos2, impactPos2);
         spawnGhastProjectile(world, meteorPos3, impactPos3);
-
-        return 1;
     }
 
 
