@@ -28,7 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
 public final class VenomLocomotionHandler {
-    private static final String OBJECTIVE_NAME = "Venom.Locomotion";
+    /** Letto anche dal berserk, che accende la locomozione per scavalcare un ostacolo. */
+    public static final String OBJECTIVE_NAME = "Venom.Locomotion";
     private static final double GRAB_RANGE = 30.0D;
     private static final int MIN_ARMS_FOR_LOCOMOTION = 4;
     private static final int MAX_ARMS = 6;

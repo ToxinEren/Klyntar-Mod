@@ -88,7 +88,8 @@ public final class VenomBedrockAnimationHandler {
         }
 
         if (isShieldAnimationActive(player) || isClimbAnimationActive(player) || isBarrageAnimationActive(player)
-                || isSymbiotePowerAnimationActive(player)) {
+                || isSymbiotePowerAnimationActive(player) || isRegenerationAnimationActive(player)
+                || isGrabAnimationActive(player)) {
             clearPulseScores(player);
             memory.objective = null;
             memory.lastPosition = player.position();
@@ -196,6 +197,33 @@ public final class VenomBedrockAnimationHandler {
 
     private static boolean isBarrageAnimationActive(ServerPlayer player) {
         return getScore(player, VenomAttackBarrageHandler.PLAYING_OBJECTIVE) > 0;
+    }
+
+    /**
+     * Anche Regeneration gira su venom_actions, ma non alzava nessun marcatore.
+     *
+     * <p>Senza sospendere, alla fine dell'animazione lo stato risultava invariato e il
+     * trigger non veniva ritirato: il controller restava sul proprio default e la posa di
+     * caduta spariva. Il tag venom_feeding dura esattamente quanto l'abilita'.</p>
+     */
+    /** Il marcatore che lo script del grab alza mentre l'animazione e' in scena. */
+    private static final String GRAB_PLAYING_OBJECTIVE = "Venom.Grab.Playing";
+
+    /**
+     * Anche Grab &amp; Crush occupa venom_actions, e lo script alza un marcatore.
+     *
+     * <p>L'objective va creato da qui: KubeJS scrive un punteggio come fa il comando
+     * vanilla, cioe' solo su un obiettivo che esiste gia', e senza questo il marcatore
+     * non veniva mai alzato.</p>
+     */
+    private static boolean isGrabAnimationActive(ServerPlayer player) {
+        getObjective(player, GRAB_PLAYING_OBJECTIVE);
+        return getScore(player, GRAB_PLAYING_OBJECTIVE) > 0;
+    }
+
+    private static boolean isRegenerationAnimationActive(ServerPlayer player) {
+        return player.getTags().contains("venom_feeding")
+                || getScore(player, "Venom.Berserk.Regeneration") > 0;
     }
 
     private static boolean isClimbAnimationActive(ServerPlayer player) {

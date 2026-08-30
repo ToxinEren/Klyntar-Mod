@@ -1,5 +1,6 @@
 package modKlyntar.player;
 
+import modKlyntar.locomotion.VenomLocomotionHandler;
 import modKlyntar.MyMod;
 import modKlyntar.capability.PlayerPowerCapability;
 import modKlyntar.network.ModNetwork;
@@ -109,6 +110,8 @@ public final class VenomSymbioteSystemsHandler {
     private static final int BERSERK_STUCK_JUMP_TICKS = 40;
     private static final double BERSERK_STUCK_DISTANCE_SQR = 0.03D;
     private static final double BERSERK_STUCK_JUMP_FORWARD_SPEED = 0.62D;
+    /** dopo quanti salti a vuoto il simbionte prova a scavalcare in locomozione */
+    private static final int BERSERK_SALTI_PRIMA_DI_LOCOMOZIONE = 2;
     private static final double BERSERK_STUCK_JUMP_UP_SPEED = 0.48D;
     private static final int VULNERABILITY_TICKS = 20 * 60 * 5;
     private static final int AUTO_ATTACK_INTERVAL = 10;
@@ -213,7 +216,7 @@ public final class VenomSymbioteSystemsHandler {
         if (!hasVenom && !flightRequested) {
             AUTO_ATTACK_TICKS.remove(player.getUUID());
             BERSERK_TARGETS.remove(player.getUUID());
-            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            dimenticaStalloBerserk(player);
             FLIGHT_MEMORY.remove(player.getUUID());
             clearClimbMemory(player);
             return;
@@ -267,7 +270,7 @@ public final class VenomSymbioteSystemsHandler {
             removeHungerBar(player);
             AUTO_ATTACK_TICKS.remove(player.getUUID());
             BERSERK_TARGETS.remove(player.getUUID());
-            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            dimenticaStalloBerserk(player);
             FLIGHT_MEMORY.remove(player.getUUID());
             STANDING_STILL_TICKS.remove(player.getUUID());
             STANDING_LAST_POS.remove(player.getUUID());
@@ -831,7 +834,7 @@ public final class VenomSymbioteSystemsHandler {
             setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
             setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
             BERSERK_TARGETS.remove(player.getUUID());
-            BERSERK_STUCK_MEMORY.remove(player.getUUID());
+            dimenticaStalloBerserk(player);
             ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
             LOGGER.info("Venom berserk regeneration restored {} hunger from {} for {}", restore, EntityType.getKey(target.getType()), player.getGameProfile().getName());
         }
@@ -844,7 +847,7 @@ public final class VenomSymbioteSystemsHandler {
         setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
         setScore(player, FEND_OFF_OBJECTIVE, 0);
         BERSERK_TARGETS.remove(player.getUUID());
-        BERSERK_STUCK_MEMORY.remove(player.getUUID());
+        dimenticaStalloBerserk(player);
         ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
         LOGGER.info("Venom berserk stopped for {}", player.getGameProfile().getName());
     }
@@ -1030,8 +1033,13 @@ public final class VenomSymbioteSystemsHandler {
             return null;
         }
 
-        BERSERK_TARGETS.put(player.getUUID(), target.getId());
-        BERSERK_STUCK_MEMORY.remove(player.getUUID());
+        // lo stallo si dimentica solo se il bersaglio cambia davvero: capita di riagganciare
+        // la stessa entita' piu' volte, e azzerando ogni volta il contatore non arriverebbe
+        // mai alla soglia del salto
+        Integer precedente = BERSERK_TARGETS.put(player.getUUID(), target.getId());
+        if (precedente == null || precedente != target.getId()) {
+            dimenticaStalloBerserk(player);
+        }
         faceBerserkTarget(player, target, true);
         LOGGER.info("Venom berserk locked target {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
         return target;
@@ -1114,6 +1122,39 @@ public final class VenomSymbioteSystemsHandler {
         player.hurtMarked = true;
     }
 
+    /**
+     * Accende la locomozione per scavalcare un ostacolo che i salti non hanno risolto.
+     *
+     * <p>Se il giocatore l'aveva gia' accesa per conto suo non la marchiamo come nostra, e
+     * quindi non gliela spegneremo quando si sblocca.</p>
+     */
+    private static void accendiLocomozioneBerserk(ServerPlayer player, BerserkStuckState stato) {
+        if (stato.locomozioneNostra
+                || getScore(player, VenomLocomotionHandler.OBJECTIVE_NAME, false) > 0) {
+            return;
+        }
+        setScore(player, VenomLocomotionHandler.OBJECTIVE_NAME, 1);
+        stato.locomozioneNostra = true;
+        LOGGER.info("Venom berserk locomotion engaged to clear an obstacle for {}",
+                player.getGameProfile().getName());
+    }
+
+    /** Spegne la locomozione solo se l'avevamo accesa noi per lo stallo. */
+    private static void spegniLocomozioneBerserk(ServerPlayer player, BerserkStuckState stato) {
+        if (stato == null || !stato.locomozioneNostra) {
+            return;
+        }
+        setScore(player, VenomLocomotionHandler.OBJECTIVE_NAME, 0);
+        stato.locomozioneNostra = false;
+        LOGGER.info("Venom berserk locomotion released for {}", player.getGameProfile().getName());
+    }
+
+    /** Dimentica lo stallo, spegnendo prima la locomozione se l'avevamo accesa noi. */
+    private static void dimenticaStalloBerserk(ServerPlayer player) {
+        spegniLocomozioneBerserk(player, BERSERK_STUCK_MEMORY.get(player.getUUID()));
+        BERSERK_STUCK_MEMORY.remove(player.getUUID());
+    }
+
     private static boolean shouldBerserkJumpForward(ServerPlayer player, LivingEntity target, Vec3 direction) {
         UUID playerId = player.getUUID();
         BerserkStuckState state = BERSERK_STUCK_MEMORY.computeIfAbsent(playerId,
@@ -1131,7 +1172,9 @@ public final class VenomSymbioteSystemsHandler {
             state.stuckTicks++;
         } else {
             state.stuckTicks = 0;
+            state.saltiFalliti = 0;
             state.lastPosition = player.position();
+            spegniLocomozioneBerserk(player, state);   // sbloccato: torna a camminare
         }
 
         if (state.stuckTicks < BERSERK_STUCK_JUMP_TICKS || direction.lengthSqr() < 1.0E-4D) {
@@ -1140,6 +1183,10 @@ public final class VenomSymbioteSystemsHandler {
 
         state.stuckTicks = 0;
         state.lastPosition = player.position().add(direction.scale(0.75D));
+        state.saltiFalliti++;
+        if (state.saltiFalliti >= BERSERK_SALTI_PRIMA_DI_LOCOMOZIONE) {
+            accendiLocomozioneBerserk(player, state);
+        }
         return true;
     }
 
@@ -1475,6 +1522,10 @@ public final class VenomSymbioteSystemsHandler {
         private int targetId;
         private Vec3 lastPosition;
         private int stuckTicks;
+        /** salti tentati senza che il giocatore si sia mosso davvero */
+        private int saltiFalliti;
+        /** vero se la locomozione l'abbiamo accesa noi, e quindi tocca a noi spegnerla */
+        private boolean locomozioneNostra;
 
         private BerserkStuckState(int targetId, Vec3 lastPosition) {
             this.targetId = targetId;

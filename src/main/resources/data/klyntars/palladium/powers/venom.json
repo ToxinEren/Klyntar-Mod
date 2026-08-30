@@ -3689,6 +3689,17 @@
         ],
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -3926,6 +3937,17 @@
           }
         ],
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
@@ -4700,6 +4722,17 @@
       "max_value": 1,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
@@ -5994,6 +6027,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond2"
@@ -6890,6 +6934,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond1"
@@ -7106,6 +7161,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -7281,6 +7347,17 @@
       ],
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Locomotion",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
@@ -7689,6 +7766,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -7704,6 +7792,12 @@
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
             "ability": "grabtentacle"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.GrabTentacle",
+            "min_score": 1,
+            "max_score": 2147483647
           },
           {
             "type": "palladium:not",
@@ -7759,6 +7853,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -7774,6 +7879,12 @@
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
             "ability": "grabtentacle"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.GrabTentacle",
+            "min_score": 1,
+            "max_score": 2147483647
           },
           {
             "type": "palladium:not",
@@ -7837,6 +7948,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -7852,6 +7974,12 @@
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
             "ability": "grabtentacle"
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.GrabTentacle",
+            "min_score": 1,
+            "max_score": 2147483647
           },
           {
             "type": "palladium:not",
@@ -7886,6 +8014,107 @@
         ]
       }
     },
+    "venomhungerabilitycost3": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "Symbiote Hunger Ability Cost 3",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "",
+      "commands": [
+        "scoreboard objectives add Venom.SymbioteHunger dummy",
+        "execute if score @s Venom.SymbioteHunger matches 3.. run scoreboard players remove @s Venom.SymbioteHunger 3",
+        "execute if score @s Venom.SymbioteHunger matches 1..2 run scoreboard players set @s Venom.SymbioteHunger 0"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "enablevenomlocomotion"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "grabtentacle"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "grabtentaclepull"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "grabtentaclepush"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "grabtentaclethrow"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "fendoffenemies"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "symbiontpull"
+              },
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "symbiotestrike"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "venomhungerabilitycost10": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "Symbiote Hunger Ability Cost 10",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "",
+      "commands": [
+        "scoreboard objectives add Venom.SymbioteHunger dummy",
+        "execute if score @s Venom.SymbioteHunger matches 10.. run scoreboard players remove @s Venom.SymbioteHunger 10",
+        "execute if score @s Venom.SymbioteHunger matches 1..9 run scoreboard players set @s Venom.SymbioteHunger 0"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "ragemode"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "venomhungerabilitycost": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/venom_symbol.png",
@@ -7911,22 +8140,35 @@
               {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "assimilate"
-              },
-              {
+                "ability": "actionremover"
+              },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "enablevenomlocomotion"
-              },
-              {
+                "ability": "combatprimaryattack"
+              },              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "enablevenomhead"
+              },              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "enablevenomlegs"
+              },              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "enablevenomspikes"
+              },              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "symbioteblast"
+              },              {
+                "type": "palladium:ability_first_tick",
+                "power": "klyntars:venom",
+                "ability": "venompunch"
+              },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
                 "ability": "enablevenomflight"
-              },
-              {
-                "type": "palladium:ability_first_tick",
-                "power": "klyntars:venom",
-                "ability": "fendoffenemies"
               },
               {
                 "type": "palladium:ability_first_tick",
@@ -8435,6 +8677,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -8499,6 +8752,17 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
             "ability": "venombond3"
@@ -8562,6 +8826,17 @@
       ],
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Flight",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",

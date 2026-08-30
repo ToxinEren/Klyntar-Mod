@@ -92,6 +92,10 @@ public final class VenomGrabTentacleHandler {
                 // niente da afferrare: l'abilita' si spegne subito invece di restare accesa
                 // a vuoto, e lo dice, come fanno Pull e Strike
                 setScore(player, OBJECTIVE_NAME, 0);
+                // azzerare l'objective non basta: l'abilita' e' un toggle di Palladium e
+                // resterebbe accesa, tenendo sbloccate throw, pull e push. Il lucchetto e'
+                // l'unico modo per spegnerla da qui, ed e' lo stesso che usa il lancio.
+                setScore(player, THROW_LOCK_OBJECTIVE, THROW_LOCK_TICKS);
                 ACTIVE_GRABS.remove(playerId);
                 ModNetwork.syncVenomGrabTentacle(player, null);
                 player.displayClientMessage(

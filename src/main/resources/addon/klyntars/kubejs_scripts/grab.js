@@ -2,6 +2,14 @@
 
 let $Util = Java.loadClass('net.minecraft.Util');
 
+// Grab & Crush: si afferra solo cio' che sta davvero davanti, a portata di braccio,
+// e il bersaglio resta appeso alla mano invece che a una distanza qualsiasi.
+const GRAB_PORTATA = 3.0;      // quanto lontano si puo' afferrare
+const GRAB_MANO_AVANTI = 2.2;  // quanto sta avanti la mano rispetto agli occhi
+const GRAB_MANO_GIU = 0.6;     // e quanto sotto: gli occhi non sono le mani
+const GRAB_MARCATORE = 'Venom.Grab.Playing';
+const GRAB_TAG_CADUTA = 'venom_grab_dropped';
+
 StartupEvents.registry('palladium:abilities', event => {
     event.create('klyntars:grab')
         .icon(palladium.createItemIcon('minecraft:player_head'))
@@ -16,9 +24,9 @@ StartupEvents.registry('palladium:abilities', event => {
         .firstTick((entity, entry, holder, enabled) => {
             if (!enabled) return;
 
-            const range = getRangeFromScore(entity, entry);
+            palladium.scoreboard.setScore(entity, GRAB_MARCATORE, 1);
 
-            let rayTrace = entity.rayTrace(range, false);
+            let rayTrace = entity.rayTrace(GRAB_PORTATA, false);
 
             if (rayTrace.entity != null) {
                 entry.setUniquePropertyByName('held_entity', rayTrace.entity.uuid);
@@ -28,12 +36,14 @@ StartupEvents.registry('palladium:abilities', event => {
         .tick((entity, entry, holder, enabled) => {
             if (!enabled) return;
 
-            const range = getRangeFromScore(entity, entry);
-
             let heldEntity = getHeldEntity(entity.level, entry);
             if (heldEntity == null) return;
 
-            let targetPos = entity.getEyePosition().add(entity.getLookAngle().scale(range));
+            // il bersaglio segue la mano, non un punto qualsiasi lungo lo sguardo
+            let targetPos = entity.getEyePosition()
+                .add(entity.getLookAngle().scale(GRAB_MANO_AVANTI))
+                .add(0, -GRAB_MANO_GIU, 0);
+            const range = GRAB_PORTATA;
             let boundingBox = entity.getBoundingBox();
 
             if (heldEntity.type == 'minecraft:block_display') {
@@ -61,10 +71,16 @@ StartupEvents.registry('palladium:abilities', event => {
         })
 
         .lastTick((entity, entry, holder, enabled) => {
+            palladium.scoreboard.setScore(entity, GRAB_MARCATORE, 0);
+
             let heldEntity = getHeldEntity(entity.level, entry);
             if (heldEntity == null) return;
 
             if (heldEntity.type == 'minecraft:block_display') blockDisplayToBlock(heldEntity);
+
+            // lo schianto lo applica il lato Java quando il corpo tocca terra: qui si sa
+            // soltanto che e' stato lasciato andare
+            heldEntity.addTag(GRAB_TAG_CADUTA);
 
             entry.setUniquePropertyByName('held_entity', $Util.NIL_UUID);
         });

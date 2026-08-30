@@ -150,7 +150,13 @@ public final class VenomLocomotionRenderer {
     /** il rosso di Carnage va espresso sui tre canali: un solo valore darebbe solo un grigio */
     private static final int[] ARM_COLOR_CARN = {190, 42, 46};
     /** l'arancio di Toxin */
-    private static final int[] ARM_COLOR_TOX = {224, 90, 20};
+    /**
+     * Tinta neutra: la texture di toxin porta gia' i colori del body_venom del suo
+     * modello, quindi il colore del vertice non deve ricolorarla una seconda volta.
+     * Con una tinta colorata il risultato era texture x tinta, cioe' molto piu' scuro
+     * e di un arancione diverso da quello del corpo.
+     */
+    private static final int[] ARM_COLOR_TOX = {255, 255, 255};
     private static int armR = ARM_COLOR, armG = ARM_COLOR, armB = ARM_COLOR;
     private static final float TENTACLE_THICKNESS_SCALE = 1.5F;
     private static final float TENTACLE_RADIUS = 0.085F * TENTACLE_THICKNESS_SCALE;
