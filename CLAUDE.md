@@ -19,7 +19,7 @@ Pehkui, f_tech) sono jar locali in `../mods_dependencies` e non si risolvono dal
 | Percorso | Contenuto |
 |---|---|
 | `src/main/java/modKlyntar/` | 93 file Java: capability, handler, entità, worldgen |
-| `src/main/resources/data/klyntars/palladium/powers/` | i poteri: `venom`, `carnage`, `antivenom`, `toxin`, `wip` |
+| `src/main/resources/data/klyntars/palladium/powers/` | i poteri: `venom`, `venomspidey`, `carnage`, `antivenom`, `toxin` |
 | `src/main/resources/assets/klyntars/kubejs_scripts/` | 165 script KubeJS (moveset, animazioni) |
 | `src/main/resources/assets/klyntars/animations/` | 21 file di animazione GeckoLib |
 | `src/main/resources/assets/klyntars/textures/icon/` | icone delle abilità, con sottocartelle per forma |
