@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class VenomPlayerSizeHandler {
     private static final Logger LOGGER = LogManager.getLogger("KlyntarVenomSize");
     public static final String SIZE_OBJECTIVE = "Klyntar.VenomSize";
+    /** trasformato, ma con altezza e occhi di un giocatore normale */
+    public static final int STATO_TAGLIA_VANILLA = 4;
     private static final float VENOM_WIDTH = 0.6F;
     private static final float VENOM_HEIGHT = 4.0F;
     private static final float VENOM_EYE_HEIGHT = 3.55F;
@@ -111,12 +113,14 @@ public final class VenomPlayerSizeHandler {
             sizeState = LAST_SIZE_STATE.getOrDefault(player.getUUID(), getSizeState(player));
         }
         float height = switch (sizeState) {
+            case STATO_TAGLIA_VANILLA -> VANILLA_PLAYER_HEIGHT;
             case 1 -> VENOM_HEIGHT;
             case 2 -> VENOM_SNEAKING_HEIGHT;
             case 3 -> VENOM_CLIMB_HEIGHT;
             default -> VANILLA_PLAYER_HEIGHT;
         };
         float eyeHeight = switch (sizeState) {
+            case STATO_TAGLIA_VANILLA -> VANILLA_PLAYER_EYE_HEIGHT;
             case 1 -> VENOM_EYE_HEIGHT;
             case 2 -> VENOM_SNEAKING_EYE_HEIGHT;
             case 3 -> VENOM_CLIMB_EYE_HEIGHT;
@@ -171,6 +175,16 @@ public final class VenomPlayerSizeHandler {
     }
 
     private static int getSizeState(Player player) {
+        // All-Black e' trasformato ma resta della taglia di un giocatore normale.
+        //
+        // Va detto con uno stato SUO e non con lo zero: lo zero significa "non trasformato",
+        // e quel valore lo leggono anche altri — i filamenti sulla tuta, per esempio, che si
+        // erano spenti proprio perche' glielo avevo fatto restituire.
+        if (player instanceof net.minecraft.server.level.ServerPlayer sp
+                && "allblack".equals(
+                        modKlyntar.capability.PlayerPowerCapability.formaSuPalladium(sp))) {
+            return getVenomSizeScore(player) > 0 ? STATO_TAGLIA_VANILLA : 0;
+        }
         if (getVenomSizeScore(player) <= 0) {
             return 0;
         }

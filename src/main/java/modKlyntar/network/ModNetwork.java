@@ -2,8 +2,8 @@ package modKlyntar.network;
 
 import modKlyntar.MyMod;
 import modKlyntar.client.ClientEventHandler;
-import modKlyntar.client.VenomLocomotionClientController;
-import modKlyntar.client.renderer.VenomLocomotionRenderer;
+import modKlyntar.client.VenomTentaclesTraversalClientController;
+import modKlyntar.client.renderer.VenomTentaclesTraversalRenderer;
 import modKlyntar.player.VenomAttackBarrageHandler;
 import modKlyntar.player.VenomSymbioteSystemsHandler;
 import net.minecraft.client.Minecraft;
@@ -13,6 +13,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import java.util.Optional;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.network.NetworkRegistry;
 
@@ -31,17 +35,29 @@ public class ModNetwork {
 
     public static void registerPackets() {
         int id = 0;
-        INSTANCE.registerMessage(id++, SyncVenomModelPacket.class, SyncVenomModelPacket::encode, SyncVenomModelPacket::new, SyncVenomModelPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomLocomotionPacket.class, SyncVenomLocomotionPacket::encode, SyncVenomLocomotionPacket::new, SyncVenomLocomotionPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomLocomotionVelocityPacket.class, SyncVenomLocomotionVelocityPacket::encode, SyncVenomLocomotionVelocityPacket::new, SyncVenomLocomotionVelocityPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle);
-        INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle);
-        INSTANCE.registerMessage(id++, SyncSymbioteMiningPacket.class, SyncSymbioteMiningPacket::encode, SyncSymbioteMiningPacket::new, SyncSymbioteMiningPacket::handle);
-        INSTANCE.registerMessage(id++, SyncVenomSizePacket.class, SyncVenomSizePacket::encode, SyncVenomSizePacket::new, SyncVenomSizePacket::handle);
+        INSTANCE.registerMessage(id++, SyncVenomModelPacket.class, SyncVenomModelPacket::encode, SyncVenomModelPacket::new, SyncVenomModelPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomTentaclesTraversalPacket.class, SyncVenomTentaclesTraversalPacket::encode, SyncVenomTentaclesTraversalPacket::new, SyncVenomTentaclesTraversalPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomTentaclesTraversalVelocityPacket.class, SyncVenomTentaclesTraversalVelocityPacket::encode, SyncVenomTentaclesTraversalVelocityPacket::new, SyncVenomTentaclesTraversalVelocityPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(id++, SyncVenomGrabTentaclePacket.class, SyncVenomGrabTentaclePacket::encode, SyncVenomGrabTentaclePacket::new, SyncVenomGrabTentaclePacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomCombatTargetsPacket.class, SyncVenomCombatTargetsPacket::encode, SyncVenomCombatTargetsPacket::new, SyncVenomCombatTargetsPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomFlightStatePacket.class, SyncVenomFlightStatePacket::encode, SyncVenomFlightStatePacket::new, SyncVenomFlightStatePacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomClimbInputPacket.class, SyncVenomClimbInputPacket::encode, SyncVenomClimbInputPacket::new, SyncVenomClimbInputPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        INSTANCE.registerMessage(id++, SyncSymbioteMiningPacket.class, SyncSymbioteMiningPacket::encode, SyncSymbioteMiningPacket::new, SyncSymbioteMiningPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomSizePacket.class, SyncVenomSizePacket::encode, SyncVenomSizePacket::new, SyncVenomSizePacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void syncVenomAttackClick() {
@@ -87,38 +103,37 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
                 if (Minecraft.getInstance().player != null) {
                     ClientEventHandler.setTransformedForm(form);
                     Minecraft.getInstance().player.refreshDimensions(); // Forza l'aggiornamento del modello del giocatore
-                    System.out.println("Model change packet handled. form: " + form);
                 }
-            });
+            }));
             ctx.get().setPacketHandled(true);
             return true;
         }
     }
-    public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors) {
-        syncVenomLocomotion(player, anchors, true);
+    public static void syncVenomTentaclesTraversal(ServerPlayer player, List<Vec3> anchors) {
+        syncVenomTentaclesTraversal(player, anchors, true);
     }
 
-    public static void syncVenomLocomotion(ServerPlayer player, List<Vec3> anchors, boolean active) {
+    public static void syncVenomTentaclesTraversal(ServerPlayer player, List<Vec3> anchors, boolean active) {
         assicuraForma(player);
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomLocomotionPacket(player.getId(), anchors, active));
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomTentaclesTraversalPacket(player.getId(), anchors, active));
     }
 
-    public static class SyncVenomLocomotionPacket {
+    public static class SyncVenomTentaclesTraversalPacket {
         private final int entityId;
         private final List<Vec3> anchors;
         private final boolean active;
 
-        public SyncVenomLocomotionPacket(int entityId, List<Vec3> anchors, boolean active) {
+        public SyncVenomTentaclesTraversalPacket(int entityId, List<Vec3> anchors, boolean active) {
             this.entityId = entityId;
             this.anchors = anchors == null ? List.of() : anchors;
             this.active = active;
         }
 
-        public SyncVenomLocomotionPacket(FriendlyByteBuf buf) {
+        public SyncVenomTentaclesTraversalPacket(FriendlyByteBuf buf) {
             this.entityId = buf.readInt();
             this.active = buf.readBoolean();
             int size = buf.readVarInt();
@@ -141,23 +156,24 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateAnchors(entityId, anchors, active));
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalRenderer.updateAnchors(entityId, anchors, active)));
             ctx.get().setPacketHandled(true);
             return true;
         }
     }
-    public static void syncVenomLocomotionVelocity(Vec3 velocity) {
-        INSTANCE.sendToServer(new SyncVenomLocomotionVelocityPacket(velocity));
+    public static void syncVenomTentaclesTraversalVelocity(Vec3 velocity) {
+        INSTANCE.sendToServer(new SyncVenomTentaclesTraversalVelocityPacket(velocity));
     }
 
-    public static class SyncVenomLocomotionVelocityPacket {
+    public static class SyncVenomTentaclesTraversalVelocityPacket {
         private final Vec3 velocity;
 
-        public SyncVenomLocomotionVelocityPacket(Vec3 velocity) {
+        public SyncVenomTentaclesTraversalVelocityPacket(Vec3 velocity) {
             this.velocity = velocity == null ? Vec3.ZERO : velocity;
         }
 
-        public SyncVenomLocomotionVelocityPacket(FriendlyByteBuf buf) {
+        public SyncVenomTentaclesTraversalVelocityPacket(FriendlyByteBuf buf) {
             this.velocity = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
         }
 
@@ -212,7 +228,8 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateGrabTarget(entityId, target));
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalRenderer.updateGrabTarget(entityId, target)));
             ctx.get().setPacketHandled(true);
             return true;
         }
@@ -281,7 +298,8 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionClientController.setFlightActiveFromServer(active));
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalClientController.setFlightActiveFromServer(active)));
             ctx.get().setPacketHandled(true);
             return true;
         }
@@ -317,13 +335,14 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateCombatTargets(entityId, targets));
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalRenderer.updateCombatTargets(entityId, targets)));
             ctx.get().setPacketHandled(true);
             return true;
         }
     }
     private static boolean isVenomMovementVelocityAllowed(ServerPlayer player) {
-        return isScoreActive(player, "Venom.Locomotion") || isScoreActive(player, "Venom.Flight");
+        return isScoreActive(player, "Venom.TentaclesTraversal") || isScoreActive(player, "Venom.Flight");
     }
 
     private static boolean isScoreActive(ServerPlayer player, String objectiveName) {
@@ -363,51 +382,91 @@ public class ModNetwork {
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> VenomLocomotionRenderer.updateForm(entityId, form));
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalRenderer.updateForm(entityId, form)));
             ctx.get().setPacketHandled(true);
             return true;
         }
     }
 
-    /** Dice al client se il corpo simbionte e' fuori e quale attrezzo ha in pugno. */
-    public static void syncSymbioteMining(ServerPlayer player, boolean corpoAttivo, int attrezzo) {
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
-                new SyncSymbioteMiningPacket(corpoAttivo, attrezzo));
-    }
-
-    /**
-     * Lo stato che serve al client per scavare allo stesso ritmo del server.
-     *
-     * <p>Va solo al diretto interessato: nessun altro ha bisogno di sapere con che velocita'
-     * sta scavando.</p>
-     */
-    public static class SyncSymbioteMiningPacket {
-        private final boolean corpoAttivo;
-        private final int attrezzo;
-
-        public SyncSymbioteMiningPacket(boolean corpoAttivo, int attrezzo) {
-            this.corpoAttivo = corpoAttivo;
-            this.attrezzo = attrezzo;
-        }
-
-        public SyncSymbioteMiningPacket(FriendlyByteBuf buf) {
-            this.corpoAttivo = buf.readBoolean();
-            this.attrezzo = buf.readVarInt();
-        }
-
-        public void encode(FriendlyByteBuf buf) {
-            buf.writeBoolean(corpoAttivo);
-            buf.writeVarInt(attrezzo);
-        }
-
-        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() ->
-                    modKlyntar.client.ClientSymbioteMiningState.aggiorna(corpoAttivo, attrezzo));
-            ctx.get().setPacketHandled(true);
-            return true;
-        }
-    }
-
+    /** Dice al client se il corpo simbionte e' fuori e quale attrezzo ha in pugno. */
+
+    public static void syncSymbioteMining(ServerPlayer player, boolean corpoAttivo, int attrezzo) {
+
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+
+                new SyncSymbioteMiningPacket(corpoAttivo, attrezzo));
+
+    }
+
+
+
+    /**
+
+     * Lo stato che serve al client per scavare allo stesso ritmo del server.
+
+     *
+
+     * <p>Va solo al diretto interessato: nessun altro ha bisogno di sapere con che velocita'
+
+     * sta scavando.</p>
+
+     */
+
+    public static class SyncSymbioteMiningPacket {
+
+        private final boolean corpoAttivo;
+
+        private final int attrezzo;
+
+
+
+        public SyncSymbioteMiningPacket(boolean corpoAttivo, int attrezzo) {
+
+            this.corpoAttivo = corpoAttivo;
+
+            this.attrezzo = attrezzo;
+
+        }
+
+
+
+        public SyncSymbioteMiningPacket(FriendlyByteBuf buf) {
+
+            this.corpoAttivo = buf.readBoolean();
+
+            this.attrezzo = buf.readVarInt();
+
+        }
+
+
+
+        public void encode(FriendlyByteBuf buf) {
+
+            buf.writeBoolean(corpoAttivo);
+
+            buf.writeVarInt(attrezzo);
+
+        }
+
+
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+
+            ctx.get().enqueueWork(() ->
+
+                    modKlyntar.client.ClientSymbioteMiningState.aggiorna(corpoAttivo, attrezzo));
+
+            ctx.get().setPacketHandled(true);
+
+            return true;
+
+        }
+
+    }
+
+
+
     /**
      * Dice a tutti quelli che vedono questo giocatore quanto e' alto il suo simbionte.
      *

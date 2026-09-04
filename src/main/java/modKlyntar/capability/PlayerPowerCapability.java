@@ -23,7 +23,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -47,7 +47,7 @@ public class PlayerPowerCapability {
     public static final String ANTIVENOM_OBJECTIVE = "Klyntar.AntiVenom";
     private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
     /** tutti i simbionti della mod: se Palladium ne riconosce gia' uno non se ne assegna un altro */
-    private static final String[] FORME_SIMBIONTE = {"venom", "venomspidey", "carnage", "antivenom", "toxin", "wip"};
+    private static final String[] FORME_SIMBIONTE = {"venom", "venomspidey", "carnage", "antivenom", "toxin", "allblack"};
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -84,32 +84,32 @@ public class PlayerPowerCapability {
         });
     }
 
-    /** resistenza I: il livello si conta da zero */
-    private static final int RESISTENZA_BOND1 = 0;
-    /** salto IV */
-    private static final int SALTO_BOND1 = 3;
-    /** quanta forza da' ogni simbionte, sempre contata da zero */
-    private static final java.util.Map<String, Integer> FORZA_PER_FORMA = java.util.Map.of(
+    /** resistenza I: il livello si conta da zero */
+    private static final int RESISTENZA_BOND1 = 0;
+    /** salto IV */
+    private static final int SALTO_BOND1 = 3;
+    /** quanta forza da' ogni simbionte, sempre contata da zero */
+    private static final java.util.Map<String, Integer> FORZA_PER_FORMA = java.util.Map.of(
             "venom", 1,        // forza II
-            "venomspidey", 1,  // forza II, come venom
-            "antivenom", 1,    // forza II
-            "wip", 1,          // forza II
-            "carnage", 2,      // forza III
-            "toxin", 4);       // forza V
-
-    private static int forzaDi(String forma) {
-        return FORZA_PER_FORMA.getOrDefault(forma, 1);
-    }
-
-    public static void infectPlayer(ServerPlayer player) {
-        infectPlayer(player, "venom");
-    }
-
-    /**
-     * Infetta il giocatore con una forma precisa.
-     *
-     * <p>La usano i simbionti colorati: quello comune porta Venom, gli altri il proprio.</p>
-     */
+            "venomspidey", 1,  // forza II, come venom
+            "antivenom", 1,    // forza II
+            "carnage", 2,      // forza III
+            "toxin", 4,        // forza V
+            "allblack", 5);    // forza VI: e' il primo simbionte, il piu' forte
+
+    private static int forzaDi(String forma) {
+        return FORZA_PER_FORMA.getOrDefault(forma, 1);
+    }
+
+    public static void infectPlayer(ServerPlayer player) {
+        infectPlayer(player, "venom");
+    }
+
+    /**
+     * Infetta il giocatore con una forma precisa.
+     *
+     * <p>La usano i simbionti colorati: quello comune porta Venom, gli altri il proprio.</p>
+     */
     public static void infectPlayer(ServerPlayer player, String forma) {
         PlayerPower fallbackPower = new PlayerPower();
         PlayerPower power = player.getCapability(PLAYER_POWER).orElse(fallbackPower);
@@ -162,44 +162,44 @@ public class PlayerPowerCapability {
         });
     }
 
-    /** durata dei bonus, piu' lunga del rinfresco cosi' non lampeggiano */
-    private static final int DURATA_BONUS = 80;
-    /** ogni quanti tick si rinfrescano */
-    private static final int RINFRESCO_BONUS = 20;
-
-    /**
-     * I bonus appartengono al corpo simbionte, non al potere: valgono finche' il modello e'
-     * fuori e si spengono da soli qualche istante dopo che rientra.
-     *
-     * <p>Rinfrescarli a intervalli invece di darli infiniti risolve due cose insieme: da umani
-     * non restano addosso, e dopo un indebolimento tornano da soli — prima venivano strappati
-     * e nessuno li rimetteva fino alla trasformazione successiva.</p>
-     */
-    private static void tickEffettiDelCorpo(ServerPlayer player) {
-        if (player.tickCount % RINFRESCO_BONUS != 0) {
-            return;
-        }
-        if (!modKlyntar.player.SymbioteMiningHandler.corpoAttivo(player)) {
-            return;
-        }
-        // mentre il simbionte e' indebolito i bonus non si rinnovano: e' tutto il senso
-        // dell'indebolimento, e senza questo controllo tornerebbero dopo un attimo
-        if (modKlyntar.player.VenomSymbioteSystemsHandler.isPlayerVulnerable(player)) {
-            return;
-        }
-
-        String forma = player.getCapability(PLAYER_POWER)
-                .map(PlayerPower::getForm).orElse("");
-        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATA_BONUS, 0, false, false));
-        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, DURATA_BONUS, RESISTENZA_BOND1, false, false));
-        player.addEffect(new MobEffectInstance(MobEffects.JUMP, DURATA_BONUS, SALTO_BOND1, false, false));
-        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, DURATA_BONUS, forzaDi(forma), false, false));
-        // la rigenerazione continua e' solo di Anti-Venom: gli altri se la guadagnano mangiando
-        if ("antivenom".equals(forma)) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, DURATA_BONUS, 1, false, false));
-        }
-    }
-
+    /** durata dei bonus, piu' lunga del rinfresco cosi' non lampeggiano */
+    private static final int DURATA_BONUS = 80;
+    /** ogni quanti tick si rinfrescano */
+    private static final int RINFRESCO_BONUS = 20;
+
+    /**
+     * I bonus appartengono al corpo simbionte, non al potere: valgono finche' il modello e'
+     * fuori e si spengono da soli qualche istante dopo che rientra.
+     *
+     * <p>Rinfrescarli a intervalli invece di darli infiniti risolve due cose insieme: da umani
+     * non restano addosso, e dopo un indebolimento tornano da soli — prima venivano strappati
+     * e nessuno li rimetteva fino alla trasformazione successiva.</p>
+     */
+    private static void tickEffettiDelCorpo(ServerPlayer player) {
+        if (player.tickCount % RINFRESCO_BONUS != 0) {
+            return;
+        }
+        if (!modKlyntar.player.SymbioteMiningHandler.corpoAttivo(player)) {
+            return;
+        }
+        // mentre il simbionte e' indebolito i bonus non si rinnovano: e' tutto il senso
+        // dell'indebolimento, e senza questo controllo tornerebbero dopo un attimo
+        if (modKlyntar.player.VenomSymbioteSystemsHandler.isPlayerVulnerable(player)) {
+            return;
+        }
+
+        String forma = player.getCapability(PLAYER_POWER)
+                .map(PlayerPower::getForm).orElse("");
+        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATA_BONUS, 0, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, DURATA_BONUS, RESISTENZA_BOND1, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.JUMP, DURATA_BONUS, SALTO_BOND1, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, DURATA_BONUS, forzaDi(forma), false, false));
+        // la rigenerazione continua e' solo di Anti-Venom: gli altri se la guadagnano mangiando
+        if ("antivenom".equals(forma)) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, DURATA_BONUS, 1, false, false));
+        }
+    }
+
     /** Rimette in scena la forma che il giocatore ha gia', senza cambiarla. */
     public static void riapplicaForma(ServerPlayer player) {
         player.getCapability(PLAYER_POWER).ifPresent(power -> {
@@ -312,13 +312,13 @@ public class PlayerPowerCapability {
                 + " " + ANTIVENOM_OBJECTIVE + " " + (anti ? 1 : 0));
     }
 
-    /**
-     * Accende l'effetto {@code klyntars:venom_infection}, che dallo script del pack assegna
-     * il superpotere Venom finche' dura.
-     *
-     * <p>Chiamarlo per una forma diversa da venom significa assegnare Venom a chi ha gia'
-     * un altro simbionte.</p>
-     */
+    /**
+     * Accende l'effetto {@code klyntars:venom_infection}, che dallo script del pack assegna
+     * il superpotere Venom finche' dura.
+     *
+     * <p>Chiamarlo per una forma diversa da venom significa assegnare Venom a chi ha gia'
+     * un altro simbionte.</p>
+     */
     private static void applyVenomSuperpowerBridge(ServerPlayer player) {
         MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(MyMod.MOD_ID, "venom_infection"));
         if (effect != null) {
@@ -361,12 +361,11 @@ public class PlayerPowerCapability {
         }
 
         public void applyTransformation(ServerPlayer player) {
-            // il vecchio carnage e' diventato WIP: la forma "carnage" ora e' una copia di Venom,
-            // e le sue abilita' passano dai gestori Java che cercano il tag di Venom
-            boolean carnage = "wip".equals(form);
+            // tutte le forme passano dai gestori Java che cercano il tag di Venom
             player.getTags().remove(VENOM_TAG);
+            // CARNAGE_TAG e' un residuo del vecchio prototipo: si toglie ai vecchi salvataggi
             player.getTags().remove(CARNAGE_TAG);
-            player.addTag(carnage ? CARNAGE_TAG : VENOM_TAG);
+            player.addTag(VENOM_TAG);
 
             // gli effetti non stanno piu' qui: li tiene accesi il corpo simbionte finche' e'
             // fuori, in tickEffettiDelCorpo. Legarli alla trasformazione li rendeva permanenti
@@ -471,8 +470,8 @@ public class PlayerPowerCapability {
             if ("carnage".equals(normalized)) {
                 return "carnage";
             }
-            if ("wip".equals(normalized)) {
-                return "wip";
+            if ("allblack".equals(normalized)) {
+                return "allblack";
             }
             if ("toxin".equals(normalized)) {
                 return "toxin";

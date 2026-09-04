@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GPG",
+    "PGP",
+    "GPG"
+  ],
+  "key": {
+    "G": { "item": "minecraft:gunpowder" },
+    "P": { "item": "klyntars:promethium_x" }
+  },
+  "result": {
+    "item": "klyntars:promethium_x_tnt",
+    "count": 1
+  }
+}

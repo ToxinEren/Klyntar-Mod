@@ -1,0 +1,37 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model": "klyntars:geo/venom_tentacles_traversal_arms.geo.json",
+      "type": "geckolib:default",
+      "texture": "klyntars:textures/models/tentacles_traversal_arms/symbiote_arm_vert.png",
+      "animation_file": "klyntars:animations/venom_tentacles_traversal_arms.animation.json",
+      "animation_controller": [
+        {
+          "name": "looping_controller",
+          "transition_tick_time": 8,
+          "animation": "animation.venom_tentacles_traversal_arms.loop"
+        }
+      ],
+      "bones": {
+        "body": "armorBody"
+      }
+    },
+    {
+      "model": "klyntars:geo/venom_tentacles_traversal_hands.geo.json",
+      "type": "geckolib:default",
+      "texture": "klyntars:textures/models/tentacles_traversal_arms/symbiote_hand.png",
+      "animation_file": "klyntars:animations/venom_tentacles_traversal_arms.animation.json",
+      "animation_controller": [
+        {
+          "name": "looping_controller",
+          "transition_tick_time": 8,
+          "animation": "animation.venom_tentacles_traversal_arms.loop"
+        }
+      ],
+      "bones": {
+        "body": "armorBody"
+      }
+    }
+  ]
+}

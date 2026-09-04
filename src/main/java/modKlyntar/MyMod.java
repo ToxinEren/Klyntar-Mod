@@ -4,13 +4,6 @@ import modKlyntar.block.PromethiumXBlock;
 import modKlyntar.block.PromethiumXSmokeHandler;
 import modKlyntar.block.PromethiumXTNTBlock;
 import modKlyntar.capability.PlayerPowerCapability;
-import modKlyntar.client.ClientEventHandler;
-import modKlyntar.client.renderer.GhastProjectileRenderer;
-import modKlyntar.client.renderer.PrimedPromethiumXTntRenderer;
-import modKlyntar.client.renderer.SmokeTrailRenderer;
-import modKlyntar.client.renderer.SymbioteRenderer;
-import modKlyntar.client.renderer.VenomRenderer;
-import modKlyntar.client.renderer.WebProjectileRenderer;
 import modKlyntar.entity.custom.CustomArrowEntity;
 import modKlyntar.entity.custom.GhastProjectileEntity;
 import modKlyntar.entity.custom.PrimedPromethiumXTnt;
@@ -19,12 +12,10 @@ import modKlyntar.entity.custom.SymbioteEntity;
 import modKlyntar.entity.custom.TentacleSegmentEntity;
 import modKlyntar.entity.custom.VenomEntity;
 import modKlyntar.entity.custom.WebProjectileEntity;
-import modKlyntar.input.KeyInputHandler;
 import modKlyntar.item.CapsuleItem;
 import modKlyntar.network.ModNetwork;
 import modKlyntar.power.PlayersPower;
 import modKlyntar.power.PlayersPowerProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -46,7 +37,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -85,11 +75,28 @@ public class MyMod {
     public static final RegistryObject<Block> PROMETHIUMX_BLOCK = BLOCKS.register("promethiumx", PromethiumXBlock::new);
     public static final RegistryObject<Item> PROMETHIUMX_BLOCK_ITEM = ITEMS.register("promethium_x",
             () -> new BlockItem(PROMETHIUMX_BLOCK.get(), new Item.Properties()));
-    public static final RegistryObject<Block> KNULLS_FRAGMENT_BLOCK =
-            BLOCKS.register("knulls_fragment", modKlyntar.block.KnullsFragmentBlock::new);
-    public static final RegistryObject<Item> KNULLS_FRAGMENT_ITEM = ITEMS.register("knulls_fragment",
-            () -> new net.minecraft.world.item.BlockItem(KNULLS_FRAGMENT_BLOCK.get(), new Item.Properties()));
-
+    public static final RegistryObject<Block> KNULLS_FRAGMENT_BLOCK =
+
+            BLOCKS.register("knulls_fragment", modKlyntar.block.KnullsFragmentBlock::new);
+
+    public static final RegistryObject<Item> KNULLS_FRAGMENT_ITEM = ITEMS.register("knulls_fragment",
+
+            () -> new net.minecraft.world.item.BlockItem(KNULLS_FRAGMENT_BLOCK.get(), new Item.Properties()));
+
+
+
+    /** i due cadaveri nel cratere di All-Black, e i riempitivi del loro sedime */
+    public static final RegistryObject<Block> DIO_MORTO =
+            BLOCKS.register("dio_morto", modKlyntar.block.DioMortoBlock::new);
+    public static final RegistryObject<Block> ALIENO_FUSO =
+            BLOCKS.register("alieno_fuso", modKlyntar.block.AlienoFusoBlock::new);
+    public static final RegistryObject<Block> PEZZO_DIO =
+            BLOCKS.register("pezzo_dio",
+                    () -> new modKlyntar.block.PezzoStrutturaBlock(DIO_MORTO::get, 15));
+    public static final RegistryObject<Block> PEZZO_ALIENO =
+            BLOCKS.register("pezzo_alieno",
+                    () -> new modKlyntar.block.PezzoStrutturaBlock(ALIENO_FUSO::get));
+
     public static final RegistryObject<Block> PROMETHIUMX_TNT = BLOCKS.register("promethiumx_tnt", PromethiumXTNTBlock::new);
     public static final RegistryObject<Item> PROMETHIUMX_TNT_ITEM = ITEMS.register("promethium_x_tnt",
             () -> new BlockItem(PROMETHIUMX_TNT.get(), new Item.Properties()));
@@ -119,7 +126,8 @@ public class MyMod {
                 output.accept(VENOM_CAPSULE.get());
                 output.accept(ANTIVENOM_CAPSULE.get());
                 output.accept(CARNAGE_CAPSULE.get());
-                output.accept(TOXIN_CAPSULE.get());
+                output.accept(TOXIN_CAPSULE.get());
+
                 output.accept(KNULLS_FRAGMENT_ITEM.get());
             })
             .build());
@@ -157,34 +165,62 @@ public class MyMod {
                     .sized(0.6F, 1.95F)
                     .build(new ResourceLocation(MOD_ID, "symbiote").toString()));
 
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.CarnageSymbioteEntity>> CARNAGE_SYMBIOTE_ENTITY =
-            ENTITY_TYPES.register("carnage_symbiote",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.CarnageSymbioteEntity>of(
-                                    modKlyntar.entity.custom.CarnageSymbioteEntity::new, MobCategory.MONSTER)
-                            .sized(0.9F, 0.5F)
-                            .build(new ResourceLocation(MOD_ID, "carnage_symbiote").toString()));
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.AntivenomSymbioteEntity>> ANTIVENOM_SYMBIOTE_ENTITY =
-            ENTITY_TYPES.register("antivenom_symbiote",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.AntivenomSymbioteEntity>of(
-                                    modKlyntar.entity.custom.AntivenomSymbioteEntity::new, MobCategory.MONSTER)
-                            .sized(0.9F, 0.5F)
-                            .build(new ResourceLocation(MOD_ID, "antivenom_symbiote").toString()));
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ToxinSymbioteEntity>> TOXIN_SYMBIOTE_ENTITY =
-            ENTITY_TYPES.register("toxin_symbiote",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.ToxinSymbioteEntity>of(
-                                    modKlyntar.entity.custom.ToxinSymbioteEntity::new, MobCategory.MONSTER)
-                            .sized(0.9F, 0.5F)
-                            .build(new ResourceLocation(MOD_ID, "toxin_symbiote").toString()));
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.GrendelsFragmentEntity>> GRENDELS_FRAGMENT_ENTITY =
-            ENTITY_TYPES.register("grendels_fragment",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.GrendelsFragmentEntity>of(
-                                    modKlyntar.entity.custom.GrendelsFragmentEntity::new, MobCategory.MONSTER)
-                            .sized(0.9F, 0.5F)
-                            .build(new ResourceLocation(MOD_ID, "grendels_fragment").toString()));
-
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.CarnageSymbioteEntity>> CARNAGE_SYMBIOTE_ENTITY =
+
+            ENTITY_TYPES.register("carnage_symbiote",
+
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.CarnageSymbioteEntity>of(
+
+                                    modKlyntar.entity.custom.CarnageSymbioteEntity::new, MobCategory.MONSTER)
+
+                            .sized(0.9F, 0.5F)
+
+                            .build(new ResourceLocation(MOD_ID, "carnage_symbiote").toString()));
+
+
+
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.AntivenomSymbioteEntity>> ANTIVENOM_SYMBIOTE_ENTITY =
+
+            ENTITY_TYPES.register("antivenom_symbiote",
+
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.AntivenomSymbioteEntity>of(
+
+                                    modKlyntar.entity.custom.AntivenomSymbioteEntity::new, MobCategory.MONSTER)
+
+                            .sized(0.9F, 0.5F)
+
+                            .build(new ResourceLocation(MOD_ID, "antivenom_symbiote").toString()));
+
+
+
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ToxinSymbioteEntity>> TOXIN_SYMBIOTE_ENTITY =
+
+            ENTITY_TYPES.register("toxin_symbiote",
+
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.ToxinSymbioteEntity>of(
+
+                                    modKlyntar.entity.custom.ToxinSymbioteEntity::new, MobCategory.MONSTER)
+
+                            .sized(0.9F, 0.5F)
+
+                            .build(new ResourceLocation(MOD_ID, "toxin_symbiote").toString()));
+
+
+
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.GrendelsFragmentEntity>> GRENDELS_FRAGMENT_ENTITY =
+
+            ENTITY_TYPES.register("grendels_fragment",
+
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.GrendelsFragmentEntity>of(
+
+                                    modKlyntar.entity.custom.GrendelsFragmentEntity::new, MobCategory.MONSTER)
+
+                            .sized(0.9F, 0.5F)
+
+                            .build(new ResourceLocation(MOD_ID, "grendels_fragment").toString()));
+
+
+
     public static final RegistryObject<EntityType<VenomEntity>> VENOM_ENTITY2 = ENTITY_TYPES.register("venom",
             () -> EntityType.Builder.of(VenomEntity::new, MobCategory.MONSTER)
                     .sized(1.0F, 4.0F)
@@ -205,16 +241,26 @@ public class MyMod {
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(MOD_ID, "tentacle_segment").toString()));
 
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ThrownCapsuleEntity>> THROWN_CAPSULE_ENTITY =
-            ENTITY_TYPES.register("thrown_capsule",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.ThrownCapsuleEntity>of(
-                                    modKlyntar.entity.custom.ThrownCapsuleEntity::new, MobCategory.MISC)
-                            .sized(0.4F, 0.4F)
-                            .setTrackingRange(64)
-                            .setUpdateInterval(10)
-                            .setShouldReceiveVelocityUpdates(true)
-                            .build(new ResourceLocation(MOD_ID, "thrown_capsule").toString()));
-
+    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ThrownCapsuleEntity>> THROWN_CAPSULE_ENTITY =
+
+            ENTITY_TYPES.register("thrown_capsule",
+
+                    () -> EntityType.Builder.<modKlyntar.entity.custom.ThrownCapsuleEntity>of(
+
+                                    modKlyntar.entity.custom.ThrownCapsuleEntity::new, MobCategory.MISC)
+
+                            .sized(0.4F, 0.4F)
+
+                            .setTrackingRange(64)
+
+                            .setUpdateInterval(10)
+
+                            .setShouldReceiveVelocityUpdates(true)
+
+                            .build(new ResourceLocation(MOD_ID, "thrown_capsule").toString()));
+
+
+
     public static final RegistryObject<EntityType<WebProjectileEntity>> WEB_PROJECTILE_ENTITY = ENTITY_TYPES.register("web_projectile",
             () -> EntityType.Builder.<WebProjectileEntity>of(WebProjectileEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
@@ -229,24 +275,23 @@ public class MyMod {
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         PARTICLE_TYPES.register(modEventBus);
-        modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
+        modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
+
         modKlyntar.worldgen.ModFeatures.FEATURES.register(modEventBus);
+        modKlyntar.block.entity.ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::setup);
-        modEventBus.addListener(this::doClientStuff);
         modEventBus.addListener(this::registerAttributes);
 
         GeckoLib.initialize();
         ModNetwork.registerPackets();
 
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(ClientEventHandler.class);
         MinecraftForge.EVENT_BUS.register(PlayerPowerCapability.class);
         MinecraftForge.EVENT_BUS.register(PlayersPowerProvider.class);
         MinecraftForge.EVENT_BUS.register(PlayersPower.class);
         MinecraftForge.EVENT_BUS.register(PlayerEventSubscriber.class);
-        MinecraftForge.EVENT_BUS.register(KeyInputHandler.class);
         MinecraftForge.EVENT_BUS.register(PromethiumXSmokeHandler.class);
     }
 
@@ -254,34 +299,20 @@ public class MyMod {
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        EntityRenderers.register(SYMBIOTE_ENTITY.get(), SymbioteRenderer::new);
-        EntityRenderers.register(GRENDELS_FRAGMENT_ENTITY.get(),
-                modKlyntar.client.renderer.GrendelsFragmentRenderer::new);
-        EntityRenderers.register(CARNAGE_SYMBIOTE_ENTITY.get(),
-                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
-        EntityRenderers.register(ANTIVENOM_SYMBIOTE_ENTITY.get(),
-                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
-        EntityRenderers.register(TOXIN_SYMBIOTE_ENTITY.get(),
-                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
-        EntityRenderers.register(VENOM_ENTITY2.get(), VenomRenderer::new);
-        EntityRenderers.register(PROMETHIUMX_TNT_ENTITY.get(), PrimedPromethiumXTntRenderer::new);
-        EntityRenderers.register(SMOKE_TRAIL_ENTITY.get(), SmokeTrailRenderer::new);
-        EntityRenderers.register(GHAST_PROJECTILE_ENTITY.get(), GhastProjectileRenderer::new);
-        EntityRenderers.register(WEB_PROJECTILE_ENTITY.get(), WebProjectileRenderer::new);
-        EntityRenderers.register(THROWN_CAPSULE_ENTITY.get(),
-                context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context));
-    }
 
     private void onServerStarting(ServerStartingEvent event) {
     }
 
     @SubscribeEvent
     public void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
-        event.put(GRENDELS_FRAGMENT_ENTITY.get(), SymbioteEntity.createAttributes().build());
-        event.put(CARNAGE_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
-        event.put(ANTIVENOM_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
+        event.put(SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
+
+        event.put(GRENDELS_FRAGMENT_ENTITY.get(), SymbioteEntity.createAttributes().build());
+
+        event.put(CARNAGE_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
+
+        event.put(ANTIVENOM_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
+
         event.put(TOXIN_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
         event.put(VENOM_ENTITY2.get(), VenomEntity.createAttributes().build());
         event.put(TENTACLE_SEGMENT.get(), TentacleSegmentEntity.createAttributes().build());

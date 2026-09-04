@@ -25,27 +25,6 @@
         {
             "type": "palladium:skin_overlay",
             "texture": {
-                "base": "klyntars:textures/models/redlegs.png",
-                "transformers": [
-                    {
-                        "type": "palladium:alpha_mask",
-                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
-                    }
-                ],
-                "variables": {
-                    "MASK": {
-                        "type": "palladium:ability_integer_property",
-                        "power": "klyntars:wip",
-                        "ability": "enablecarnagelegs",
-                        "property": "value"
-                    }
-                },
-                "output": "klyntars:textures/models/anti_blacklegs_#MASK.png"
-            }
-        },
-        {
-            "type": "palladium:skin_overlay",
-            "texture": {
                 "base": "klyntars:textures/models/whitelegs.png",
                 "transformers": [
                     {

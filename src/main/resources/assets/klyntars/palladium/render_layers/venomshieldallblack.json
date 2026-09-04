@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/venomshield.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/venomshield.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/venom/venomshieldmask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:allblack",
+                "ability": "enablevenomshield",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/venomshield_#MASK.png"
+    }
+}

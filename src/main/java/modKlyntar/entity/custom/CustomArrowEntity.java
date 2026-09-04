@@ -1,8 +1,6 @@
 package modKlyntar.entity.custom;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import modKlyntar.MyMod;
-import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

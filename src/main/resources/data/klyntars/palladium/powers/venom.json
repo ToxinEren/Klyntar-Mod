@@ -1204,7 +1204,7 @@
           },
           {
             "type": "palladium:objective_score",
-            "objective": "Venom.Locomotion",
+            "objective": "Venom.TentaclesTraversal",
             "min_score": 1
           }
         ]
@@ -1711,9 +1711,7 @@
           },
           {
             "type": "klyntars:disable_if_have_power_or_namespace",
-            "powers": [
-              "klyntars:wip"
-            ],
+            "powers": [],
             "namespaces": [
               "fsang",
               "fsang_secondary"
@@ -7136,11 +7134,11 @@
         ]
       }
     },
-    "enablevenomlocomotion": {
+    "enablevenomtentacles_traversal": {
       "type": "palladium:command",
-      "icon": "klyntars:textures/icon/venom_locomotion.png",
+      "icon": "klyntars:textures/icon/venom_tentacles_traversal.png",
       "list_index": 6,
-      "title": "Locomotion",
+      "title": "TentaclesTraversal",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -7150,12 +7148,12 @@
       ],
       "description": "Raise symbiote arms that carry you above the ground.",
       "first_tick_commands": [
-        "scoreboard objectives add Venom.Locomotion dummy",
-        "tag @s remove venom_locomotion_was_active",
-        "execute if score @s Venom.Locomotion matches 1 run tag @s add venom_locomotion_was_active",
-        "scoreboard players set @s Venom.Locomotion 1",
-        "execute if entity @s[tag=venom_locomotion_was_active] run scoreboard players set @s Venom.Locomotion 0",
-        "tag @s remove venom_locomotion_was_active",
+        "scoreboard objectives add Venom.TentaclesTraversal dummy",
+        "tag @s remove venom_tentacles_traversal_was_active",
+        "execute if score @s Venom.TentaclesTraversal matches 1 run tag @s add venom_tentacles_traversal_was_active",
+        "scoreboard players set @s Venom.TentaclesTraversal 1",
+        "execute if entity @s[tag=venom_tentacles_traversal_was_active] run scoreboard players set @s Venom.TentaclesTraversal 0",
+        "tag @s remove venom_tentacles_traversal_was_active",
         "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.7"
       ],
       "conditions": {
@@ -7215,22 +7213,22 @@
         ]
       }
     },
-    "venomlocomotion_tentacles": {
+    "venomtentacles_traversal": {
       "type": "palladium:render_layer",
-      "icon": "klyntars:textures/icon/venom_locomotion.png",
-      "title": "Symbiote Locomotion Tentacles",
+      "icon": "klyntars:textures/icon/venom_tentacles_traversal.png",
+      "title": "Symbiote Tentacles Traversal Tentacles",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
       "description": "null",
-      "render_layer": "klyntars:venom_locomotion_tentacles",
+      "render_layer": "klyntars:venom_tentacles_traversal",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:objective_score",
-            "objective": "Venom.Locomotion.LayerDisabled",
+            "objective": "Venom.TentaclesTraversal.LayerDisabled",
             "min_score": 1,
             "max_score": 1
           },
@@ -7244,10 +7242,10 @@
         ]
       }
     },
-    "venomlocomotion_speed": {
+    "venomtentacles_traversal_speed": {
       "type": "palladium:attribute_modifier",
-      "icon": "klyntars:textures/icon/venom_locomotion.png",
-      "title": "Symbiote Locomotion Speed",
+      "icon": "klyntars:textures/icon/venom_tentacles_traversal.png",
+      "title": "Symbiote Tentacles Traversal Speed",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -7262,17 +7260,17 @@
         "enabling": [
           {
             "type": "palladium:objective_score",
-            "objective": "Venom.Locomotion.Disabled",
+            "objective": "Venom.TentaclesTraversal.Disabled",
             "min_score": 1,
             "max_score": 1
           }
         ]
       }
     },
-    "venomlocomotion_jump": {
+    "venomtentacles_traversal_jump": {
       "type": "palladium:attribute_modifier",
-      "icon": "klyntars:textures/icon/venom_locomotion.png",
-      "title": "Symbiote Locomotion Jump",
+      "icon": "klyntars:textures/icon/venom_tentacles_traversal.png",
+      "title": "Symbiote Tentacles Traversal Jump",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -7287,17 +7285,17 @@
         "enabling": [
           {
             "type": "palladium:objective_score",
-            "objective": "Venom.Locomotion.Disabled",
+            "objective": "Venom.TentaclesTraversal.Disabled",
             "min_score": 1,
             "max_score": 1
           }
         ]
       }
     },
-    "venomlocomotion_fall_control": {
+    "venomtentacles_traversal_fall_control": {
       "type": "palladium:command",
-      "icon": "klyntars:textures/icon/venom_locomotion.png",
-      "title": "Symbiote Locomotion Fall Control",
+      "icon": "klyntars:textures/icon/venom_tentacles_traversal.png",
+      "title": "Symbiote Tentacles Traversal Fall Control",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -7311,7 +7309,7 @@
         "enabling": [
           {
             "type": "palladium:objective_score",
-            "objective": "Venom.Locomotion.Disabled",
+            "objective": "Venom.TentaclesTraversal.Disabled",
             "min_score": 1,
             "max_score": 1
           }
@@ -7352,7 +7350,7 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
-                "objective": "Venom.Locomotion",
+                "objective": "Venom.TentaclesTraversal",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8040,7 +8038,7 @@
               {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "enablevenomlocomotion"
+                "ability": "enablevenomtentacles_traversal"
               },
               {
                 "type": "palladium:ability_first_tick",

@@ -41,7 +41,7 @@ public final class VenomAttackBarrageHandler {
     /** 1 quando il giocatore e' fermo a terra, aggiornato da VenomSymbioteSystemsHandler */
     private static final String STANDING_OBJECTIVE = "Venom.Standing";
     private static final String SHIELD_OBJECTIVE = "Venom.Anim.Shield";
-    private static final String LOCOMOTION_OBJECTIVE = "Venom.Locomotion";
+    private static final String TENTACLES_TRAVERSAL_OBJECTIVE = "Venom.TentaclesTraversal";
     private static final String FLIGHT_OBJECTIVE = "Venom.Flight";
     private static final String[] CLIMB_OBJECTIVES = {
             "Venom.Anim.ClimbWall",
@@ -278,7 +278,7 @@ public final class VenomAttackBarrageHandler {
             return false;
         }
         if (getScore(player, SHIELD_OBJECTIVE) > 0
-                || getScore(player, LOCOMOTION_OBJECTIVE) > 0
+                || getScore(player, TENTACLES_TRAVERSAL_OBJECTIVE) > 0
                 || getScore(player, FLIGHT_OBJECTIVE) > 0) {
             return false;
         }

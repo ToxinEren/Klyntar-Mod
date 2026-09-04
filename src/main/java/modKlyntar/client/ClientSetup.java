@@ -21,6 +21,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -44,6 +45,20 @@ public class ClientSetup {
     	EntityRenderers.register(MyMod.CUSTOM_ARROW.get(), CustomArrowRenderer::new);
     	EntityRenderers.register(MyMod.TENTACLE_SEGMENT.get(), TentacleSegmentRenderer::new);
     	EntityRenderers.register(MyMod.WEB_PROJECTILE_ENTITY.get(), WebProjectileRenderer::new);
+        // spostati qui da MyMod: nella classe principale i riferimenti a metodo dei renderer
+        // mettono classi client nei descrittori, e su server dedicato RuntimeDistCleaner
+        // blocca il caricamento durante CONSTRUCT
+        EntityRenderers.register(MyMod.GRENDELS_FRAGMENT_ENTITY.get(),
+                modKlyntar.client.renderer.GrendelsFragmentRenderer::new);
+        EntityRenderers.register(MyMod.CARNAGE_SYMBIOTE_ENTITY.get(),
+                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
+        EntityRenderers.register(MyMod.ANTIVENOM_SYMBIOTE_ENTITY.get(),
+                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
+        EntityRenderers.register(MyMod.TOXIN_SYMBIOTE_ENTITY.get(),
+                modKlyntar.client.renderer.SimbionteColoratoRenderer::new);
+        EntityRenderers.register(MyMod.THROWN_CAPSULE_ENTITY.get(),
+                context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context));
+        MinecraftForge.EVENT_BUS.register(modKlyntar.client.ClientEventHandler.class);
     	//EntityRenderers.register(MyMod.VENOM_PLAYER_ENTITY.get(), VenomPlayerRenderer::new);
     }
     
@@ -61,6 +76,15 @@ public class ClientSetup {
         //event.registerEntityRenderer(MyMod.VENOM_PLAYER_ENTITY.get(), VenomPlayerRenderer::new);
     }
 
+
+    /** i due cadaveri del cratere: il loro corpo lo disegna la block entity */
+    @SubscribeEvent
+    public static void onRegisterBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(modKlyntar.block.entity.ModBlockEntities.DIO_MORTO.get(),
+                modKlyntar.client.renderer.DioMortoRenderer::new);
+        event.registerBlockEntityRenderer(modKlyntar.block.entity.ModBlockEntities.ALIENO_FUSO.get(),
+                modKlyntar.client.renderer.AlienoFusoRenderer::new);
+    }
 
     @SubscribeEvent
     public static void onRegisterParticleProviders(net.minecraftforge.client.event.RegisterParticleProvidersEvent event) {
