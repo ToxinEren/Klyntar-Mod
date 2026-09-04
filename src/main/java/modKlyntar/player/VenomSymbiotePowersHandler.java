@@ -3,8 +3,8 @@ package modKlyntar.player;
 import com.mojang.logging.LogUtils;
 
 import modKlyntar.MyMod;
-import modKlyntar.entity.custom.AntivenomBombEntity;
-import modKlyntar.network.ModNetwork;
+import modKlyntar.network.ModNetwork;
+
 import modKlyntar.symbiote.ColpoLocalizzato;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -110,10 +110,14 @@ public final class VenomSymbiotePowersHandler {
     private static final double STRIKE_FINAL_VERTICAL = 0.9D;
     private static final float STRIKE_SMALL_DAMAGE = 5.0F;
     private static final float STRIKE_FINAL_DAMAGE = 24.0F;
-    /** quanto avanti arriva la mano nel momento del colpo: il punto d'aggancio piu' il braccio */
-    private static final double STRIKE_HAND_REACH = STRIKE_POINT_DISTANCE + 1.2D;
-    /** quanto e' grosso il pugno del simbionte */
-    private static final double STRIKE_HAND_THICKNESS = 1.1D;
+    /** quanto avanti arriva la mano nel momento del colpo: il punto d'aggancio piu' il braccio */
+
+    private static final double STRIKE_HAND_REACH = STRIKE_POINT_DISTANCE + 1.2D;
+
+    /** quanto e' grosso il pugno del simbionte */
+
+    private static final double STRIKE_HAND_THICKNESS = 1.1D;
+
     private static final int STRIKE_COOLDOWN = 0;   // nessuna ricarica
 
     // --- Antivenom Tempest: solleva in aria il giocatore e chi gli sta attorno ---
@@ -241,82 +245,130 @@ public final class VenomSymbiotePowersHandler {
         }
     }
 
-    /**
-     * C'e' qualcosa da afferrare nel raggio dell'abilita'?
-     *
-     * <p>Pull e Strike sono sequenze che lavorano su bersagli: senza nessuno attorno partirebbero
-     * a vuoto, muovendo il giocatore e consumando la ricarica per niente.</p>
-     */
-    private static boolean bersagliVicini(ServerPlayer player, double range, int max) {
-        if (!findTargets(player, range, max).isEmpty()) {
-            return true;
-        }
-        player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal("Nessun bersaglio vicino"), true);
-        return false;
-    }
-
-    /** sotto questa fame Anti-Venom non riesce piu' a spendere il simbionte */
-    private static final int FAME_MINIMA = 6;
-    /** quanto pesa un'abilita' sulla fame del giocatore: circa una coscia e mezza */
-    private static final float COSTO_FAME = 6.0F;
-
-    /**
-     * Anti-Venom non ha una fame propria, quindi le sue abilita' le paga il giocatore.
-     *
-     * <p>Per le altre forme non cambia niente: hanno la loro barra e questa non le tocca.</p>
-     *
-     * @return true se l'abilita' puo' partire
-     */
-    private static boolean pagaFame(ServerPlayer player) {
-        if (!modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
-            return true;
-        }
-        if (player.getFoodData().getFoodLevel() < FAME_MINIMA) {
-            player.displayClientMessage(
-                    net.minecraft.network.chat.Component.literal("Troppa fame per il simbionte"), true);
-            return false;
-        }
-        player.getFoodData().addExhaustion(COSTO_FAME);
-        return true;
-    }
-
+    /**
+
+     * C'e' qualcosa da afferrare nel raggio dell'abilita'?
+
+     *
+
+     * <p>Pull e Strike sono sequenze che lavorano su bersagli: senza nessuno attorno partirebbero
+
+     * a vuoto, muovendo il giocatore e consumando la ricarica per niente.</p>
+
+     */
+
+    private static boolean bersagliVicini(ServerPlayer player, double range, int max) {
+
+        if (!findTargets(player, range, max).isEmpty()) {
+
+            return true;
+
+        }
+
+        player.displayClientMessage(
+
+                net.minecraft.network.chat.Component.literal("Nessun bersaglio vicino"), true);
+
+        return false;
+
+    }
+
+
+
+    /** sotto questa fame Anti-Venom non riesce piu' a spendere il simbionte */
+
+    private static final int FAME_MINIMA = 6;
+
+    /** quanto pesa un'abilita' sulla fame del giocatore: circa una coscia e mezza */
+
+    private static final float COSTO_FAME = 6.0F;
+
+
+
+    /**
+
+     * Anti-Venom non ha una fame propria, quindi le sue abilita' le paga il giocatore.
+
+     *
+
+     * <p>Per le altre forme non cambia niente: hanno la loro barra e questa non le tocca.</p>
+
+     *
+
+     * @return true se l'abilita' puo' partire
+
+     */
+
+    private static boolean pagaFame(ServerPlayer player) {
+
+        if (!modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
+
+            return true;
+
+        }
+
+        if (player.getFoodData().getFoodLevel() < FAME_MINIMA) {
+
+            player.displayClientMessage(
+
+                    net.minecraft.network.chat.Component.literal("Troppa fame per il simbionte"), true);
+
+            return false;
+
+        }
+
+        player.getFoodData().addExhaustion(COSTO_FAME);
+
+        return true;
+
+    }
+
+
+
     private static void consumeRequests(ServerPlayer player, PowerState state) {
-        if (consume(player, PULL_REQUEST) && state.pullTick < 0 && state.pullCooldown <= 0
-                && bersagliVicini(player, PULL_RANGE, PULL_MAX_TARGETS)
+        if (consume(player, PULL_REQUEST) && state.pullTick < 0 && state.pullCooldown <= 0
+
+                && bersagliVicini(player, PULL_RANGE, PULL_MAX_TARGETS)
+
                 && pagaFame(player)) {
             state.pullTick = 0;
             state.pullCooldown = PULL_COOLDOWN;
             playAnim(player, state, 1);
             state.captured.clear();
         }
-        if (consume(player, STRIKE_REQUEST) && state.strikeTick < 0 && state.strikeCooldown <= 0
-                && bersagliVicini(player, STRIKE_RANGE, STRIKE_MAX_TARGETS)
+        if (consume(player, STRIKE_REQUEST) && state.strikeTick < 0 && state.strikeCooldown <= 0
+
+                && bersagliVicini(player, STRIKE_RANGE, STRIKE_MAX_TARGETS)
+
                 && pagaFame(player)) {
             state.strikeTick = 0;
             state.strikeCooldown = STRIKE_COOLDOWN;
             playAnim(player, state, 2);
             state.struck.clear();
         }
-        if (consume(player, TEMPEST_REQUEST) && state.tempestTick < 0 && state.tempestCooldown <= 0
+        if (consume(player, TEMPEST_REQUEST) && state.tempestTick < 0 && state.tempestCooldown <= 0
+
                 && pagaFame(player)) {
             state.tempestTick = 0;
             state.tempestCooldown = TEMPEST_COOLDOWN;
             playAnim(player, state, 3);
         }
-        if (consume(player, BOMB_REQUEST) && state.bombTick < 0 && state.bombCooldown <= 0
+        if (consume(player, BOMB_REQUEST) && state.bombTick < 0 && state.bombCooldown <= 0
+
                 && pagaFame(player)) {
             state.bombTick = 0;
             state.bombCooldown = BOMB_COOLDOWN;
             playAnim(player, state, 4);
         }
-        if (consume(player, BLAST_REQUEST) && state.blastTick < 0 && state.blastCooldown <= 0
+        if (consume(player, BLAST_REQUEST) && state.blastTick < 0 && state.blastCooldown <= 0
+
                 && pagaFame(player)) {
             state.blastTick = 0;
             state.blastCooldown = BLAST_COOLDOWN;
             playAnim(player, state, 5);
         }
-        if (consume(player, RAGE_REQUEST) && state.rageTicks <= 0 && state.rageCooldown <= 0
+        if (consume(player, RAGE_REQUEST) && state.rageTicks <= 0 && state.rageCooldown <= 0
+
                 && pagaFame(player)) {
             startRage(player, state);
             playAnim(player, state, 6);
@@ -539,8 +591,6 @@ public final class VenomSymbiotePowersHandler {
         }
 
         if (t == TEMPEST_DAMAGE_TICK) {
-            // la tempesta di Anti-Venom avvelena i simbionti che investe
-            AntiVenomEffectHandler.colpisci(targets, player);
             levita(player, TEMPEST_SECOND_LIFT_LEVEL);
             for (LivingEntity target : targets) {
                 target.hurt(player.damageSources().playerAttack(player), TEMPEST_DAMAGE);
@@ -587,10 +637,6 @@ public final class VenomSymbiotePowersHandler {
         if (t == BOMB_THROW_TICK) {
             // finche' sta in mano la bomba sono i tendini innestati sul pugno, che spariscono
             // al tick 21: l'entita' nasce qui, un tick dopo, e parte subito
-            AntivenomBombEntity bomba = new AntivenomBombEntity(player.level(), player);
-            player.level().addFreshEntity(bomba);
-            bomba.lancia(player.getLookAngle(), BOMB_SPEED);
-            state.bomba = null;
             player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 20, 0, false, false));
             player.level().playSound(null, player.blockPosition(),
                     net.minecraft.sounds.SoundEvents.SNOWBALL_THROW,
@@ -642,8 +688,6 @@ public final class VenomSymbiotePowersHandler {
             target.hurt(player.damageSources().playerAttack(player), BOMB_DAMAGE);
             pushAway(player, target, 0.7D, 0.3D);
         }
-        // la bomba di Anti-Venom avvelena i simbionti presi dallo scoppio
-        AntiVenomEffectHandler.colpisci(investiti, player);
         if (player.level() instanceof ServerLevel level) {
             // stesse emissioni del pack: due schizzi e tre sbuffi, ad altezze diverse
             level.sendParticles(MyMod.SYMBIOTE_SPLASH.get(), centro.x, centro.y + 1.0D, centro.z,
@@ -855,7 +899,6 @@ public final class VenomSymbiotePowersHandler {
         private int strikeTick = -1;
         private int tempestTick = -1;
         private int bombTick = -1;
-        private AntivenomBombEntity bomba;
         private int blastTick = -1;
 
         private int pullCooldown;

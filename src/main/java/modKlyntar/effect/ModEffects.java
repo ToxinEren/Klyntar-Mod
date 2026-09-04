@@ -10,9 +10,6 @@ public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS =
             DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MyMod.MOD_ID);
 
-    public static final RegistryObject<MobEffect> ANTI_VENOM =
-            EFFECTS.register("anti_venom", AntiVenomEffect::new);
-
     private ModEffects() {
     }
 }

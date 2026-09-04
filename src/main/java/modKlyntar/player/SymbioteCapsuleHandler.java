@@ -1,7 +1,6 @@
 package modKlyntar.player;
 
 import modKlyntar.MyMod;
-import modKlyntar.entity.custom.SimbionteColoratoEntity;
 import modKlyntar.entity.custom.SymbioteEntity;
 import modKlyntar.entity.custom.ThrownCapsuleEntity;
 import net.minecraft.server.level.ServerLevel;
@@ -69,18 +68,7 @@ public final class SymbioteCapsuleHandler {
      * frammento di Grendel.</p>
      */
     private static Item capsulaPer(SymbioteEntity simbionte) {
-        if (simbionte instanceof SimbionteColoratoEntity colorato) {
-            switch (colorato.forma()) {
-                case "carnage":
-                    return MyMod.CARNAGE_CAPSULE.get();
-                case "antivenom":
-                    return MyMod.ANTIVENOM_CAPSULE.get();
-                case "toxin":
-                    return MyMod.TOXIN_CAPSULE.get();
-                default:
-                    break;
-            }
-        }
+        // in questa release esiste solo venom: ogni simbionte catturato da la sua capsula
         return MyMod.VENOM_CAPSULE.get();
     }
 
@@ -89,11 +77,7 @@ public final class SymbioteCapsuleHandler {
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player giocatore = event.getEntity();
         ItemStack inMano = event.getItemStack();
-        // ogni capsula piena si lancia, non solo quelle di venom e carnage
-        if (!inMano.is(MyMod.VENOM_CAPSULE.get())
-                && !inMano.is(MyMod.CARNAGE_CAPSULE.get())
-                && !inMano.is(MyMod.ANTIVENOM_CAPSULE.get())
-                && !inMano.is(MyMod.TOXIN_CAPSULE.get())) {
+        if (!inMano.is(MyMod.VENOM_CAPSULE.get())) {
             return;
         }
 

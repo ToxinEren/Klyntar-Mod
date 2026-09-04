@@ -86,16 +86,6 @@ public class MyMod {
 
 
     /** i due cadaveri nel cratere di All-Black, e i riempitivi del loro sedime */
-    public static final RegistryObject<Block> DIO_MORTO =
-            BLOCKS.register("dio_morto", modKlyntar.block.DioMortoBlock::new);
-    public static final RegistryObject<Block> ALIENO_FUSO =
-            BLOCKS.register("alieno_fuso", modKlyntar.block.AlienoFusoBlock::new);
-    public static final RegistryObject<Block> PEZZO_DIO =
-            BLOCKS.register("pezzo_dio",
-                    () -> new modKlyntar.block.PezzoStrutturaBlock(DIO_MORTO::get, 15));
-    public static final RegistryObject<Block> PEZZO_ALIENO =
-            BLOCKS.register("pezzo_alieno",
-                    () -> new modKlyntar.block.PezzoStrutturaBlock(ALIENO_FUSO::get));
 
     public static final RegistryObject<Block> PROMETHIUMX_TNT = BLOCKS.register("promethiumx_tnt", PromethiumXTNTBlock::new);
     public static final RegistryObject<Item> PROMETHIUMX_TNT_ITEM = ITEMS.register("promethium_x_tnt",
@@ -106,15 +96,6 @@ public class MyMod {
     public static final RegistryObject<Item> VENOM_CAPSULE = ITEMS.register("venomcapsule",
             () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "venomcapsule", true));
     // le altre forme riusano la geometria di venom e cambiano solo la texture del simbionte
-    public static final RegistryObject<Item> ANTIVENOM_CAPSULE = ITEMS.register("antivenomcapsule",
-            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
-                    "antivenomcapsule", true, "venomcapsule", "capsule_model_antivenom"));
-    public static final RegistryObject<Item> CARNAGE_CAPSULE = ITEMS.register("carnagecapsule",
-            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
-                    "carnagecapsule", true, "venomcapsule", "capsule_model_carnage"));
-    public static final RegistryObject<Item> TOXIN_CAPSULE = ITEMS.register("toxincapsule",
-            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(),
-                    "toxincapsule", true, "venomcapsule", "capsule_model_toxin"));
 
     public static final RegistryObject<CreativeModeTab> KLYNTAR_TAB = CREATIVE_MODE_TABS.register("klyntar_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.klyntars.klyntar_tab"))
@@ -124,9 +105,6 @@ public class MyMod {
                 output.accept(PROMETHIUMX_TNT_ITEM.get());
                 output.accept(CAPSULE.get());
                 output.accept(VENOM_CAPSULE.get());
-                output.accept(ANTIVENOM_CAPSULE.get());
-                output.accept(CARNAGE_CAPSULE.get());
-                output.accept(TOXIN_CAPSULE.get());
 
                 output.accept(KNULLS_FRAGMENT_ITEM.get());
             })
@@ -142,15 +120,6 @@ public class MyMod {
                     .build(new ResourceLocation(MOD_ID, "primed_promethiumx_tnt").toString()));
 
     /** la bomba simbiotica dell'Antivenom Bomb, col modello preso dallo Spider-Man pack */
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.AntivenomBombEntity>> ANTIVENOM_BOMB_ENTITY =
-            ENTITY_TYPES.register("antivenom_bomb",
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.AntivenomBombEntity>of(
-                                    modKlyntar.entity.custom.AntivenomBombEntity::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .setTrackingRange(64)
-                            .setUpdateInterval(1)
-                            .setShouldReceiveVelocityUpdates(true)
-                            .build("antivenom_bomb"));
 
     public static final RegistryObject<EntityType<GhastProjectileEntity>> GHAST_PROJECTILE_ENTITY = ENTITY_TYPES.register("ghast_projectile",
             () -> EntityType.Builder.<GhastProjectileEntity>of(GhastProjectileEntity::new, MobCategory.MISC)
@@ -164,46 +133,6 @@ public class MyMod {
             () -> EntityType.Builder.of(SymbioteEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(new ResourceLocation(MOD_ID, "symbiote").toString()));
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.CarnageSymbioteEntity>> CARNAGE_SYMBIOTE_ENTITY =
-
-            ENTITY_TYPES.register("carnage_symbiote",
-
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.CarnageSymbioteEntity>of(
-
-                                    modKlyntar.entity.custom.CarnageSymbioteEntity::new, MobCategory.MONSTER)
-
-                            .sized(0.9F, 0.5F)
-
-                            .build(new ResourceLocation(MOD_ID, "carnage_symbiote").toString()));
-
-
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.AntivenomSymbioteEntity>> ANTIVENOM_SYMBIOTE_ENTITY =
-
-            ENTITY_TYPES.register("antivenom_symbiote",
-
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.AntivenomSymbioteEntity>of(
-
-                                    modKlyntar.entity.custom.AntivenomSymbioteEntity::new, MobCategory.MONSTER)
-
-                            .sized(0.9F, 0.5F)
-
-                            .build(new ResourceLocation(MOD_ID, "antivenom_symbiote").toString()));
-
-
-
-    public static final RegistryObject<EntityType<modKlyntar.entity.custom.ToxinSymbioteEntity>> TOXIN_SYMBIOTE_ENTITY =
-
-            ENTITY_TYPES.register("toxin_symbiote",
-
-                    () -> EntityType.Builder.<modKlyntar.entity.custom.ToxinSymbioteEntity>of(
-
-                                    modKlyntar.entity.custom.ToxinSymbioteEntity::new, MobCategory.MONSTER)
-
-                            .sized(0.9F, 0.5F)
-
-                            .build(new ResourceLocation(MOD_ID, "toxin_symbiote").toString()));
 
 
 
@@ -278,7 +207,6 @@ public class MyMod {
         modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
 
         modKlyntar.worldgen.ModFeatures.FEATURES.register(modEventBus);
-        modKlyntar.block.entity.ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::setup);
@@ -309,11 +237,8 @@ public class MyMod {
 
         event.put(GRENDELS_FRAGMENT_ENTITY.get(), SymbioteEntity.createAttributes().build());
 
-        event.put(CARNAGE_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
 
-        event.put(ANTIVENOM_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
 
-        event.put(TOXIN_SYMBIOTE_ENTITY.get(), SymbioteEntity.createAttributes().build());
         event.put(VENOM_ENTITY2.get(), VenomEntity.createAttributes().build());
         event.put(TENTACLE_SEGMENT.get(), TentacleSegmentEntity.createAttributes().build());
     }

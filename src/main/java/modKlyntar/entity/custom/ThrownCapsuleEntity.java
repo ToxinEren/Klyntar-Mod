@@ -66,16 +66,7 @@ public class ThrownCapsuleEntity extends ThrowableItemProjectile {
      * capsula senza item riconoscibile.</p>
      */
     private EntityType<?> tipoSimbionte() {
-        Item capsula = this.getItem().getItem();
-        if (capsula == MyMod.CARNAGE_CAPSULE.get()) {
-            return MyMod.CARNAGE_SYMBIOTE_ENTITY.get();
-        }
-        if (capsula == MyMod.ANTIVENOM_CAPSULE.get()) {
-            return MyMod.ANTIVENOM_SYMBIOTE_ENTITY.get();
-        }
-        if (capsula == MyMod.TOXIN_CAPSULE.get()) {
-            return MyMod.TOXIN_SYMBIOTE_ENTITY.get();
-        }
+        // in questa release c'e' solo venom: ogni capsula libera lo stesso simbionte
         return MyMod.SYMBIOTE_ENTITY.get();
     }
 

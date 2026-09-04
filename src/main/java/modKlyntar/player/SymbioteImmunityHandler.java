@@ -3,7 +3,8 @@ package modKlyntar.player;
 import modKlyntar.MyMod;
 import modKlyntar.effect.ModEffects;
 import modKlyntar.symbiote.SymbioteState;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayer;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
@@ -61,10 +62,6 @@ public final class SymbioteImmunityHandler {
             return;
         }
         // l'Anti-Venom passa oltre il passivo, altrimenti non morderebbe mai; ma su chi e'
-        // Anti-Venom lui stesso non ha presa, e il passivo li' continua a lavorare
-        if (giocatore.hasEffect(ModEffects.ANTI_VENOM.get()) && !SymbioteState.isAntiVenom(giocatore)) {
-            return;
-        }
 
         sciogliMalus(giocatore);
     }
