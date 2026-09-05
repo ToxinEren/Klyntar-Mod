@@ -1,6 +1,0 @@
-﻿{
-    "model": "klyntars:geo/symbiotearcreactor.geo.json",
-    "type": "geckolib:default",
-    "texture": "klyntars:textures/models/symbiotearcreactorglow.png",
-      "render_type": "glow"
-}

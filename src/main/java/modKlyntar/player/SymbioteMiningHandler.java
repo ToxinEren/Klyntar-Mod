@@ -21,9 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Il simbionte scava come la netherite.
  *
- * <p>Vale col corpo simbionte fuori e col piccone della ruota degli attrezzi in pugno: in
- * entrambi i casi la velocita' e la capacita' di raccogliere i blocchi salgono al livello
- * dell'attrezzo migliore del gioco.</p>
+ * <p>Vale col corpo simbionte fuori e con un attrezzo della ruota in pugno, piccone o
+ * ascia che sia: in ogni caso la velocita' e la capacita' di raccogliere i blocchi
+ * salgono al livello dell'attrezzo migliore del gioco.</p>
  */
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
 public final class SymbioteMiningHandler {
@@ -34,6 +34,7 @@ public final class SymbioteMiningHandler {
     /** quale attrezzo ha scelto la ruota: 0 nessuno, 1 piccone, 2 ascia */
     public static final String ATTREZZO_OBJECTIVE = "Venom.Tool";
     public static final int ATTREZZO_PICCONE = 1;
+    public static final int ATTREZZO_ASCIA = 2;
 
     /** quanto il simbionte va oltre la netherite: meta' piu' veloce */
     private static final float SPINTA = 1.5F;
@@ -54,11 +55,24 @@ public final class SymbioteMiningHandler {
         return SymbioteState.getScore(giocatore, CORPO_OBJECTIVE) > 0;
     }
 
-    private static boolean picconeInPugno(Player giocatore) {
+    /** Quale attrezzo ha in pugno adesso, dal lato giusto del mondo. */
+    private static int attrezzoScelto(Player giocatore) {
         if (giocatore.level().isClientSide) {
-            return ClientSymbioteMiningState.attrezzo() == ATTREZZO_PICCONE;
+            return ClientSymbioteMiningState.attrezzo();
         }
-        return SymbioteState.getScore(giocatore, ATTREZZO_OBJECTIVE) == ATTREZZO_PICCONE;
+        return SymbioteState.getScore(giocatore, ATTREZZO_OBJECTIVE);
+    }
+
+    /**
+     * La ruota ha fuori un attrezzo del simbionte?
+     *
+     * <p>Piccone e ascia contano allo stesso modo: e' lo stesso simbionte che prende forma, e
+     * non c'e' motivo perche' l'ascia scavi piu' piano della mano nuda mentre il piccone va
+     * come la netherite.</p>
+     */
+    private static boolean attrezzoInPugno(Player giocatore) {
+        int scelto = attrezzoScelto(giocatore);
+        return scelto == ATTREZZO_PICCONE || scelto == ATTREZZO_ASCIA;
     }
 
     /**
@@ -70,11 +84,10 @@ public final class SymbioteMiningHandler {
      */
     public static boolean scavaComeNetherite(Player giocatore) {
         if (giocatore.level().isClientSide) {
-            return ClientSymbioteMiningState.corpoAttivo()
-                    || ClientSymbioteMiningState.attrezzo() == ATTREZZO_PICCONE;
+            return ClientSymbioteMiningState.corpoAttivo() || attrezzoInPugno(giocatore);
         }
         return SymbioteState.haSimbionte(giocatore)
-                && (corpoAttivo(giocatore) || picconeInPugno(giocatore));
+                && (corpoAttivo(giocatore) || attrezzoInPugno(giocatore));
     }
 
     /** Tiene il client aggiornato: senza, scaverebbe al ritmo di un giocatore normale. */

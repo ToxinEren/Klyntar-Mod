@@ -574,7 +574,6 @@ public final class VenomSymbioteSystemsHandler {
 
             LOGGER.info("Venom flight server active for {}. score={}", player.getGameProfile().getName(), getScore(player, FLIGHT_OBJECTIVE, false));
 
-            player.displayClientMessage(Component.literal("Venom Flight server active"), true);
 
             ModNetwork.syncVenomFlightState(player, true);
 
@@ -656,7 +655,6 @@ public final class VenomSymbioteSystemsHandler {
 
             if (!state.forwardPressedLastTick) {
 
-                player.displayClientMessage(Component.literal("Venom propeller server"), true);
 
                 LOGGER.info("Venom flight propeller triggered server-side for {}. score={}, velocity={}", player.getGameProfile().getName(), getScore(player, FLIGHT_OBJECTIVE, false), player.getDeltaMovement());
 
@@ -761,7 +759,6 @@ public final class VenomSymbioteSystemsHandler {
 
         FLIGHT_MEMORY.remove(player.getUUID());
 
-        player.displayClientMessage(Component.literal("Venom Flight OFF"), true);
 
         LOGGER.info("Venom flight disabled after block collision for {}", player.getGameProfile().getName());
 

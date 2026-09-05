@@ -17,18 +17,12 @@ public class KeyBindings {
 
     public static final String CATEGORY = "key.categories.klyntars";
     public static final String TOGGLE_ABILITY_1 = "key.klyntars.toggle_ability_1";
-    public static final String TOGGLE_ABILITY_2 = "key.klyntars.toggle_ability_2";
-    public static final String TOGGLE_ABILITY_3 = "key.klyntars.toggle_ability_3";
 
     public static final KeyMapping toggleAbility1 = new KeyMapping(TOGGLE_ABILITY_1, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY);
-    public static final KeyMapping toggleAbility2 = new KeyMapping(TOGGLE_ABILITY_2, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_P, CATEGORY);
-    public static final KeyMapping toggleAbility3 = new KeyMapping(TOGGLE_ABILITY_3, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_L, CATEGORY);
 
     @SubscribeEvent
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
         LOGGER.debug("Registering key mappings");
         event.register(toggleAbility1);
-        event.register(toggleAbility2);
-        event.register(toggleAbility3);
     }
 }

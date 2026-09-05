@@ -1,6 +1,0 @@
-﻿{
-    "model": "klyntars:geo/magicsword.geo.json",
-    "type": "geckolib:default",
-    "texture": "klyntars:textures/models/magicsword.png",
-    "render_type": "glow"
-}

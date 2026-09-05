@@ -1813,9 +1813,7 @@
         -1
       ],
       "description": "null",
-      "first_tick_commands": [
-        "/say Mask!"
-      ],
+      "first_tick_commands": [],
       "last_tick_commands": [],
       "commands": [
         ""
@@ -6884,7 +6882,7 @@
     },
     "assimilate": {
       "type": "palladium:command",
-      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "icon": "klyntars:textures/icon/heart.png",
       "title": "Regeneration",
       "bar_color": "black",
       "hidden": false,

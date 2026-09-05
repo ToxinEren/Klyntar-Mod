@@ -239,10 +239,17 @@ public class PlayerPowerCapability {
             Method metodo = Class.forName("net.threetag.palladium.power.SuperpowerUtil")
                     .getMethod("getSuperpowerIds", LivingEntity.class);
             if (metodo.invoke(null, player) instanceof Collection<?> poteri) {
-                for (Object potere : poteri) {
-                    String id = String.valueOf(potere);
-                    for (String forma : FORME_SIMBIONTE) {
-                        if (id.endsWith(":" + forma)) {
+                // Le forme si provano dalla piu' lunga alla piu' corta, e per ciascuna si
+                // guardano tutti i poteri. Il giro inverso — un potere alla volta, e per
+                // ognuno tutte le forme — restituiva la prima forma che combaciava con il
+                // primo potere elencato: chi ha sia venom sia venomspidey si vedeva
+                // riconoscere "venom", e l'affinita' finiva tutta li' anche giocando Spidey.
+                java.util.List<String> perSpecificita = new java.util.ArrayList<>(
+                        java.util.Arrays.asList(FORME_SIMBIONTE));
+                perSpecificita.sort((a, b) -> b.length() - a.length());
+                for (String forma : perSpecificita) {
+                    for (Object potere : poteri) {
+                        if (String.valueOf(potere).endsWith(":" + forma)) {
                             return forma;
                         }
                     }

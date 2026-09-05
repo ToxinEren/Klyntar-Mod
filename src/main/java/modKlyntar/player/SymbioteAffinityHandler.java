@@ -70,6 +70,29 @@ public final class SymbioteAffinityHandler {
                 Component.literal("Il simbionte si fida meno di te (" + dopo + ")"), true);
     }
 
+    /**
+     * Venom Spidey e' un'evoluzione di Venom, non un simbionte diverso.
+     *
+     * <p>Il legame costruito da Venom se lo porta dietro: passando a Spidey l'affinita' non
+     * riparte da zero ma dal valore gia' raggiunto. Si prende il massimo fra i due e non una
+     * copia secca, cosi' se Spidey e' gia' cresciuto oltre non viene riportato indietro.</p>
+     *
+     * <p>Vale in un verso solo, quello dell'evoluzione: tornando a Venom si ritrova il suo
+     * conto, non quello di Spidey.</p>
+     */
+    private static void ereditaDallaFormaBase(ServerPlayer giocatore, String forma) {
+        if (!"venomspidey".equals(forma)) {
+            return;
+        }
+        SymbioteState.assicuraObiettivo(giocatore, obiettivo("venom"));
+        int dallaBase = SymbioteState.getScore(giocatore, obiettivo("venom"));
+        if (dallaBase > SymbioteState.getScore(giocatore, obiettivo(forma))) {
+            SymbioteState.setScore(giocatore, obiettivo(forma), dallaBase);
+            LOGGER.info("Affinita' di {} ereditata da venom a venomspidey: {}",
+                    giocatore.getGameProfile().getName(), dallaBase);
+        }
+    }
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer giocatore)) {
@@ -84,6 +107,8 @@ public final class SymbioteAffinityHandler {
         // zero, semplicemente non c'e', e nemmeno i comandi riescono a interrogarlo
         SymbioteState.assicuraObiettivo(giocatore, obiettivo(forma));
         SymbioteState.assicuraObiettivo(giocatore, obiettivoTick(forma));
+
+        ereditaDallaFormaBase(giocatore, forma);
 
         int affinita = SymbioteState.getScore(giocatore, obiettivo(forma));
 

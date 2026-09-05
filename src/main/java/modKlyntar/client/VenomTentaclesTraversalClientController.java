@@ -133,7 +133,6 @@ public final class VenomTentaclesTraversalClientController {
         Vec3 current = player.getDeltaMovement();
         if (flightState == null) {
             flightState = new FlightState(player.getY());
-            player.displayClientMessage(Component.literal("Venom Flight client active"), true);
         }
 
         if (flightState.launching) {
@@ -159,9 +158,6 @@ public final class VenomTentaclesTraversalClientController {
         boolean forwardPressed = minecraft.options.keyUp.isDown();
         if (forwardPressed) {
             flightState.propellerTicks = 2;
-            if (!flightState.forwardPressedLastTick) {
-                player.displayClientMessage(Component.literal("Venom propeller"), true);
-            }
         }
         flightState.forwardPressedLastTick = forwardPressed;
 
