@@ -207,6 +207,8 @@ public class MyMod {
         modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
 
         modKlyntar.worldgen.ModFeatures.FEATURES.register(modEventBus);
+        modKlyntar.worldgen.ModStructures.STRUCTURE_TYPES.register(modEventBus);
+        modKlyntar.worldgen.ModStructures.STRUCTURE_PIECES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::setup);

@@ -2,7 +2,7 @@
     "model":  "klyntars:geo/venom.geo.json",
     "type":  "geckolib:default",
     "texture":  {
-                    "base":  "klyntars:textures/entity/venom/venom.png",
+                    "base":  "klyntars:textures/entity/venom/venom_mob.png",
                     "transformers":  [
                                          {
                                              "type":  "palladium:alpha_mask",

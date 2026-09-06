@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 /**
  * Il geode di Knull: una bolla vuota sepolta nella roccia, come quelli di ametista.
@@ -17,6 +18,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * <p>Guscio esterno di deepslate, parete interna di ossidiana, e al centro della cavita' un
  * solo frammento di Knull. Non usa la feature {@code minecraft:geode} di serie perche' quella
  * riempie tutto lo strato interno con lo stesso blocco, e qui il frammento deve essere uno.</p>
+ *
+ * <p>Il disegno sta in {@link #disegna} e non nel metodo {@code place}, perche' lo usa anche la
+ * struttura omonima: cosi' il geode che {@code /locate} porta a trovare e' identico a quello in
+ * cui ci si imbatte scavando.</p>
  */
 public class KnullGeodeFeature extends Feature<NoneFeatureConfiguration> {
     /** raggio della cavita' vuota */
@@ -35,9 +40,22 @@ public class KnullGeodeFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> contesto) {
-        WorldGenLevel livello = contesto.level();
-        BlockPos centro = contesto.origin();
-        RandomSource caso = contesto.random();
+        disegna(contesto.level(), contesto.origin(), null);
+        return true;
+    }
+
+    /**
+     * Scava e riveste il geode attorno a un centro.
+     *
+     * <p>Il caso non arriva da fuori ma si semina dal centro stesso. Serve alla struttura, che
+     * viene disegnata un chunk per volta: con un generatore condiviso ogni chiamata estrarrebbe
+     * un raggio diverso e il geode uscirebbe tagliato male a meta'. Seminandolo dalla posizione,
+     * tutte le chiamate ridisegnano la stessa identica bolla.</p>
+     *
+     * @param limite porzione da riempire, o {@code null} per non porre limiti
+     */
+    public static void disegna(WorldGenLevel livello, BlockPos centro, BoundingBox limite) {
+        RandomSource caso = RandomSource.create(centro.asLong());
 
         int raggio = RAGGIO_MINIMO + caso.nextInt(RAGGIO_MASSIMO - RAGGIO_MINIMO + 1);
         double bordoSigillante = raggio + PARETE_SIGILLANTE;
@@ -51,8 +69,15 @@ public class KnullGeodeFeature extends Feature<NoneFeatureConfiguration> {
         for (BlockPos posizione : BlockPos.betweenClosed(centro.offset(-estensione, -estensione, -estensione),
                 centro.offset(estensione, estensione, estensione))) {
             double distanza = Math.sqrt(posizione.distSqr(centro));
-            // un pizzico di rumore sul bordo: senza, il geode e' una sfera da manuale
+            // un pizzico di rumore sul bordo: senza, il geode e' una sfera da manuale.
+            // va estratto sempre, anche per i blocchi fuori dal limite, se no il rumore
+            // cambierebbe da un chunk all'altro e il bordo non combacerebbe
             double scarto = (caso.nextDouble() - 0.5D) * IRREGOLARITA;
+            BlockState pietra = caso.nextBoolean() ? ossidiana : deepslate;
+
+            if (limite != null && !limite.isInside(posizione)) {
+                continue;
+            }
 
             if (distanza + scarto <= raggio) {
                 livello.setBlock(posizione, aria, 2);
@@ -64,7 +89,6 @@ public class KnullGeodeFeature extends Feature<NoneFeatureConfiguration> {
 
             // il guscio non e' a strati: ogni blocco esce ossidiana o deepslate a testa o croce,
             // cosi' dall'interno se ne vedono meta' e meta' invece di una parete sola
-            BlockState pietra = caso.nextBoolean() ? ossidiana : deepslate;
             if (distanza + scarto <= bordoSigillante) {
                 livello.setBlock(posizione, pietra, 2);
             } else if (livello.getBlockState(posizione).isSolidRender(livello, posizione)) {
@@ -74,7 +98,8 @@ public class KnullGeodeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // l'unico frammento, sospeso al centro della cavita'
-        livello.setBlock(centro, MyMod.KNULLS_FRAGMENT_BLOCK.get().defaultBlockState(), 2);
-        return true;
+        if (limite == null || limite.isInside(centro)) {
+            livello.setBlock(centro, MyMod.KNULLS_FRAGMENT_BLOCK.get().defaultBlockState(), 2);
+        }
     }
 }

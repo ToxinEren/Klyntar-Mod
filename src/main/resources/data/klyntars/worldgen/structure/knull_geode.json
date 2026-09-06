@@ -1,0 +1,9 @@
+{
+  "type": "klyntars:knull_geode",
+  "biomes": "#minecraft:is_overworld",
+  "step": "underground_structures",
+  "terrain_adaptation": "none",
+  "spawn_overrides": {},
+  "min_y": -58,
+  "max_y": 20
+}

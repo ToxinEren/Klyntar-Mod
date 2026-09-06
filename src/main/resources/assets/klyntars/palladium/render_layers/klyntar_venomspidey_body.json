@@ -1,7 +1,7 @@
 {
   "model": "klyntars:geo/venom_bedrock_my_teeth.geo.json",
   "type": "geckolib:default",
-  "texture": "klyntars:textures/entity/venom/venom2.png",
+  "texture": "klyntars:textures/entity/venom/venomspidey_body.png",
   "animation_file": "klyntars:animations/venom_bedrock.animation.json",
   "animation_controller": [
     {
@@ -116,12 +116,12 @@
         "special_attack_trigger": "animation.venom.special_attack.java_safe",
         "falling_attack_trigger": "animation.venom.falling.attack",
         "falling_attack_end_trigger": "animation.venom.falling.attack.end.java_safe",
-        "climb_trigger": "animation.venom.escalar",
+        "climb_trigger": "animation.venom.climb",
         "climb_ceiling_hold_trigger": "animation.venom.climb_ceiling_hold.static",
-        "climb_wall_trigger": "animation.venom.escalar_paredes",
-        "climb_impulse_trigger": "animation.venom.escalar.impulso.java_safe",
-        "climb_hang_trigger": "animation.venom.escalar.colgado",
-        "hang_trigger": "animation.venom.colgado",
+        "climb_wall_trigger": "animation.venom.climb_walls",
+        "climb_impulse_trigger": "animation.venom.climb.impulse.java_safe",
+        "climb_hang_trigger": "animation.venom.climb.hanging",
+        "hang_trigger": "animation.venom.hanging",
         "regeneration_trigger": "animation.venom.regeneration.java_safe",
         "wings_on_trigger": "animation.venom.wings.on.java_safe",
         "wings_active_trigger": "animation.venom.wings.active",
