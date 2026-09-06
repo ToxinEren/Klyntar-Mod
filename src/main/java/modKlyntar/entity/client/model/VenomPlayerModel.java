@@ -29,7 +29,7 @@ public class VenomPlayerModel extends GeoModel<VenomPlayerEntity> {
     }
     @Override
     public ResourceLocation getTextureResource(VenomPlayerEntity object) {
-        return new ResourceLocation(MyMod.MOD_ID, "textures/entity/venom/venom.png");
+        return new ResourceLocation(MyMod.MOD_ID, "textures/entity/venom/venom_mob.png");
     }
 
 }
