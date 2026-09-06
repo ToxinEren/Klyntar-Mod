@@ -3774,13 +3774,13 @@
 					]
 				},
 				{
-					"name": "spikes",
+					"name": "venom_spikes",
 					"parent": "p2",
 					"pivot": [-12, -32, 2]
 				},
 				{
 					"name": "venom_tentacle0_56",
-					"parent": "spikes",
+					"parent": "venom_spikes",
 					"pivot": [-4.5, -39, 2],
 					"rotation": [0, 90, 45],
 					"cubes": [
@@ -3821,7 +3821,7 @@
 				},
 				{
 					"name": "venom_tentacle0_51",
-					"parent": "spikes",
+					"parent": "venom_spikes",
 					"pivot": [-19.5, -39, 2],
 					"rotation": [0, -90, -45],
 					"cubes": [
@@ -3862,7 +3862,7 @@
 				},
 				{
 					"name": "venom_tentacle0_43",
-					"parent": "spikes",
+					"parent": "venom_spikes",
 					"pivot": [-11.5, -39, -6],
 					"rotation": [0, 180, 0],
 					"cubes": [
@@ -3903,7 +3903,7 @@
 				},
 				{
 					"name": "venom_tentacle0_20",
-					"parent": "spikes",
+					"parent": "venom_spikes",
 					"pivot": [-11.5, -39, 10],
 					"cubes": [
 						{"origin": [-13, -40.5, 9.75], "size": [3, 3, 8], "inflate": -0.25, "uv": [0, 208]}
@@ -3942,14 +3942,14 @@
 					]
 				},
 				{
-					"name": "spikes2",
+					"name": "venom_spikes2",
 					"parent": "p2",
 					"pivot": [-12, -32, 2],
 					"rotation": [45, 0, 0]
 				},
 				{
 					"name": "venom_tentacle0_61",
-					"parent": "spikes2",
+					"parent": "venom_spikes2",
 					"pivot": [-4.5, -39, 2],
 					"rotation": [0, 45, 0],
 					"cubes": [
@@ -3990,7 +3990,7 @@
 				},
 				{
 					"name": "venom_tentacle0_66",
-					"parent": "spikes2",
+					"parent": "venom_spikes2",
 					"pivot": [-19.5, -39, 2],
 					"rotation": [0, -90, 0],
 					"cubes": [
@@ -4031,7 +4031,7 @@
 				},
 				{
 					"name": "venom_tentacle0_71",
-					"parent": "spikes2",
+					"parent": "venom_spikes2",
 					"pivot": [-11.5, -39, -6],
 					"rotation": [0, 180, 0],
 					"cubes": [
@@ -4072,7 +4072,7 @@
 				},
 				{
 					"name": "venom_tentacle0_76",
-					"parent": "spikes2",
+					"parent": "venom_spikes2",
 					"pivot": [-11.5, -39, 4],
 					"cubes": [
 						{"origin": [-13, -40.5, 3.75], "size": [3, 3, 8], "inflate": -0.25, "uv": [0, 208]}
@@ -4111,14 +4111,14 @@
 					]
 				},
 				{
-					"name": "spikes3",
+					"name": "venom_spikes3",
 					"parent": "p2",
 					"pivot": [-12, -32, 2],
 					"rotation": [-45, 0, 0]
 				},
 				{
 					"name": "venom_tentacle0_81",
-					"parent": "spikes3",
+					"parent": "venom_spikes3",
 					"pivot": [-4.5, -39, 2],
 					"rotation": [0, 90, 0],
 					"cubes": [
@@ -4159,7 +4159,7 @@
 				},
 				{
 					"name": "venom_tentacle0_86",
-					"parent": "spikes3",
+					"parent": "venom_spikes3",
 					"pivot": [-19.5, -39, 2],
 					"rotation": [-180, -62.5, 180],
 					"cubes": [
@@ -4200,7 +4200,7 @@
 				},
 				{
 					"name": "venom_tentacle0_91",
-					"parent": "spikes3",
+					"parent": "venom_spikes3",
 					"pivot": [-11.5, -39, 0],
 					"rotation": [0, 180, 0],
 					"cubes": [
@@ -4241,7 +4241,7 @@
 				},
 				{
 					"name": "venom_tentacle0_96",
-					"parent": "spikes3",
+					"parent": "venom_spikes3",
 					"pivot": [-11.5, -39, 10],
 					"cubes": [
 						{"origin": [-13, -40.5, 9.75], "size": [3, 3, 8], "inflate": -0.25, "uv": [0, 208]}
