@@ -2589,7 +2589,7 @@
         }
       }
     },
-    "animation.venom.escalar_paredes": {
+    "animation.venom.climb_walls": {
       "loop": true,
       "animation_length": 1,
       "bones": {
@@ -2858,7 +2858,7 @@
         }
       }
     },
-    "animation.venom.colgado": {
+    "animation.venom.hanging": {
       "loop": true,
       "bones": {
         "root_venom": {
@@ -4138,7 +4138,7 @@
         }
       }
     },
-    "animation.venom.escalar.impulso": {
+    "animation.venom.climb.impulse": {
       "loop": true,
       "animation_length": 1,
       "bones": {
@@ -5161,7 +5161,7 @@
         }
       }
     },
-    "animation.venom.escalar": {
+    "animation.venom.climb": {
       "loop": true,
       "animation_length": 1,
       "bones": {
@@ -5540,7 +5540,7 @@
         }
       }
     },
-    "animation.venom.escalar.colgado": {
+    "animation.venom.climb.hanging": {
       "loop": true,
       "bones": {
         "root_venom": {
@@ -29964,7 +29964,7 @@
         }
       }
     },
-    "animation.venom.escalar.impulso.java_safe": {
+    "animation.venom.climb.impulse.java_safe": {
       "loop": true,
       "animation_length": 1,
       "bones": {

@@ -1591,7 +1591,7 @@
 				}
 			}
 		},
-		"animation.venom_head.escalar.idle": {
+		"animation.venom_head.climb.idle": {
 			"loop": true,
 			"bones": {
 				"tentacle_attack0": {
@@ -1608,7 +1608,7 @@
 				}
 			}
 		},
-		"animation.venom_head.escalar.move": {
+		"animation.venom_head.climb.move": {
 			"loop": true,
 			"animation_length": 0.5,
 			"bones": {
