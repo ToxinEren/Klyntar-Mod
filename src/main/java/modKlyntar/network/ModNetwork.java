@@ -51,6 +51,8 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
         INSTANCE.registerMessage(id++, SyncVenomAttackClickPacket.class, SyncVenomAttackClickPacket::encode, SyncVenomAttackClickPacket::new, SyncVenomAttackClickPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(id++, SymbioteInvisibilityPacket.class, SymbioteInvisibilityPacket::encode, SymbioteInvisibilityPacket::new, SymbioteInvisibilityPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
         INSTANCE.registerMessage(id++, SyncSymbioteFormPacket.class, SyncSymbioteFormPacket::encode, SyncSymbioteFormPacket::new, SyncSymbioteFormPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 
@@ -58,6 +60,38 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, SyncVenomSizePacket.class, SyncVenomSizePacket::encode, SyncVenomSizePacket::new, SyncVenomSizePacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+    }
+
+    public static void alternaInvisibilitaSimbionte() {
+        INSTANCE.sendToServer(new SymbioteInvisibilityPacket());
+    }
+
+    /**
+     * La richiesta di accendere o spegnere l'invisibilita'.
+     *
+     * <p>Non porta dati: dire che il tasto e' stato premuto basta, e lo stato lo decide il
+     * server, che e' l'unico a poter applicare un effetto che vedano anche gli altri.</p>
+     */
+    public static class SymbioteInvisibilityPacket {
+        public SymbioteInvisibilityPacket() {
+        }
+
+        public SymbioteInvisibilityPacket(FriendlyByteBuf buf) {
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                ServerPlayer player = ctx.get().getSender();
+                if (player != null) {
+                    modKlyntar.player.SymbioteInvisibilityHandler.alterna(player);
+                }
+            });
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     public static void syncVenomAttackClick() {

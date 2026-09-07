@@ -3,6 +3,7 @@ package modKlyntar.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import modKlyntar.MyMod;
+import modKlyntar.player.SymbioteInvisibilityHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -224,6 +225,19 @@ public final class VenomTentaclesTraversalRenderer {
         return state.anchors;
     }
 
+    /**
+     * Sparire vuol dire sparire tutto, tentacoli compresi.
+     *
+     * <p>Questi non passano dal renderer del giocatore ma si disegnano in spazio-mondo, quindi
+     * l'annullamento di {@code RenderPlayerEvent} che nasconde corpo e strati non li tocca:
+     * senza questo controllo resterebbero appesi in aria a tradire chi e' invisibile.
+     * Vale per chiunque, non solo per il proprio giocatore: cosi' regge anche in
+     * multiplayer.</p>
+     */
+    private static boolean nascostoDallInvisibilita(Player giocatore) {
+        return SymbioteInvisibilityHandler.invisibileDaSimbionte(giocatore);
+    }
+
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
@@ -250,7 +264,7 @@ public final class VenomTentaclesTraversalRenderer {
                 continue;
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
-            if (entity instanceof Player player) {
+            if (entity instanceof Player player && !nascostoDallInvisibilita(player)) {
                 scegliAspetto(player);
                 renderPlayerArms(player, state.anchors, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
@@ -264,7 +278,7 @@ public final class VenomTentaclesTraversalRenderer {
                 continue;
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
-            if (entity instanceof Player player) {
+            if (entity instanceof Player player && !nascostoDallInvisibilita(player)) {
                 scegliAspetto(player);
                 renderPlayerGrabTentacle(player, state.target, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
@@ -278,7 +292,7 @@ public final class VenomTentaclesTraversalRenderer {
                 continue;
             }
             Entity entity = minecraft.level.getEntity(entry.getKey());
-            if (entity instanceof Player player) {
+            if (entity instanceof Player player && !nascostoDallInvisibilita(player)) {
                 scegliAspetto(player);
                 renderPlayerCombatTentacles(player, state.targets, event.getPartialTick(), poseStack, buffer, gameTime);
                 buffer.endBatch(RenderType.entityCutoutNoCull(armTexture));
