@@ -13,6 +13,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import modKlyntar.symbiote.SymbioteState;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.monster.Zombie;
@@ -38,6 +44,104 @@ public class SymbioteEntity extends Mob implements GeoEntity {
     private static final Logger LOGGER = LogManager.getLogger();
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private Animal hostAnimal;
+
+    /** L'ospite che i tentacoli hanno agganciato, o 0. Sincronizzato: serve al disegno. */
+    private static final EntityDataAccessor<Integer> AGGANCIATO =
+            SynchedEntityData.defineId(SymbioteEntity.class, EntityDataSerializers.INT);
+
+    /** Entro quanto i tentacoli arrivano ad agganciare un ospite. */
+    public static final double PORTATA_PRESA = 3.0D;
+    /** Sotto questa distanza smette di tirare: al resto pensa il contatto. */
+    private static final double PRESA_FINITA = 1.2D;
+    /** Quanta parte dello scarto si copre in un tick: piu' alto, piu' secco lo strattone. */
+    private static final double AVVICINAMENTO = 0.22D;
+    /** Il tetto alla trazione, perche' da lontano non parta come una fionda. */
+    private static final double TRAZIONE_MASSIMA = 0.42D;
+
+    /**
+     * Quanto sono usciti i tentacoli della presa. Lo tiene e lo muove <b>solo il client</b>,
+     * per non farli scattare fuori di colpo: sul server resta a zero e non serve a niente.
+     */
+    public float uscitaTentacoli;
+    /** L'ultimo agganciato, per ritrarre i filamenti da dove stavano invece che di scatto. */
+    public int ultimoAgganciato;
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(AGGANCIATO, 0);
+    }
+
+    /**
+     * Chi i tentacoli stanno tirando, o {@code null}.
+     *
+     * <p>Passa dai dati sincronizzati e non da un pacchetto nostro: cosi' ogni client sa chi
+     * e' agganciato, anche quando non e' lui, e i filamenti partono dalla parte giusta per
+     * tutti quelli che guardano.</p>
+     */
+    public Player ospiteAgganciato() {
+        int id = this.entityData.get(AGGANCIATO);
+        return id != 0 && this.level().getEntity(id) instanceof Player preda ? preda : null;
+    }
+
+    /**
+     * La presa: i tentacoli agganciano chi si avvicina e se lo tirano addosso.
+     *
+     * <p><b>Non lo solleva</b>, ed e' la differenza voluta con la presa di All-Black sul
+     * cadavere: li' il simbionte alzava la preda per rivestirla, qui la trascina e basta.
+     * Della velocita' si riscrivono percio' le sole componenti orizzontali, e quella
+     * verticale resta dov'e': la decide la gravita', come per chiunque altro.</p>
+     *
+     * <p>Lo tira con la velocita' invece di riposizionarlo. Il teletrasporto a ogni tick e'
+     * piu' diretto ma porta con se' la rotazione e inchioda la telecamera.</p>
+     */
+    private void tickPresa() {
+        Player preda = cercaPreda();
+        this.entityData.set(AGGANCIATO, preda == null ? 0 : preda.getId());
+        if (preda == null) {
+            return;
+        }
+
+        Vec3 scarto = this.position().subtract(preda.position());
+        if (scarto.length() < PRESA_FINITA) {
+            return;                       // e' arrivato: alla fusione pensa il contatto
+        }
+
+        Vec3 trazione = new Vec3(scarto.x, 0.0D, scarto.z).scale(AVVICINAMENTO);
+        if (trazione.length() > TRAZIONE_MASSIMA) {
+            trazione = trazione.normalize().scale(TRAZIONE_MASSIMA);
+        }
+        Vec3 moto = preda.getDeltaMovement();
+        preda.setDeltaMovement(trazione.x, moto.y, trazione.z);
+        // senza questo il server si tiene la velocita' per se' e il giocatore non si muove
+        preda.hurtMarked = true;
+        preda.fallDistance = 0.0F;
+        // la lentezza gli toglie il passo: senza, camminando contrasterebbe la trazione
+        preda.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 6, false, false));
+
+        if (this.tickCount % 10 == 0) {
+            this.level().playSound(null, this.blockPosition(), SoundEvents.SLIME_BLOCK_PLACE,
+                    SoundSource.HOSTILE, 0.7F, 0.5F);
+        }
+    }
+
+    /**
+     * L'ospite piu' vicino a tiro.
+     *
+     * <p>Solo per chi un ospite lo cerca davvero: il frammento di Grendel no, lui da' la
+     * caccia ai suoi e non deve trascinare nessuno. E nemmeno mentre sta dietro a un
+     * animale, che a quel punto e' la sua preda.</p>
+     */
+    private Player cercaPreda() {
+        if (!cercaOspite() || this.hostAnimal != null) {
+            return null;
+        }
+        Player vicino = this.level().getNearestPlayer(
+                TargetingConditions.forNonCombat().range(PORTATA_PRESA)
+                        .selector(e -> e instanceof Player p && bersaglioValido(p)),
+                this);
+        return vicino != null && this.hasLineOfSight(vicino) ? vicino : null;
+    }
 
     public SymbioteEntity(EntityType<? extends Mob> type, Level world) {
         super(type, world);
@@ -222,6 +326,9 @@ public class SymbioteEntity extends Mob implements GeoEntity {
     @Override
     public void aiStep() {
         super.aiStep();
+        if (!this.level().isClientSide) {
+            tickPresa();
+        }
         if (this.hostAnimal == null) {
             for (Player player : this.level().players()) {
                 if (bersaglioValido(player) && player.distanceTo(this) <= 1.0D) {
