@@ -109,8 +109,15 @@ public class PlayerPowerCapability {
      * Infetta il giocatore con una forma precisa.
      *
      * <p>La usano i simbionti colorati: quello comune porta Venom, gli altri il proprio.</p>
+     *
+     * <p>La forma richiesta non e' sempre quella finale: chi porta gia' un potere da ragno
+     * salta Venom base e si fonde direttamente in venomspidey. Vedi {@link
+     * modKlyntar.player.SpiderPowerBonus}.</p>
      */
     public static void infectPlayer(ServerPlayer player, String forma) {
+        // chi ha gia' poteri da ragno non ha niente da imparare da un ragno: nasce
+        // subito Venom col dono dell'arrampicata invece di doverselo guadagnare
+        String formaFinale = modKlyntar.player.SpiderPowerBonus.formaDellaFusione(player, forma);
         PlayerPower fallbackPower = new PlayerPower();
         PlayerPower power = player.getCapability(PLAYER_POWER).orElse(fallbackPower);
         if (power == fallbackPower) {
@@ -118,7 +125,7 @@ public class PlayerPowerCapability {
         }
         {
             power.setInfected(true);
-            power.setForm(forma);
+            power.setForm(formaFinale);
             power.setTransformed(true);
             power.applyTransformation(player);
             setInfectionScore(player, true);
@@ -151,14 +158,24 @@ public class PlayerPowerCapability {
                 return;
             }
 
+            // passare dal niente a venom e' una fusione, comunque il potere sia arrivato:
+            // il simbionte, il trigger di prova, un comando. Anche di qua vale la scorciatoia
+            // di chi e' gia' un ragno. Chi invece cambia forma da un simbionte a un altro non
+            // si sta fondendo, e resta quello che Palladium dice.
+            String forma = attuale.isEmpty()
+                    ? modKlyntar.player.SpiderPowerBonus.formaDellaFusione(player, daPalladium)
+                    : daPalladium;
+
             power.setInfected(true);
-            power.setForm(daPalladium);
+            power.setForm(forma);
             power.setTransformed(true);
-            // il potere ce l'ha gia': si allinea la chiave perche' non venga riassegnato
-            player.getPersistentData().putString(PALLADIUM_SYNC_KEY, daPalladium);
+            if (forma.equals(daPalladium)) {
+                // il potere ce l'ha gia': si allinea la chiave perche' non venga riassegnato
+                player.getPersistentData().putString(PALLADIUM_SYNC_KEY, forma);
+            }
             power.applyTransformation(player);
             LOGGER.info("Forma allineata a klyntars:{} per {}",
-                    daPalladium, player.getGameProfile().getName());
+                    forma, player.getGameProfile().getName());
         });
     }
 
