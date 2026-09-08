@@ -1781,13 +1781,20 @@
       ],
       "affects_first_person": true,
       "conditions": {
-        "enabling": {
-          "type": "palladium:animation_timer_ability",
-          "power": "klyntars:venomspidey",
-          "ability": "enablevenom",
-          "min": 20,
-          "max": 20
-        }
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "power": "klyntars:venomspidey",
+            "ability": "enablevenom",
+            "min": 1,
+            "max": 20
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:venomspidey",
+            "ability": "enablevenom"
+          }
+        ]
       }
     },
     "venomname": {
@@ -8640,8 +8647,13 @@
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venomspidey",
             "ability": "enablevenom",
-            "min": 20,
+            "min": 1,
             "max": 20
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:venomspidey",
+            "ability": "enablevenom"
           }
         ]
       }
@@ -8671,11 +8683,21 @@
             "type": "palladium:not",
             "conditions": [
               {
-                "type": "palladium:animation_timer_ability",
-                "power": "klyntars:venomspidey",
-                "ability": "enablevenom",
-                "min": 20,
-                "max": 20
+                "type": "palladium:and",
+                "conditions": [
+                  {
+                    "type": "palladium:animation_timer_ability",
+                    "power": "klyntars:venomspidey",
+                    "ability": "enablevenom",
+                    "min": 1,
+                    "max": 20
+                  },
+                  {
+                    "type": "palladium:ability_enabled",
+                    "power": "klyntars:venomspidey",
+                    "ability": "enablevenom"
+                  }
+                ]
               }
             ]
           }
