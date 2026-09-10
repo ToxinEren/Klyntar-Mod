@@ -27,6 +27,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +39,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,13 @@ public class MeteorCommand {
     private static final int IMPACT_SYNC_HEIGHT_ABOVE = 5;
     private static final int IMPACT_SYNC_HEIGHT_BELOW = 14;
     private static final Map<BlockPos, Integer> smokingObsidianBlocks = new ConcurrentHashMap<>();
+
+    /** Fin dove si cerca terra asciutta attorno al punto d'impatto previsto, in blocchi. */
+    private static final int RAGGIO_DEVIAZIONE = 96;
+    /** Il passo della ricerca: a griglia, non colonna per colonna. */
+    private static final int PASSO_DEVIAZIONE = 4;
+
+    private static final Logger LOGGER = LogManager.getLogger("KlyntarMeteor");
 
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
@@ -89,22 +99,70 @@ public class MeteorCommand {
         double offsetX = Math.cos(angle) * fallDistance;
         double spawnY = world.getMaxBuildHeight() - 4.0D;
         
-        // Calcola la posizione di partenza delle fireball
-        Vec3 meteorPos1 = new Vec3(playerPos.x + offsetX, spawnY, playerPos.z);
-        Vec3 meteorPos2 = new Vec3(playerPos.x + offsetX + METEOR_SPACING, spawnY - 3.0D, playerPos.z);
-        Vec3 meteorPos3 = new Vec3(playerPos.x + offsetX + METEOR_SPACING * 2.0D, spawnY - 6.0D, playerPos.z);
+        // Il punto d'impatto della prima meteora, a dieci blocchi davanti al giocatore e
+        // deviato sulla terraferma se cadrebbe in acqua. Le altre due seguono a distanza
+        // fissa dalla prima gia' deviata, cosi' restano in fila, e ognuna viene
+        // ricontrollata per conto suo: la fila puo' attraversare una riva.
+        Vec3 impatto1 = sullaTerraferma(world, playerPos.add(offsetX, 0, 10));
+        Vec3 impatto2 = sullaTerraferma(world, impatto1.add(METEOR_SPACING, 0, 0));
+        Vec3 impatto3 = sullaTerraferma(world, impatto1.add(METEOR_SPACING * 2.0D, 0, 0));
 
-        // Calcola la posizione di impatto a 10 blocchi di fronte al giocatore
-        Vec3 impactPos = playerPos.add(offsetX, 0, 10);
-        Vec3 impactPos2 = playerPos.add(offsetX + METEOR_SPACING, 0, 10);
-        Vec3 impactPos3 = playerPos.add(offsetX + METEOR_SPACING * 2.0D, 0, 10);
-
-        // Spawna i proiettili di Ghast
-        spawnGhastProjectile(world, meteorPos1, impactPos);
-        spawnGhastProjectile(world, meteorPos2, impactPos2);
-        spawnGhastProjectile(world, meteorPos3, impactPos3);
+        // La partenza sta in cielo, dieci blocchi a nord del punto d'impatto: la stessa
+        // inclinazione di prima, solo che adesso insegue il bersaglio deviato
+        spawnGhastProjectile(world, new Vec3(impatto1.x, spawnY, impatto1.z - 10), impatto1);
+        spawnGhastProjectile(world, new Vec3(impatto2.x, spawnY - 3.0D, impatto2.z - 10), impatto2);
+        spawnGhastProjectile(world, new Vec3(impatto3.x, spawnY - 6.0D, impatto3.z - 10), impatto3);
     }
 
+
+    /**
+     * Il punto d'impatto, spostato sulla terraferma se quello previsto sta in acqua.
+     *
+     * <p>Le meteore cadevano anche in mare: la palla di fuoco attraversa l'acqua, esplode
+     * sul fondale e il cratere col Promethium X finisce sott'acqua, dove nessuno lo trova.
+     * Qui si guarda la colonna del punto previsto e, se in cima c'e' un fluido, si cerca ad
+     * anelli la colonna asciutta piu' vicina. Se non ce n'e' nessuna entro il raggio - in
+     * mezzo all'oceano - la meteora cade dov'era prevista, e lo si scrive nel log.</p>
+     *
+     * <p>Si usano le heightmap normali, non le {@code _WG}: quelle esistono solo mentre il
+     * chunk viene generato e su un mondo vivo rispondono altezze che non c'entrano niente
+     * con la superficie. I chunk non caricati si saltano invece di forzarne il caricamento.</p>
+     */
+    private static Vec3 sullaTerraferma(ServerLevel world, Vec3 previsto) {
+        BlockPos base = BlockPos.containing(previsto);
+        for (int d = 0; d <= RAGGIO_DEVIAZIONE; d += PASSO_DEVIAZIONE) {
+            for (int dx = -d; dx <= d; dx += PASSO_DEVIAZIONE) {
+                // sul bordo dell'anello si scorre tutto il lato, dentro solo i due estremi:
+                // l'interno l'hanno gia' visto gli anelli precedenti
+                int passoZ = Math.abs(dx) == d ? PASSO_DEVIAZIONE : Math.max(2 * d, PASSO_DEVIAZIONE);
+                for (int dz = -d; dz <= d; dz += passoZ) {
+                    BlockPos suolo = suoloAsciutto(world, base.offset(dx, 0, dz));
+                    if (suolo != null) {
+                        if (d > 0) {
+                            LOGGER.info("Meteora deviata di {} blocchi: {} era in acqua", d, base);
+                        }
+                        return Vec3.atBottomCenterOf(suolo);
+                    }
+                }
+            }
+        }
+        LOGGER.warn("Nessuna terraferma entro {} blocchi da {}: la meteora cade dov'era prevista",
+                RAGGIO_DEVIAZIONE, base);
+        return previsto;
+    }
+
+    /** La superficie della colonna se e' asciutta, altrimenti null. */
+    private static BlockPos suoloAsciutto(ServerLevel world, BlockPos colonna) {
+        if (!world.hasChunk(colonna.getX() >> 4, colonna.getZ() >> 4)) {
+            return null;
+        }
+        BlockPos cima = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, colonna);
+        BlockState terra = world.getBlockState(cima.below());
+        if (terra.isAir() || !terra.getFluidState().isEmpty()) {
+            return null;
+        }
+        return cima;
+    }
 
     private static void spawnGhastProjectile(ServerLevel world, Vec3 startPos, Vec3 targetPos) {
         GhastProjectileEntity ghastProjectile = new GhastProjectileEntity(world, startPos.x, startPos.y, startPos.z, targetPos.x, targetPos.y, targetPos.z);
@@ -215,7 +273,9 @@ public class MeteorCommand {
         for (int y = 4; y >= -12; y--) {
             BlockPos pos = origin.offset(0, y, 0);
             BlockPos below = pos.below();
-            if (world.getBlockState(pos).isAir() && !world.getBlockState(below).isAir()) {
+            BlockState sotto = world.getBlockState(below);
+            // ne' aria ne' fluido: vicino a una riva l'ossidiana finiva a galla
+            if (world.getBlockState(pos).isAir() && !sotto.isAir() && sotto.getFluidState().isEmpty()) {
                 return pos;
             }
         }
