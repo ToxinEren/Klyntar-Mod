@@ -286,10 +286,12 @@ public class PlayerPowerCapability {
         if (!callPalladiumSuperpower("addSuperpower", player, powerPath)
                 && !callPalladiumSuperpower("hasSuperpower", player, powerPath)) {
             LOGGER.error("Palladium did not add superpower klyntars:{} to {}", powerPath, player.getGameProfile().getName());
-            player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato klyntars:" + powerPath), false);
+            // messaggio di diagnostica, commentato e non tolto: serve a vedere in chat se
+            // Palladium ha assegnato davvero il potere, e si riaccende quando serve
+            // player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato klyntars:" + powerPath), false);
         } else {
             LOGGER.info("Palladium superpower klyntars:{} synced to {}", powerPath, player.getGameProfile().getName());
-            player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: klyntars:" + powerPath), false);
+            // player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: klyntars:" + powerPath), false);
             player.getPersistentData().putString(PALLADIUM_SYNC_KEY, powerPath);
         }
         runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " klyntars:" + powerPath + " all");
