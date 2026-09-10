@@ -215,6 +215,12 @@ public class PlayerPowerCapability {
         if ("antivenom".equals(forma)) {
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, DURATA_BONUS, 1, false, false));
         }
+        // Venom e la sua evoluzione Spidey respirano sott'acqua: il simbionte non ha polmoni.
+        // La velocita' di nuoto invece non e' un effetto ma un modificatore, e sta nei JSON
+        // dei poteri (venomswim) con gli altri attributi che Palladium governa
+        if ("venom".equals(forma) || "venomspidey".equals(forma)) {
+            player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, DURATA_BONUS, 0, false, false));
+        }
     }
 
     /** Rimette in scena la forma che il giocatore ha gia', senza cambiarla. */
@@ -426,6 +432,7 @@ public class PlayerPowerCapability {
             player.removeEffect(MobEffects.MOVEMENT_SPEED);
             player.removeEffect(MobEffects.NIGHT_VISION);
             player.removeEffect(MobEffects.JUMP);
+            player.removeEffect(MobEffects.WATER_BREATHING);
             player.setInvulnerable(false);
 
             // e non c'e' piu' niente da rimettere a posto: i valori base restano quelli

@@ -1611,6 +1611,30 @@
       "description": "This skill tree allows you to grant yourself more powers.",
       "render_layer": "klyntars:black"
     },
+    "venomswim": {
+      "type": "palladium:attribute_modifier",
+      "icon": "klyntars:textures/icon/venom_symbol.png",
+      "title": "null",
+      "bar_color": "black",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "The symbiote swims three times faster than a human.",
+      "attribute": "forge:swim_speed",
+      "amount": 2,
+      "operation": 2,
+      "uuid": "2aa34327-9e6a-4dfb-a541-0b95aae50a8d",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:venom",
+            "ability": "enablevenom"
+          }
+        ]
+      }
+    },
     "hidebody": {
       "type": "palladium:hide_body_part",
       "icon": "minecraft:blaze_rod",
