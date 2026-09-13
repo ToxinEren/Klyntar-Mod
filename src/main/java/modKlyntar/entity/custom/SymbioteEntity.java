@@ -298,20 +298,29 @@ public class SymbioteEntity extends Mob implements GeoEntity {
                 .ifPresent(power -> power.addSymbiote(1));
     }
 
+    /**
+     * Un simbionte non si ammazza a spadate. Lo feriscono solo le sue debolezze: il fuoco,
+     * e il suono, cioe' il sonic boom del Warden e la campana, che colpisce con lo stesso tipo
+     * di danno. Tutto il resto scivola via, frecce e pugni compresi.
+     *
+     * <p>Due eccezioni di servizio: il giocatore in creativa, per poter pulire, e i danni che
+     * bypassano l'invulnerabilita' - {@code /kill} e il vuoto - altrimenti nemmeno il comando
+     * riuscirebbe a toglierlo di mezzo. Vale per tutti i simbionti, frammento di Grendel
+     * compreso: e' lo stesso corpo.</p>
+     *
+     * <p>Il tocco di chi puo' ospitarlo non e' un colpo ma la fusione, come prima.</p>
+     */
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!cercaOspite()) {
+        if (source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.SONIC_BOOM)
+                || source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
+                || source.isCreativePlayer()) {
             return super.hurt(source, amount);
         }
-        if (source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE) || source.isCreativePlayer()) {
-            return super.hurt(source, amount);
-        } else if (source.getEntity() instanceof ServerPlayer player) {
-            if (!puoOspitare(player)) {
-                return super.hurt(source, amount);
-            }
+        if (cercaOspite() && source.getEntity() instanceof ServerPlayer player && puoOspitare(player)) {
             this.doPlayerEffect(player);
             this.remove(RemovalReason.DISCARDED);
-            return false;
         }
         return false;
     }

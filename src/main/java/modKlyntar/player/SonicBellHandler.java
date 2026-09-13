@@ -75,7 +75,7 @@ public final class SonicBellHandler {
 
         int colpiti = 0;
         for (LivingEntity bersaglio : intorno) {
-            if (scuoti(livello, bersaglio)) {
+            if (scuoti(livello, suonatore, bersaglio)) {
                 colpiti++;
             }
         }
@@ -88,7 +88,10 @@ public final class SonicBellHandler {
     /**
      * @return true se il bersaglio era un simbionte e la vibrazione lo ha preso
      */
-    private static boolean scuoti(ServerLevel livello, LivingEntity bersaglio) {
+    /** quanto toglie la campana al mob simbionte: quattro rintocchi per i suoi 40 di vita */
+    private static final float DANNO_AL_MOB = 10.0F;
+
+    private static boolean scuoti(ServerLevel livello, Player suonatore, LivingEntity bersaglio) {
         boolean portatore = SymbioteState.haSimbionte(bersaglio);
         if (!portatore && !(bersaglio instanceof SymbioteEntity)) {
             return false;
@@ -106,6 +109,11 @@ public final class SonicBellHandler {
             bersaglio.addEffect(new MobEffectInstance(malus));
         }
         particelle(livello, bersaglio);
+        // il mob simbionte non ha un portatore da indebolire: lo si ferisce direttamente, con lo
+        // stesso tipo di danno del sonic boom del Warden, l'unico suono che lo passa
+        if (bersaglio instanceof SymbioteEntity) {
+            bersaglio.hurt(livello.damageSources().sonicBoom(suonatore), DANNO_AL_MOB);
+        }
 
         if (portatore && bersaglio instanceof ServerPlayer giocatore) {
             VenomSymbioteSystemsHandler.applySonicWeakness(giocatore);
