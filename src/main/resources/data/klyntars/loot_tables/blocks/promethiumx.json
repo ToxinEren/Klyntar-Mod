@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "enchantments": [
+              {
+                "enchantment": "minecraft:silk_touch",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "klyntars:promethium_x",
+          "functions": [
+            {
+              "function": "minecraft:copy_state",
+              "block": "klyntars:promethiumx",
+              "properties": [
+                "full"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
