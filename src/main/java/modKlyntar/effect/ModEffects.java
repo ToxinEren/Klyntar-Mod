@@ -10,6 +10,10 @@ public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS =
             DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MyMod.MOD_ID);
 
+    /** Il simbionte dentro un animale: lo consuma un punto ogni dieci secondi. */
+    public static final RegistryObject<MobEffect> SYMBIOTE_PARASITE =
+            EFFECTS.register("symbiote_parasite", SymbioteParasiteEffect::new);
+
     private ModEffects() {
     }
 }

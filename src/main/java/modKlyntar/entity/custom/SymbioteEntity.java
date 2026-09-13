@@ -235,7 +235,12 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         public WanderAroundGoal(SymbioteEntity symbiote, double speed) {
             this.symbiote = symbiote;
             this.speed = speed;
-            this.animalTargeting = TargetingConditions.forNonCombat().range(10.0D);
+            // un animale che ha gia' un simbionte dentro non si prende: il marchio e' un si'/no,
+            // alla morte ne uscirebbe uno solo e il secondo andrebbe perso. Si guarda il marchio,
+            // che e' la fonte di verita', e per sicurezza anche l'effetto
+            this.animalTargeting = TargetingConditions.forNonCombat().range(10.0D)
+                    .selector(e -> !e.getPersistentData().getBoolean(SymbioteParasiteHandler.MARCHIO)
+                            && !e.hasEffect(modKlyntar.effect.ModEffects.SYMBIOTE_PARASITE.get()));
         }
 
         @Override
@@ -267,22 +272,21 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         }
     }
 
+    /**
+     * Entra nell'animale. Il marchio dice che il simbionte e' li' dentro - lo legge
+     * SymbioteParasiteHandler alla morte dell'ospite per farlo uscire - e l'effetto lo
+     * consuma da dentro un punto ogni dieci secondi, finche' cede. La durata e' finita e
+     * non -1 di proposito: con l'infinito di Minecraft l'effetto non scatterebbe mai.
+     */
     private void despawnAndAttachToAnimal() {
         if (!this.level().isClientSide && this.hostAnimal != null) {
-            this.hostAnimal.getPersistentData().putBoolean("InfectedBySymbiote", true);
+            this.hostAnimal.getPersistentData().putBoolean(SymbioteParasiteHandler.MARCHIO, true);
+            this.hostAnimal.addEffect(new MobEffectInstance(
+                    modKlyntar.effect.ModEffects.SYMBIOTE_PARASITE.get(), Integer.MAX_VALUE, 0, false, true));
             this.remove(RemovalReason.DISCARDED);
         }
     }
 
-    private void spawnAtAnimalLocation() {
-        if (!this.level().isClientSide && this.hostAnimal != null) {
-            SymbioteEntity newSymbiote = (SymbioteEntity) this.getType().create((ServerLevel) this.level());
-            if (newSymbiote != null) {
-                newSymbiote.moveTo(this.hostAnimal.getX(), this.hostAnimal.getY(), this.hostAnimal.getZ(), this.hostAnimal.getYRot(), this.hostAnimal.getXRot());
-                this.level().addFreshEntity(newSymbiote);
-            }
-        }
-    }
 
     public void doPlayerEffect(ServerPlayer player) {
         LOGGER.info("Symbiote infection triggered for {}", player.getGameProfile().getName());
@@ -337,7 +341,8 @@ public class SymbioteEntity extends Mob implements GeoEntity {
                 }
             }
         } else if (this.hostAnimal.isDeadOrDying()) {
-            this.spawnAtAnimalLocation();
+            // l'animale e' morto prima che lo raggiungesse: il simbionte e' ancora qui, torna
+            // a cercare. Prima ne faceva nascere un secondo sul cadavere, e diventavano due
             this.hostAnimal = null;
         }
     }
