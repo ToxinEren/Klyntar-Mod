@@ -153,7 +153,9 @@ public class ModNetwork {
 
     public static void syncVenomTentaclesTraversal(ServerPlayer player, List<Vec3> anchors, boolean active) {
         assicuraForma(player);
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomTentaclesTraversalPacket(player.getId(), anchors, active));
+        // a chi lo vede, non solo a lui: i tentacoli si disegnano in spazio-mondo su ogni
+        // client, e mandare le ancore al solo proprietario li rendeva invisibili agli altri
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncVenomTentaclesTraversalPacket(player.getId(), anchors, active));
     }
 
     public static class SyncVenomTentaclesTraversalPacket {
@@ -234,7 +236,7 @@ public class ModNetwork {
 
     public static void syncVenomGrabTentacle(ServerPlayer player, Vec3 target) {
         assicuraForma(player);
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomGrabTentaclePacket(player.getId(), target));
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncVenomGrabTentaclePacket(player.getId(), target));
     }
 
     public static class SyncVenomGrabTentaclePacket {
@@ -270,7 +272,7 @@ public class ModNetwork {
     }
     public static void syncVenomCombatTargets(ServerPlayer player, List<Vec3> targets) {
         assicuraForma(player);
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
     }
 
     public static void syncVenomFlightState(ServerPlayer player, boolean active) {
