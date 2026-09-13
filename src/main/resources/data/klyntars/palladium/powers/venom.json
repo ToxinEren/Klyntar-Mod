@@ -7685,7 +7685,7 @@
             "type": "palladium:toggle",
             "key_type": "key_bind",
             "needs_empty_hand": false,
-            "cooldown": 0
+            "cooldown": 200
           }
         ]
       }
@@ -8774,6 +8774,7 @@
           {
             "type": "palladium:activation",
             "ticks": 5,
+            "cooldown": 160,
             "key_type": "key_bind",
             "needs_empty_hand": false
           }
@@ -8850,6 +8851,7 @@
           {
             "type": "palladium:activation",
             "ticks": 5,
+            "cooldown": 120,
             "key_type": "key_bind",
             "needs_empty_hand": false
           }
@@ -8926,6 +8928,7 @@
           {
             "type": "palladium:activation",
             "ticks": 5,
+            "cooldown": 600,
             "key_type": "key_bind",
             "needs_empty_hand": false
           }
@@ -8991,6 +8994,7 @@
           {
             "type": "palladium:activation",
             "ticks": 5,
+            "cooldown": 200,
             "key_type": "key_bind",
             "needs_empty_hand": false
           }
