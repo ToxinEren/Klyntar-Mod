@@ -451,8 +451,18 @@ public class PlayerPowerCapability {
             player.refreshDimensions();
         }
 
+        /**
+         * Il simbionte assorbe il danno, ma solo quando e' fuori.
+         *
+         * <p>La guardia era {@code transformed}, che qui vuol dire "ha il potere", non "ha il
+         * corpo fuori": la riduzione al 35% valeva anche da umani, e sommata alla cura del
+         * secondo legame rendeva il giocatore quasi invulnerabile senza essersi trasformato.
+         * I bonus appartengono al corpo, come gli effetti in tickEffettiDelCorpo: stessa
+         * guardia.</p>
+         */
         public void handleDamage(LivingHurtEvent event) {
-            if (!transformed) {
+            if (!transformed || !(event.getEntity() instanceof Player giocatore)
+                    || !modKlyntar.player.SymbioteMiningHandler.corpoAttivo(giocatore)) {
                 return;
             }
 

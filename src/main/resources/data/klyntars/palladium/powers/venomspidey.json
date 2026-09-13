@@ -7245,6 +7245,11 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond2"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "klyntars:venomspidey",
+            "ability": "enablevenom"
           }
         ]
       }
