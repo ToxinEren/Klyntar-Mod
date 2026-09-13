@@ -135,7 +135,9 @@ public final class VenomFendOffEnemiesHandler {
             return false;
         }
         if (entity instanceof Player targetPlayer) {
-            return isRememberedAggressor(player, targetPlayer);
+            // un avversario in PvP, oppure chiunque ci abbia gia' aggredito, alleato compreso
+            return modKlyntar.player.PvpRules.colpibile(player, targetPlayer)
+                    || isRememberedAggressor(player, targetPlayer);
         }
         if (entity instanceof Enemy) {
             return true;

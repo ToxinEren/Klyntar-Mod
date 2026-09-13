@@ -213,11 +213,14 @@ public final class VenomGrabTentacleHandler {
         if (entity == null || !entity.isAlive() || entity.isSpectator()) {
             return false;
         }
-        if (entity == holder || entity instanceof Player || entity instanceof ItemEntity) {
+        if (entity == holder || entity instanceof ItemEntity) {
             return false;
         }
         if (entity.isPassenger()) {
             return false;
+        }
+        if (entity instanceof Player preda) {
+            return holder instanceof Player chiTiene && modKlyntar.player.PvpRules.colpibile(chiTiene, preda);
         }
         if (entity instanceof PrimedTnt) {
             return true;
@@ -247,13 +250,25 @@ public final class VenomGrabTentacleHandler {
     private static void holdEntityAt(Entity target, Vec3 center) {
         Vec3 currentCenter = getTargetCenter(target);
         Vec3 correction = center.subtract(currentCenter);
+        double y = center.y - target.getBbHeight() * 0.5D;
         if (correction.lengthSqr() > 16.0D) {
-            target.teleportTo(center.x, center.y - target.getBbHeight() * 0.5D, center.z);
+            if (target instanceof net.minecraft.server.level.ServerPlayer preda) {
+                // un giocatore va spostato col suo pacchetto: teleportTo gli muove la posizione
+                // solo lato server e il client lo riporta indietro. La rotazione e' relativa a
+                // zero, cosi' la telecamera resta sua e non viene inchiodata
+                preda.connection.teleport(center.x, y, center.z, 0.0F, 0.0F,
+                        java.util.EnumSet.of(net.minecraft.world.entity.RelativeMovement.X_ROT,
+                                net.minecraft.world.entity.RelativeMovement.Y_ROT));
+            } else {
+                target.teleportTo(center.x, y, center.z);
+            }
         } else {
             target.setDeltaMovement(correction.scale(0.45D));
         }
         target.fallDistance = 0.0F;
         target.hasImpulse = true;
+        // senza questo la velocita' non parte verso il client del giocatore preso
+        target.hurtMarked = true;
         if (target instanceof Mob mob) {
             mob.getNavigation().stop();
         }

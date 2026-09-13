@@ -800,7 +800,8 @@ public final class VenomSymbiotePowersHandler {
                 e -> e != null && e.isAlive() && !e.isSpectator() && e != player
                         && e.distanceToSqr(player) <= range * range
                         && player.hasLineOfSight(e)
-                        && (e instanceof Enemy || (e instanceof Mob mob && mob.getTarget() == player)));
+                        && (e instanceof Enemy || (e instanceof Mob mob && mob.getTarget() == player)
+                            || (e instanceof Player avversario && PvpRules.colpibile(player, avversario))));
         targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
         if (targets.isEmpty()) {
             LOGGER.info("Sym: no target within {} blocks", range);
