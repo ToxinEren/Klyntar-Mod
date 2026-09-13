@@ -2,6 +2,7 @@ package modKlyntar.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +23,19 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.RenderUtils;
 
+/**
+ * Tiene ferme braccia e gambe del modello GeckoLib mentre gira un'animazione d'attacco, e
+ * riallinea gli arti al passo del giocatore quando cammina o corre.
+ *
+ * <p>Si aggancia a {@code GeckoRenderLayerModel} di Palladium per nome e firma esatti, quindi
+ * ogni versione di Palladium va riverificata sul bytecode. Con la 4.5.9 e' cambiato il tipo di
+ * {@code baseModel} e la firma di {@code copyScaleAndVisibility}: i dettagli stanno accanto ai
+ * punti interessati.</p>
+ *
+ * <p>Il pacchetto e' {@code "required": false}: se il mixin non si applica, il gioco parte lo
+ * stesso e questa funzione sparisce in silenzio, con un solo avviso nel log. Quando "non
+ * funziona piu'" la prima cosa da cercare nel log e' {@code Mixin apply failed}.</p>
+ */
 @Mixin(value = GeckoRenderLayerModel.class, remap = false)
 public abstract class GeckoRenderLayerModelMixin {
     private static final Logger KLYNTAR_LOGGER = LoggerFactory.getLogger("KlyntarVenomRender");
@@ -37,7 +51,10 @@ public abstract class GeckoRenderLayerModelMixin {
 
     @Shadow(remap = false) protected Entity currentEntity;
     @Shadow(remap = false) protected GeckoLayerState currentState;
-    @Shadow(remap = false) protected HumanoidModel<?> baseModel;
+    // Da Palladium 4.5.9 il modello base e' un EntityModel generico, non piu' un HumanoidModel:
+    // il render layer regge anche corpi non umanoidi. Un @Shadow col tipo vecchio non combacia
+    // piu' e fa scartare l'intero mixin.
+    @Shadow(remap = false) protected EntityModel<?> baseModel;
     @Shadow(remap = false) protected GeoBone rightArm;
     @Shadow(remap = false) protected GeoBone leftArm;
     @Shadow(remap = false) protected GeoBone rightLeg;
@@ -48,7 +65,11 @@ public abstract class GeckoRenderLayerModelMixin {
     @Shadow(remap = false) public String leftLegBone;
 
     @Inject(
-            method = "renderToBuffer",
+            // Due nomi per lo stesso metodo. In sviluppo Palladium e' rimappato e si chiama
+            // renderToBuffer; nel jar della release ha il nome SRG m_7695_. Il nostro jar non
+            // porta un refmap che faccia la traduzione, e col solo nome leggibile il mixin non
+            // trovava il bersaglio in gioco: falliva anche con Palladium 4.5.6.
+            method = {"renderToBuffer", "m_7695_"},
             at = @At(
                     value = "INVOKE",
                     target = "Lsoftware/bernie/geckolib/model/GeoModel;handleAnimations(Lsoftware/bernie/geckolib/core/animatable/GeoAnimatable;JLsoftware/bernie/geckolib/core/animation/AnimationState;)V",
@@ -63,42 +84,55 @@ public abstract class GeckoRenderLayerModelMixin {
         // le varianti senza gambe lasciano il passo al player: vanno riapplicate anche loro,
         // ma solo sulle gambe, perche' braccia e busto devono restare nella posa del colpo
         boolean legFree = klyntar$isLegFreeAnimation(controller) || klyntar$legsShouldFollowPlayer(controller);
-        if ((!walkOrRun && !legFree) || this.baseModel == null) {
+        // solo su un corpo umanoide: e' l'unico che abbia braccia e gambe da riallineare
+        if ((!walkOrRun && !legFree) || !(this.baseModel instanceof HumanoidModel<?> umanoide)) {
             return;
         }
         if (!klyntar$loggedWalkRunReapply) {
             klyntar$loggedWalkRunReapply = true;
             KLYNTAR_LOGGER.info("Venom walk/run render reapply active. animation={}", klyntar$getAnimationName(controller.getCurrentRawAnimation()));
         }
+        // le parti vanilla di questo stesso render layer: da Palladium 4.5.9 la visibilita' si
+        // copia da li' e la scala dal modello base, con la copyScaleAndVisibility a tre argomenti
+        HumanoidModel<?> strato = (HumanoidModel<?>) (Object) this;
 
         if (walkOrRun && "rightArm_player_anchor".equals(this.rightArmBone) && this.rightArm != null) {
-            ModelPart modelPart = this.baseModel.rightArm;
+            ModelPart modelPart = umanoide.rightArm;
             RenderUtils.matchModelPartRot(modelPart, this.rightArm);
-            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.rightArm);
+            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, strato.rightArm, this.rightArm);
             this.rightArm.updatePosition(modelPart.x + 5.0F, 2.0F - modelPart.y, modelPart.z);
         }
 
         if (walkOrRun && "leftArm_player_anchor".equals(this.leftArmBone) && this.leftArm != null) {
-            ModelPart modelPart = this.baseModel.leftArm;
+            ModelPart modelPart = umanoide.leftArm;
             RenderUtils.matchModelPartRot(modelPart, this.leftArm);
-            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.leftArm);
+            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, strato.leftArm, this.leftArm);
             this.leftArm.updatePosition(modelPart.x - 5.0F, 2.0F - modelPart.y, modelPart.z);
         }
 
         if ("rightLeg_player_anchor".equals(this.rightLegBone) && this.rightLeg != null) {
-            ModelPart modelPart = this.baseModel.rightLeg;
+            ModelPart modelPart = umanoide.rightLeg;
             RenderUtils.matchModelPartRot(modelPart, this.rightLeg);
-            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.rightLeg);
+            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, strato.rightLeg, this.rightLeg);
             this.rightLeg.updatePosition(modelPart.x + 2.0F, 12.0F - modelPart.y, modelPart.z);
         }
 
         if ("leftLeg_player_anchor".equals(this.leftLegBone) && this.leftLeg != null) {
-            ModelPart modelPart = this.baseModel.leftLeg;
+            ModelPart modelPart = umanoide.leftLeg;
             RenderUtils.matchModelPartRot(modelPart, this.leftLeg);
-            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, this.leftLeg);
+            GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, strato.leftLeg, this.leftLeg);
             this.leftLeg.updatePosition(modelPart.x - 2.0F, 12.0F - modelPart.y, modelPart.z);
         }
     }
+
+    // Si intercetta solo la rotazione. I redirect su scala e posizione che c'erano qui
+    // chiamavano l'originale e basta, e quello della scala puntava alla copyScaleAndVisibility
+    // a due argomenti, che applyBaseTransformations di Palladium 4.5.9 non chiama piu'.
+    //
+    // Gli ordinali contano le chiamate a matchModelPartRot dentro applyBaseTransformations:
+    // testa 0, busto 1, braccio destro 2, sinistro 3, gamba destra 4, sinistra 5. In 4.5.9 ne
+    // seguono altre per i modelli non umanoidi, ma il ramo umanoide viene prima e l'ordine e'
+    // rimasto quello: verificato sul bytecode, non sulla fiducia.
 
     @Redirect(
             method = "applyBaseTransformations",
@@ -115,32 +149,6 @@ public abstract class GeckoRenderLayerModelMixin {
         } else {
             RenderUtils.matchModelPartRot(modelPart, bone);
         }
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/threetag/palladium/compat/geckolib/renderlayer/GeckoRenderLayerModel;copyScaleAndVisibility(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
-                    ordinal = 2
-            ),
-            remap = false
-    )
-    private void klyntar$venomRightArmAnimationOverridesScale(ModelPart modelPart, CoreGeoBone bone) {
-        GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, bone);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lsoftware/bernie/geckolib/cache/object/GeoBone;updatePosition(FFF)V",
-                    ordinal = 2
-            ),
-            remap = false
-    )
-    private void klyntar$venomRightArmAnimationOverridesPosition(GeoBone bone, float x, float y, float z) {
-        bone.updatePosition(x, y, z);
     }
 
     @Redirect(
@@ -164,32 +172,6 @@ public abstract class GeckoRenderLayerModelMixin {
             method = "applyBaseTransformations",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/threetag/palladium/compat/geckolib/renderlayer/GeckoRenderLayerModel;copyScaleAndVisibility(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
-                    ordinal = 3
-            ),
-            remap = false
-    )
-    private void klyntar$venomLeftArmAnimationOverridesScale(ModelPart modelPart, CoreGeoBone bone) {
-        GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, bone);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lsoftware/bernie/geckolib/cache/object/GeoBone;updatePosition(FFF)V",
-                    ordinal = 3
-            ),
-            remap = false
-    )
-    private void klyntar$venomLeftArmAnimationOverridesPosition(GeoBone bone, float x, float y, float z) {
-        bone.updatePosition(x, y, z);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
                     target = "Lsoftware/bernie/geckolib/util/RenderUtils;matchModelPartRot(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
                     ordinal = 4
             ),
@@ -207,32 +189,6 @@ public abstract class GeckoRenderLayerModelMixin {
             method = "applyBaseTransformations",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/threetag/palladium/compat/geckolib/renderlayer/GeckoRenderLayerModel;copyScaleAndVisibility(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
-                    ordinal = 4
-            ),
-            remap = false
-    )
-    private void klyntar$venomRightLegAnimationOverridesScale(ModelPart modelPart, CoreGeoBone bone) {
-        GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, bone);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lsoftware/bernie/geckolib/cache/object/GeoBone;updatePosition(FFF)V",
-                    ordinal = 4
-            ),
-            remap = false
-    )
-    private void klyntar$venomRightLegAnimationOverridesPosition(GeoBone bone, float x, float y, float z) {
-        bone.updatePosition(x, y, z);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
                     target = "Lsoftware/bernie/geckolib/util/RenderUtils;matchModelPartRot(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
                     ordinal = 5
             ),
@@ -244,32 +200,6 @@ public abstract class GeckoRenderLayerModelMixin {
         } else {
             RenderUtils.matchModelPartRot(modelPart, bone);
         }
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/threetag/palladium/compat/geckolib/renderlayer/GeckoRenderLayerModel;copyScaleAndVisibility(Lnet/minecraft/client/model/geom/ModelPart;Lsoftware/bernie/geckolib/core/animatable/model/CoreGeoBone;)V",
-                    ordinal = 5
-            ),
-            remap = false
-    )
-    private void klyntar$venomLeftLegAnimationOverridesScale(ModelPart modelPart, CoreGeoBone bone) {
-        GeckoRenderLayerModel.copyScaleAndVisibility(modelPart, bone);
-    }
-
-    @Redirect(
-            method = "applyBaseTransformations",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lsoftware/bernie/geckolib/cache/object/GeoBone;updatePosition(FFF)V",
-                    ordinal = 5
-            ),
-            remap = false
-    )
-    private void klyntar$venomLeftLegAnimationOverridesPosition(GeoBone bone, float x, float y, float z) {
-        bone.updatePosition(x, y, z);
     }
 
     private boolean klyntar$shouldSkipVenomRightArmBaseRotation() {
