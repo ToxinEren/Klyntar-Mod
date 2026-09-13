@@ -110,7 +110,7 @@ public final class SymbioteMiningHandler {
         if (!Integer.valueOf(stato).equals(ULTIMO_STATO.get(giocatore.getUUID()))) {
             ULTIMO_STATO.put(giocatore.getUUID(), stato);
             ModNetwork.syncSymbioteMining(giocatore, corpo, attrezzo);
-            LOGGER.info("Scavo simbionte per {}: corpo={}, attrezzo={}",
+            LOGGER.info("Symbiote mining for {}: body={}, tool={}",
                     giocatore.getGameProfile().getName(), corpo, attrezzo);
         }
     }

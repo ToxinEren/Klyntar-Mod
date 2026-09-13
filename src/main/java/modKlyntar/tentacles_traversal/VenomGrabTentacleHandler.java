@@ -107,7 +107,7 @@ public final class VenomGrabTentacleHandler {
                 ACTIVE_GRABS.remove(playerId);
                 ModNetwork.syncVenomGrabTentacle(player, null);
                 player.displayClientMessage(
-                        net.minecraft.network.chat.Component.literal("Nessun bersaglio da afferrare"), true);
+                        net.minecraft.network.chat.Component.literal("Nothing to grab"), true);
                 return;
             }
             state = new GrabState(target.getId(), 0, 0.0D);

@@ -50,7 +50,7 @@ public final class KnullsFragmentHandler {
         if (!puoRomperlo(giocatore)) {
             event.setCanceled(true);
             giocatore.displayClientMessage(
-                    Component.literal("Solo un simbionte puo' aprire questo frammento"), true);
+                    Component.literal("Only a symbiote can open this fragment"), true);
             return;
         }
         if (!(event.getLevel() instanceof ServerLevel livello)) {
@@ -66,7 +66,7 @@ public final class KnullsFragmentHandler {
                 giocatore.getYRot(), 0.0F);
         livello.addFreshEntity(fuoriuscito);
         livello.playSound(null, posizione, SoundEvents.WARDEN_AGITATED, SoundSource.HOSTILE, 1.0F, 0.8F);
-        LOGGER.info("Un frammento aperto da {} ha liberato un Grendel's Fragment",
+        LOGGER.info("A fragment opened by {} released a Grendel's Fragment",
                 giocatore.getGameProfile().getName());
     }
 }

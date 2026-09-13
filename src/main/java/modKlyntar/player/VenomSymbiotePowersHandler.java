@@ -267,7 +267,7 @@ public final class VenomSymbiotePowersHandler {
 
         player.displayClientMessage(
 
-                net.minecraft.network.chat.Component.literal("Nessun bersaglio vicino"), true);
+                net.minecraft.network.chat.Component.literal("No target nearby"), true);
 
         return false;
 
@@ -311,7 +311,7 @@ public final class VenomSymbiotePowersHandler {
 
             player.displayClientMessage(
 
-                    net.minecraft.network.chat.Component.literal("Troppa fame per il simbionte"), true);
+                    net.minecraft.network.chat.Component.literal("The symbiote is too hungry"), true);
 
             return false;
 
@@ -381,7 +381,7 @@ public final class VenomSymbiotePowersHandler {
             return false;
         }
         setScore(player, objective, 0);
-        LOGGER.info("Sym: richiesta {} ricevuta", objective);
+        LOGGER.info("Sym: request {} received", objective);
         return true;
     }
 
@@ -803,7 +803,7 @@ public final class VenomSymbiotePowersHandler {
                         && (e instanceof Enemy || (e instanceof Mob mob && mob.getTarget() == player)));
         targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
         if (targets.isEmpty()) {
-            LOGGER.info("Sym: nessun bersaglio entro {} blocchi", range);
+            LOGGER.info("Sym: no target within {} blocks", range);
         }
         return targets.size() > max ? new ArrayList<>(targets.subList(0, max)) : targets;
     }

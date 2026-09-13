@@ -174,7 +174,7 @@ public class PlayerPowerCapability {
                 player.getPersistentData().putString(PALLADIUM_SYNC_KEY, forma);
             }
             power.applyTransformation(player);
-            LOGGER.info("Forma allineata a klyntars:{} per {}",
+            LOGGER.info("Form aligned to klyntars:{} for {}",
                     forma, player.getGameProfile().getName());
         });
     }
@@ -279,7 +279,7 @@ public class PlayerPowerCapability {
                 }
             }
         } catch (ReflectiveOperationException eccezione) {
-            LOGGER.error("Impossibile leggere i superpoteri di Palladium per {}",
+            LOGGER.error("Unable to read Palladium superpowers for {}",
                     player.getGameProfile().getName(), eccezione);
         }
         return null;
@@ -294,10 +294,10 @@ public class PlayerPowerCapability {
             LOGGER.error("Palladium did not add superpower klyntars:{} to {}", powerPath, player.getGameProfile().getName());
             // messaggio di diagnostica, commentato e non tolto: serve a vedere in chat se
             // Palladium ha assegnato davvero il potere, e si riaccende quando serve
-            // player.displayClientMessage(Component.literal("[Klyntar] ERRORE: Palladium non ha assegnato klyntars:" + powerPath), false);
+            // player.displayClientMessage(Component.literal("[Klyntar] ERROR: Palladium did not assign klyntars:" + powerPath), false);
         } else {
             LOGGER.info("Palladium superpower klyntars:{} synced to {}", powerPath, player.getGameProfile().getName());
-            // player.displayClientMessage(Component.literal("[Klyntar] Superpower applicato: klyntars:" + powerPath), false);
+            // player.displayClientMessage(Component.literal("[Klyntar] Superpower applied: klyntars:" + powerPath), false);
             player.getPersistentData().putString(PALLADIUM_SYNC_KEY, powerPath);
         }
         runServerCommand(player, "ability unlock " + player.getGameProfile().getName() + " klyntars:" + powerPath + " all");

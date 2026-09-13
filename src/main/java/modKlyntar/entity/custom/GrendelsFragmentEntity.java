@@ -75,8 +75,8 @@ public class GrendelsFragmentEntity extends SymbioteEntity {
         if (giocatore instanceof ServerPlayer ospite) {
             SymbioteState.setScore(ospite, SymbioteState.KNULL_BOND_OBJECTIVE, 1);
             ospite.displayClientMessage(
-                    Component.literal("Il frammento di Knull ti e' entrato dentro"), false);
-            LOGGER.info("Knull's Bond consegnato a {}", ospite.getGameProfile().getName());
+                    Component.literal("The fragment of Knull has entered you"), false);
+            LOGGER.info("Knull's Bond delivered to {}", ospite.getGameProfile().getName());
         }
         this.remove(RemovalReason.DISCARDED);
         return true;

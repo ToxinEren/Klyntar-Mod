@@ -74,7 +74,7 @@ public final class MeteorScheduleHandler {
         int attesa = GIORNO_MINIMO + SORTE.nextInt(GIORNO_MASSIMO - GIORNO_MINIMO + 1);
         long bersaglio = giornoCorrente(giocatore) + attesa;
         SymbioteState.setScore(giocatore, OBIETTIVO_GIORNO, (int) bersaglio);
-        LOGGER.info("Meteore programmate per {} al giorno {} (fra {} giorni)",
+        LOGGER.info("Meteors scheduled for {} on day {} (in {} days)",
                 giocatore.getGameProfile().getName(), bersaglio, attesa);
     }
 
@@ -103,7 +103,7 @@ public final class MeteorScheduleHandler {
         // all'infinito a ogni controllo
         SymbioteState.setScore(giocatore, OBIETTIVO_FATTO, 1);
         MeteorCommand.lanciaMeteore(giocatore);
-        LOGGER.info("Meteore cadute su {} al giorno {}",
+        LOGGER.info("Meteors fell on {} on day {}",
                 giocatore.getGameProfile().getName(), bersaglio);
     }
 }

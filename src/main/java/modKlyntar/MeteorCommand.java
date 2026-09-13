@@ -139,14 +139,14 @@ public class MeteorCommand {
                     BlockPos suolo = suoloAsciutto(world, base.offset(dx, 0, dz));
                     if (suolo != null) {
                         if (d > 0) {
-                            LOGGER.info("Meteora deviata di {} blocchi: {} era in acqua", d, base);
+                            LOGGER.info("Meteor diverted by {} blocks: {} was over water", d, base);
                         }
                         return Vec3.atBottomCenterOf(suolo);
                     }
                 }
             }
         }
-        LOGGER.warn("Nessuna terraferma entro {} blocchi da {}: la meteora cade dov'era prevista",
+        LOGGER.warn("No dry land within {} blocks of {}: the meteor falls where planned",
                 RAGGIO_DEVIAZIONE, base);
         return previsto;
     }

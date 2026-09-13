@@ -2754,7 +2754,7 @@ public final class VenomSymbioteSystemsHandler {
 
             setScore(player, REVERT_OBJECTIVE, REVERT_TICKS);
 
-            LOGGER.info("Il simbionte di {} si sta ritirando",
+            LOGGER.info("The symbiote of {} is retreating",
 
                     player.getGameProfile().getName());
 
@@ -2788,7 +2788,7 @@ public final class VenomSymbioteSystemsHandler {
 
             setScore(player, FORCE_HUMAN_OBJECTIVE, FORCE_HUMAN_TICKS);
 
-            LOGGER.info("La scossa ha ricacciato dentro il simbionte di {}",
+            LOGGER.info("The shock forced the symbiote of {} back inside",
 
                     player.getGameProfile().getName());
 

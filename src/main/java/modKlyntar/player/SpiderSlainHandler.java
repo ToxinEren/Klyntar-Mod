@@ -106,7 +106,7 @@ public final class SpiderSlainHandler {
         SymbioteState.setScore(giocatore, OBIETTIVO, 1);
 
         PlayerPowerCapability.infectPlayer(giocatore, FORMA_RAGNO);
-        LOGGER.info("{} ha divorato un ragno: passa a {}",
+        LOGGER.info("{} devoured a spider: moving on to {}",
                 giocatore.getGameProfile().getName(), FORMA_RAGNO);
     }
 }

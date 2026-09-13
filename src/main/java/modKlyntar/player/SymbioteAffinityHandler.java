@@ -64,10 +64,10 @@ public final class SymbioteAffinityHandler {
         }
         SymbioteState.setScore(giocatore, obiettivo(forma), dopo);
         SymbioteState.setScore(giocatore, SymbioteState.AFFINITY_OBJECTIVE, dopo);
-        LOGGER.info("Affinita' di {} con {}: da {} a {}",
+        LOGGER.info("Affinity of {} with {}: from {} to {}",
                 giocatore.getGameProfile().getName(), forma, prima, dopo);
         giocatore.displayClientMessage(
-                Component.literal("Il simbionte si fida meno di te (" + dopo + ")"), true);
+                Component.literal("The symbiote trusts you less (" + dopo + ")"), true);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class SymbioteAffinityHandler {
         int dallaBase = SymbioteState.getScore(giocatore, obiettivo("venom"));
         if (dallaBase > SymbioteState.getScore(giocatore, obiettivo(forma))) {
             SymbioteState.setScore(giocatore, obiettivo(forma), dallaBase);
-            LOGGER.info("Affinita' di {} ereditata da venom a venomspidey: {}",
+            LOGGER.info("Affinity of {} inherited from venom to venomspidey: {}",
                     giocatore.getGameProfile().getName(), dallaBase);
         }
     }
@@ -118,10 +118,10 @@ public final class SymbioteAffinityHandler {
                 maturati = 0;
                 affinita = Math.min(MASSIMO, affinita + PUNTI_PER_GIORNO);
                 SymbioteState.setScore(giocatore, obiettivo(forma), affinita);
-                LOGGER.info("Affinita' di {} con {} salita a {}",
+                LOGGER.info("Affinity of {} with {} rose to {}",
                         giocatore.getGameProfile().getName(), forma, affinita);
                 giocatore.displayClientMessage(
-                        Component.literal("Il legame col simbionte si rafforza (" + affinita + ")"), true);
+                        Component.literal("The bond with the symbiote grows stronger (" + affinita + ")"), true);
             }
             SymbioteState.setScore(giocatore, obiettivoTick(forma), maturati);
         }

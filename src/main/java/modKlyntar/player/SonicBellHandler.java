@@ -80,7 +80,7 @@ public final class SonicBellHandler {
             }
         }
         if (colpiti > 0) {
-            LOGGER.info("Campana suonata da {}: {} simbionti scossi",
+            LOGGER.info("Bell rung by {}: {} symbiotes shaken",
                     suonatore.getGameProfile().getName(), colpiti);
         }
     }

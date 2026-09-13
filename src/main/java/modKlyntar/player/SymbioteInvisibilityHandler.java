@@ -78,7 +78,7 @@ public final class SymbioteInvisibilityHandler {
             giocatore.getPersistentData().putBoolean(CHIAVE, true);
             giocatore.displayClientMessage(Component.literal("Invisibility enabled"), false);
         }
-        LOGGER.debug("Invisibilita' del simbionte per {}: {}",
+        LOGGER.debug("Symbiote invisibility for {}: {}",
                 giocatore.getGameProfile().getName(), giocatore.hasEffect(MobEffects.INVISIBILITY));
     }
 
@@ -104,7 +104,7 @@ public final class SymbioteInvisibilityHandler {
         if (!portaSimbionte(giocatore)) {
             giocatore.removeEffect(MobEffects.INVISIBILITY);
             giocatore.getPersistentData().remove(CHIAVE);
-            LOGGER.debug("Invisibilita' tolta a {}: non porta piu' il simbionte",
+            LOGGER.debug("Invisibility removed from {}: no longer carries the symbiote",
                     giocatore.getGameProfile().getName());
         }
     }

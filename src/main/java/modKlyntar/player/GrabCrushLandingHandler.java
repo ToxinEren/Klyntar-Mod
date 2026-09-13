@@ -54,7 +54,7 @@ public final class GrabCrushLandingHandler {
         entita.removeTag(TAG_CADUTA);
         ATTESA.remove(id);
         entita.hurt(entita.damageSources().fall(), DANNO);
-        LOGGER.info("Grab & Crush: {} atterra e incassa {}",
+        LOGGER.info("Grab & Crush: {} lands and takes {}",
                 net.minecraft.world.entity.EntityType.getKey(entita.getType()), DANNO);
     }
 }

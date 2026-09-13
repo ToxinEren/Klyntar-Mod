@@ -73,7 +73,7 @@ public final class SpiderPowerBonus {
         if (!FORMA_BASE.equals(forma) || !haPoteriDaRagno(giocatore)) {
             return forma;
         }
-        LOGGER.info("{} ha gia' poteri da ragno: la fusione salta a {}",
+        LOGGER.info("{} already has spider powers: the bonding skips to {}",
                 giocatore.getGameProfile().getName(), FORMA_RAGNO);
         return FORMA_RAGNO;
     }
