@@ -193,12 +193,24 @@ public final class VenomTentaclesTraversalClientController {
         return player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective).getScore() > 0;
     }
 
+    /**
+     * Il flag 7 delle shared flag: e' quello dell'elytra, e da solo mette il giocatore in
+     * orizzontale. Non esiste un setter pubblico, si passa per riflessione.
+     *
+     * <p>Il metodo va cercato col nome SRG, {@code m_20115_}, tramite l'helper di Forge: in
+     * sviluppo l'helper lo traduce nel nome leggibile, nella release resta SRG perche' li'
+     * Minecraft e' offuscato. Cercarlo direttamente come "setSharedFlag" funzionava solo in
+     * runClient: nel jar della release il metodo non esisteva con quel nome, l'eccezione
+     * veniva inghiottita in silenzio, e il volo mostrava le ali senza mai coricare il corpo.</p>
+     */
+    private static final Method SET_SHARED_FLAG = net.minecraftforge.fml.util.ObfuscationReflectionHelper
+            .findMethod(Entity.class, "m_20115_", int.class, boolean.class);
+
     private static void setFallFlyingFlag(Entity player, boolean value) {
         try {
-            Method method = Entity.class.getDeclaredMethod("setSharedFlag", int.class, boolean.class);
-            method.setAccessible(true);
-            method.invoke(player, 7, value);
-        } catch (ReflectiveOperationException ignored) {
+            SET_SHARED_FLAG.invoke(player, 7, value);
+        } catch (ReflectiveOperationException eccezione) {
+            throw new IllegalStateException("Unable to set the fall-flying flag", eccezione);
         }
     }
 
