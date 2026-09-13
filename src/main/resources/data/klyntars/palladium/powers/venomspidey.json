@@ -2778,6 +2778,23 @@
             "ability": "enablevenom"
           },
           {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Berserk",
+                "min_score": 1,
+                "max_score": 2147483647
+              },
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Sym.Rage.Active",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:command_result",
             "command": "execute if entity @s[nbt={OnGround:0b}]",
             "comparison": ">",
