@@ -60,6 +60,8 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, SyncVenomSizePacket.class, SyncVenomSizePacket::encode, SyncVenomSizePacket::new, SyncVenomSizePacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, SyncVenomLashPacket.class, SyncVenomLashPacket::encode, SyncVenomLashPacket::new, SyncVenomLashPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void alternaInvisibilitaSimbionte() {
@@ -175,7 +177,10 @@ public class ModNetwork {
             int size = buf.readVarInt();
             List<Vec3> readAnchors = new ArrayList<>();
             for (int i = 0; i < size; i++) {
-                readAnchors.add(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
+                // un posto senza presa arriva come null: conta la posizione nella lista
+                readAnchors.add(buf.readBoolean()
+                        ? new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble())
+                        : null);
             }
             this.anchors = readAnchors;
         }
@@ -185,9 +190,12 @@ public class ModNetwork {
             buf.writeBoolean(active);
             buf.writeVarInt(anchors.size());
             for (Vec3 anchor : anchors) {
-                buf.writeDouble(anchor.x);
-                buf.writeDouble(anchor.y);
-                buf.writeDouble(anchor.z);
+                buf.writeBoolean(anchor != null);
+                if (anchor != null) {
+                    buf.writeDouble(anchor.x);
+                    buf.writeDouble(anchor.y);
+                    buf.writeDouble(anchor.z);
+                }
             }
         }
 
@@ -270,6 +278,68 @@ public class ModNetwork {
             return true;
         }
     }
+    /**
+     * Un braccio di Fend Off Enemies, a chi lo vede: la mossa e i suoi tempi in tick (arriva,
+     * resta, rientra). Porta anche il punto del bersaglio alla partenza, per quando sul client
+     * l'entita' non c'e' (fuori dalla distanza di tracciamento).
+     */
+    public static void syncVenomLash(ServerPlayer player, net.minecraft.world.entity.LivingEntity target, Vec3 punto,
+                                     int mossa, int arriva, int resta, int rientra) {
+        assicuraForma(player);
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                new SyncVenomLashPacket(player.getId(), target.getId(), punto, mossa, arriva, resta, rientra));
+    }
+
+    public static class SyncVenomLashPacket {
+        private final int entityId;
+        private final int targetId;
+        private final Vec3 punto;
+        private final int mossa;
+        private final int arriva;
+        private final int resta;
+        private final int rientra;
+
+        public SyncVenomLashPacket(int entityId, int targetId, Vec3 punto, int mossa, int arriva, int resta, int rientra) {
+            this.entityId = entityId;
+            this.targetId = targetId;
+            this.punto = punto;
+            this.mossa = mossa;
+            this.arriva = arriva;
+            this.resta = resta;
+            this.rientra = rientra;
+        }
+
+        public SyncVenomLashPacket(FriendlyByteBuf buf) {
+            this.entityId = buf.readInt();
+            this.targetId = buf.readInt();
+            this.punto = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
+            this.mossa = buf.readVarInt();
+            this.arriva = buf.readVarInt();
+            this.resta = buf.readVarInt();
+            this.rientra = buf.readVarInt();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeInt(entityId);
+            buf.writeInt(targetId);
+            buf.writeDouble(punto.x);
+            buf.writeDouble(punto.y);
+            buf.writeDouble(punto.z);
+            buf.writeVarInt(mossa);
+            buf.writeVarInt(arriva);
+            buf.writeVarInt(resta);
+            buf.writeVarInt(rientra);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> VenomTentaclesTraversalRenderer.aggiungiFrustata(entityId, targetId, punto,
+                            mossa, arriva, resta, rientra)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
     public static void syncVenomCombatTargets(ServerPlayer player, List<Vec3> targets) {
         assicuraForma(player);
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncVenomCombatTargetsPacket(player.getId(), targets));
