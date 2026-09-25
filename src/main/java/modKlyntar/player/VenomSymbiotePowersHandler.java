@@ -196,6 +196,18 @@ public final class VenomSymbiotePowersHandler {
 
         PowerState state = STATES.computeIfAbsent(player.getUUID(), ignored -> new PowerState());
 
+        // Il flag sta nello scoreboard, che si salva col mondo; il conto alla rovescia che lo
+        // spegne sta solo qui in memoria. Chiudendo il gioco a meta' di un'animazione, al rientro
+        // il flag era ancora 1 e nessuno lo spegneva piu': VenomBedrockAnimationHandler lo legge
+        // come animazione in corso e smette di scegliere idle, walk e run, per sempre. Senza un
+        // conto alla rovescia in corso il flag non puo' essere acceso.
+        if (state.animHold <= 0 && getScore(player, ANIM_PLAYING) > 0) {
+            setScore(player, ANIM_PLAYING, 0);
+        }
+        if (state.animTicks <= 0 && getScore(player, ANIM_OBJECTIVE) > 0) {
+            setScore(player, ANIM_OBJECTIVE, 0);
+        }
+
         if (getScore(player, CAMERA_OBJECTIVE) <= 0) {
             // fuori da Venom nessun potere resta in piedi
             if (state.anyRunning()) {
@@ -220,6 +232,9 @@ public final class VenomSymbiotePowersHandler {
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            // come fa la raffica: niente flag accesi nel mondo salvato
+            setScore(player, ANIM_PLAYING, 0);
+            setScore(player, ANIM_OBJECTIVE, 0);
             STATES.remove(player.getUUID());
         }
     }
