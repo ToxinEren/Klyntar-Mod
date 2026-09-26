@@ -108,6 +108,12 @@ public final class SymbioteWallBreakHandler {
         if (stato.is(MyMod.KNULLS_FRAGMENT_BLOCK.get())) {
             return;
         }
+        // lo spawn protetto del server e il bordo del mondo valgono anche per i blocchi di contorno:
+        // il controllo di Minecraft riguarda solo il blocco colpito, e il buco tre per tre poteva
+        // mordere dentro l'area protetta da appena fuori
+        if (!livello.mayInteract(giocatore, posizione)) {
+            return;
+        }
         // destroyBlock con il giocatore fa cadere i drop giusti per l'attrezzo che ha in mano
         giocatore.gameMode.destroyBlock(posizione);
     }

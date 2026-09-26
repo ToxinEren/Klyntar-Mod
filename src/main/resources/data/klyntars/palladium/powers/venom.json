@@ -1773,6 +1773,28 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:objective_score",
+                    "objective": "Venom.VulnerabilityLock",
+                    "min_score": 1,
+                    "max_score": 2147483647
+                  }
+                ]
+              },
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Anim.Vibrant",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -2100,6 +2122,17 @@
                 "type": "palladium:crouching"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -2134,6 +2167,17 @@
             "conditions": [
               {
                 "type": "palladium:crouching"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
               }
             ]
           }
@@ -2698,6 +2742,17 @@
             "comparison": ">",
             "compare_to": 0,
             "log": false
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -3371,7 +3426,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:arrow,type=!minecraft:area_effect_cloud,type=!minecraft:armor_stand] run damage @s 10 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 10 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
       "conditions": {
         "enabling": [
@@ -3433,7 +3488,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:arrow,type=!minecraft:area_effect_cloud,type=!minecraft:armor_stand] run damage @s 9 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 9 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
       "conditions": {
         "enabling": [
@@ -3490,7 +3545,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:arrow,type=!minecraft:area_effect_cloud,type=!minecraft:armor_stand] run damage @s 14 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 14 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
       "conditions": {
         "enabling": [
@@ -3533,7 +3588,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:arrow,type=!minecraft:area_effect_cloud,type=!minecraft:armor_stand] run damage @s 12 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 12 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
       "conditions": {
         "enabling": [
@@ -3692,6 +3747,17 @@
                 "ability": "attack"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -3820,6 +3886,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -4129,7 +4206,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb] run damage @s 35 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 35 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
       "conditions": {
         "enabling": [
@@ -4154,7 +4231,7 @@
       "gui_position": "null",
       "description": "null",
       "commands": [
-        "execute at @s as @e[distance=0.1..6,type=!minecraft:item,type=!minecraft:experience_orb] facing entity @p[distance=..8,sort=nearest,limit=1] feet run tp @s ^ ^ ^-0.8"
+        "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored,type=!minecraft:player] facing entity @p[distance=..8,sort=nearest,limit=1] feet run tp @s ^ ^ ^-0.8"
       ],
       "conditions": {
         "enabling": [
@@ -4822,6 +4899,17 @@
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
             "ability": "attack"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -5335,7 +5423,7 @@
       ],
       "last_tick_commands": [],
       "commands": [
-        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.5 0.4"
+        "playsound klyntars:ability.armor ambient @s ~ ~ ~ 0.5 0.4"
       ],
       "conditions": {
         "enabling": [
@@ -5407,12 +5495,10 @@
       "gui_position": "null",
       "description": "null",
       "first_tick_commands": [
-        ""
+        "playsound klyntars:ability.unleash ambient @s ~ ~ ~ 0.9 1"
       ],
       "last_tick_commands": [],
-      "commands": [
-        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.5 0.4"
-      ],
+      "commands": [],
       "conditions": {
         "enabling": [
           {
@@ -5440,7 +5526,7 @@
       ],
       "last_tick_commands": [],
       "commands": [
-        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.3 0.3"
+        "playsound klyntars:ability.spikes ambient @s ~ ~ ~ 0.3 0.3"
       ],
       "conditions": {
         "enabling": [
@@ -5469,7 +5555,7 @@
       ],
       "last_tick_commands": [],
       "commands": [
-        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.1 0.3"
+        "playsound klyntars:ability.spikes ambient @s ~ ~ ~ 0.1 0.3"
       ],
       "conditions": {
         "enabling": [
@@ -5497,7 +5583,7 @@
       ],
       "description": "null",
       "first_tick_commands": [
-        "playsound minecraft:entity.player.attack.sweep ambient @s ~ ~ ~ 0.7 0.8"
+        "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
       "last_tick_commands": [
         ""
@@ -5532,7 +5618,7 @@
       ],
       "description": "null",
       "first_tick_commands": [
-        "playsound minecraft:entity.player.attack.sweep ambient @s ~ ~ ~ 0.7 0.8"
+        "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
       "last_tick_commands": [
         ""
@@ -5567,7 +5653,7 @@
       ],
       "description": "null",
       "first_tick_commands": [
-        "playsound minecraft:entity.player.attack.sweep ambient @s ~ ~ ~ 0.7 0.8"
+        "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
       "last_tick_commands": [
         ""
@@ -5602,7 +5688,7 @@
       ],
       "description": "null",
       "first_tick_commands": [
-        "playsound minecraft:entity.player.attack.sweep ambient @s ~ ~ ~ 0.7 0.8"
+        "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
       "last_tick_commands": [
         ""
@@ -5637,7 +5723,7 @@
       ],
       "description": "null",
       "first_tick_commands": [
-        "playsound minecraft:entity.warden.roar ambient @s ~ ~ ~ 1 2"
+        "playsound klyntars:ability.roar ambient @s ~ ~ ~ 1 2"
       ],
       "last_tick_commands": [
         ""
@@ -5673,7 +5759,7 @@
       ],
       "last_tick_commands": [],
       "commands": [
-        "playsound minecraft:entity.slime.squish ambient @s ~ ~ ~ 0.3 0.3"
+        "playsound klyntars:ability.shield ambient @s ~ ~ ~ 0.3 0.3"
       ],
       "conditions": {
         "enabling": [
@@ -5742,6 +5828,12 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.AutoHead",
+                "min_score": 1,
+                "max_score": 1
+              },
+              {
+                "type": "palladium:objective_score",
+                "objective": "Venom.Head.Out",
                 "min_score": 1,
                 "max_score": 1
               }
@@ -5942,17 +6034,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "venombond1"
-          },
-          {
-            "type": "palladium:not",
-            "conditions": [
-              {
-                "type": "palladium:objective_score",
-                "objective": "Venom.VulnerabilityLock",
-                "min_score": 1,
-                "max_score": 2147483647
-              }
-            ]
           }
         ],
         "enabling": [
@@ -6143,6 +6224,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -6991,16 +7083,15 @@
         "team add venom_feed_nocollision",
         "team modify venom_feed_nocollision collisionRule never",
         "tag @s add venom_feeding",
-        "tag @e[tag=venom_feed_target,distance=..16] remove venom_feed_target",
-        "execute as @e[distance=..8,sort=nearest,limit=1,type=!minecraft:player,type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:arrow,type=!minecraft:area_effect_cloud,type=!minecraft:armor_stand] run tag @s add venom_feed_target",
-        "team join venom_feed_nocollision @s",
-        "team join venom_feed_nocollision @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1]",
+        "execute as @e[distance=..8,sort=nearest,limit=1,type=!minecraft:player,type=!#klyntars:aoe_ignored,tag=!venom_feed_target] run tag @s add venom_feed_target",
+        "team join venom_feed_nocollision @s[team=]",
+        "team join venom_feed_nocollision @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1,team=]",
         "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] run data merge entity @s {NoAI:1b,NoGravity:1b}",
         "scoreboard objectives add Venom.LockMovement dummy",
         "scoreboard players set @s Venom.LockMovement 2",
         "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run effect give @s minecraft:regeneration 3 3 true",
         "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run effect give @s minecraft:saturation 1 0 true",
-        "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run playsound minecraft:block.sculk_catalyst.bloom player @a ~ ~ ~ 0.8 0.7"
+        "execute if entity @e[tag=venom_feed_target,distance=..9,limit=1] run playsound klyntars:ability.assimilate player @a ~ ~ ~ 0.8 0.7"
       ],
       "commands": [
         "execute if entity @e[tag=venom_feed_target,distance=..12,limit=1] run effect give @s minecraft:regeneration 1 3 true",
@@ -7016,9 +7107,9 @@
         "execute if entity @e[tag=venom_feed_target,distance=..12,limit=1] run effect give @s minecraft:saturation 1 0 true",
         "execute as @e[tag=venom_feed_target,distance=..12,sort=nearest,limit=1] run damage @s 30 minecraft:generic",
         "execute as @e[tag=venom_feed_target,distance=..16,sort=nearest,limit=1] run data merge entity @s {NoAI:0b,NoGravity:0b}",
-        "team leave @s",
-        "team leave @e[tag=venom_feed_target,distance=..16]",
-        "tag @e[tag=venom_feed_target,distance=..16] remove venom_feed_target",
+        "team leave @s[team=venom_feed_nocollision]",
+        "team leave @e[tag=venom_feed_target,distance=..16,sort=nearest,limit=1,team=venom_feed_nocollision]",
+        "tag @e[tag=venom_feed_target,distance=..16,sort=nearest,limit=1] remove venom_feed_target",
         "tag @s remove venom_feeding"
       ],
       "conditions": {
@@ -7052,6 +7143,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -7247,7 +7349,7 @@
         "scoreboard players set @s Venom.TentaclesTraversal 1",
         "execute if entity @s[tag=venom_tentacles_traversal_was_active] run scoreboard players set @s Venom.TentaclesTraversal 0",
         "tag @s remove venom_tentacles_traversal_was_active",
-        "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.7"
+        "playsound klyntars:ability.traversal player @a ~ ~ ~ 0.8 0.7"
       ],
       "conditions": {
         "unlocking": [
@@ -7426,7 +7528,7 @@
         "scoreboard objectives add Venom.Flight dummy",
         "scoreboard players set @s Venom.Flight 1",
         "title @s actionbar {\"text\":\"Venom Flight ON\",\"color\":\"dark_purple\"}",
-        "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.65"
+        "playsound klyntars:ability.wings player @a ~ ~ ~ 0.8 0.65"
       ],
       "commands": [
         "scoreboard objectives add Venom.Flight dummy",
@@ -7702,7 +7804,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.FendOffEnemies dummy",
         "scoreboard players set @s Venom.FendOffEnemies 1",
-        "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.45"
+        "playsound klyntars:ability.fend_off player @a ~ ~ ~ 0.8 0.45"
       ],
       "last_tick_commands": [
         "scoreboard players set @s Venom.FendOffEnemies 0"
@@ -7774,7 +7876,7 @@
         "scoreboard players set @s Venom.GrabTentacle 1",
         "scoreboard players set @s Venom.GrabTentacle.DistanceDelta 0",
         "scoreboard players set @s Venom.GrabTentacle.ReleaseCharge 0",
-        "playsound minecraft:block.slime_block.place player @a ~ ~ ~ 0.8 0.55"
+        "playsound klyntars:ability.grab_tentacle player @a ~ ~ ~ 0.8 0.55"
       ],
       "last_tick_commands": [
         "scoreboard players set @s Venom.GrabTentacle 0",
@@ -7811,6 +7913,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -7855,7 +7968,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
         "scoreboard players remove @s Venom.GrabTentacle.DistanceDelta 1",
-        "playsound minecraft:block.slime_block.step player @a ~ ~ ~ 0.5 0.8"
+        "playsound klyntars:ability.grab_pull player @a ~ ~ ~ 0.5 0.8"
       ],
       "conditions": {
         "unlocking": [
@@ -7909,6 +8022,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -7943,7 +8067,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.DistanceDelta dummy",
         "scoreboard players add @s Venom.GrabTentacle.DistanceDelta 1",
-        "playsound minecraft:block.slime_block.step player @a ~ ~ ~ 0.5 0.55"
+        "playsound klyntars:ability.grab_push player @a ~ ~ ~ 0.5 0.55"
       ],
       "conditions": {
         "unlocking": [
@@ -8001,6 +8125,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -8031,7 +8166,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle.ReleaseCharge dummy",
         "scoreboard players set @s Venom.GrabTentacle.ReleaseCharge 40",
-        "playsound minecraft:entity.player.attack.knockback player @a ~ ~ ~ 0.8 0.7"
+        "playsound klyntars:ability.grab_throw player @a ~ ~ ~ 0.8 0.7"
       ],
       "last_tick_commands": [
         "scoreboard objectives add Venom.GrabTentacle dummy",
@@ -8093,6 +8228,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8784,7 +8930,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Pull dummy",
         "scoreboard players set @s Venom.Sym.Pull 1",
-        "playsound minecraft:entity.wither.shoot player @a ~ ~ ~ 0.7 0.6"
+        "playsound klyntars:ability.symbiote_pull player @a ~ ~ ~ 0.7 0.6"
       ],
       "conditions": {
         "unlocking": [
@@ -8827,6 +8973,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8861,7 +9018,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Strike dummy",
         "scoreboard players set @s Venom.Sym.Strike 1",
-        "playsound minecraft:entity.warden.sonic_boom player @a ~ ~ ~ 0.6 1.4"
+        "playsound klyntars:ability.symbiote_strike player @a ~ ~ ~ 0.6 1.4"
       ],
       "conditions": {
         "unlocking": [
@@ -8904,6 +9061,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8938,7 +9106,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Rage dummy",
         "scoreboard players set @s Venom.Sym.Rage 1",
-        "playsound minecraft:entity.warden.roar player @a ~ ~ ~ 1.0 0.7"
+        "playsound klyntars:ability.rage player @a ~ ~ ~ 1.0 0.7"
       ],
       "conditions": {
         "unlocking": [
@@ -8985,6 +9153,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -9015,7 +9194,7 @@
       "first_tick_commands": [
         "scoreboard objectives add Venom.Sym.Blast dummy",
         "scoreboard players set @s Venom.Sym.Blast 1",
-        "playsound minecraft:entity.wither.break_block player @a ~ ~ ~ 0.9 0.6"
+        "playsound klyntars:ability.blast player @a ~ ~ ~ 0.9 0.6"
       ],
       "conditions": {
         "unlocking": [
@@ -9047,6 +9226,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
               }

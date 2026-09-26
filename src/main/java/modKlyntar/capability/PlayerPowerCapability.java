@@ -538,6 +538,23 @@ public class PlayerPowerCapability {
         }
     }
 
+    /**
+     * Chi comincia a vedere un giocatore simbionte ne riceve la forma, per il colore dei
+     * tentacoli. La forma partiva solo quando cambiava, e in broadcast: chi entrava nel server
+     * dopo, o arrivava da lontano, vedeva i tentacoli di un altro col colore sbagliato.
+     */
+    @SubscribeEvent
+    public static void onStartTracking(PlayerEvent.StartTracking event) {
+        if (!(event.getTarget() instanceof ServerPlayer visto) || !(event.getEntity() instanceof ServerPlayer chiGuarda)) {
+            return;
+        }
+        visto.getCapability(PLAYER_POWER).ifPresent(power -> {
+            if (power.isTransformed() && !power.getForm().isEmpty()) {
+                ModNetwork.syncSymbioteFormA(chiGuarda, visto.getId(), power.getForm());
+            }
+        });
+    }
+
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {

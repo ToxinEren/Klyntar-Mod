@@ -1,5 +1,6 @@
 package modKlyntar.tentacles_traversal;
 
+import modKlyntar.sound.SuoniKlyntar;
 import modKlyntar.MyMod;
 import modKlyntar.network.ModNetwork;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -320,10 +321,10 @@ public final class VenomFendOffEnemiesHandler {
             target.hurt(player.damageSources().playerAttack(player), ATTACK_DAMAGE);
             if (colpo.mossa() == Mossa.SCHIAFFO) {
                 spingi(player, target, SCHIAFFO_SPINTA, SCHIAFFO_ALZA);
-                suona(player, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 0.8F, gameTime);
+                suona(player, target, SuoniKlyntar.FEND_OFF_SLAP.get(), 0.8F, gameTime);
             } else {
                 knockTargetBack(player, target);
-                suona(player, target, SoundEvents.PLAYER_ATTACK_SWEEP, 0.7F, gameTime);
+                suona(player, target, SuoniKlyntar.FEND_OFF_LASH.get(), 0.7F, gameTime);
             }
         }
     }
@@ -433,9 +434,9 @@ public final class VenomFendOffEnemiesHandler {
             livello.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, sotto),
                     preso.getX(), preso.getY() + 0.1D, preso.getZ(), 40, 0.6D, 0.1D, 0.6D, 0.15D);
         }
-        livello.playSound(null, preso.getX(), preso.getY(), preso.getZ(), SoundEvents.WITHER_BREAK_BLOCK,
+        livello.playSound(null, preso.getX(), preso.getY(), preso.getZ(), SuoniKlyntar.FEND_OFF_SLAM_GROUND.get(),
                 SoundSource.PLAYERS, 0.45F, 1.3F);
-        livello.playSound(null, preso.getX(), preso.getY(), preso.getZ(), SoundEvents.PLAYER_ATTACK_STRONG,
+        livello.playSound(null, preso.getX(), preso.getY(), preso.getZ(), SuoniKlyntar.FEND_OFF_SLAM_HIT.get(),
                 SoundSource.PLAYERS, 1.0F, 0.8F);
         return true;
     }
@@ -477,9 +478,9 @@ public final class VenomFendOffEnemiesHandler {
         ServerLevel livello = player.serverLevel();
         Vec3 centro = a.position().add(b.position()).scale(0.5D).add(0.0D, a.getBbHeight() * 0.5D, 0.0D);
         livello.sendParticles(ParticleTypes.CRIT, centro.x, centro.y, centro.z, 20, 0.4D, 0.4D, 0.4D, 0.3D);
-        livello.playSound(null, centro.x, centro.y, centro.z, SoundEvents.PLAYER_ATTACK_STRONG,
+        livello.playSound(null, centro.x, centro.y, centro.z, SuoniKlyntar.FEND_OFF_CLASH_HIT.get(),
                 SoundSource.PLAYERS, 1.0F, 0.7F);
-        livello.playSound(null, centro.x, centro.y, centro.z, SoundEvents.SLIME_SQUISH,
+        livello.playSound(null, centro.x, centro.y, centro.z, SuoniKlyntar.FEND_OFF_CLASH_SQUISH.get(),
                 SoundSource.PLAYERS, 0.8F, 0.8F);
         return true;
     }

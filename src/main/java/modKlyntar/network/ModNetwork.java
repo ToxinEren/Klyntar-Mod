@@ -62,6 +62,106 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, SyncVenomLashPacket.class, SyncVenomLashPacket::encode, SyncVenomLashPacket::new, SyncVenomLashPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, VocePacket.class, VocePacket::encode, VocePacket::new, VocePacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, BerserkPacket.class, BerserkPacket::encode, BerserkPacket::new, BerserkPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+    }
+
+    /**
+     * Una battuta del simbionte, solo al suo ospite: gli altri non sentono la voce nella sua testa.
+     * La fiducia sceglie il gradino delle battute (vedi VoceSimbionte).
+     */
+    public static void mandaVoce(ServerPlayer ospite, String situazione, int tono, int fiducia) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> ospite), new VocePacket(situazione, tono, fiducia));
+    }
+
+    /** Il lampo rosso sullo schermo: il simbionte ha appena preso il corpo. */
+    public static final int BERSERK_LAMPO_INIZIO = 1;
+    /** Il lampo rosso sullo schermo: il simbionte ha appena divorato una preda. */
+    public static final int BERSERK_LAMPO_PASTO = 2;
+
+    /**
+     * Lo stato del berserk, solo all'ospite: se il corpo e' del simbionte, se sta correndo verso
+     * la preda, quale preda, e il prossimo punto del percorso (null quando punta la preda).
+     */
+    public static void syncBerserk(ServerPlayer ospite, boolean attivo, boolean marcia, int preda, Vec3 guida, int lampo) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> ospite), new BerserkPacket(attivo, marcia, preda, guida, lampo));
+    }
+
+    public static class BerserkPacket {
+        private final boolean attivo;
+        private final boolean marcia;
+        private final int preda;
+        private final Vec3 guida;
+        private final int lampo;
+
+        public BerserkPacket(boolean attivo, boolean marcia, int preda, Vec3 guida, int lampo) {
+            this.attivo = attivo;
+            this.marcia = marcia;
+            this.preda = preda;
+            this.guida = guida;
+            this.lampo = lampo;
+        }
+
+        public BerserkPacket(FriendlyByteBuf buf) {
+            this.attivo = buf.readBoolean();
+            this.marcia = buf.readBoolean();
+            this.preda = buf.readVarInt();
+            this.guida = buf.readBoolean() ? new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()) : null;
+            this.lampo = buf.readVarInt();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeBoolean(attivo);
+            buf.writeBoolean(marcia);
+            buf.writeVarInt(preda);
+            buf.writeBoolean(guida != null);
+            if (guida != null) {
+                buf.writeDouble(guida.x);
+                buf.writeDouble(guida.y);
+                buf.writeDouble(guida.z);
+            }
+            buf.writeVarInt(lampo);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> modKlyntar.client.BerserkClient.ricevi(attivo, marcia, preda, guida, lampo)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
+    }
+
+    public static class VocePacket {
+        private final String situazione;
+        private final int tono;
+        private final int fiducia;
+
+        public VocePacket(String situazione, int tono, int fiducia) {
+            this.situazione = situazione;
+            this.tono = tono;
+            this.fiducia = fiducia;
+        }
+
+        public VocePacket(FriendlyByteBuf buf) {
+            this.situazione = buf.readUtf(64);
+            this.tono = buf.readVarInt();
+            this.fiducia = buf.readVarInt();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeUtf(situazione, 64);
+            buf.writeVarInt(tono);
+            buf.writeVarInt(fiducia);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> modKlyntar.client.VoceSimbionteClient.mostra(situazione, tono, fiducia)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     public static void alternaInvisibilitaSimbionte() {
@@ -233,7 +333,15 @@ public class ModNetwork {
                 if (player == null || !isVenomMovementVelocityAllowed(player)) {
                     return;
                 }
-                player.setDeltaMovement(velocity);
+                // arriva da un client: niente valori impossibili, che corromperebbero l'entita' sul server
+                if (!Double.isFinite(velocity.x) || !Double.isFinite(velocity.y) || !Double.isFinite(velocity.z)) {
+                    return;
+                }
+                double massima = 4.0D;
+                player.setDeltaMovement(new Vec3(
+                        net.minecraft.util.Mth.clamp(velocity.x, -massima, massima),
+                        net.minecraft.util.Mth.clamp(velocity.y, -massima, massima),
+                        net.minecraft.util.Mth.clamp(velocity.z, -massima, massima)));
                 player.fallDistance = 0.0F;
             });
             ctx.get().setPacketHandled(true);
@@ -466,6 +574,11 @@ public class ModNetwork {
      */
     public static void syncSymbioteForm(ServerPlayer player, String form) {
         INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncSymbioteFormPacket(player.getId(), form));
+    }
+
+    /** La forma di un giocatore a un solo destinatario: chi comincia a vederlo. */
+    public static void syncSymbioteFormA(ServerPlayer destinatario, int idEntita, String forma) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> destinatario), new SyncSymbioteFormPacket(idEntita, forma));
     }
 
     public static class SyncSymbioteFormPacket {

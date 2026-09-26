@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,13 +21,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * La campana come sorgente di sonic damage, sul modello del "vibrant" del pack Spider-Man.
  *
  * <p>Suonarne una scuote ogni simbionte nel raggio: i portatori si prendono i malus e un colpo
- * di sonic damage, che al terzo strappa via il simbionte. Il pack la chiama vibrazione; da noi
- * finisce nello stesso contatore del grido del Warden.</p>
+ * di sonic damage, che al terzo strappa via il simbionte (piu' in la' con l'affinita' alta, e i
+ * colpi si dimenticano col tempo: vedi VenomSymbioteSystemsHandler). Il pack la chiama
+ * vibrazione; da noi finisce nello stesso contatore del grido del Warden.</p>
  */
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
 public final class SonicBellHandler {
@@ -34,8 +39,13 @@ public final class SonicBellHandler {
 
     /** entro quanti blocchi la vibrazione arriva: come nel pack */
     private static final double RAGGIO = 12.0D;
-    /** oltre questa sintonia col simbionte la vibrazione non fa piu' presa */
-    private static final int AFFINITA_IMMUNE = 80;
+    /**
+     * Ogni quanto la stessa persona puo' far vibrare i simbionti con una campana. Senza, tre
+     * click veloci erano tre colpi sonori, e strappavano il simbionte in un secondo a chiunque
+     * nel raggio.
+     */
+    private static final long RICARICA_TICK = 40L;
+    private static final Map<UUID, Long> ULTIMO_RINTOCCO = new ConcurrentHashMap<>();
 
     // durate e livelli ricalcati sullo script del pack
     private static final MobEffectInstance[] MALUS = {
@@ -46,6 +56,12 @@ public final class SonicBellHandler {
     };
 
     private SonicBellHandler() {
+    }
+
+    /** Chi esce non lascia la sua ricarica nella mappa. */
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        ULTIMO_RINTOCCO.remove(event.getEntity().getUUID());
     }
 
     /** Campana piazzata e cliccata. */
@@ -68,6 +84,12 @@ public final class SonicBellHandler {
         if (!(suonatore.level() instanceof ServerLevel livello)) {
             return;
         }
+        long adesso = livello.getGameTime();
+        Long ultimo = ULTIMO_RINTOCCO.get(suonatore.getUUID());
+        if (ultimo != null && adesso - ultimo < RICARICA_TICK) {
+            return;
+        }
+        ULTIMO_RINTOCCO.put(suonatore.getUUID(), adesso);
 
         AABB zona = suonatore.getBoundingBox().inflate(RAGGIO);
         List<LivingEntity> intorno = livello.getEntitiesOfClass(LivingEntity.class, zona,
@@ -100,13 +122,12 @@ public final class SonicBellHandler {
         if (SymbioteState.isAntiVenom(bersaglio)) {
             return false;
         }
-        // chi e' in piena sintonia col simbionte regge la vibrazione senza scomporsi
-        if (bersaglio instanceof Player giocatore && SymbioteState.affinita(giocatore) >= AFFINITA_IMMUNE) {
-            return false;
-        }
-
+        // l'affinita' non protegge del tutto: accorcia i malus, fino alla meta' a 100
+        float resistenza = bersaglio instanceof Player giocatore
+                ? VenomSymbioteSystemsHandler.resistenza(giocatore) : 1.0F;
         for (MobEffectInstance malus : MALUS) {
-            bersaglio.addEffect(new MobEffectInstance(malus));
+            bersaglio.addEffect(new MobEffectInstance(malus.getEffect(),
+                    Math.round(malus.getDuration() * resistenza), malus.getAmplifier(), false, false));
         }
         particelle(livello, bersaglio);
         // il mob simbionte non ha un portatore da indebolire: lo si ferisce direttamente, con lo

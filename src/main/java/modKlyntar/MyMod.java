@@ -204,6 +204,7 @@ public class MyMod {
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         PARTICLE_TYPES.register(modEventBus);
+        modKlyntar.sound.SuoniKlyntar.SUONI.register(modEventBus);
         modKlyntar.effect.ModEffects.EFFECTS.register(modEventBus);
 
         modKlyntar.worldgen.ModFeatures.FEATURES.register(modEventBus);

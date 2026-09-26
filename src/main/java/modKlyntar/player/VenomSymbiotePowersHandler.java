@@ -451,7 +451,7 @@ public final class VenomSymbiotePowersHandler {
                 spawnBurst(player, target.position(), 30);
             }
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.PLAYERS, 0.7F, 1.4F);
+                    modKlyntar.sound.SuoniKlyntar.POWER_PULL_SLAM.get(), net.minecraft.sounds.SoundSource.PLAYERS, 0.7F, 1.4F);
         }
 
         if (t >= PULL_END_TICK) {
@@ -508,7 +508,7 @@ public final class VenomSymbiotePowersHandler {
                     spawnBurst(player, target.position(), 12);
                 }
                 player.level().playSound(null, player.blockPosition(),
-                        net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_STRONG,
+                        modKlyntar.sound.SuoniKlyntar.POWER_STRIKE_HIT.get(),
                         net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, 0.7F);
             }
         }
@@ -526,7 +526,7 @@ public final class VenomSymbiotePowersHandler {
                 spawnBurst(player, target.position(), 40);
             }
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.2F);
+                    modKlyntar.sound.SuoniKlyntar.POWER_STRIKE_IMPACT.get(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.2F);
         }
 
         if (t >= STRIKE_END_TICK) {
@@ -587,7 +587,7 @@ public final class VenomSymbiotePowersHandler {
                 levita(target, TEMPEST_LIFT_LEVEL);
             }
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.WARDEN_SONIC_BOOM,
+                    modKlyntar.sound.SuoniKlyntar.POWER_TEMPEST_WAVE.get(),
                     net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.3F);
         }
 
@@ -613,7 +613,7 @@ public final class VenomSymbiotePowersHandler {
             }
             symbioteBurst(player, player.position().add(0.0D, 1.0D, 0.0D), TEMPEST_RADIUS, 140);
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,
+                    modKlyntar.sound.SuoniKlyntar.POWER_TEMPEST_IMPACT.get(),
                     net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, 0.9F);
         }
 
@@ -654,7 +654,7 @@ public final class VenomSymbiotePowersHandler {
             // al tick 21: l'entita' nasce qui, un tick dopo, e parte subito
             player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 20, 0, false, false));
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.SNOWBALL_THROW,
+                    modKlyntar.sound.SuoniKlyntar.POWER_BOMB_THROW.get(),
                     net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, 0.6F);
         }
         if (t >= BOMB_END_TICK) {
@@ -697,8 +697,11 @@ public final class VenomSymbiotePowersHandler {
 
     private static void detonate(ServerPlayer player, Vec3 centro) {
         AABB area = new AABB(centro, centro).inflate(BOMB_BLAST_RADIUS);
+        // gli altri giocatori solo dove il PvP lo permette: il danno Minecraft lo blocca da se', ma la
+        // spinta no, e la bomba scaraventava via compagni di squadra e giocatori a PvP spento
         List<LivingEntity> investiti = player.level().getEntitiesOfClass(LivingEntity.class, area,
-                e -> e != player && e.isAlive() && !e.isSpectator());
+                e -> e != player && e.isAlive() && !e.isSpectator()
+                        && (!(e instanceof Player altro) || PvpRules.colpibile(player, altro)));
         for (LivingEntity target : investiti) {
             target.hurt(player.damageSources().playerAttack(player), BOMB_DAMAGE);
             pushAway(player, target, 0.7D, 0.3D);
@@ -716,7 +719,7 @@ public final class VenomSymbiotePowersHandler {
             }
         }
         player.level().playSound(null, net.minecraft.core.BlockPos.containing(centro),
-                net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, 1.6F);
+                modKlyntar.sound.SuoniKlyntar.POWER_BOMB_DETONATE.get(), net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, 1.6F);
     }
 
     // ------------------------------------------------------------------ Symbiote Blast
@@ -737,7 +740,7 @@ public final class VenomSymbiotePowersHandler {
             }
             symbioteBurst(player, centro, BLAST_RADIUS, seconda ? 160 : 120);
             player.level().playSound(null, player.blockPosition(),
-                    net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,
+                    modKlyntar.sound.SuoniKlyntar.POWER_BLAST_BURST.get(),
                     net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, seconda ? 0.8F : 1.1F);
         }
 
@@ -756,7 +759,7 @@ public final class VenomSymbiotePowersHandler {
         player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, RAGE_DURATION * 2, 3, false, true));
         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, RAGE_DURATION, 1, false, true));
         player.level().playSound(null, player.blockPosition(),
-                net.minecraft.sounds.SoundEvents.WARDEN_ROAR, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 0.7F);
+                modKlyntar.sound.SuoniKlyntar.POWER_RAGE_START.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 0.7F);
     }
 
     private static void tickRage(ServerPlayer player, PowerState state) {

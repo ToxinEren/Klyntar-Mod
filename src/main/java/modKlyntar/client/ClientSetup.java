@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -34,6 +35,13 @@ public class ClientSetup {
         event.registerLayerDefinition(TENTACLE_SEGMENT_LAYER, TentacleSegmentModel::createLayer);
     }
 	
+	/** La vignetta rossa del berserk, sopra quella vanilla; il riquadro della voce, sopra tutta la GUI. */
+	@SubscribeEvent
+	public static void onRegisterOverlays(RegisterGuiOverlaysEvent event) {
+		event.registerAbove(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.VIGNETTE.id(), "berserk_vignette", BerserkClient.OVERLAY);
+		event.registerAboveAll("symbiote_voice", VoceSimbionteClient.OVERLAY);
+	}
+
 	@SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
     	EntityRenderers.register(MyMod.SYMBIOTE_ENTITY.get(), SymbioteRenderer::new);

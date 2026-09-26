@@ -55,7 +55,7 @@ public final class SymbioteParasiteHandler {
         }
         simbionte.moveTo(ospite.getX(), ospite.getY(), ospite.getZ(), ospite.getYRot(), 0.0F);
         livello.addFreshEntity(simbionte);
-        livello.playSound(null, ospite.blockPosition(), SoundEvents.SLIME_BLOCK_BREAK,
+        livello.playSound(null, ospite.blockPosition(), modKlyntar.sound.SuoniKlyntar.SYMBIOTE_EMERGE.get(),
                 SoundSource.HOSTILE, 1.0F, 0.6F);
         LOGGER.info("A symbiote left the body of {}", ospite.getType().getDescription().getString());
     }

@@ -8,5 +8,375 @@
         "sounds": [
             "klyntars:electricity"
         ]
+    },
+    "ability.armor": {
+        "subtitle": "subtitles.klyntars.ability.armor",
+        "sounds": [
+            "klyntars:venom/squish_1",
+            "klyntars:venom/squish_2",
+            "klyntars:venom/squish_3"
+        ]
+    },
+    "ability.unleash": {
+        "subtitle": "subtitles.klyntars.ability.unleash",
+        "sounds": [
+            "klyntars:venom/unleash"
+        ]
+    },
+    "ability.spikes": {
+        "subtitle": "subtitles.klyntars.ability.spikes",
+        "sounds": [
+            "klyntars:venom/whip_1",
+            "klyntars:venom/whip_2",
+            "klyntars:venom/whip_3"
+        ]
+    },
+    "ability.hit": {
+        "subtitle": "subtitles.klyntars.ability.hit",
+        "sounds": [
+            "klyntars:venom/hit_1",
+            "klyntars:venom/hit_2",
+            "klyntars:venom/hit_3"
+        ]
+    },
+    "ability.roar": {
+        "subtitle": "subtitles.klyntars.ability.roar",
+        "sounds": [
+            {
+                "name": "minecraft:entity.warden.roar",
+                "type": "event"
+            }
+        ]
+    },
+    "ability.shield": {
+        "subtitle": "subtitles.klyntars.ability.shield",
+        "sounds": [
+            "klyntars:venom/grip_1",
+            "klyntars:venom/grip_2",
+            "klyntars:venom/grip_3"
+        ]
+    },
+    "ability.assimilate": {
+        "subtitle": "subtitles.klyntars.ability.assimilate",
+        "sounds": [
+            "klyntars:venom/assimilate"
+        ]
+    },
+    "ability.traversal": {
+        "subtitle": "subtitles.klyntars.ability.traversal",
+        "sounds": [
+            "klyntars:venom/traversal"
+        ]
+    },
+    "ability.wings": {
+        "subtitle": "subtitles.klyntars.ability.wings",
+        "sounds": [
+            "klyntars:venom/wings"
+        ]
+    },
+    "ability.fend_off": {
+        "subtitle": "subtitles.klyntars.ability.fend_off",
+        "sounds": [
+            "klyntars:venom/fend_off"
+        ]
+    },
+    "ability.grab_tentacle": {
+        "subtitle": "subtitles.klyntars.ability.grab_tentacle",
+        "sounds": [
+            "klyntars:venom/grab_tentacle"
+        ]
+    },
+    "ability.grab_pull": {
+        "subtitle": "subtitles.klyntars.ability.grab_pull",
+        "sounds": [
+            "klyntars:venom/squish_1",
+            "klyntars:venom/squish_2",
+            "klyntars:venom/squish_3"
+        ]
+    },
+    "ability.grab_push": {
+        "subtitle": "subtitles.klyntars.ability.grab_push",
+        "sounds": [
+            "klyntars:venom/slap_1",
+            "klyntars:venom/slap_2",
+            "klyntars:venom/slap_3"
+        ]
+    },
+    "ability.grab_throw": {
+        "subtitle": "subtitles.klyntars.ability.grab_throw",
+        "sounds": [
+            "klyntars:venom/grab_throw"
+        ]
+    },
+    "ability.symbiote_pull": {
+        "subtitle": "subtitles.klyntars.ability.symbiote_pull",
+        "sounds": [
+            "klyntars:venom/symbiote_pull"
+        ]
+    },
+    "ability.symbiote_strike": {
+        "subtitle": "subtitles.klyntars.ability.symbiote_strike",
+        "sounds": [
+            "klyntars:venom/strike"
+        ]
+    },
+    "ability.rage": {
+        "subtitle": "subtitles.klyntars.ability.rage",
+        "sounds": [
+            {
+                "name": "minecraft:entity.warden.roar",
+                "type": "event"
+            }
+        ]
+    },
+    "ability.blast": {
+        "subtitle": "subtitles.klyntars.ability.blast",
+        "sounds": [
+            {
+                "name": "minecraft:entity.wither.break_block",
+                "type": "event"
+            }
+        ]
+    },
+    "power.pull_slam": {
+        "subtitle": "subtitles.klyntars.power.pull_slam",
+        "sounds": [
+            {
+                "name": "minecraft:entity.generic.explode",
+                "type": "event"
+            }
+        ]
+    },
+    "power.strike_hit": {
+        "subtitle": "subtitles.klyntars.power.strike_hit",
+        "sounds": [
+            "klyntars:venom/hit_1",
+            "klyntars:venom/hit_2",
+            "klyntars:venom/hit_3"
+        ]
+    },
+    "power.strike_impact": {
+        "subtitle": "subtitles.klyntars.power.strike_impact",
+        "sounds": [
+            {
+                "name": "minecraft:entity.generic.explode",
+                "type": "event"
+            }
+        ]
+    },
+    "power.tempest_wave": {
+        "subtitle": "subtitles.klyntars.power.tempest_wave",
+        "sounds": [
+            {
+                "name": "minecraft:entity.warden.sonic_boom",
+                "type": "event"
+            }
+        ]
+    },
+    "power.tempest_impact": {
+        "subtitle": "subtitles.klyntars.power.tempest_impact",
+        "sounds": [
+            {
+                "name": "minecraft:entity.generic.explode",
+                "type": "event"
+            }
+        ]
+    },
+    "power.bomb_throw": {
+        "subtitle": "subtitles.klyntars.power.bomb_throw",
+        "sounds": [
+            "klyntars:venom/toss_1",
+            "klyntars:venom/toss_2",
+            "klyntars:venom/toss_3"
+        ]
+    },
+    "power.bomb_detonate": {
+        "subtitle": "subtitles.klyntars.power.bomb_detonate",
+        "sounds": [
+            {
+                "name": "minecraft:entity.generic.explode",
+                "type": "event"
+            }
+        ]
+    },
+    "power.blast_burst": {
+        "subtitle": "subtitles.klyntars.power.blast_burst",
+        "sounds": [
+            {
+                "name": "minecraft:entity.generic.explode",
+                "type": "event"
+            }
+        ]
+    },
+    "power.rage_start": {
+        "subtitle": "subtitles.klyntars.power.rage_start",
+        "sounds": [
+            {
+                "name": "minecraft:entity.warden.roar",
+                "type": "event"
+            }
+        ]
+    },
+    "traversal.extend": {
+        "subtitle": "subtitles.klyntars.traversal.extend",
+        "sounds": [
+            "klyntars:venom/extend_1",
+            "klyntars:venom/extend_2",
+            "klyntars:venom/extend_3"
+        ]
+    },
+    "traversal.grip": {
+        "subtitle": "subtitles.klyntars.traversal.grip",
+        "sounds": [
+            "klyntars:venom/grip_1",
+            "klyntars:venom/grip_2",
+            "klyntars:venom/grip_3"
+        ]
+    },
+    "traversal.retract": {
+        "subtitle": "subtitles.klyntars.traversal.retract",
+        "sounds": [
+            "klyntars:venom/retract_1",
+            "klyntars:venom/retract_2",
+            "klyntars:venom/retract_3"
+        ]
+    },
+    "fend_off.lash": {
+        "subtitle": "subtitles.klyntars.fend_off.lash",
+        "sounds": [
+            "klyntars:venom/lash_1",
+            "klyntars:venom/lash_2",
+            "klyntars:venom/lash_3"
+        ]
+    },
+    "fend_off.slap": {
+        "subtitle": "subtitles.klyntars.fend_off.slap",
+        "sounds": [
+            "klyntars:venom/slap_1",
+            "klyntars:venom/slap_2",
+            "klyntars:venom/slap_3"
+        ]
+    },
+    "fend_off.slam_ground": {
+        "subtitle": "subtitles.klyntars.fend_off.slam_ground",
+        "sounds": [
+            {
+                "name": "minecraft:entity.wither.break_block",
+                "type": "event"
+            }
+        ]
+    },
+    "fend_off.slam_hit": {
+        "subtitle": "subtitles.klyntars.fend_off.slam_hit",
+        "sounds": [
+            "klyntars:venom/hit_1",
+            "klyntars:venom/hit_2",
+            "klyntars:venom/hit_3"
+        ]
+    },
+    "fend_off.clash_hit": {
+        "subtitle": "subtitles.klyntars.fend_off.clash_hit",
+        "sounds": [
+            "klyntars:venom/hit_1",
+            "klyntars:venom/hit_2",
+            "klyntars:venom/hit_3"
+        ]
+    },
+    "fend_off.clash_squish": {
+        "subtitle": "subtitles.klyntars.fend_off.clash_squish",
+        "sounds": [
+            "klyntars:venom/squish_1",
+            "klyntars:venom/squish_2",
+            "klyntars:venom/squish_3"
+        ]
+    },
+    "voice.neutral": {
+        "subtitle": "subtitles.klyntars.voice.neutral",
+        "sounds": [
+            "klyntars:venom/retract_1"
+        ]
+    },
+    "voice.bond_up": {
+        "subtitle": "subtitles.klyntars.voice.bond_up",
+        "sounds": [
+            "klyntars:venom/whip_1"
+        ]
+    },
+    "voice.bond_down": {
+        "subtitle": "subtitles.klyntars.voice.bond_down",
+        "sounds": [
+            "klyntars:venom/squish_2"
+        ]
+    },
+    "voice.aggressive": {
+        "subtitle": "subtitles.klyntars.voice.aggressive",
+        "sounds": [
+            "klyntars:venom/grip_1"
+        ]
+    },
+    "voice.warning": {
+        "subtitle": "subtitles.klyntars.voice.warning",
+        "sounds": [
+            "klyntars:venom/slap_1"
+        ]
+    },
+    "symbiote.grab": {
+        "subtitle": "subtitles.klyntars.symbiote.grab",
+        "sounds": [
+            "klyntars:venom/squish_1",
+            "klyntars:venom/squish_2",
+            "klyntars:venom/squish_3"
+        ]
+    },
+    "symbiote.emerge": {
+        "subtitle": "subtitles.klyntars.symbiote.emerge",
+        "sounds": [
+            "klyntars:venom/emerge"
+        ]
+    },
+    "capsule.fill": {
+        "subtitle": "subtitles.klyntars.capsule.fill",
+        "sounds": [
+            {
+                "name": "minecraft:item.bottle.fill_dragonbreath",
+                "type": "event"
+            }
+        ]
+    },
+    "capsule.throw": {
+        "subtitle": "subtitles.klyntars.capsule.throw",
+        "sounds": [
+            {
+                "name": "minecraft:entity.snowball.throw",
+                "type": "event"
+            }
+        ]
+    },
+    "capsule.break": {
+        "subtitle": "subtitles.klyntars.capsule.break",
+        "sounds": [
+            {
+                "name": "minecraft:block.glass.break",
+                "type": "event"
+            }
+        ]
+    },
+    "knull.fragment": {
+        "subtitle": "subtitles.klyntars.knull.fragment",
+        "sounds": [
+            {
+                "name": "minecraft:entity.warden.agitated",
+                "type": "event"
+            }
+        ]
+    },
+    "promethium.tnt_primed": {
+        "subtitle": "subtitles.klyntars.promethium.tnt_primed",
+        "sounds": [
+            {
+                "name": "minecraft:entity.tnt.primed",
+                "type": "event"
+            }
+        ]
     }
 }

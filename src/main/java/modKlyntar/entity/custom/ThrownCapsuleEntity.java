@@ -53,7 +53,7 @@ public class ThrownCapsuleEntity extends ThrowableItemProjectile {
             livello.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GLASS.defaultBlockState()),
                     impatto.x, impatto.y, impatto.z, FRAMMENTI, 0.25D, 0.25D, 0.25D, 0.05D);
             livello.playSound(null, impatto.x, impatto.y, impatto.z,
-                    SoundEvents.GLASS_BREAK, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    modKlyntar.sound.SuoniKlyntar.CAPSULE_BREAK.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
             liberaSimbionte(livello, impatto);
         }
         this.discard();

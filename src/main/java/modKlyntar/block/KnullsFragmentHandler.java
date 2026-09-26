@@ -65,7 +65,7 @@ public final class KnullsFragmentHandler {
         fuoriuscito.moveTo(posizione.getX() + 0.5D, posizione.getY(), posizione.getZ() + 0.5D,
                 giocatore.getYRot(), 0.0F);
         livello.addFreshEntity(fuoriuscito);
-        livello.playSound(null, posizione, SoundEvents.WARDEN_AGITATED, SoundSource.HOSTILE, 1.0F, 0.8F);
+        livello.playSound(null, posizione, modKlyntar.sound.SuoniKlyntar.KNULL_FRAGMENT.get(), SoundSource.HOSTILE, 1.0F, 0.8F);
         LOGGER.info("A fragment opened by {} released a Grendel's Fragment",
                 giocatore.getGameProfile().getName());
     }

@@ -8,6 +8,9 @@ StartupEvents.registry('palladium:abilities', (event) => {
         .addProperty('self_damage', 'integer', 1, 'the damage on yourself')
 
         .firstTick((entity, entry, holder, enabled) => {
+            // solo il server fa esplodere: sul client l'abilita' gira anche per gli altri
+            // giocatori, e ogni client scavava buchi fantasma e riceveva spinte doppie
+            if (entity.level.isClientSide()) return;
             if (enabled && entity.isPlayer()) {
                 const causingfire = entry.getPropertyByName("cause_fire");
                 const radius = entry.getPropertyByName("radius");
@@ -26,7 +29,9 @@ StartupEvents.registry('palladium:abilities', (event) => {
 
                 explosion.strength(radius);
                 explosion.exploder(entity);
-                explosion.explosionMode('block');
+                // 'mob' e non 'block': i blocchi si rompono solo se il server lo permette
+                // (gamerule mobGriefing), come per le esplosioni dei creeper
+                explosion.explosionMode('mob');
                 entity.attack(self_dmg)
 
                 explosion.explode();

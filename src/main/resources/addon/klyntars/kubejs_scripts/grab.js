@@ -1,6 +1,8 @@
 //Made originally by phantompig, but converted to use Scoreboards by FSang18, and tweeked a lil by BulbulFrog
 
 let $Util = Java.loadClass('net.minecraft.Util');
+let $PvpRules = Java.loadClass('modKlyntar.player.PvpRules');
+let $Player = Java.loadClass('net.minecraft.world.entity.player.Player');
 
 // Grab & Crush: si afferra solo cio' che sta davvero davanti, a portata di braccio,
 // e il bersaglio resta appeso alla mano invece che a una distanza qualsiasi.
@@ -28,7 +30,7 @@ StartupEvents.registry('palladium:abilities', event => {
 
             let rayTrace = entity.rayTrace(GRAB_PORTATA, false);
 
-            if (rayTrace.entity != null) {
+            if (afferrabile(entity, rayTrace.entity)) {
                 entry.setUniquePropertyByName('held_entity', rayTrace.entity.uuid);
             }
         })
@@ -59,6 +61,9 @@ StartupEvents.registry('palladium:abilities', event => {
                     targetPos.subtract(heldEntity.getEyePosition()).scale(entry.getPropertyByName('strength'))
                 );
                 heldEntity.resetFallDistance();
+                // il movimento dei giocatori lo decide il loro client: senza questo il server li
+                // "teneva" solo per finta
+                if (heldEntity instanceof $Player) heldEntity.hurtMarked = true;
             }
 
             entity.level.sendParticles(
@@ -85,6 +90,17 @@ StartupEvents.registry('palladium:abilities', event => {
             entry.setUniquePropertyByName('held_entity', $Util.NIL_UUID);
         });
 });
+
+// Si afferrano solo creature vive: prima anche cornici, quadri, carrelli e i display che i
+// server usano per le decorazioni, e un block_display lasciato andare diventava un blocco vero
+// piazzato nel mondo. Un altro giocatore solo dove il PvP lo permette: lo schianto a terra
+// (GrabCrushLandingHandler) e' un danno da caduta, senza attaccante, che il PvP non ferma.
+function afferrabile(entity, preso) {
+    if (preso == null || !preso.isLiving() || !preso.isAlive() || preso.isSpectator()) return false;
+    if (preso.type == 'minecraft:armor_stand') return false;
+    if (preso instanceof $Player) return entity instanceof $Player && $PvpRules.colpibile(entity, preso);
+    return true;
+}
 
 function getRangeFromScore(entity, entry) {
     const objectiveName = entry.getPropertyByName('range_objective');

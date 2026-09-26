@@ -49,7 +49,7 @@ public final class SymbioteCapsuleHandler {
 
         simbionte.discard();
         giocatore.level().playSound(null, giocatore.blockPosition(),
-                SoundEvents.BOTTLE_FILL_DRAGONBREATH, SoundSource.PLAYERS, 1.0F, 1.0F);
+                modKlyntar.sound.SuoniKlyntar.CAPSULE_FILL.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
         ItemStack piena = new ItemStack(capsulaPer(simbionte));
         if (!giocatore.isCreative()) {
@@ -93,7 +93,7 @@ public final class SymbioteCapsuleHandler {
                 0.0F, VELOCITA, IMPRECISIONE);
         livello.addFreshEntity(capsula);
         livello.playSound(null, giocatore.blockPosition(),
-                SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 0.5F, 0.4F);
+                modKlyntar.sound.SuoniKlyntar.CAPSULE_THROW.get(), SoundSource.PLAYERS, 0.5F, 0.4F);
 
         if (!giocatore.isCreative()) {
             inMano.shrink(1);

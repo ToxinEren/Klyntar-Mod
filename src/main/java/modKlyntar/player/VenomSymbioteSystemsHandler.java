@@ -200,20 +200,6 @@ public final class VenomSymbioteSystemsHandler {
 
     private static final int AUTO_HEAD_STOP_HUNGER = 90;
 
-    private static final int BERSERK_STOP_HUNGER = 70;
-
-    private static final int BERSERK_FEND_TICKS = 20 * 20;
-
-    private static final int BERSERK_REGEN_TICKS = 40;
-
-    private static final double BERSERK_TARGET_RANGE = 32.0D;
-
-    private static final double BERSERK_REGEN_START_RANGE = 5.0D;
-
-    private static final double BERSERK_CHASE_STOP_RANGE = 3.25D;
-
-    private static final double BERSERK_CHASE_SPEED = 0.46D;
-
     private static final int BERSERK_STUCK_JUMP_TICKS = 40;
 
     private static final double BERSERK_STUCK_DISTANCE_SQR = 0.03D;
@@ -227,6 +213,52 @@ public final class VenomSymbioteSystemsHandler {
     private static final double BERSERK_STUCK_JUMP_UP_SPEED = 0.48D;
 
     private static final int VULNERABILITY_TICKS = 20 * 60 * 5;
+
+    /**
+
+     * La scottatura: un contatto breve col fuoco ferma la rigenerazione per poco, e basta.
+
+     * L'indebolimento pieno (VULNERABILITY_TICKS, abilita' chiuse, scossa, ritirata) arriva
+
+     * solo restando nelle fiamme abbastanza a lungo, o toccando la lava. Prima bastava una
+
+     * scintilla - un colpo con Fire Aspect, una palla di fuoco - per pagare quanto un bagno
+
+     * di lava.
+
+     */
+
+    private static final String SCOTTATURA_OBJECTIVE = "Venom.Burn";
+
+    private static final int SCOTTATURA_TICKS = 20 * 15;
+
+    /** Il calore che fa scattare l'indebolimento pieno: sei secondi in fiamme, di fila o quasi. */
+
+    private static final int CALORE_SOGLIA = 20 * 6;
+
+    /** Il calore di un colpo di fuoco preso senza stare gia' bruciando: una palla di fuoco, un'esplosione. */
+
+    private static final int CALORE_COLPO = 20;
+
+    /** Il calore accumulato, per giocatore: sale di uno per tick in fiamme e scende di uno fuori. */
+
+    private static final Map<UUID, Integer> CALORE = new ConcurrentHashMap<>();
+
+    /**
+
+     * I colpi sonori si dimenticano: uno ogni minuto senza colpi nuovi. Prima il conto non
+
+     * scendeva mai, e tre campane a ore di distanza strappavano il simbionte come tre di fila.
+
+     */
+
+    private static final String SONIC_DECAY_OBJECTIVE = "Venom.SonicDecay";
+
+    private static final int SONIC_DECAY_TICKS = 20 * 60;
+
+    /** I colpi sonori che strappano il simbionte, prima che l'affinita' ne aggiunga. */
+
+    private static final int COLPI_PER_STRAPPO = 3;
 
     private static final int AUTO_ATTACK_INTERVAL = 10;
 
@@ -277,8 +309,6 @@ public final class VenomSymbioteSystemsHandler {
     private static final Map<UUID, ServerBossEvent> HUNGER_BARS = new ConcurrentHashMap<>();
 
     private static final Map<UUID, Integer> AUTO_ATTACK_TICKS = new ConcurrentHashMap<>();
-
-    private static final Map<UUID, Integer> BERSERK_TARGETS = new ConcurrentHashMap<>();
 
     private static final Map<UUID, BerserkStuckState> BERSERK_STUCK_MEMORY = new ConcurrentHashMap<>();
 
@@ -410,6 +440,10 @@ public final class VenomSymbioteSystemsHandler {
 
             scalaContatore(player, VULNERABILITY_OBJECTIVE);
 
+            scalaContatore(player, SCOTTATURA_OBJECTIVE);
+
+            tickColpiSonori(player);
+
             tickVibrant(player);
 
             tickRevert(player);
@@ -420,7 +454,7 @@ public final class VenomSymbioteSystemsHandler {
 
             AUTO_ATTACK_TICKS.remove(player.getUUID());
 
-            BERSERK_TARGETS.remove(player.getUUID());
+            BerserkSimbionte.dimentica(player);
 
             dimenticaStalloBerserk(player);
 
@@ -500,7 +534,19 @@ public final class VenomSymbioteSystemsHandler {
 
         if (event.getSource().is(DamageTypeTags.IS_FIRE) || player.isOnFire() || player.isInLava()) {
 
-            applyVulnerability(player, false);
+            if (player.isInLava()) {
+
+                applyVulnerability(player, false);
+
+            } else if (!player.isOnFire()) {
+
+                // un colpo di fuoco preso senza bruciare: il calore che sta in fiamme lo conta
+
+                // gia' tickVulnerability, un tick alla volta, e contarlo due volte lo raddoppierebbe
+
+                scalda(player, CALORE_COLPO);
+
+            }
 
             return;
 
@@ -527,8 +573,6 @@ public final class VenomSymbioteSystemsHandler {
             removeHungerBar(player);
 
             AUTO_ATTACK_TICKS.remove(player.getUUID());
-
-            BERSERK_TARGETS.remove(player.getUUID());
 
             dimenticaStalloBerserk(player);
 
@@ -1290,13 +1334,17 @@ public final class VenomSymbioteSystemsHandler {
 
         bar.setProgress(hunger / (float) MAX_HUNGER);
 
-        bar.setName(Component.literal("Symbiote Hunger: " + hunger + "%"));
+        bar.setName(Component.literal(nomeBarra(player, hunger)));
+
+        // gialla mentre il simbionte e' indebolito, rossa il resto del tempo
+
+        bar.setColor(isVulnerable(player) ? BossEvent.BossBarColor.YELLOW : BossEvent.BossBarColor.RED);
 
 
 
         if (hunger <= 0 || getScore(player, BERSERK_OBJECTIVE, false) > 0) {
 
-            tickBerserkSymbiote(player, hunger);
+            BerserkSimbionte.tick(player, hunger);
 
         } else if (!isBodyActive(player)) {
 
@@ -1317,6 +1365,20 @@ public final class VenomSymbioteSystemsHandler {
 
 
     private static void tickAutoVenomHeadFeeding(ServerPlayer player, int hunger) {
+
+        // indebolito la testa e' chiusa come ogni altra abilita': niente pasti da sola ne' dalla
+
+        // borsa, e la fame che la farebbe uscire aspetta la fine dell'indebolimento
+
+        if (isVulnerable(player)) {
+
+            setScore(player, AUTO_HEAD_OBJECTIVE, 0);
+
+            clearCombatTargetsIfFree(player);
+
+            return;
+
+        }
 
         if (hunger >= AUTO_HEAD_STOP_HUNGER) {
 
@@ -1406,11 +1468,25 @@ public final class VenomSymbioteSystemsHandler {
 
     private static void tickVulnerability(ServerPlayer player) {
 
-        if (player.isOnFire() || player.isInLava()) {
+        // la lava non fa sconti; il fuoco scalda, e oltre la soglia indebolisce del tutto
+
+        if (player.isInLava()) {
 
             applyVulnerability(player, false);
 
+        } else if (player.isOnFire()) {
+
+            scalda(player, 1);
+
+        } else {
+
+            CALORE.computeIfPresent(player.getUUID(), (id, calore) -> calore > 1 ? calore - 1 : null);
+
         }
+
+        tickScottatura(player);
+
+        tickColpiSonori(player);
 
 
 
@@ -1460,218 +1536,6 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static void tickBerserkSymbiote(ServerPlayer player, int hunger) {
-
-        if (hunger >= BERSERK_STOP_HUNGER) {
-
-            stopBerserk(player);
-
-            return;
-
-        }
-
-
-
-        if (getScore(player, BERSERK_OBJECTIVE, false) <= 0) {
-
-            setScore(player, BERSERK_OBJECTIVE, 1);
-
-            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
-
-            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-            // averlo lasciato a digiuno fino alla furia costa fiducia
-
-            SymbioteAffinityHandler.penalizza(player, SymbioteAffinityHandler.PENALITA_BERSERK);
-
-            LOGGER.info("Venom berserk started for {}", player.getGameProfile().getName());
-
-        }
-
-
-
-        if (!isBodyActive(player)) {
-
-            // rimette in scena la forma che il giocatore ha davvero, non sempre venom
-
-            PlayerPowerCapability.riapplicaForma(player);
-
-        }
-
-
-
-        int phase = getScore(player, BERSERK_PHASE_OBJECTIVE, true);
-
-        int ticks = getScore(player, BERSERK_TICKS_OBJECTIVE, true) + 1;
-
-        setScore(player, BERSERK_TICKS_OBJECTIVE, ticks);
-
-        LivingEntity lockedTarget = getOrFindBerserkTarget(player);
-
-
-
-        if (phase != 2) {
-
-            setScore(player, FEND_OFF_OBJECTIVE, 1);
-
-            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
-
-            if (lockedTarget != null) {
-
-                faceBerserkTarget(player, lockedTarget);
-
-                chaseBerserkTarget(player, lockedTarget);
-
-                if (isNonAggressiveBerserkTarget(player, lockedTarget)
-
-                        && lockedTarget.distanceToSqr(player) <= BERSERK_REGEN_START_RANGE * BERSERK_REGEN_START_RANGE) {
-
-                    setScore(player, BERSERK_PHASE_OBJECTIVE, 2);
-
-                    setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-                    setScore(player, FEND_OFF_OBJECTIVE, 0);
-
-                    LOGGER.info("Venom berserk forced regeneration on passive target {} for {}", EntityType.getKey(lockedTarget.getType()), player.getGameProfile().getName());
-
-                    return;
-
-                }
-
-            }
-
-            pullNearbyFoodLoot(player);
-
-            if (ticks >= BERSERK_FEND_TICKS) {
-
-                setScore(player, BERSERK_PHASE_OBJECTIVE, 2);
-
-                setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-            }
-
-            return;
-
-        }
-
-
-
-        setScore(player, FEND_OFF_OBJECTIVE, 0);
-
-        LivingEntity target = lockedTarget;
-
-        if (target == null) {
-
-            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
-
-            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
-
-            return;
-
-        }
-
-
-
-        if (target.distanceToSqr(player) > BERSERK_REGEN_START_RANGE * BERSERK_REGEN_START_RANGE) {
-
-            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
-
-            ModNetwork.syncVenomCombatTargets(player, java.util.List.of(getTargetCenter(target)));
-
-            faceBerserkTarget(player, target);
-
-            chaseBerserkTarget(player, target);
-
-            return;
-
-        }
-
-
-
-        faceBerserkTarget(player, target);
-
-        setScore(player, LOCK_MOVEMENT_OBJECTIVE, 2);
-
-        player.setDeltaMovement(0.0D, Math.min(player.getDeltaMovement().y, 0.0D), 0.0D);
-
-        player.hurtMarked = true;
-
-        setScore(player, BERSERK_REGEN_OBJECTIVE, 1);
-
-        ModNetwork.syncVenomCombatTargets(player, java.util.List.of(getTargetCenter(target)));
-
-        Vec3 pull = player.position().add(0.0D, player.getBbHeight() * 0.85D, 0.0D).subtract(target.position());
-
-        if (pull.lengthSqr() > 1.0D) {
-
-            target.setDeltaMovement(pull.normalize().scale(0.42D));
-
-            target.hasImpulse = true;
-
-            target.hurtMarked = true;
-
-        }
-
-        target.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 8, false, false, false));
-
-
-
-        if (ticks >= BERSERK_REGEN_TICKS || pull.lengthSqr() <= 1.3D) {
-
-            int restore = getFeedHungerValue(target);
-
-            target.hurt(player.damageSources().magic(), 100.0F);
-
-            player.heal(8.0F);
-
-            addHunger(player, restore);
-
-            setScore(player, BERSERK_PHASE_OBJECTIVE, 1);
-
-            setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-            setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
-
-            BERSERK_TARGETS.remove(player.getUUID());
-
-            dimenticaStalloBerserk(player);
-
-            ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
-
-            LOGGER.info("Venom berserk regeneration restored {} hunger from {} for {}", restore, EntityType.getKey(target.getType()), player.getGameProfile().getName());
-
-        }
-
-    }
-
-
-
-    private static void stopBerserk(ServerPlayer player) {
-
-        setScore(player, BERSERK_OBJECTIVE, 0);
-
-        setScore(player, BERSERK_PHASE_OBJECTIVE, 0);
-
-        setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
-
-        setScore(player, BERSERK_REGEN_OBJECTIVE, 0);
-
-        setScore(player, FEND_OFF_OBJECTIVE, 0);
-
-        BERSERK_TARGETS.remove(player.getUUID());
-
-        dimenticaStalloBerserk(player);
-
-        ModNetwork.syncVenomCombatTargets(player, java.util.List.of());
-
-        LOGGER.info("Venom berserk stopped for {}", player.getGameProfile().getName());
-
-    }
-
-
-
     private static int getFeedHungerValue(LivingEntity target) {
 
         if (target instanceof Villager || target instanceof Animal && !(target instanceof Allay)) {
@@ -1686,7 +1550,7 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static void addHunger(ServerPlayer player, int amount) {
+    static void addHunger(ServerPlayer player, int amount) {
 
         setScore(player, HUNGER_OBJECTIVE, Math.min(MAX_HUNGER, getScore(player, HUNGER_OBJECTIVE, false) + amount));
 
@@ -1710,7 +1574,7 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static void pullNearbyFoodLoot(ServerPlayer player) {
+    static void pullNearbyFoodLoot(ServerPlayer player) {
 
         ItemEntity food = findNearestFoodLoot(player);
 
@@ -1757,6 +1621,10 @@ public final class VenomSymbioteSystemsHandler {
         ItemEntity food = findNearestFoodLoot(player);
 
         if (food == null) {
+
+            // niente per terra: la testa si arrangia con quello che il giocatore ha addosso
+
+            modKlyntar.symbiote.TestaSimbionte.spuntinoDallaBorsa(player);
 
             clearCombatTargetsIfFree(player);
 
@@ -1814,11 +1682,31 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
+    /**
+
+     * Il simbionte prende solo il cibo che vede: prima sentiva la carne entro otto blocchi anche
+
+     * attraverso muri e pavimenti, e la trascinava fuori dalle grotte di sotto.
+
+     */
+
+    private static boolean vedeCibo(ServerPlayer player, ItemEntity item) {
+
+        Vec3 cibo = item.position().add(0.0D, item.getBbHeight() * 0.5D, 0.0D);
+
+        return player.level().clip(new ClipContext(player.getEyePosition(), cibo, ClipContext.Block.COLLIDER,
+
+                ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS;
+
+    }
+
     private static ItemEntity findNearestFoodLoot(ServerPlayer player) {
 
         return player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(FOOD_SEARCH_RANGE),
 
-                        item -> item.isAlive() && SYMBIOTE_FOODS.contains(item.getItem().getItem()))
+                        item -> item.isAlive() && SYMBIOTE_FOODS.contains(item.getItem().getItem())
+
+                                && vedeCibo(player, item))
 
                 .stream()
 
@@ -1829,16 +1717,6 @@ public final class VenomSymbioteSystemsHandler {
     }
 
 
-
-    /**
-
-     * Indebolisce il simbionte come farebbe il fuoco: stessa durata, stesse abilita' bloccate.
-
-     * La usa l'Anti-Venom, che nella lista degli indebolimenti sta accanto a fuoco e suono,
-
-     * ma senza far scattare il conteggio delle prese sonore.
-
-     */
 
     /**
 
@@ -1853,6 +1731,12 @@ public final class VenomSymbioteSystemsHandler {
         setScore(player, VULNERABILITY_OBJECTIVE, 0);
 
         setScore(player, SONIC_HITS_OBJECTIVE, 0);
+
+        setScore(player, SONIC_DECAY_OBJECTIVE, 0);
+
+        setScore(player, SCOTTATURA_OBJECTIVE, 0);
+
+        CALORE.remove(player.getUUID());
 
     }
 
@@ -1874,9 +1758,199 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
+    /**
+
+     * Indebolisce il simbionte come farebbe il fuoco: stessa durata, stesse abilita' bloccate.
+
+     * La usa l'Anti-Venom, che nella lista degli indebolimenti sta accanto a fuoco e suono,
+
+     * ma senza far scattare il conteggio delle prese sonore.
+
+     */
+
     public static void applyAntiVenomWeakness(ServerPlayer player) {
 
         applyVulnerability(player, false);
+
+    }
+
+
+
+    /**
+
+     * Quanto dell'indebolimento arriva davvero, da 1 a 0.5: l'affinita' non rende immuni, rende
+
+     * piu' resistenti. A 100 ogni debolezza dura la meta', serve il doppio del calore per
+
+     * l'indebolimento pieno e servono due colpi sonori in piu' per lo strappo.
+
+     */
+
+    public static float resistenza(Player player) {
+
+        return 1.0F - 0.5F * modKlyntar.symbiote.SymbioteState.affinita(player) / 100.0F;
+
+    }
+
+
+
+    /** Tre colpi sonori, uno in piu' a 50 di affinita' e un altro a 100. La legge anche la voce. */
+
+    public static int colpiPerStrappo(Player player) {
+
+        return COLPI_PER_STRAPPO + modKlyntar.symbiote.SymbioteState.affinita(player) / 50;
+
+    }
+
+
+
+    /**
+
+     * Il fuoco scalda: ogni volta scotta (la rigenerazione si ferma per poco), e quando il
+
+     * calore passa la soglia l'indebolimento diventa pieno. Restando in fiamme il calore resta
+
+     * in cima, e l'indebolimento pieno si rinnova tick dopo tick come prima.
+
+     */
+
+    private static void scalda(ServerPlayer player, int quanto) {
+
+        if (modKlyntar.symbiote.SymbioteState.isAntiVenom(player)) {
+
+            return;
+
+        }
+
+        int soglia = Math.round(CALORE_SOGLIA / resistenza(player));
+
+        int calore = Math.min(soglia, CALORE.getOrDefault(player.getUUID(), 0) + quanto);
+
+        CALORE.put(player.getUUID(), calore);
+
+        int scottatura = Math.round(SCOTTATURA_TICKS * resistenza(player));
+
+        setScore(player, SCOTTATURA_OBJECTIVE, Math.max(scottatura, getScore(player, SCOTTATURA_OBJECTIVE, false)));
+
+        player.removeEffect(MobEffects.REGENERATION);
+
+        if (calore >= soglia) {
+
+            applyVulnerability(player, false);
+
+        }
+
+    }
+
+
+
+    /** Finche' la scottatura dura, niente rigenerazione. */
+
+    private static void tickScottatura(ServerPlayer player) {
+
+        int rimasti = getScore(player, SCOTTATURA_OBJECTIVE, false);
+
+        if (rimasti <= 0) {
+
+            return;
+
+        }
+
+        setScore(player, SCOTTATURA_OBJECTIVE, rimasti - 1);
+
+        player.removeEffect(MobEffects.REGENERATION);
+
+    }
+
+
+
+    /** Un colpo sonoro dimenticato ogni SONIC_DECAY_TICKS senza colpi nuovi. */
+
+    private static void tickColpiSonori(ServerPlayer player) {
+
+        int colpi = getScore(player, SONIC_HITS_OBJECTIVE, false);
+
+        if (colpi <= 0) {
+
+            return;
+
+        }
+
+        int attesa = getScore(player, SONIC_DECAY_OBJECTIVE, false);
+
+        if (attesa > 1) {
+
+            setScore(player, SONIC_DECAY_OBJECTIVE, attesa - 1);
+
+            return;
+
+        }
+
+        setScore(player, SONIC_HITS_OBJECTIVE, colpi - 1);
+
+        setScore(player, SONIC_DECAY_OBJECTIVE, colpi > 1 ? SONIC_DECAY_TICKS : 0);
+
+    }
+
+
+
+    /**
+
+     * Il nome della barra della fame, con lo stato del simbionte quando c'e' qualcosa da dire:
+
+     * quanto manca alla fine dell'indebolimento o della scottatura, e quanti colpi sonori ha
+
+     * preso su quanti lo strappano. Prima non si vedeva niente, e le abilita' chiuse sembravano
+
+     * un difetto.
+
+     */
+
+    private static String nomeBarra(ServerPlayer player, int hunger) {
+
+        StringBuilder nome = new StringBuilder("Symbiote Hunger: ").append(hunger).append('%');
+
+        int debole = getScore(player, VULNERABILITY_OBJECTIVE, false);
+
+        int scottato = getScore(player, SCOTTATURA_OBJECTIVE, false);
+
+        if (debole > 0) {
+
+            nome.append("  |  Weakened ").append(minutiSecondi(debole));
+
+        } else if (scottato > 0) {
+
+            nome.append("  |  Burnt ").append(minutiSecondi(scottato));
+
+        }
+
+        int colpi = getScore(player, SONIC_HITS_OBJECTIVE, false);
+
+        if (colpi > 0) {
+
+            nome.append("  |  Sonic ").append(colpi).append('/').append(colpiPerStrappo(player));
+
+        }
+
+        String desiderio = modKlyntar.symbiote.DesideriSimbionte.etichetta(player);
+
+        if (desiderio != null) {
+
+            nome.append("  |  ").append(desiderio);
+
+        }
+
+        return nome.toString();
+
+    }
+
+
+
+    private static String minutiSecondi(int tick) {
+
+        int secondi = (tick + 19) / 20;
+
+        return (secondi / 60) + ":" + String.format(java.util.Locale.ROOT, "%02d", secondi % 60);
 
     }
 
@@ -1908,9 +1982,15 @@ public final class VenomSymbioteSystemsHandler {
 
         // le abilita' non si spengono piu' da qui: mentre l'indebolimento e' acceso Palladium
 
-        // le tiene chiuse col lucchetto, quindi i punteggi non vengono nemmeno scritti
+        // le tiene chiuse col lucchetto, quindi i punteggi non vengono nemmeno scritti.
 
-        setScore(player, VULNERABILITY_OBJECTIVE, VULNERABILITY_TICKS);
+        // L'affinita' accorcia la durata; il massimo fra quella in corso e la nuova, perche'
+
+        // un colpo nuovo non deve mai accorciare un indebolimento gia' piu' lungo
+
+        int durata = Math.round(VULNERABILITY_TICKS * resistenza(player));
+
+        setScore(player, VULNERABILITY_OBJECTIVE, Math.max(durata, getScore(player, VULNERABILITY_OBJECTIVE, false)));
 
         player.removeEffect(MobEffects.REGENERATION);
 
@@ -1932,7 +2012,9 @@ public final class VenomSymbioteSystemsHandler {
 
         setScore(player, SONIC_HITS_OBJECTIVE, hits);
 
-        if (hits < 3) {
+        setScore(player, SONIC_DECAY_OBJECTIVE, SONIC_DECAY_TICKS);
+
+        if (hits < colpiPerStrappo(player)) {
 
             return;
 
@@ -1988,167 +2070,31 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static LivingEntity findNearestLivingTarget(ServerPlayer player, double range) {
+    /**
 
-        return player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(range),
+     * Il berserk e' fermo contro un ostacolo: salta verso la preda, e dopo due salti a vuoto
 
-                        entity -> entity.isAlive() && !entity.isSpectator() && entity != player)
+     * accende la locomozione a tentacoli. Restituisce se ha saltato.
 
-                .stream()
+     */
 
-                .min(Comparator.comparingDouble(entity -> entity.distanceToSqr(player)))
+    static boolean sbloccaBerserk(ServerPlayer player, LivingEntity target, Vec3 direction) {
 
-                .orElse(null);
-
-    }
-
-
-
-    private static LivingEntity getOrFindBerserkTarget(ServerPlayer player) {
-
-        Integer targetId = BERSERK_TARGETS.get(player.getUUID());
-
-        if (targetId != null) {
-
-            Entity entity = player.level().getEntity(targetId);
-
-            if (entity instanceof LivingEntity target && canUseBerserkTarget(player, target)) {
-
-                return target;
-
-            }
-
-        }
-
-
-
-        LivingEntity target = findNearestLivingTarget(player, BERSERK_TARGET_RANGE);
-
-        if (target == null) {
-
-            BERSERK_TARGETS.remove(player.getUUID());
-
-            return null;
-
-        }
-
-
-
-        // lo stallo si dimentica solo se il bersaglio cambia davvero: capita di riagganciare
-
-        // la stessa entita' piu' volte, e azzerando ogni volta il contatore non arriverebbe
-
-        // mai alla soglia del salto
-
-        Integer precedente = BERSERK_TARGETS.put(player.getUUID(), target.getId());
-
-        if (precedente == null || precedente != target.getId()) {
-
-            dimenticaStalloBerserk(player);
-
-        }
-
-        faceBerserkTarget(player, target, true);
-
-        LOGGER.info("Venom berserk locked target {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
-
-        return target;
-
-    }
-
-
-
-    private static boolean canUseBerserkTarget(ServerPlayer player, LivingEntity target) {
-
-        return target.isAlive()
-
-                && !target.isSpectator()
-
-                && target != player
-
-                && target.distanceToSqr(player) <= BERSERK_TARGET_RANGE * BERSERK_TARGET_RANGE;
-
-    }
-
-
-
-    private static boolean isNonAggressiveBerserkTarget(ServerPlayer player, LivingEntity target) {
-
-        if (target instanceof Player) {
+        if (!shouldBerserkJumpForward(player, target, direction)) {
 
             return false;
 
         }
-
-        if (target instanceof Enemy) {
-
-            return false;
-
-        }
-
-        return !(target instanceof Mob mob) || mob.getTarget() != player;
-
-    }
-
-
-
-    private static void chaseBerserkTarget(ServerPlayer player, LivingEntity target) {
-
-        Vec3 targetCenter = getTargetCenter(target);
-
-        faceBerserkTarget(player, target);
-
-        Vec3 toTarget = targetCenter.subtract(player.position().add(0.0D, player.getBbHeight() * 0.45D, 0.0D));
-
-        Vec3 horizontal = new Vec3(toTarget.x, 0.0D, toTarget.z);
-
-        if (horizontal.lengthSqr() <= BERSERK_CHASE_STOP_RANGE * BERSERK_CHASE_STOP_RANGE) {
-
-            return;
-
-        }
-
-
-
-        Vec3 direction = horizontal.normalize();
 
         Vec3 current = player.getDeltaMovement();
 
-        double verticalAssist = target.getY() > player.getY() + 1.0D ? 0.12D : Math.min(current.y, 0.08D);
-
-        if (shouldBerserkJumpForward(player, target, direction)) {
-
-            player.setDeltaMovement(
-
-                    direction.x * BERSERK_STUCK_JUMP_FORWARD_SPEED,
-
-                    Math.max(current.y, BERSERK_STUCK_JUMP_UP_SPEED),
-
-                    direction.z * BERSERK_STUCK_JUMP_FORWARD_SPEED
-
-            );
-
-            player.fallDistance = 0.0F;
-
-            player.hasImpulse = true;
-
-            player.hurtMarked = true;
-
-            LOGGER.info("Venom berserk unstuck jump toward {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
-
-            return;
-
-        }
-
-
-
         player.setDeltaMovement(
 
-                current.x * 0.35D + direction.x * BERSERK_CHASE_SPEED,
+                direction.x * BERSERK_STUCK_JUMP_FORWARD_SPEED,
 
-                verticalAssist,
+                Math.max(current.y, BERSERK_STUCK_JUMP_UP_SPEED),
 
-                current.z * 0.35D + direction.z * BERSERK_CHASE_SPEED
+                direction.z * BERSERK_STUCK_JUMP_FORWARD_SPEED
 
         );
 
@@ -2158,59 +2104,11 @@ public final class VenomSymbioteSystemsHandler {
 
         player.hurtMarked = true;
 
-    }
+        LOGGER.info("Venom berserk unstuck jump toward {} for {}", EntityType.getKey(target.getType()), player.getGameProfile().getName());
 
-
-
-    private static void faceBerserkTarget(ServerPlayer player, LivingEntity target) {
-
-        faceBerserkTarget(player, target, false);
+        return true;
 
     }
-
-
-
-    private static void faceBerserkTarget(ServerPlayer player, LivingEntity target, boolean syncRotation) {
-
-        Vec3 from = player.getEyePosition();
-
-        Vec3 to = getTargetCenter(target);
-
-        Vec3 delta = to.subtract(from);
-
-        double horizontal = Math.sqrt(delta.x * delta.x + delta.z * delta.z);
-
-        if (horizontal < 1.0E-4D) {
-
-            return;
-
-        }
-
-
-
-        float yaw = (float) (Math.toDegrees(Math.atan2(delta.z, delta.x)) - 90.0D);
-
-        float pitch = (float) -Math.toDegrees(Math.atan2(delta.y, horizontal));
-
-        player.setYRot(yaw);
-
-        player.setYHeadRot(yaw);
-
-        player.setYBodyRot(yaw);
-
-        player.setXRot(pitch);
-
-        if (syncRotation) {
-
-            player.connection.teleport(player.getX(), player.getY(), player.getZ(), yaw, pitch);
-
-        }
-
-        player.hurtMarked = true;
-
-    }
-
-
 
     /**
 
@@ -2268,7 +2166,7 @@ public final class VenomSymbioteSystemsHandler {
 
     /** Dimentica lo stallo, spegnendo prima la locomozione se l'avevamo accesa noi. */
 
-    private static void dimenticaStalloBerserk(ServerPlayer player) {
+    static void dimenticaStalloBerserk(ServerPlayer player) {
 
         spegniLocomozioneBerserk(player, BERSERK_STUCK_MEMORY.get(player.getUUID()));
 
@@ -2686,7 +2584,7 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static boolean isBodyActive(ServerPlayer player) {
+    static boolean isBodyActive(ServerPlayer player) {
 
         return getScore(player, CAMERA_OBJECTIVE, false) > 0;
 
@@ -2825,6 +2723,8 @@ public final class VenomSymbioteSystemsHandler {
         setScore(player, BERSERK_TICKS_OBJECTIVE, 0);
 
         setScore(player, AUTO_HEAD_OBJECTIVE, 0);
+
+        BerserkSimbionte.dimentica(player);
 
         player.getPersistentData().putBoolean("Klyntar.HungerInitialized", true);
 

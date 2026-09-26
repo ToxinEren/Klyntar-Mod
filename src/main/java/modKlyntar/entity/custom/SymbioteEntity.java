@@ -120,7 +120,7 @@ public class SymbioteEntity extends Mob implements GeoEntity {
         preda.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 6, false, false));
 
         if (this.tickCount % 10 == 0) {
-            this.level().playSound(null, this.blockPosition(), SoundEvents.SLIME_BLOCK_PLACE,
+            this.level().playSound(null, this.blockPosition(), modKlyntar.sound.SuoniKlyntar.SYMBIOTE_GRAB.get(),
                     SoundSource.HOSTILE, 0.7F, 0.5F);
         }
     }

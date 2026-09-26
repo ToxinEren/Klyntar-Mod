@@ -611,7 +611,7 @@ public final class VenomTentaclesTraversalRenderer {
                         b.ritiroSuonato = true;
                         if (ora - corredo.suonoRitiro >= PAUSA_SUONO) {
                             corredo.suonoRitiro = ora;
-                            suona(livello, root, SoundEvents.HONEY_BLOCK_SLIDE, 0.3F, 1.3F);
+                            suona(livello, root, modKlyntar.sound.SuoniKlyntar.TRAVERSAL_RETRACT.get(), 0.3F, 1.3F);
                         }
                     }
                     double resta = 1.0D - liscio(Math.max(0.0D, r));
@@ -631,14 +631,14 @@ public final class VenomTentaclesTraversalRenderer {
             double e = Math.max(0.0D, Math.min(1.0D, (ora - b.nato) / durata));
             if (!b.partitoSuonato && ora - corredo.suonoAllungo >= PAUSA_SUONO) {
                 corredo.suonoAllungo = ora;
-                suona(livello, root, SoundEvents.SLIME_SQUISH_SMALL, 0.35F, 1.5F);
+                suona(livello, root, modKlyntar.sound.SuoniKlyntar.TRAVERSAL_EXTEND.get(), 0.35F, 1.5F);
             }
             b.partitoSuonato = true;
             if (e >= 1.0D && !b.presaSuonata) {
                 b.presaSuonata = true;
                 if (ora - corredo.suonoPresa >= PAUSA_SUONO) {
                     corredo.suonoPresa = ora;
-                    suona(livello, b.appiglio, SoundEvents.SLIME_BLOCK_PLACE, 0.5F, 0.95F);
+                    suona(livello, b.appiglio, modKlyntar.sound.SuoniKlyntar.TRAVERSAL_GRIP.get(), 0.5F, 0.95F);
                 }
             }
             double arrivato = 1.0D - Math.pow(1.0D - e, 3.0D);

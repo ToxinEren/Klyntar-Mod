@@ -51,7 +51,7 @@ public class PromethiumXTNTBlock extends Block {
             PrimedPromethiumXTnt tntEntity = new PrimedPromethiumXTnt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, igniter);
             world.addFreshEntity(tntEntity);
             world.removeBlock(pos, false);
-            world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), modKlyntar.sound.SuoniKlyntar.PROMETHIUM_TNT_PRIMED.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 
