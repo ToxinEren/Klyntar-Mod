@@ -156,7 +156,8 @@ public final class BerserkSimbionte {
             return;
         }
         if (!acceso) {
-            if (fame > 0) {
+            // mentre due simbionti si contendono il corpo, nessuno dei due ha tempo per la caccia
+            if (fame > 0 || modKlyntar.symbiote.ConflittoSimbionti.inCorso(ospite)) {
                 return;
             }
             inizia(ospite);

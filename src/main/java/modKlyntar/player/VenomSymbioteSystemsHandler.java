@@ -196,6 +196,10 @@ public final class VenomSymbioteSystemsHandler {
 
     private static final int HUNGER_DRAIN_INTERVAL = 60;
 
+    /** Quanto dura un indebolimento sonoro per chi ha la resistenza al suono. */
+
+    private static final float RESISTENZA_SONORA_DURATA = 0.6F;
+
     private static final int AUTO_HEAD_START_HUNGER = 50;
 
     private static final int AUTO_HEAD_STOP_HUNGER = 90;
@@ -1556,6 +1560,14 @@ public final class VenomSymbioteSystemsHandler {
 
     }
 
+    /** La fame che sale piu' in fretta: la usano la corruzione di All-Black e la doppia unione. */
+
+    public static void togliFame(ServerPlayer player, int amount) {
+
+        setScore(player, HUNGER_OBJECTIVE, Math.max(0, getScore(player, HUNGER_OBJECTIVE, false) - amount));
+
+    }
+
 
 
     private static LivingEntity findTaggedFeedTarget(ServerPlayer player) {
@@ -1798,7 +1810,11 @@ public final class VenomSymbioteSystemsHandler {
 
     public static int colpiPerStrappo(Player player) {
 
-        return COLPI_PER_STRAPPO + modKlyntar.symbiote.SymbioteState.affinita(player) / 50;
+        int sordo = modKlyntar.symbiote.ProfiliSimbionti.haTratto(player,
+
+                modKlyntar.symbiote.RegistroSimbionti.Tratto.RESISTENZA_SONORA) ? 1 : 0;
+
+        return COLPI_PER_STRAPPO + modKlyntar.symbiote.SymbioteState.affinita(player) / 50 + sordo;
 
     }
 
@@ -1932,6 +1948,24 @@ public final class VenomSymbioteSystemsHandler {
 
         }
 
+        String nemico = modKlyntar.symbiote.ConflittoSimbionti.avversario(player);
+
+        if (nemico != null) {
+
+            modKlyntar.symbiote.RegistroSimbionti.Simbionte s = modKlyntar.symbiote.RegistroSimbionti.di(nemico);
+
+            nome.append("  |  Fighting ").append(s == null ? nemico : s.nome())
+
+                    .append(' ').append(Math.max(0, modKlyntar.symbiote.ConflittoSimbionti.tensione(player))).append('%');
+
+        }
+
+        if (modKlyntar.symbiote.CorruzioneAllBlack.attivo(player)) {
+
+            nome.append("  |  Corruption ").append(modKlyntar.symbiote.CorruzioneAllBlack.corruzione(player));
+
+        }
+
         String desiderio = modKlyntar.symbiote.DesideriSimbionte.etichetta(player);
 
         if (desiderio != null) {
@@ -1988,7 +2022,17 @@ public final class VenomSymbioteSystemsHandler {
 
         // un colpo nuovo non deve mai accorciare un indebolimento gia' piu' lungo
 
-        int durata = Math.round(VULNERABILITY_TICKS * resistenza(player));
+        // la corruzione di All-Black amplifica le debolezze; la resistenza sonora (il tratto di
+
+        // Scream, preso digerendolo) accorcia quelle del suono
+
+        float sordo = sonic && modKlyntar.symbiote.ProfiliSimbionti.haTratto(player,
+
+                modKlyntar.symbiote.RegistroSimbionti.Tratto.RESISTENZA_SONORA) ? RESISTENZA_SONORA_DURATA : 1.0F;
+
+        int durata = Math.round(VULNERABILITY_TICKS * resistenza(player) * sordo
+
+                * modKlyntar.symbiote.CorruzioneAllBlack.moltiplicatoreDebolezza(player));
 
         setScore(player, VULNERABILITY_OBJECTIVE, Math.max(durata, getScore(player, VULNERABILITY_OBJECTIVE, false)));
 
@@ -2020,13 +2064,29 @@ public final class VenomSymbioteSystemsHandler {
 
         }
 
+        // All-Black si stacca solo se fuoco e suono lo colpiscono insieme: il conto resta pieno,
+
+        // e il prossimo colpo sonoro preso mentre brucia lo strappa
+
+        if (!modKlyntar.symbiote.CorruzioneAllBlack.strappabile(player)) {
+
+            setScore(player, SONIC_HITS_OBJECTIVE, colpiPerStrappo(player) - 1);
+
+            return;
+
+        }
+
 
 
         setScore(player, SONIC_HITS_OBJECTIVE, 0);
 
+        // la forma va letta prima di separarli: dopo il giocatore non ne ha piu' nessuna
+
+        String forma = modKlyntar.symbiote.SymbioteState.forma(player);
+
         PlayerPowerCapability.revertPlayer(player);
 
-        spawnSymbioteNear(player);
+        spawnSymbioteNear(player, forma);
 
     }
 
@@ -2254,7 +2314,7 @@ public final class VenomSymbioteSystemsHandler {
 
 
 
-    private static void spawnSymbioteNear(ServerPlayer player) {
+    private static void spawnSymbioteNear(ServerPlayer player, String forma) {
 
         if (!(player.level() instanceof ServerLevel level)) {
 
@@ -2262,13 +2322,17 @@ public final class VenomSymbioteSystemsHandler {
 
         }
 
-        Entity symbiote = MyMod.SYMBIOTE_ENTITY.get().create(level);
+        modKlyntar.entity.custom.SymbioteEntity symbiote = MyMod.SYMBIOTE_ENTITY.get().create(level);
 
         if (symbiote == null) {
 
             return;
 
         }
+
+        // strappato, il simbionte resta quello che era: un Riot strappato e' un Riot da ricatturare
+
+        symbiote.setForma(forma);
 
 
 
@@ -2758,7 +2822,7 @@ public final class VenomSymbioteSystemsHandler {
 
     public static void spawnSymbioteNearPlayer(ServerPlayer player) {
 
-        spawnSymbioteNear(player);
+        spawnSymbioteNear(player, modKlyntar.symbiote.SymbioteState.forma(player));
 
     }
 

@@ -102,6 +102,14 @@ public final class SymbioteAffinityHandler {
         if (forma.isEmpty()) {
             return;
         }
+        // All-Black non cresce coi giorni: la sua affinita' e' la corruzione, che sale uccidendo
+        if (modKlyntar.symbiote.CorruzioneAllBlack.FORMA.equals(forma)) {
+            int corruzione = modKlyntar.symbiote.CorruzioneAllBlack.corruzione(giocatore);
+            if (SymbioteState.getScore(giocatore, SymbioteState.AFFINITY_OBJECTIVE) != corruzione) {
+                SymbioteState.setScore(giocatore, SymbioteState.AFFINITY_OBJECTIVE, corruzione);
+            }
+            return;
+        }
 
         // gli obiettivi di questa forma devono esistere da subito: uno mai scritto non e'
         // zero, semplicemente non c'e', e nemmeno i comandi riescono a interrogarlo

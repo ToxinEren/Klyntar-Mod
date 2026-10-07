@@ -105,6 +105,9 @@ public class PromethiumXBlock extends FallingBlock {
         // Implementa la logica per spawnare il Symbiote
         // Ad esempio:
         SymbioteEntity symbiote = new SymbioteEntity(MyMod.SYMBIOTE_ENTITY.get(), level);
+        // dal meteorite escono Venom e Riot, meta' e meta'; al posto di Riot, di rado, uno della
+        // Life Foundation (segnalibro: finche' non ci sono resta Riot)
+        symbiote.setForma(modKlyntar.symbiote.RegistroSimbionti.dalMeteorite(level.getRandom()));
         symbiote.setPos(pos.x, pos.y, pos.z);
         level.addFreshEntity(symbiote);
     }

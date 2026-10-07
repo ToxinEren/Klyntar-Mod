@@ -1,0 +1,22 @@
+﻿{
+    "model": "klyntars:geo/venomspike.geo.json",
+    "type": "geckolib:default",
+    "texture": {
+        "base": "klyntars:textures/models/riot/spikevenom.png",
+        "transformers": [
+            {
+                "type": "palladium:alpha_mask",
+                "mask": "klyntars:textures/models/alpha_masks/venom/spikevenommask_#MASK.png"
+            }
+        ],
+        "variables": {
+            "MASK": {
+                "type": "palladium:ability_integer_property",
+                "power": "klyntars:riot",
+                "ability": "enablevenomspike",
+                "property": "value"
+            }
+        },
+        "output": "klyntars:textures/models/spikevenom_riot_#MASK.png"
+    }
+}

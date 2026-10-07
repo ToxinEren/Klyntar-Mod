@@ -75,6 +75,10 @@ public class ThrownCapsuleEntity extends ThrowableItemProjectile {
         if (simbionte == null) {
             return;
         }
+        // il simbionte che era nella capsula: la capsula di Riot libera Riot
+        if (simbionte instanceof SymbioteEntity mob && this.getItem().is(MyMod.RIOT_CAPSULE.get())) {
+            mob.setForma("riot");
+        }
         simbionte.moveTo(dove.x, dove.y, dove.z, this.getYRot(), 0.0F);
         livello.addFreshEntity(simbionte);
     }

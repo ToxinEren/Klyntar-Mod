@@ -47,7 +47,7 @@ public class PlayerPowerCapability {
     public static final String ANTIVENOM_OBJECTIVE = "Klyntar.AntiVenom";
     private static final String PALLADIUM_SYNC_KEY = "Klyntar.PalladiumPowerSynced";
     /** tutti i simbionti della mod: se Palladium ne riconosce gia' uno non se ne assegna un altro */
-    private static final String[] FORME_SIMBIONTE = {"venom", "venomspidey", "carnage", "antivenom", "toxin", "allblack"};
+    private static final String[] FORME_SIMBIONTE = {"venom", "venomspidey", "riot", "carnage", "antivenom", "toxin", "allblack"};
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -92,6 +92,7 @@ public class PlayerPowerCapability {
     private static final java.util.Map<String, Integer> FORZA_PER_FORMA = java.util.Map.of(
             "venom", 1,        // forza II
             "venomspidey", 1,  // forza II, come venom
+            "riot", 2,         // forza III: fisicamente piu' forte di venom
             "antivenom", 1,    // forza II
             "carnage", 2,      // forza III
             "toxin", 4,        // forza V
@@ -218,7 +219,7 @@ public class PlayerPowerCapability {
         // Venom e la sua evoluzione Spidey respirano sott'acqua: il simbionte non ha polmoni.
         // La velocita' di nuoto invece non e' un effetto ma un modificatore, e sta nei JSON
         // dei poteri (venomswim) con gli altri attributi che Palladium governa
-        if ("venom".equals(forma) || "venomspidey".equals(forma)) {
+        if ("venom".equals(forma) || "venomspidey".equals(forma) || "riot".equals(forma)) {
             player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, DURATA_BONUS, 0, false, false));
         }
     }
@@ -509,6 +510,9 @@ public class PlayerPowerCapability {
             // il sync riporterebbe klyntars:venom e il potere si annullerebbe da solo
             if ("venomspidey".equals(normalized)) {
                 return "venomspidey";
+            }
+            if ("riot".equals(normalized)) {
+                return "riot";
             }
             if ("carnage".equals(normalized)) {
                 return "carnage";

@@ -66,14 +66,57 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, BerserkPacket.class, BerserkPacket::encode, BerserkPacket::new, BerserkPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, FrustataPacket.class, FrustataPacket::encode, FrustataPacket::new, FrustataPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+    }
+
+    /** Una frustata coi tentacoli da un'entita' all'altra: la vedono tutti quelli che vedono chi frusta. */
+    public static void mandaFrustata(net.minecraft.world.entity.Entity da, net.minecraft.world.entity.Entity a, String forma) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> da), new FrustataPacket(da.getId(), a.getId(), forma));
+    }
+
+    public static class FrustataPacket {
+        private final int da;
+        private final int a;
+        private final String forma;
+
+        public FrustataPacket(int da, int a, String forma) {
+            this.da = da;
+            this.a = a;
+            this.forma = forma == null ? "" : forma;
+        }
+
+        public FrustataPacket(FriendlyByteBuf buf) {
+            this.da = buf.readVarInt();
+            this.a = buf.readVarInt();
+            this.forma = buf.readUtf(32);
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeVarInt(da);
+            buf.writeVarInt(a);
+            buf.writeUtf(forma, 32);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> modKlyntar.client.renderer.FrustateSimbionte.aggiungi(da, a, forma)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     /**
      * Una battuta del simbionte, solo al suo ospite: gli altri non sentono la voce nella sua testa.
      * La fiducia sceglie il gradino delle battute (vedi VoceSimbionte).
      */
-    public static void mandaVoce(ServerPlayer ospite, String situazione, int tono, int fiducia) {
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> ospite), new VocePacket(situazione, tono, fiducia));
+    public static void mandaVoce(ServerPlayer ospite, String situazione, int tono, int fiducia, String forma) {
+        mandaVoce(ospite, situazione, tono, fiducia, forma, "");
+    }
+
+    /** Con il nome di chi parla, quando non e' il simbionte dell'ospite. */
+    public static void mandaVoce(ServerPlayer ospite, String situazione, int tono, int fiducia, String forma, String chi) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> ospite), new VocePacket(situazione, tono, fiducia, forma, chi));
     }
 
     /** Il lampo rosso sullo schermo: il simbionte ha appena preso il corpo. */
@@ -137,28 +180,42 @@ public class ModNetwork {
         private final String situazione;
         private final int tono;
         private final int fiducia;
+        /** chi parla: ogni simbionte puo' avere battute sue, e chi non ne ha usa quelle comuni */
+        private final String forma;
+        /** il nome di chi parla se non e' il simbionte dell'ospite (l'intruso), altrimenti vuoto */
+        private final String chi;
 
-        public VocePacket(String situazione, int tono, int fiducia) {
+        public VocePacket(String situazione, int tono, int fiducia, String forma) {
+            this(situazione, tono, fiducia, forma, "");
+        }
+
+        public VocePacket(String situazione, int tono, int fiducia, String forma, String chi) {
             this.situazione = situazione;
             this.tono = tono;
             this.fiducia = fiducia;
+            this.forma = forma == null ? "" : forma;
+            this.chi = chi == null ? "" : chi;
         }
 
         public VocePacket(FriendlyByteBuf buf) {
             this.situazione = buf.readUtf(64);
             this.tono = buf.readVarInt();
             this.fiducia = buf.readVarInt();
+            this.forma = buf.readUtf(32);
+            this.chi = buf.readUtf(32);
         }
 
         public void encode(FriendlyByteBuf buf) {
             buf.writeUtf(situazione, 64);
             buf.writeVarInt(tono);
             buf.writeVarInt(fiducia);
+            buf.writeUtf(forma, 32);
+            buf.writeUtf(chi, 32);
         }
 
         public boolean handle(Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-                    () -> () -> modKlyntar.client.VoceSimbionteClient.mostra(situazione, tono, fiducia)));
+                    () -> () -> modKlyntar.client.VoceSimbionteClient.mostra(situazione, tono, fiducia, forma, chi)));
             ctx.get().setPacketHandled(true);
             return true;
         }

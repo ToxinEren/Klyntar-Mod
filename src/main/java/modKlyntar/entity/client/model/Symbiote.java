@@ -39,7 +39,11 @@ public class Symbiote extends GeoModel<SymbioteEntity> {
 	@Override
 	public ResourceLocation getTextureResource(SymbioteEntity object) {
 		// TODO Auto-generated method stub
-		return new ResourceLocation(MyMod.MOD_ID,"textures/entity/symbiote/symbiote.png");
+		// ogni simbionte del suo colore: Riot grigio acciaio, Venom nero.
+		// SEGNALIBRO: qui le texture dei mob dei simbionti che arriveranno (Carnage, Life Foundation...)
+		return "riot".equals(object.forma())
+				? new ResourceLocation(MyMod.MOD_ID, "textures/entity/symbiote/symbiote_riot.png")
+				: new ResourceLocation(MyMod.MOD_ID,"textures/entity/symbiote/symbiote.png");
 	}
 	
 }

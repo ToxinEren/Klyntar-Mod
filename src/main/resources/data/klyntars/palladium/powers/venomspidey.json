@@ -5182,6 +5182,12 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.BodyWeapons",
+            "min_score": 1,
+            "max_score": 2147483647
           }
         ],
         "enabling": [
@@ -5191,7 +5197,7 @@
           }
         ]
       },
-      "description": "Choose the shape the symbiote takes in combat."
+      "description": "Shape weapons out of the symbiote's own body. This symbiote cannot do it on its own: it has to take that power from one that can."
     },
     "symbiontwhipprop": {
       "type": "palladium:command",
@@ -5365,6 +5371,41 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "bodyweaponsreset": {
+      "type": "palladium:command",
+      "title": "Body Weapons Reset",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "scoreboard players set @s Venom.CombatTool 0"
+      ],
+      "last_tick_commands": [],
+      "commands": [
+        "scoreboard players set @s Venom.CombatTool 0"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Venom.CombatTool",
+            "min_score": 1,
+            "max_score": 2147483647
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.BodyWeapons",
                 "min_score": 1,
                 "max_score": 2147483647
               }

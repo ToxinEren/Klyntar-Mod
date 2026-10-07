@@ -67,9 +67,15 @@ public final class SymbioteCapsuleHandler {
      * e' venom, e resta il ripiego anche per chi ne eredita senza essere una forma, come il
      * frammento di Grendel.</p>
      */
+    // SEGNALIBRO: una capsula per ogni simbionte che arrivera' (in MyMod, come RIOT_CAPSULE),
+    // da aggiungere qui, in capsulaPiena e in ThrownCapsuleEntity
     private static Item capsulaPer(SymbioteEntity simbionte) {
-        // in questa release esiste solo venom: ogni simbionte catturato da la sua capsula
-        return MyMod.VENOM_CAPSULE.get();
+        return "riot".equals(simbionte.forma()) ? MyMod.RIOT_CAPSULE.get() : MyMod.VENOM_CAPSULE.get();
+    }
+
+    /** Una capsula con dentro un simbionte, di qualunque forma. */
+    public static boolean capsulaPiena(ItemStack pila) {
+        return pila.is(MyMod.VENOM_CAPSULE.get()) || pila.is(MyMod.RIOT_CAPSULE.get());
     }
 
     /** Capsula piena in mano: si lancia come una palla di neve. */
@@ -77,7 +83,7 @@ public final class SymbioteCapsuleHandler {
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player giocatore = event.getEntity();
         ItemStack inMano = event.getItemStack();
-        if (!inMano.is(MyMod.VENOM_CAPSULE.get())) {
+        if (!capsulaPiena(inMano)) {
             return;
         }
 

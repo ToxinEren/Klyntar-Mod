@@ -58,14 +58,22 @@ public final class VoceSimbionteClient {
     }
 
     /** Arriva dal server: il simbionte ha qualcosa da dire, col tono e la fiducia del momento. */
-    public static void mostra(String situazione, int tonoRicevuto, int fiducia) {
-        String chiave = scegliPerFiducia(situazione, fiducia);
+    public static void mostra(String situazione, int tonoRicevuto, int fiducia, String forma) {
+        mostra(situazione, tonoRicevuto, fiducia, forma, "");
+    }
+
+    /** Con il nome di chi parla davanti, quando e' l'altro simbionte e non quello dell'ospite. */
+    public static void mostra(String situazione, int tonoRicevuto, int fiducia, String forma, String chi) {
+        String chiave = scegliPerFiducia(situazione, fiducia, forma);
         if (chiave == null) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
         String nome = minecraft.player == null ? "" : minecraft.player.getGameProfile().getName();
         testo = I18n.get(chiave, nome);
+        if (chi != null && !chi.isEmpty()) {
+            testo = chi + ": " + testo;
+        }
         tono = Math.max(0, Math.min(COLORI.length - 1, tonoRicevuto));
         inizio = Util.getMillis();
         righe = null;
@@ -75,9 +83,25 @@ public final class VoceSimbionteClient {
     /**
      * Le battute del gradino di fiducia, se la situazione ne ha: "hostile" con Bond 1, "friend"
      * con Bond 3. Altrimenti, e sempre con Bond 2, quelle comuni.
+     *
+     * <p>Prima di tutto quelle del simbionte che parla, se ne ha di sue: Riot del suo gradino,
+     * poi Riot e basta. Un simbionte con un carattere suo resta se stesso anche dove non ha la
+     * variante per gradino, invece di parlare all'improvviso come Venom.</p>
      */
-    private static String scegliPerFiducia(String situazione, int fiducia) {
+    private static String scegliPerFiducia(String situazione, int fiducia, String forma) {
         String gradino = fiducia <= 0 ? "hostile" : fiducia >= 2 ? "friend" : null;
+        if (forma != null && !forma.isEmpty()) {
+            if (gradino != null) {
+                String sua = scegli(situazione + "." + forma + "." + gradino);
+                if (sua != null) {
+                    return sua;
+                }
+            }
+            String sua = scegli(situazione + "." + forma);
+            if (sua != null) {
+                return sua;
+            }
+        }
         if (gradino != null) {
             String chiave = scegli(situazione + "." + gradino);
             if (chiave != null) {

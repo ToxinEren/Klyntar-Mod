@@ -64,7 +64,7 @@ public final class TestaSimbionte {
             Items.COOKED_SALMON, Items.ROTTEN_FLESH);
 
     /** Le parole che dicono che il messaggio e' per il simbionte. */
-    private static final List<String> NOMI = List.of("venom", "symbiote", "symbiont", "klyntar");
+    private static final List<String> NOMI = List.of("venom", "riot", "symbiote", "symbiont", "klyntar");
     /** Le due frasi storiche dei poteri, che valgono anche senza nominarlo. */
     private static final List<String> FRASI_STORICHE = List.of("come out venom", "get back inside");
 

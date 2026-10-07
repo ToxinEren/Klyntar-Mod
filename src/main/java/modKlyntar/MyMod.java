@@ -96,6 +96,9 @@ public class MyMod {
     public static final RegistryObject<Item> VENOM_CAPSULE = ITEMS.register("venomcapsule",
             () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "venomcapsule", true));
     // le altre forme riusano la geometria di venom e cambiano solo la texture del simbionte
+    public static final RegistryObject<Item> RIOT_CAPSULE = ITEMS.register("riotcapsule",
+            () -> new CapsuleItem(new Item.Properties().stacksTo(1).fireResistant(), "riotcapsule", true,
+                    "venomcapsule", "riot_capsule_model"));
 
     public static final RegistryObject<CreativeModeTab> KLYNTAR_TAB = CREATIVE_MODE_TABS.register("klyntar_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.klyntars.klyntar_tab"))
@@ -105,6 +108,7 @@ public class MyMod {
                 output.accept(PROMETHIUMX_TNT_ITEM.get());
                 output.accept(CAPSULE.get());
                 output.accept(VENOM_CAPSULE.get());
+                output.accept(RIOT_CAPSULE.get());
 
                 output.accept(KNULLS_FRAGMENT_ITEM.get());
             })

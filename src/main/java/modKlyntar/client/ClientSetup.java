@@ -93,7 +93,7 @@ public class ClientSetup {
     public static void onRegisterAdditionalModels(ModelEvent.RegisterAdditional event) {
         // il renderer disegna l'icona dell'inventario con un modello a parte, che va
         // registrato qui: senza, non lo trova e l'icona statica sparisce
-        for (String capsula : new String[]{"capsule", "venomcapsule"}) {
+        for (String capsula : new String[]{"capsule", "venomcapsule", "riotcapsule"}) {
             event.register(new ModelResourceLocation(MyMod.MOD_ID, capsula + "_gui", "inventory"));
         }
     }

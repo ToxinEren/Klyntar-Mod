@@ -66,8 +66,8 @@ public final class TentacoliSimbionte {
     private static final int PRESA_SEGMENTI = 22;
     /** Quanto puo' allungarsi un filamento a vuoto, prima di aver preso. */
     private static final double PRESA_A_VUOTO = 1.1D;
-    /** Fin dove arriva quando ha preso: piu' della portata, cosi' non si stacca sul filo. */
-    private static final double PRESA_ALLUNGO = 8.0D;
+    /** Fin dove arriva quando ha preso: piu' dello strattone, cosi' non si stacca sul filo. */
+    private static final double PRESA_ALLUNGO = 11.0D;
     /** Quanto ci mette a uscire o a rientrare: piu' basso, piu' lento. */
     private static final float INERZIA = 0.10F;
 
@@ -106,7 +106,9 @@ public final class TentacoliSimbionte {
             disegnato = true;
         }
         if (disegnato) {
+            // un lotto per pelle: i Venom e i Riot vanno chiusi tutti e due
             buffer.endBatch(RenderType.entityCutoutNoCull(TEXTURE));
+            buffer.endBatch(RenderType.entityCutoutNoCull(VenomTentaclesTraversalRenderer.textureDellaForma("riot")));
         }
         pila.popPose();
     }
@@ -151,11 +153,12 @@ public final class TentacoliSimbionte {
             double respiro = 0.55D + 0.45D * Math.sin(tempo * 0.09D + parziale * 0.09D + i * 1.7D);
             Vec3 punta = radice.add(su.scale(CORAZZA_ALTEZZA * (0.65D + 0.35D * respiro)));
 
-            VenomTentaclesTraversalRenderer.disegnaFilamento(radice, punta, i, TEXTURE,
+            // del colore del simbionte: neri per Venom, grigi per Riot
+            int tinta = VenomTentaclesTraversalRenderer.tintaFilamentiDi(simbionte.forma());
+            VenomTentaclesTraversalRenderer.disegnaFilamento(radice, punta, i,
+                    VenomTentaclesTraversalRenderer.textureDellaForma(simbionte.forma()),
                     CORAZZA_RAGGIO, CORAZZA_PUNTA, CORAZZA_SEGMENTI, 0.05D, pila, buffer, tempo,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE);
+                    tinta, tinta, tinta);
         }
     }
 
@@ -224,11 +227,11 @@ public final class TentacoliSimbionte {
             // piu' stringe, meno serpeggia: un filamento teso non ondeggia
             double ampiezza = (0.10D + 0.16D * uscita) * (1.0D - 0.75D * stretta);
 
-            VenomTentaclesTraversalRenderer.disegnaFilamento(radice, punta, i, TEXTURE,
+            int tinta = VenomTentaclesTraversalRenderer.tintaFilamentiDi(simbionte.forma());
+            VenomTentaclesTraversalRenderer.disegnaFilamento(radice, punta, i,
+                    VenomTentaclesTraversalRenderer.textureDellaForma(simbionte.forma()),
                     PRESA_RAGGIO, PRESA_PUNTA, PRESA_SEGMENTI, ampiezza, pila, buffer, tempo,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE,
-                    VenomTentaclesTraversalRenderer.NERO_SIMBIONTE);
+                    tinta, tinta, tinta);
         }
     }
 }

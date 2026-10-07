@@ -49,6 +49,8 @@ public final class VenomTentaclesTraversalRenderer {
 
     /** i tentacoli di Toxin, arancioni */
 
+    /** i tentacoli di Riot, grigio acciaio */
+    private static final ResourceLocation ARM_TEXTURE_RIOT = new ResourceLocation(MyMod.MOD_ID, "textures/models/tentacles_traversal/riot_tentacle_segment.png");
     private static final ResourceLocation ARM_TEXTURE_TOX = new ResourceLocation(MyMod.MOD_ID, "textures/models/tentacles_traversal/toxin_tentacle_segment.png");
     /**
      * Texture del giocatore che si sta disegnando. I tentacoli si disegnano anche per gli altri
@@ -99,6 +101,7 @@ public final class VenomTentaclesTraversalRenderer {
                     // ":venom" non combacia con "venomspidey", che finisce per "spidey"
                     if (id.endsWith(":allblack")) return "allblack";
                     if (id.endsWith(":venomspidey")) return "venomspidey";
+                    if (id.endsWith(":riot")) return "riot";
                     if (id.endsWith(":antivenom")) return "antivenom";
                     if (id.endsWith(":carnage")) return "carnage";
 
@@ -127,6 +130,8 @@ public final class VenomTentaclesTraversalRenderer {
             tinta = ARM_COLOR_CARN;
         } else if (armTexture == ARM_TEXTURE_TOX) {
             tinta = ARM_COLOR_TOX;
+        } else if (armTexture == ARM_TEXTURE_RIOT) {
+            tinta = new int[]{ARM_COLOR_RIOT, ARM_COLOR_RIOT, ARM_COLOR_RIOT};
         } else {
             tinta = new int[]{ARM_COLOR, ARM_COLOR, ARM_COLOR};
         }
@@ -135,9 +140,20 @@ public final class VenomTentaclesTraversalRenderer {
         armB = tinta[2];
         // il tubo di Venom ha la sua tinta; le altre forme hanno gia' una tinta chiara
         boolean venom = armTexture == ARM_TEXTURE;
-        tuboR = venom ? TINTA_TUBO_VENOM : armR;
-        tuboG = venom ? TINTA_TUBO_VENOM : armG;
-        tuboB = venom ? TINTA_TUBO_VENOM : armB;
+        boolean riot = armTexture == ARM_TEXTURE_RIOT;
+        tuboR = venom ? TINTA_TUBO_VENOM : riot ? TINTA_TUBO_RIOT : armR;
+        tuboG = venom ? TINTA_TUBO_VENOM : riot ? TINTA_TUBO_RIOT : armG;
+        tuboB = venom ? TINTA_TUBO_VENOM : riot ? TINTA_TUBO_RIOT : armB;
+    }
+
+    /** La pelle dei tentacoli di una forma, per chi li disegna senza un giocatore (il mob). */
+    public static ResourceLocation textureDellaForma(String forma) {
+        return "riot".equals(forma) ? ARM_TEXTURE_RIOT : ARM_TEXTURE;
+    }
+
+    /** La tinta dei filamenti di una forma: il nero di Venom, il grigio di Riot. */
+    public static int tintaFilamentiDi(String forma) {
+        return "riot".equals(forma) ? ARM_COLOR_RIOT : ARM_COLOR;
     }
 
     /** una texture per forma: bianca per anti-venom, rossa per carnage, arancione per toxin */
@@ -155,6 +171,7 @@ public final class VenomTentaclesTraversalRenderer {
         if ("antivenom".equals(forma)) return ARM_TEXTURE_ANTI;
         if ("carnage".equals(forma)) return ARM_TEXTURE_CARN;
         if ("toxin".equals(forma)) return ARM_TEXTURE_TOX;
+        if ("riot".equals(forma)) return ARM_TEXTURE_RIOT;
         return ARM_TEXTURE;
     }
     private static final int ARM_SEGMENTS = 18;
@@ -187,6 +204,13 @@ public final class VenomTentaclesTraversalRenderer {
      * e di un arancione diverso da quello del corpo.
      */
     private static final int[] ARM_COLOR_TOX = {255, 255, 255};
+    /**
+     * Riot: la texture e' gia' grigio acciaio, e la tinta di Venom (18) la faceva uscire nera.
+     * I filamenti la scuriscono un poco, per fare rilievo come quelli di Venom; il tubo la lascia
+     * com'e', cosi' il braccio ha lo stesso grigio del corpo.
+     */
+    private static final int ARM_COLOR_RIOT = 150;
+    private static final int TINTA_TUBO_RIOT = 255;
     private static int armR = ARM_COLOR, armG = ARM_COLOR, armB = ARM_COLOR;
     /**
      * La tinta del tubo dei bracci di Venom. Prima era {@link #ARM_COLOR}, 18 su 255: la texture

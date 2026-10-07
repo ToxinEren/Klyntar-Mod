@@ -33,6 +33,8 @@ public final class SymbioteParasiteHandler {
 
     /** Il marchio sull'animale che porta il simbionte dentro. */
     public static final String MARCHIO = "InfectedBySymbiote";
+    /** Che simbionte porta dentro l'animale, per farlo uscire uguale. */
+    public static final String MARCHIO_FORMA = "InfectedBySymbiote.Forma";
 
     private static final Logger LOGGER = LogManager.getLogger("KlyntarParasite");
 
@@ -48,11 +50,14 @@ public final class SymbioteParasiteHandler {
         }
         // tolto subito: l'evento puo' arrivare piu' volte per la stessa morte
         ospite.getPersistentData().remove(MARCHIO);
+        String forma = ospite.getPersistentData().getString(MARCHIO_FORMA);
+        ospite.getPersistentData().remove(MARCHIO_FORMA);
 
         SymbioteEntity simbionte = MyMod.SYMBIOTE_ENTITY.get().create(livello);
         if (simbionte == null) {
             return;
         }
+        simbionte.setForma(forma);
         simbionte.moveTo(ospite.getX(), ospite.getY(), ospite.getZ(), ospite.getYRot(), 0.0F);
         livello.addFreshEntity(simbionte);
         livello.playSound(null, ospite.blockPosition(), modKlyntar.sound.SuoniKlyntar.SYMBIOTE_EMERGE.get(),

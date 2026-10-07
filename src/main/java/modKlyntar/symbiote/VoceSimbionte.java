@@ -29,6 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * con Bond 3 e' {@link #AMICO}. Il client cerca prima le battute del suo gradino
  * ({@code <situazione>.hostile.<n>}, {@code <situazione>.friend.<n>}) e, se la situazione non ne
  * ha, ripiega su quelle comuni.</p>
+ *
+ * <p>E parla secondo chi e': un simbionte con un carattere suo (Riot) ha le sue battute,
+ * {@code <situazione>.<forma>.<n>} e le varianti per gradino {@code <situazione>.<forma>.hostile.<n>}.
+ * Dove non ne ha, parla con le battute comuni, che sono la voce di Venom.</p>
  */
 public final class VoceSimbionte {
 
@@ -79,6 +83,17 @@ public final class VoceSimbionte {
      * @return se la battuta e' partita davvero
      */
     public static boolean di(ServerPlayer ospite, String situazione, Tono tono, boolean urgente, long ricarica) {
+        return diCome(ospite, SymbioteState.forma(ospite), situazione, tono, urgente, ricarica);
+    }
+
+    /**
+     * Parla un altro simbionte, non quello dell'ospite: l'intruso che gli contende il corpo, o
+     * chi sta perdendo la lotta. Usa le battute sue ({@code <situazione>.<forma>}) e la fiducia
+     * che ha lui; il riquadro mette il suo nome davanti, perche' si capisca chi sta parlando.
+     * Le pause e le ricariche sono quelle dell'ospite: in una testa sola parla uno alla volta.
+     */
+    public static boolean diCome(ServerPlayer ospite, String forma, String situazione, Tono tono, boolean urgente,
+                                 long ricarica) {
         long adesso = ospite.level().getGameTime();
         UUID id = ospite.getUUID();
         Map<String, Long> perSituazione = ULTIMA_PER_SITUAZIONE.computeIfAbsent(id, k -> new HashMap<>());
@@ -92,13 +107,21 @@ public final class VoceSimbionte {
         }
         perSituazione.put(situazione, adesso);
         ULTIMA_BATTUTA.put(id, adesso);
-        int fiducia = fiducia(ospite);
+        boolean suo = forma.equals(SymbioteState.forma(ospite));
+        int fiducia = suo ? fiducia(ospite) : fiduciaDi(ospite, forma);
         // chi non si fida non si illumina d'affetto: il riquadro azzurro del legame resta grigio
         if (fiducia == DIFFIDENTE && tono == Tono.LEGAME_SU) {
             tono = Tono.NEUTRO;
         }
-        ModNetwork.mandaVoce(ospite, situazione, tono.ordinal(), fiducia);
+        RegistroSimbionti.Simbionte chi = suo ? null : RegistroSimbionti.di(forma);
+        ModNetwork.mandaVoce(ospite, situazione, tono.ordinal(), fiducia, forma, chi == null ? "" : chi.nome());
         return true;
+    }
+
+    /** La fiducia di un simbionte che non e' quello indossato, dal suo objective di affinita'. */
+    private static int fiduciaDi(Player ospite, String forma) {
+        int affinita = Math.max(0, Math.min(100, SymbioteState.getScore(ospite, "Klyntar.Affinity." + forma)));
+        return affinita >= SOGLIA_AMICO ? AMICO : affinita >= SOGLIA_ALLEATO ? ALLEATO : DIFFIDENTE;
     }
 
     /** Quanto il simbionte si fida dell'ospite, dall'affinita': DIFFIDENTE, ALLEATO o AMICO. */

@@ -111,6 +111,10 @@ public final class BraccioPrimaPersona {
     private static final ResourceLocation PELLE_RACCORDO =
             new ResourceLocation(MyMod.MOD_ID, "textures/models/tentacles_traversal/venom_tentacle_segment.png");
     private static final int TINTA_RACCORDO = 30;
+    /** Riot e' grigio acciaio: con la tinta di Venom i raccordi uscirebbero neri accanto a braccia grigie. */
+    private static final int TINTA_RACCORDO_RIOT = 120;
+    /** La tinta dei raccordi che si stanno disegnando, secondo la forma del giocatore. */
+    private static int tintaRaccordo = TINTA_RACCORDO;
     private static final float RAGGIO_SPALLA = 0.30F;
     private static final float RAGGIO_FONDO = 0.42F;
     private static final int LATI_RACCORDO = 12;
@@ -138,6 +142,8 @@ public final class BraccioPrimaPersona {
     /** La pelle del simbionte, nel formato della pelle del giocatore. */
     private static final ResourceLocation PELLE =
             new ResourceLocation(MyMod.MOD_ID, "textures/models/black.png");
+    private static final ResourceLocation PELLE_RIOT =
+            new ResourceLocation(MyMod.MOD_ID, "textures/models/riot/black.png");
 
     private BraccioPrimaPersona() {
     }
@@ -209,7 +215,7 @@ public final class BraccioPrimaPersona {
                         ripristina.get(i).run();
                     }
                 }
-                disegnaRaccordi(pila, buffer, luce);
+                disegnaRaccordi(pila, buffer, luce, giocatore);
                 disegnato[0] = true;
             }
         });
@@ -320,7 +326,7 @@ public final class BraccioPrimaPersona {
      * come la mano della prima persona vanilla. Con la spalla fuori campo il tubo resta fuori
      * campo anche lui e non si vede.</p>
      */
-    private static void disegnaRaccordi(PoseStack pila, MultiBufferSource buffer, int luce) {
+    private static void disegnaRaccordi(PoseStack pila, MultiBufferSource buffer, int luce, Player giocatore) {
         if (!SPALLA_PRONTA[0] && !SPALLA_PRONTA[1]) {
             return;
         }
@@ -330,7 +336,11 @@ public final class BraccioPrimaPersona {
         pila.last().normal().identity();
         Matrix4f matrice = pila.last().pose();
         Matrix3f normali = pila.last().normal();
-        VertexConsumer consumatore = buffer.getBuffer(RenderType.entityCutoutNoCull(PELLE_RACCORDO));
+        // la pelle e la tinta dei tentacoli della forma indossata: Venom nero, Riot grigio
+        boolean riot = "riot".equals(VenomTentaclesTraversalRenderer.formaDi(giocatore));
+        tintaRaccordo = riot ? TINTA_RACCORDO_RIOT : TINTA_RACCORDO;
+        ResourceLocation pelle = riot ? VenomTentaclesTraversalRenderer.textureFor(giocatore) : PELLE_RACCORDO;
+        VertexConsumer consumatore = buffer.getBuffer(RenderType.entityCutoutNoCull(pelle));
         for (int i = 0; i < SPALLE.length; i++) {
             if (!SPALLA_PRONTA[i]) {
                 continue;
@@ -390,7 +400,7 @@ public final class BraccioPrimaPersona {
     private static void vertice(VertexConsumer consumatore, Matrix4f matrice, Matrix3f normali,
                                 Vector3f posizione, Vector3f verso, float u, float v, int luce) {
         consumatore.vertex(matrice, posizione.x(), posizione.y(), posizione.z())
-                .color(TINTA_RACCORDO, TINTA_RACCORDO, TINTA_RACCORDO, 255)
+                .color(tintaRaccordo, tintaRaccordo, tintaRaccordo, 255)
                 .uv(u, v)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(luce)
@@ -614,7 +624,8 @@ public final class BraccioPrimaPersona {
 
         // translucent e non solid: la pelle del simbionte ha pixel semitrasparenti sui bordi,
         // e con il tipo opaco verrebbero squadrati
-        VertexConsumer consumatore = buffer.getBuffer(RenderType.entityTranslucent(PELLE));
+        ResourceLocation pelle = "riot".equals(VenomTentaclesTraversalRenderer.formaDi(giocatore)) ? PELLE_RIOT : PELLE;
+        VertexConsumer consumatore = buffer.getBuffer(RenderType.entityTranslucent(pelle));
         arto.render(pila, consumatore, luce, OverlayTexture.NO_OVERLAY);
         manica.render(pila, consumatore, luce, OverlayTexture.NO_OVERLAY);
     }

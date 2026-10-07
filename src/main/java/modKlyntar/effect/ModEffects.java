@@ -14,6 +14,14 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> SYMBIOTE_PARASITE =
             EFFECTS.register("symbiote_parasite", SymbioteParasiteEffect::new);
 
+    /** Il Necrosword: niente rigenerazione per un minuto. Segnalibro di All-Black. */
+    public static final RegistryObject<MobEffect> NEGAZIONE_IMMORTALITA =
+            EFFECTS.register("immortality_negation", NegazioneImmortalitaEffect::new);
+
+    /** La corruzione del bersaglio, simile al wither. Segnalibro di All-Black. */
+    public static final RegistryObject<MobEffect> CORRUZIONE_BERSAGLIO =
+            EFFECTS.register("corruption", CorruzioneBersaglioEffect::new);
+
     private ModEffects() {
     }
 }

@@ -123,8 +123,14 @@ public final class SonicBellHandler {
             return false;
         }
         // l'affinita' non protegge del tutto: accorcia i malus, fino alla meta' a 100
+        // chi ha digerito la resistenza al suono (Scream) li accorcia ancora; la corruzione di
+        // All-Black li allunga
         float resistenza = bersaglio instanceof Player giocatore
-                ? VenomSymbioteSystemsHandler.resistenza(giocatore) : 1.0F;
+                ? VenomSymbioteSystemsHandler.resistenza(giocatore)
+                * (modKlyntar.symbiote.ProfiliSimbionti.haTratto(giocatore,
+                        modKlyntar.symbiote.RegistroSimbionti.Tratto.RESISTENZA_SONORA) ? 0.6F : 1.0F)
+                * modKlyntar.symbiote.CorruzioneAllBlack.moltiplicatoreDebolezza(giocatore)
+                : 1.0F;
         for (MobEffectInstance malus : MALUS) {
             bersaglio.addEffect(new MobEffectInstance(malus.getEffect(),
                     Math.round(malus.getDuration() * resistenza), malus.getAmplifier(), false, false));
