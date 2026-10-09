@@ -37,7 +37,7 @@ stesso corpo. I sistemi stanno in `modKlyntar/symbiote/`:
 |---|---|
 | `RegistroSimbionti` | chi sono i simbionti: tier, temperamento, forza base, origine, padre, tratti nativi. Quelli non ancora nella mod sono **segnalibri** con `disponibile = false` |
 | `ProfiliSimbionti` | per giocatore e simbionte: inglobati (per la nascita), digeriti, tratti acquisiti; la forza; gli objective dei tratti (`Klyntar.BodyWeapons`, `Klyntar.Trait.*`) che i JSON leggono |
-| `ConflittoSimbionti` | un secondo simbionte nello stesso corpo, a tre tempi sul modello del "graft" della mod Symbiote: l'ingresso (quello di dentro si oppone, i filamenti dei due si frustano), la lotta (tensione 0-100, avvisi a 60 e 85, mangiare aiuta quello di dentro, non uccide mai l'ospite), la resa (chi perde implora; fuga o assorbimento) |
+| `ConflittoSimbionti` | un secondo simbionte nello stesso corpo, a tre tempi sul modello del "graft" della mod Symbiote: l'ingresso (quello di dentro si oppone, i filamenti dei due si frustano), la lotta (tensione 0-100, avvisi a 60 e 85, mangiare aiuta quello di dentro, non uccide mai l'ospite), la resa (chi perde implora; fuga o assorbimento). Durante la lotta tutte le abilita' sono bloccate (`Klyntar.ConflictLock`: accanto a `Venom.VulnerabilityLock` in ogni abilita' che quello blocca, e in piu' sulla trasformazione `enablevenombody` - il corpo si ritira -, sulla copertura delle gambe `enablevenomlegs` e sulle mani-attrezzo, che da indebolito restano usabili; con tutto bloccato Palladium nasconde la colonna delle abilita'. Il lucchetto va fra le condizioni principali di `unlocking`, mai dentro un `palladium:or`), la fame del simbionte scende di 1 al secondo, e l'ospite vede la barra dell'andamento (`client/BarraConflittoClient`): a sinistra chi era dentro, a destra l'intruso, come due tentacoli che si attorcigliano nel punto dello scontro. Vince chi tiene piu' della meta' del corpo quando la tensione arriva a 100 |
 | `SensoSimbionti` | il simbionte sente gli altri entro 18 blocchi, anche dietro i muri, e lo dice; avvisa quando quello che lo bracca gli viene addosso |
 | `DuelloSimbionti` | il duello coi tentacoli prima dell'ingresso: il simbionte dell'ospite risponde da solo alle frustate del rivale (piu' forte col bond alto); le frustate si disegnano in `client/renderer/FrustateSimbionte` |
 | `NascitaSimbionti` | Carnage da Venom, Toxin da Carnage: 2 inglobati + vita sotto il 30% |
@@ -55,7 +55,7 @@ lo uccidono (si fermano a mezzo cuore; lo uccidono solo fuoco e suono); sotto il
 mob scappa. Le frustate non uccidono mai l'ospite. Chi entra malconcio entra piu' debole nel
 conflitto.
 
-**Riot non lascia mai scappare nessuno** (`Temperamento.nonLasciaScappare`, chiesto da Luigi):
+**Riot non lascia mai scappare nessuno** (`Temperamento.nonLasciaScappare`, chiesto da ToxinEren):
 quando vince il conflitto assorbe sempre, chi gli cede il corpo viene inghiottito, chi e' nel suo
 mirino non fugge, e lui non si ritira mai - allo stremo ritenta lo strattone per entrare. Attacca
 a vista i simbionti liberi (`CacciaSimbionteGoal`), corre piu' di chi scappa, frusta piu' forte
@@ -63,6 +63,19 @@ a vista i simbionti liberi (`CacciaSimbionteGoal`), corre piu' di chi scappa, fr
 tentacoli i simbionti liberi di un'altra famiglia entro 8 blocchi e li trascina all'ospite: al
 contatto entrano e parte il conflitto, con Riot dentro (`DuelloSimbionti.onPlayerTick`). Chi e'
 tenuto (`SymbioteEntity.trattieni`) non scappa e non si rifugia negli animali.
+
+**Ogni simbionte ha le sue abilita' di natura, le altre si prendono digerendo.** Le armi dal
+corpo sono di Riot (`Klyntar.BodyWeapons`): Venom e Spidey le hanno solo digerendo un Riot. Lo
+scudo col tasto destro (`venomblock`) e' di Venom (`Klyntar.Trait.Shield`): Riot lo ha solo
+digerendo un Venom. Nel JSON del potere che non ce l'ha di natura, l'abilita' ha l'objective del
+tratto fra le condizioni `unlocking`; i tratti nativi stanno in `RegistroSimbionti`.
+
+**Le barre organiche** (fame e conflitto) le disegna il client in texture dinamiche a doppia
+definizione, ridisegnate fino a 30 volte al secondo perche' i tentacoli si muovano
+(`client/DisegnoTentacoli`: tubi ombreggiati con le fibre dei segmenti dei tentacoli;
+`client/BarreOrganicheClient`). La fame resta la barra dei boss del server: il client ne salta il
+disegno standard (la riconosce dal nome "Symbiote Hunger") e mette il suo, piu' alto.
+
 La mod di riferimento e' `../Venom Bedrock/symbiote-1.1.2.jar` (l'autore ha dato il permesso di
 usarne il codice); si decompila con ForgeFlower dalla cache di Gradle.
 

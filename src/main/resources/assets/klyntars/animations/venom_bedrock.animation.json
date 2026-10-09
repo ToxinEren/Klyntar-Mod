@@ -50456,9 +50456,6 @@
             ]
           }
         },
-        "venom_battle_axe0": {
-          "scale": 0
-        },
         "symbiote0": {
           "scale": {
             "0.0": [
@@ -50635,9 +50632,6 @@
             0
           ],
           "scale": 0.01
-        },
-        "venom_battle_axe1": {
-          "scale": 0
         },
         "bt_symbiote_powers3": {
           "scale": 0.01

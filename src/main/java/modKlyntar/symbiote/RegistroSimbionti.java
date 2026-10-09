@@ -90,6 +90,8 @@ public final class RegistroSimbionti {
     public enum Tratto {
         /** Le armi create dal corpo, la ruota frusta/ascia/mazza. Di Riot. */
         ARMI_DAL_CORPO("Klyntar.BodyWeapons"),
+        /** Lo scudo col tasto destro. Di Venom: Riot lo ottiene digerendolo. */
+        SCUDO("Klyntar.Trait.Shield"),
         /** Resistenza parziale al suono: un colpo sonoro in piu' prima dello strappo, malus piu' corti. Di Scream. */
         RESISTENZA_SONORA("Klyntar.Trait.SonicResistance"),
         /** SEGNALIBRO: i tentacoli assassini di Carnage. */
@@ -130,9 +132,9 @@ public final class RegistroSimbionti {
     static {
         // --- tier 1-2: ci sono
         registra("venom", "venom", "Venom", 1, Temperamento.PROTETTIVO, 10, Origine.METEORITE, null,
-                Set.of(), true, true, 0.5D);
+                Set.of(Tratto.SCUDO), true, true, 0.5D);
         registra("venomspidey", "venom", "Venom", 1, Temperamento.PROTETTIVO, 10, Origine.EVOLUZIONE, null,
-                Set.of(), true, false, 0.5D);
+                Set.of(Tratto.SCUDO), true, false, 0.5D);
         registra("riot", "riot", "Riot", 2, Temperamento.DOMINANTE, 15, Origine.METEORITE, null,
                 Set.of(Tratto.ARMI_DAL_CORPO), true, true, 0.5D);
         // --- SEGNALIBRO: tier 3-4, nascono da un giocatore che indossa il padre

@@ -1775,6 +1775,17 @@
             ]
           },
           {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
             "type": "palladium:or",
             "conditions": [
               {
@@ -2133,6 +2144,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -2176,6 +2198,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -2749,6 +2782,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -3732,6 +3776,12 @@
         ],
         "unlocking": [
           {
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.Trait.Shield",
+            "min_score": 1,
+            "max_score": 2147483647
+          },
+          {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:riot",
             "ability": "enablevenom",
@@ -3754,6 +3804,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -3886,6 +3947,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -4138,6 +4210,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -4910,6 +4993,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -5039,6 +5133,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -5091,6 +5196,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -5132,6 +5248,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -5181,6 +5308,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ]
       }
@@ -5222,6 +5360,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -5814,6 +5963,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6020,6 +6180,17 @@
       "max_value": 16,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -6234,6 +6405,17 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
                 "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
@@ -6431,6 +6613,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6498,6 +6691,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6539,6 +6743,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -6588,6 +6803,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -6613,6 +6839,17 @@
       "max_value": 10,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -6650,6 +6887,17 @@
       "max_value": 10,
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
           {
             "type": "palladium:not",
             "conditions": [
@@ -7153,6 +7401,17 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
                 "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
@@ -7396,6 +7655,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7579,6 +7849,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -7843,6 +8124,17 @@
                 "max_score": 2147483647
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
           }
         ],
         "enabling": [
@@ -7913,6 +8205,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8032,6 +8335,17 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
                 "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
@@ -8121,6 +8435,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8228,6 +8553,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -8983,6 +9319,17 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
                 "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
@@ -9061,6 +9408,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }
@@ -9159,6 +9517,17 @@
             "conditions": [
               {
                 "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
                 "objective": "Klyntar.Sulk",
                 "min_score": 1,
                 "max_score": 2147483647
@@ -9226,6 +9595,17 @@
               {
                 "type": "palladium:objective_score",
                 "objective": "Venom.VulnerabilityLock",
+                "min_score": 1,
+                "max_score": 2147483647
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:objective_score",
+                "objective": "Klyntar.ConflictLock",
                 "min_score": 1,
                 "max_score": 2147483647
               }

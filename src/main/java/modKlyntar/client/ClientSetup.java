@@ -40,6 +40,7 @@ public class ClientSetup {
 	public static void onRegisterOverlays(RegisterGuiOverlaysEvent event) {
 		event.registerAbove(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.VIGNETTE.id(), "berserk_vignette", BerserkClient.OVERLAY);
 		event.registerAboveAll("symbiote_voice", VoceSimbionteClient.OVERLAY);
+		event.registerAboveAll("symbiote_conflict_bar", BarraConflittoClient.OVERLAY);
 	}
 
 	@SubscribeEvent

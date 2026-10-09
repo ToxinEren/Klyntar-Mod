@@ -113,6 +113,22 @@ public final class ConflittoSimbionti {
     private static final double CEDE_COL_BOND_BASSO = 0.35D;
     /** Nelle scene l'ospite resta quasi fermo mentre i due si strappano il corpo. */
     private static final int LENTEZZA = 4;
+    // ---- l'andamento, che la barra mostra
+    /**
+     * Ogni secondo l'equilibrio si sposta verso il piu' forte, di (probabilita' - 0.5) * DERIVA,
+     * piu' un po' di caso. In venticinque secondi, a 2 contro 1, quello di dentro vince tre volte
+     * su quattro; a forze pari e' testa o croce.
+     */
+    private static final double DERIVA = 0.04D;
+    private static final double RUMORE = 0.05D;
+    // ---- il prezzo per l'ospite
+    /** Mentre lottano, la fame del simbionte scende di un punto al secondo. */
+    private static final int FAME_AL_SECONDO = 1;
+    /**
+     * Il lucchetto delle abilita' durante il conflitto: 1 finche' dura. I JSON dei poteri lo
+     * leggono accanto a Venom.VulnerabilityLock, quindi si blocca quello che si blocca da indebolito.
+     */
+    public static final String LUCCHETTO = "Klyntar.ConflictLock";
 
     private enum Reazione { LOTTA, RESPINGE, CEDE }
 
@@ -131,6 +147,8 @@ public final class ConflittoSimbionti {
         double spinta;
         /** Quanta forza ha l'intruso dopo il duello: 1 intatto, 0.5 allo stremo. */
         double ferite = 1.0D;
+        /** Quanta parte del corpo tiene quello di dentro: 1 tutto suo, 0 tutto dell'intruso. */
+        double equilibrio = 0.5D;
         String vincitore;
         String perdente;
 
@@ -230,7 +248,9 @@ public final class ConflittoSimbionti {
         Lotta lotta = new Lotta(dentro, intruso, reazione, da, ospite.level().getGameTime());
         lotta.ferite = ferite;
         LOTTE.put(ospite.getUUID(), lotta);
+        sincronizzaLucchetto(ospite, true);
         apriIngresso(ospite, lotta);
+        aggiornaBarra(ospite, lotta, true);
         return true;
     }
 
@@ -279,17 +299,25 @@ public final class ConflittoSimbionti {
             return;
         }
         Lotta lotta = LOTTE.get(ospite.getUUID());
+        // il lucchetto segue la lotta: acceso finche' dura, spento appena finisce
+        if (ospite.tickCount % 5 == 0) {
+            sincronizzaLucchetto(ospite, lotta != null);
+        }
         if (lotta == null || !ospite.isAlive()) {
             return;
         }
         // il simbionte di dentro e' andato via per conto suo (strappato, tolto): la lotta finisce
         if (!lotta.dentro.equals(SymbioteState.forma(ospite))) {
-            LOTTE.remove(ospite.getUUID());
+            finisci(ospite, lotta, lotta.equilibrio, true);
             liberaMob(ospite, lotta.intruso, true);
             return;
         }
         long ora = livello.getGameTime();
         int t = (int) (ora - lotta.dal);
+        // due simbionti in un corpo bruciano tutto: la fame scende per tutta la lotta
+        if (ora % 20 == 0) {
+            VenomSymbioteSystemsHandler.togliFame(ospite, FAME_AL_SECONDO);
+        }
         switch (lotta.fase) {
             case INGRESSO -> tickIngresso(ospite, livello, lotta, t, ora);
             case LOTTA -> tickLotta(ospite, livello, lotta, t, ora);
@@ -314,12 +342,12 @@ public final class ConflittoSimbionti {
         }
         switch (lotta.reazione) {
             case RESPINGE -> {
-                LOTTE.remove(ospite.getUUID());
+                finisci(ospite, lotta, 1.0D, true);
                 scoppio(livello, corpo(ospite), RegistroSimbionti.colore(lotta.dentro));
                 fugge(ospite, lotta.intruso, lotta.dentro);
             }
             case CEDE -> {
-                LOTTE.remove(ospite.getUUID());
+                finisci(ospite, lotta, 0.0D, true);
                 if (RegistroSimbionti.di(lotta.intruso).temperamento().nonLasciaScappare()) {
                     // a Riot non si cede il posto e basta: chi si arrende viene inghiottito
                     assorbe(ospite, lotta.intruso, lotta.dentro);
@@ -330,6 +358,7 @@ public final class ConflittoSimbionti {
             case LOTTA -> {
                 lotta.fase = Fase.LOTTA;
                 lotta.dal = ora;
+                aggiornaBarra(ospite, lotta, true);
                 VoceSimbionte.di(ospite, "conflitto_inizio", Tono.AGGRESSIVO, true);
                 ospite.displayClientMessage(Component.translatable("klyntars.conflitto.inizio",
                         nome(lotta.dentro), nome(lotta.intruso)), true);
@@ -343,6 +372,10 @@ public final class ConflittoSimbionti {
             double pressione = pressione(ospite, lotta);
             int sale = Mth.floor(pressione) + (livello.random.nextDouble() < pressione - Math.floor(pressione) ? 1 : 0);
             lotta.tensione = Math.min(TENSIONE_MASSIMA, lotta.tensione + sale);
+            double p = probabilitaDentro(ospite, lotta);
+            lotta.equilibrio = Mth.clamp(lotta.equilibrio + (p - 0.5D) * DERIVA
+                    + livello.random.nextGaussian() * RUMORE, 0.02D, 0.98D);
+            aggiornaBarra(ospite, lotta, true);
             if (prima < SOGLIA_AVVISO && lotta.tensione >= SOGLIA_AVVISO) {
                 VoceSimbionte.di(ospite, "conflitto_avviso", Tono.AVVISO, true);
             } else if (prima < SOGLIA_ULTIMO && lotta.tensione >= SOGLIA_ULTIMO) {
@@ -397,6 +430,30 @@ public final class ConflittoSimbionti {
     /** La tensione e' al massimo: si decide chi prevale, e chi vince apre la scena finale. */
     private static void apriResa(ServerPlayer ospite, ServerLevel livello, Lotta lotta, long ora) {
         RandomSource caso = ospite.getRandom();
+        double vinceDentro = probabilitaDentro(ospite, lotta);
+        // vince chi tiene piu' della meta' del corpo; a meta' esatta decide la forza
+        boolean dentroVince = lotta.equilibrio > 0.5D
+                || (lotta.equilibrio == 0.5D && caso.nextDouble() < vinceDentro);
+        lotta.vincitore = dentroVince ? lotta.dentro : lotta.intruso;
+        lotta.perdente = dentroVince ? lotta.intruso : lotta.dentro;
+        lotta.fase = Fase.RESA;
+        lotta.dal = ora;
+        LOGGER.info("Conflict of {}: {} prevails over {} (balance {}%, inside strength {}%)",
+                ospite.getGameProfile().getName(), lotta.vincitore, lotta.perdente,
+                Math.round(lotta.equilibrio * 100.0D), Math.round(vinceDentro * 100.0D));
+        lotta.equilibrio = dentroVince ? 1.0D : 0.0D;
+        aggiornaBarra(ospite, lotta, true);
+        blocca(ospite, RESA + 10);
+        VoceSimbionte.diCome(ospite, lotta.vincitore, "conflitto_resa", Tono.AGGRESSIVO, true, 0L);
+        scoppio(livello, corpo(ospite), RegistroSimbionti.colore(lotta.vincitore));
+    }
+
+    /**
+     * Quanto e' forte quello di dentro rispetto all'intruso, da 0.1 a 0.9: la forza (base, digeriti,
+     * bond), le ferite del duello, il bond alto di un protettivo, la fame, quello che l'ospite gli
+     * ha dato da mangiare. Sposta l'equilibrio ogni secondo; la fame che scende lo fa calare.
+     */
+    private static double probabilitaDentro(ServerPlayer ospite, Lotta lotta) {
         Simbionte dentro = RegistroSimbionti.di(lotta.dentro);
         int forzaDentro = ProfiliSimbionti.forza(ospite, lotta.dentro);
         int forzaIntruso = (int) Math.round(ProfiliSimbionti.forza(ospite, lotta.intruso) * lotta.ferite);
@@ -410,17 +467,7 @@ public final class ConflittoSimbionti {
             vinceDentro -= MALUS_FAME;
         }
         vinceDentro += lotta.spinta;
-        vinceDentro = Math.max(0.1D, Math.min(0.9D, vinceDentro));
-        boolean dentroVince = caso.nextDouble() < vinceDentro;
-        lotta.vincitore = dentroVince ? lotta.dentro : lotta.intruso;
-        lotta.perdente = dentroVince ? lotta.intruso : lotta.dentro;
-        lotta.fase = Fase.RESA;
-        lotta.dal = ora;
-        LOGGER.info("Conflict of {}: {} prevails over {} ({}%)", ospite.getGameProfile().getName(),
-                lotta.vincitore, lotta.perdente, Math.round(vinceDentro * 100.0D));
-        blocca(ospite, RESA + 10);
-        VoceSimbionte.diCome(ospite, lotta.vincitore, "conflitto_resa", Tono.AGGRESSIVO, true, 0L);
-        scoppio(livello, corpo(ospite), RegistroSimbionti.colore(lotta.vincitore));
+        return Math.max(0.1D, Math.min(0.9D, vinceDentro));
     }
 
     private static void tickResa(ServerPlayer ospite, ServerLevel livello, Lotta lotta, int t) {
@@ -439,7 +486,7 @@ public final class ConflittoSimbionti {
         if (t < RESA_COLPO) {
             return;
         }
-        LOTTE.remove(ospite.getUUID());
+        finisci(ospite, lotta, lotta.equilibrio, true);
         ferisci(ospite, DANNO_RESA);
         scoppio(livello, corpo(ospite), RegistroSimbionti.colore(lotta.perdente));
         esito(ospite, lotta);
@@ -621,8 +668,9 @@ public final class ConflittoSimbionti {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer ospite) {
-            Lotta lotta = LOTTE.remove(ospite.getUUID());
+            Lotta lotta = LOTTE.get(ospite.getUUID());
             if (lotta != null) {
+                finisci(ospite, lotta, lotta.equilibrio, false);
                 liberaMob(ospite, lotta.intruso, false);
             }
         }
@@ -631,10 +679,45 @@ public final class ConflittoSimbionti {
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer ospite) {
-            Lotta lotta = LOTTE.remove(ospite.getUUID());
+            Lotta lotta = LOTTE.get(ospite.getUUID());
             if (lotta != null) {
+                finisci(ospite, lotta, lotta.equilibrio, true);
                 liberaMob(ospite, lotta.intruso, false);
             }
+        }
+    }
+
+    // ------------------------------------------------------------------ la barra e il lucchetto
+
+    /**
+     * La lotta e' finita, in un modo o nell'altro: si toglie, la barra mostra come e' andata e poi
+     * sparisce, e il lucchetto delle abilita' si spegne subito.
+     */
+    private static void finisci(ServerPlayer ospite, Lotta lotta, double equilibrioFinale, boolean manda) {
+        LOTTE.remove(ospite.getUUID());
+        lotta.equilibrio = equilibrioFinale;
+        if (manda) {
+            aggiornaBarra(ospite, lotta, false);
+        }
+        sincronizzaLucchetto(ospite, false);
+    }
+
+    /** Solo all'ospite: e' la lotta dentro di lui. */
+    private static void aggiornaBarra(ServerPlayer ospite, Lotta lotta, boolean attiva) {
+        float tensione = switch (lotta.fase) {
+            case INGRESSO -> 0.0F;
+            case LOTTA -> lotta.tensione / (float) TENSIONE_MASSIMA;
+            case RESA -> 1.0F;
+        };
+        modKlyntar.network.ModNetwork.mandaBarraConflitto(ospite, attiva, lotta.dentro, lotta.intruso,
+                (float) lotta.equilibrio, tensione);
+    }
+
+    /** Il lucchetto vale 1 durante la lotta e 0 fuori; finche' non serve, l'objective non si crea. */
+    private static void sincronizzaLucchetto(ServerPlayer ospite, boolean acceso) {
+        int voluto = acceso ? 1 : 0;
+        if (SymbioteState.getScore(ospite, LUCCHETTO) != voluto) {
+            SymbioteState.setScore(ospite, LUCCHETTO, voluto);
         }
     }
 }

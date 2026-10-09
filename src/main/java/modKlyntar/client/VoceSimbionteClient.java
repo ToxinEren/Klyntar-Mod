@@ -179,6 +179,8 @@ public final class VoceSimbionteClient {
         int x = (larghezza - w) / 2;
         // sotto le barre dei boss in alto, dove sta la fame del simbionte, e sopra il mirino
         int y = Math.max(40, altezza / 5);
+        // durante un conflitto c'e' la sua barra sotto quelle dei boss: le battute scendono sotto di lei
+        y = Math.max(y, BarraConflittoClient.fondo() + 4);
 
         int colore = COLORI[tono];
         int fondo = (Math.round(alfa * 0.72F) << 24) | 0x07070A;

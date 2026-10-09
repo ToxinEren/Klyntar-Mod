@@ -68,6 +68,54 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, FrustataPacket.class, FrustataPacket::encode, FrustataPacket::new, FrustataPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, BarraConflittoPacket.class, BarraConflittoPacket::encode, BarraConflittoPacket::new, BarraConflittoPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+    }
+
+    /** L'andamento del conflitto fra i due simbionti, solo all'ospite. */
+    public static void mandaBarraConflitto(ServerPlayer ospite, boolean attiva, String dentro, String intruso,
+                                           float equilibrio, float tensione) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> ospite),
+                new BarraConflittoPacket(attiva, dentro, intruso, equilibrio, tensione));
+    }
+
+    public static class BarraConflittoPacket {
+        private final boolean attiva;
+        private final String dentro;
+        private final String intruso;
+        private final float equilibrio;
+        private final float tensione;
+
+        public BarraConflittoPacket(boolean attiva, String dentro, String intruso, float equilibrio, float tensione) {
+            this.attiva = attiva;
+            this.dentro = dentro == null ? "" : dentro;
+            this.intruso = intruso == null ? "" : intruso;
+            this.equilibrio = equilibrio;
+            this.tensione = tensione;
+        }
+
+        public BarraConflittoPacket(FriendlyByteBuf buf) {
+            this.attiva = buf.readBoolean();
+            this.dentro = buf.readUtf(32);
+            this.intruso = buf.readUtf(32);
+            this.equilibrio = buf.readFloat();
+            this.tensione = buf.readFloat();
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeBoolean(attiva);
+            buf.writeUtf(dentro, 32);
+            buf.writeUtf(intruso, 32);
+            buf.writeFloat(equilibrio);
+            buf.writeFloat(tensione);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> modKlyntar.client.BarraConflittoClient.ricevi(attiva, dentro, intruso, equilibrio, tensione)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     /** Una frustata coi tentacoli da un'entita' all'altra: la vedono tutti quelli che vedono chi frusta. */
