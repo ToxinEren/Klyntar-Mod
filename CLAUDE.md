@@ -137,6 +137,16 @@ di trasformazione di Riot compariva su Venom). Ogni forma con texture sue deve a
 (`..._riot_#MASK.png`); `deriva_potere.py` lo fa da solo. Si controlla con lo script
 `uscite_condivise.py` o cercando gli `"output"` doppi.
 
+**Le maschere `alpha_mask` non si scalano.** Palladium le applica pixel per pixel partendo
+dall'angolo in alto a sinistra della texture (`AlphaMaskTextureTransformer`): una maschera 48x48
+su una texture 512x512 copre solo un angolo, e il resto compare tutto di colpo (era cosi' la testa
+del simbionte). Il lato della maschera va uguale a quello della texture. Nero mostra, bianco
+nasconde, e anche il **trasparente nasconde**: una maschera trasparente fuori da un pezzo del
+modello lo tiene sempre invisibile (lo scudo, `venomshield`, non si vedeva per questo ed e' stato
+tolto). Le maschere si generano con `maschere_simbionte.py` della skill `nuovo-simbionte` (il
+simbionte cresce in 3D sul modello dai semi, lungo vene di rumore) e si confrontano con
+`anteprima_maschere.py`.
+
 **`bar_color` accetta nomi di colorante** (`orange` sì, `gold` no) e non tinge le icone.
 
 ## Convenzioni

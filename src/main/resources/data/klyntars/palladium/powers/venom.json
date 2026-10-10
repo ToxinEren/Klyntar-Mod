@@ -3817,32 +3817,6 @@
         ]
       }
     },
-    "venomshieldrender": {
-      "type": "palladium:render_layer",
-      "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
-      "bar_color": "black",
-      "hidden": true,
-      "hidden_in_bar": true,
-      "list_index": -1,
-      "gui_position": [
-        0,
-        -1
-      ],
-      "description": "This skill tree allows you to grant yourself more powers.",
-      "render_layer": "klyntars:venomshield",
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:animation_timer_ability",
-            "power": "klyntars:venom",
-            "ability": "enablevenomshield",
-            "min": 1,
-            "max": 8
-          }
-        ]
-      }
-    },
     "enablevenomshield": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",

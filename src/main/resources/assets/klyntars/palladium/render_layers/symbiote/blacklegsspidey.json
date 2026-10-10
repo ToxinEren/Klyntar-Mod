@@ -8,7 +8,7 @@
                 "transformers": [
                     {
                         "type": "palladium:alpha_mask",
-                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_legs_#MASK.png"
                     }
                 ],
                 "variables": {
@@ -29,7 +29,7 @@
                 "transformers": [
                     {
                         "type": "palladium:alpha_mask",
-                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_#MASK.png"
+                        "mask": "klyntars:textures/models/alpha_masks/venom/transformation_legs_#MASK.png"
                     }
                 ],
                 "variables": {
