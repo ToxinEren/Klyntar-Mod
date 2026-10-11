@@ -1,14 +1,4 @@
 ﻿{
-    "symbiotepulser": {
-        "sounds": [
-            "klyntars:symbiotepulser"
-        ]
-    },
-    "electricity": {
-        "sounds": [
-            "klyntars:electricity"
-        ]
-    },
     "ability.armor": {
         "subtitle": "subtitles.klyntars.ability.armor",
         "sounds": [

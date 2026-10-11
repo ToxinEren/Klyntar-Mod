@@ -1,20 +1,21 @@
-﻿{
-    "model_layer": "klyntars:spikes",
-    "texture": {
-        "base": "klyntars:textures/models/riot/spikes.png",
-        "transformers": [
-            {
-            "type": "palladium:alpha_mask",
-            "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
-            }],
-            "variables": {
-                "MASK": {
-                    "type": "palladium:ability_integer_property",
-                    "power": "klyntars:riot",
-                    "ability": "enablevenomspikes",
-                    "property": "value"
-                }
-            },
-            "output": "klyntars:textures/models/spikes_riot_#MASK.png"
-}
+{
+  "model_layer": "klyntars:spikes",
+  "texture": {
+    "base": "klyntars:textures/models/riot/spikes.png",
+    "transformers": [
+      {
+        "type": "palladium:alpha_mask",
+        "mask": "klyntars:textures/models/alpha_masks/spikesmask_#MASK.png"
+      }
+    ],
+    "variables": {
+      "MASK": {
+        "type": "palladium:ability_integer_property",
+        "power": "klyntars:riot",
+        "ability": "spikeburst",
+        "property": "value"
+      }
+    },
+    "output": "klyntars:textures/models/spikes_riot_#MASK.png"
+  }
 }

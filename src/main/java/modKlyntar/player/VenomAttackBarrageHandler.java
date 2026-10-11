@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Mod.EventBusSubscriber(modid = MyMod.MOD_ID)
 public final class VenomAttackBarrageHandler {
-    /** ricalca il timer dell'abilita' "attack": venom.json legge le stesse finestre da qui */
+    /** ricalca il timer dell'abilita' "clawflurry": venom.json legge le stesse finestre da qui */
     public static final String TIMER_OBJECTIVE = "Venom.Barrage.Timer";
     /** quale animazione del moveset e' stata lanciata: 1..N, 0 quando la catena e' ferma */
     public static final String COMBO_OBJECTIVE = "Venom.Barrage.Combo";
@@ -52,7 +52,7 @@ public final class VenomAttackBarrageHandler {
     };
 
     /**
-     * Estremi (inclusi) del timer di "attack" occupati da ogni battito del moveset, ricavati dalle
+     * Estremi (inclusi) del timer di "clawflurry" occupati da ogni battito del moveset, ricavati dalle
      * finestre delle abilita' in venom.json. Ogni battito copre una animazione sola e si ferma
      * prima che si apra la finestra della successiva, cosi' un clic non ne fa partire due.
      *
@@ -62,10 +62,10 @@ public final class VenomAttackBarrageHandler {
      * solo sul barrage a tasto tenuto.</p>
      */
     private static final int[][] BEATS_DEFAULT = {
-            {1, 5},    // righttalon        -> animation.venom.attack.1
-            {7, 10},   // righttalon2       -> animation.venom.attack.2
-            {11, 15},  // lefttalon         -> animation.venom.attack.3
-            {17, 19}   // lefttalon2        -> animation.venom.attack.4
+            {1, 5},    // rightclaw        -> animation.venom.attack.1
+            {7, 10},   // rightclaw2       -> animation.venom.attack.2
+            {11, 15},  // leftclaw         -> animation.venom.attack.3
+            {17, 19}   // leftclaw2        -> animation.venom.attack.4
     };
     private static final int[][] BEATS_WHIP = {{1, 8}, {12, 20}, {24, 32}, {38, 48}};
     private static final int[][] BEATS_AXE = {{1, 18}, {25, 42}};
@@ -274,7 +274,7 @@ public final class VenomAttackBarrageHandler {
             return false;
         }
         if (player.isShiftKeyDown()) {
-            // stessa esclusione dell'abilita' "attack", che non si sblocca da accovacciati
+            // stessa esclusione dell'abilita' "clawflurry", che non si sblocca da accovacciati
             return false;
         }
         if (getScore(player, SHIELD_OBJECTIVE) > 0

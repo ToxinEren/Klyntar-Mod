@@ -141,7 +141,7 @@ public final class TentacoliTuta {
             // valore lasciato da un'altra forma, e i filamenti erano sempre accesi.
             // AbilityUtil legge lo stato che Palladium sincronizza gia' ai client per i
             // render layer, quindi non serve un pacchetto in piu'.
-            if (!AbilityUtil.isEnabled(giocatore, POTERE, "enablevenom")) {
+            if (!AbilityUtil.isEnabled(giocatore, POTERE, "enablesymbiote")) {
                 continue;
             }
             // la Necrospada ha il suo interruttore: senza lama, niente filamenti sulla lama

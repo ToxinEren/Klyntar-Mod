@@ -112,7 +112,7 @@ public final class VoceSimbionteOsservatore {
     private static boolean testaFuori(ServerPlayer ospite) {
         String forma = SymbioteState.forma(ospite);
         return !forma.isEmpty()
-                && AbilityUtil.isEnabled(ospite, new ResourceLocation(MyMod.MOD_ID, forma), "enablevenomhead");
+                && AbilityUtil.isEnabled(ospite, new ResourceLocation(MyMod.MOD_ID, forma), "enablesymbiotehead");
     }
 
     private static void confronta(ServerPlayer ospite, Stato prima, Stato ora) {

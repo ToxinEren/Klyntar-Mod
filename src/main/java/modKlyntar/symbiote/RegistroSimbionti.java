@@ -90,6 +90,11 @@ public final class RegistroSimbionti {
     public enum Tratto {
         /** Le armi create dal corpo, la ruota frusta/ascia/mazza. Di Riot. */
         ARMI_DAL_CORPO("Klyntar.BodyWeapons"),
+        /**
+         * Le spine dorsali: da trasformato, un colpo alle spalle fa uscire spine ferme dalla schiena
+         * che pungono chi ha colpito (6 di danno). Di Riot. La logica e' in SpineDorsali.
+         */
+        SPINE_DORSALI("Klyntar.Trait.BackSpikes"),
         /** Lo scudo col tasto destro. Di Venom: Riot lo ottiene digerendolo. */
         SCUDO("Klyntar.Trait.Shield"),
         /** Resistenza parziale al suono: un colpo sonoro in piu' prima dello strappo, malus piu' corti. Di Scream. */
@@ -136,7 +141,7 @@ public final class RegistroSimbionti {
         registra("venomspidey", "venom", "Venom", 1, Temperamento.PROTETTIVO, 10, Origine.EVOLUZIONE, null,
                 Set.of(Tratto.SCUDO), true, false, 0.5D);
         registra("riot", "riot", "Riot", 2, Temperamento.DOMINANTE, 15, Origine.METEORITE, null,
-                Set.of(Tratto.ARMI_DAL_CORPO), true, true, 0.5D);
+                Set.of(Tratto.ARMI_DAL_CORPO, Tratto.SPINE_DORSALI), true, true, 0.5D);
         // --- SEGNALIBRO: tier 3-4, nascono da un giocatore che indossa il padre
         registra("carnage", "carnage", "Carnage", 3, Temperamento.PSICOPATICO, 25, Origine.NASCITA, "venom",
                 Set.of(Tratto.ARMI_DAL_CORPO, Tratto.TENTACOLI_ASSASSINI), false, true, 0.5D);

@@ -20,7 +20,8 @@ Pehkui, f_tech) sono jar locali in `../mods_dependencies` e non si risolvono dal
 |---|---|
 | `src/main/java/modKlyntar/` | 93 file Java: capability, handler, entità, worldgen |
 | `src/main/resources/data/klyntars/palladium/powers/` | i poteri: `venom`, `venomspidey`, `riot` |
-| `src/main/resources/assets/klyntars/kubejs_scripts/` | 165 script KubeJS (moveset, animazioni) |
+| `src/main/resources/assets/klyntars/kubejs_scripts/` | `pose_simbionte.js`: le pose del corpo durante le abilita', una tabella per tutte le forme |
+| `src/main/resources/addon/klyntars/kubejs_scripts/` | `abilita_klyntar.js` (grab, esplosione, proprieta', numero a caso e due condizioni) e i due script del simbionte |
 | `src/main/resources/assets/klyntars/animations/` | 21 file di animazione GeckoLib |
 | `src/main/resources/assets/klyntars/textures/icon/` | icone delle abilità, con sottocartelle per forma |
 
@@ -37,7 +38,7 @@ stesso corpo. I sistemi stanno in `modKlyntar/symbiote/`:
 |---|---|
 | `RegistroSimbionti` | chi sono i simbionti: tier, temperamento, forza base, origine, padre, tratti nativi. Quelli non ancora nella mod sono **segnalibri** con `disponibile = false` |
 | `ProfiliSimbionti` | per giocatore e simbionte: inglobati (per la nascita), digeriti, tratti acquisiti; la forza; gli objective dei tratti (`Klyntar.BodyWeapons`, `Klyntar.Trait.*`) che i JSON leggono |
-| `ConflittoSimbionti` | un secondo simbionte nello stesso corpo, a tre tempi sul modello del "graft" della mod Symbiote: l'ingresso (quello di dentro si oppone, i filamenti dei due si frustano), la lotta (tensione 0-100, avvisi a 60 e 85, mangiare aiuta quello di dentro, non uccide mai l'ospite), la resa (chi perde implora; fuga o assorbimento). Durante la lotta tutte le abilita' sono bloccate (`Klyntar.ConflictLock`: accanto a `Venom.VulnerabilityLock` in ogni abilita' che quello blocca, e in piu' sulla trasformazione `enablevenombody` - il corpo si ritira -, sulla copertura delle gambe `enablevenomlegs` e sulle mani-attrezzo, che da indebolito restano usabili; con tutto bloccato Palladium nasconde la colonna delle abilita'. Il lucchetto va fra le condizioni principali di `unlocking`, mai dentro un `palladium:or`), la fame del simbionte scende di 1 al secondo, e l'ospite vede la barra dell'andamento (`client/BarraConflittoClient`): a sinistra chi era dentro, a destra l'intruso, come due tentacoli che si attorcigliano nel punto dello scontro. Vince chi tiene piu' della meta' del corpo quando la tensione arriva a 100 |
+| `ConflittoSimbionti` | un secondo simbionte nello stesso corpo, a tre tempi sul modello del "graft" della mod Symbiote: l'ingresso (quello di dentro si oppone, i filamenti dei due si frustano), la lotta (tensione 0-100, avvisi a 60 e 85, mangiare aiuta quello di dentro, non uccide mai l'ospite), la resa (chi perde implora; fuga o assorbimento). Durante la lotta tutte le abilita' sono bloccate (`Klyntar.ConflictLock`: accanto a `Venom.VulnerabilityLock` in ogni abilita' che quello blocca, e in piu' sulla trasformazione `enablesymbiotebody` - il corpo si ritira -, sulla copertura delle gambe `enablesymbiotelegs` e sulle mani-attrezzo, che da indebolito restano usabili; con tutto bloccato Palladium nasconde la colonna delle abilita'. Il lucchetto va fra le condizioni principali di `unlocking`, mai dentro un `palladium:or`), la fame del simbionte scende di 1 al secondo, e l'ospite vede la barra dell'andamento (`client/BarraConflittoClient`): a sinistra chi era dentro, a destra l'intruso, come due tentacoli che si attorcigliano nel punto dello scontro. Vince chi tiene piu' della meta' del corpo quando la tensione arriva a 100 |
 | `SensoSimbionti` | il simbionte sente gli altri entro 18 blocchi, anche dietro i muri, e lo dice; avvisa quando quello che lo bracca gli viene addosso |
 | `DuelloSimbionti` | il duello coi tentacoli prima dell'ingresso: il simbionte dell'ospite risponde da solo alle frustate del rivale (piu' forte col bond alto); le frustate si disegnano in `client/renderer/FrustateSimbionte` |
 | `NascitaSimbionti` | Carnage da Venom, Toxin da Carnage: 2 inglobati + vita sotto il 30% |
@@ -66,9 +67,13 @@ tenuto (`SymbioteEntity.trattieni`) non scappa e non si rifugia negli animali.
 
 **Ogni simbionte ha le sue abilita' di natura, le altre si prendono digerendo.** Le armi dal
 corpo sono di Riot (`Klyntar.BodyWeapons`): Venom e Spidey le hanno solo digerendo un Riot. Lo
-scudo col tasto destro (`venomblock`) e' di Venom (`Klyntar.Trait.Shield`): Riot lo ha solo
+scudo col tasto destro (`guardstance`) e' di Venom (`Klyntar.Trait.Shield`): Riot lo ha solo
 digerendo un Venom. Nel JSON del potere che non ce l'ha di natura, l'abilita' ha l'objective del
-tratto fra le condizioni `unlocking`; i tratti nativi stanno in `RegistroSimbionti`.
+tratto fra le condizioni `unlocking`; i tratti nativi stanno in `RegistroSimbionti`. Le spine
+dorsali sono di Riot (`Klyntar.Trait.BackSpikes`, passive): da trasformato, un colpo da vicino alle
+spalle fa uscire spine ferme dalla schiena del corpo che pungono sempre (6 di danno), poi rientrano. Le
+controlla Java (`player/SpineDorsali`, che guarda il tratto), non una condizione nel JSON; il
+disegno sono le ossa `back_spike_*` del modello del corpo, fatte da `spine_dorsali.py` della skill.
 
 **Le barre organiche** (fame e conflitto) le disegna il client in texture dinamiche a doppia
 definizione, ridisegnate fino a 30 volte al secondo perche' i tentacoli si muovano
@@ -109,11 +114,13 @@ vettori (`[1,1,1]`): un numero nudo fa crashare il caricamento con `Not a JSON O
 Un controller GeckoLib riproduce una sola animazione: se un controller ha 64 trigger, qualsiasi
 trigger interrompe quello in corso.
 
-**L'id del potere negli script KubeJS compare con due punteggiature diverse.** In
-`registerForPower` e `getAnimationTimerAbilityValue` sta fra apici singoli, in
-`abilityUtil.isEnabled` sta fra virgolette doppie. Una sostituzione che ne cerca una sola lascia
-l'altra puntata al potere di partenza, e il ramo che ne dipende semplicemente non parte: è così
-che la rotazione orizzontale sul soffitto è rimasta muta in una forma derivata.
+**Le pose e i layer dei pezzi del simbionte sono tabelle, non copie per forma.** Le pose del corpo
+durante le abilita' stanno in `pose_simbionte.js` (la forma va in `TUTTE`); i render layer del
+corpo nero, delle gambe, degli attrezzi, del pugno e delle spine li genera `layer_simbionte.py` della
+skill `nuovo-simbionte` (la forma va in `FORME`). Prima erano 40 script e 27 layer copiati a mano per
+ogni forma, e una sostituzione d'id dimenticata lasciava un ramo puntato al potere di partenza.
+In Rhino (KubeJS) let e const nei cicli non fanno una variabile nuova a ogni giro: le funzioni
+registrate in un ciclo vanno create in una funzione a parte.
 
 **`runClient` serve le risorse da `build/resources/main`, non da `src`.** Una modifica a uno
 script KubeJS o a una texture non si vede con un reload a caldo se il client era gia' avviato:

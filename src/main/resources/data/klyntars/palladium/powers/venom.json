@@ -8,7 +8,7 @@
   "secondary_color": "#303030",
   "gui_display_type": "tree",
   "abilities": {
-    "venombody": {
+    "symbiotebody": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "title": "Symbiote",
@@ -27,7 +27,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 1,
             "max": 19
           }
@@ -53,14 +53,14 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "symbiotebody"
           }
         ],
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           }
@@ -85,7 +85,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
@@ -108,7 +108,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "righttalon"
+            "ability": "rightclaw"
           },
           {
             "type": "palladium:or",
@@ -197,7 +197,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "righttalon2"
+            "ability": "rightclaw2"
           },
           {
             "type": "palladium:or",
@@ -286,7 +286,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "lefttalon"
+            "ability": "leftclaw"
           },
           {
             "type": "palladium:or",
@@ -375,7 +375,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "lefttalon2"
+            "ability": "leftclaw2"
           },
           {
             "type": "palladium:or",
@@ -672,7 +672,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
@@ -695,7 +695,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
@@ -718,7 +718,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "venomgrab"
+            "ability": "crushinggrip"
           }
         ]
       }
@@ -741,7 +741,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "venomcrush"
+            "ability": "gripcrush"
           }
         ]
       }
@@ -764,7 +764,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "enablesymbioteaxe"
+            "ability": "enableaxehand"
           }
         ]
       }
@@ -787,7 +787,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "enablesymbioteaxe"
+            "ability": "enableaxehand"
           }
         ]
       }
@@ -902,7 +902,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "venomcrush"
+            "ability": "gripcrush"
           },
           {
             "type": "palladium:objective_score",
@@ -931,7 +931,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "venomcrush"
+            "ability": "gripcrush"
           },
           {
             "type": "palladium:objective_score",
@@ -960,7 +960,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "venomleap"
+            "ability": "symbioteleap"
           }
         ]
       }
@@ -1276,7 +1276,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -1362,7 +1362,7 @@
         ]
       }
     },
-    "venombond1": {
+    "symbiotebond1": {
       "type": "palladium:dummy",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "title": "Symbiote Bond Level 1",
@@ -1380,12 +1380,12 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombody"
+            "ability": "symbiotebody"
           }
         ]
       }
     },
-    "venombond2": {
+    "symbiotebond2": {
       "type": "palladium:dummy",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "title": "Symbiote Bond Level 2",
@@ -1403,7 +1403,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           },
           {
             "type": "palladium:objective_score",
@@ -1414,7 +1414,7 @@
         ]
       }
     },
-    "venomhead": {
+    "symbioteheadlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "title": "Symbiote Head Model",
@@ -1426,24 +1426,24 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/symbiotehead",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenomhead",
+            "ability": "enablesymbiotehead",
             "min": 1,
             "max": 12
           }
         ]
       }
     },
-    "venompicaxe": {
+    "pickaxehandlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Pickaxe hand layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1452,24 +1452,24 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/symbiotepicaxe",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablesymbiotepicaxe",
+            "ability": "enablepickaxehand",
             "min": 1,
             "max": 10
           }
         ]
       }
     },
-    "venomaxe": {
+    "axehandlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Axe hand layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1478,24 +1478,24 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/symbioteaxe",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablesymbioteaxe",
+            "ability": "enableaxehand",
             "min": 1,
             "max": 10
           }
         ]
       }
     },
-    "symbiotepunch": {
+    "punchcufflayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Punch cuff layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1504,24 +1504,24 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/symbiotepunch",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablesymbiotepunch",
+            "ability": "enablepunchcuff",
             "min": 1,
             "max": 12
           }
         ]
       }
     },
-    "venomlegs": {
+    "legcoverlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Leg cover layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1530,24 +1530,24 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/blacklegs",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomlegs",
+            "ability": "enablesymbiotelegs",
             "min": 1,
             "max": 16
           }
         ]
       }
     },
-    "symbiotecover": {
+    "coverlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Symbiote cover layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1556,7 +1556,7 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:symbiote/symbiotecover",
       "conditions": {
         "enabling": [
@@ -1569,10 +1569,10 @@
         ]
       }
     },
-    "venomtag": {
+    "symbiotebondsetup": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Symbiote bond setup",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1581,7 +1581,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "advancement grant @s only klyntars:custom/venom",
         "tag @s add Klyntars.Venom",
@@ -1596,10 +1596,10 @@
         ""
       ]
     },
-    "blackbody": {
+    "symbioteskin": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Symbiote skin layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1608,7 +1608,7 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:black"
     },
     "venomswim": {
@@ -1630,7 +1630,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
@@ -1654,7 +1654,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           },
           {
             "type": "palladium:or",
@@ -1676,16 +1676,16 @@
         ]
       }
     },
-    "hidebody": {
+    "hideplayerbody": {
       "type": "palladium:hide_body_part",
       "icon": "minecraft:blaze_rod",
-      "title": "null",
+      "title": "Hidden body parts",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "body_parts": [
         "head",
         "head_overlay",
@@ -1707,28 +1707,28 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 1,
             "max": 20
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomname": {
+    "symbiotename": {
       "type": "palladium:name_change",
       "icon": "minecraft:blaze_rod",
-      "title": "null",
+      "title": "Symbiote name",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "name": {
         "text": "Venom"
       },
@@ -1736,17 +1736,17 @@
         "enabling": {
           "type": "palladium:animation_timer_ability",
           "power": "klyntars:venom",
-          "ability": "enablevenom",
+          "ability": "enablesymbiote",
           "min": 20,
           "max": 20
         }
       }
     },
-    "enablevenombody": {
+    "enablesymbiotebody": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Symbiote Takeover",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": false,
@@ -1761,7 +1761,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "null",
-            "ability": "venombody"
+            "ability": "symbiotebody"
           },
           {
             "type": "palladium:not",
@@ -1829,16 +1829,16 @@
       },
       "description": "Let the symbiote take over your body."
     },
-    "venomarmor": {
+    "armorlock": {
       "type": "palladium:restrict_slots",
       "icon": "minecraft:blaze_rod",
-      "title": "null",
+      "title": "Armor lock",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "slots": [
         "chest",
         "legs",
@@ -1857,16 +1857,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "enablevenom": {
+    "enablesymbiote": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Godlike Appearance",
+      "title": "Transformation progress",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -1880,7 +1880,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "null",
-            "ability": "venombody"
+            "ability": "symbiotebody"
           }
         ],
         "enabling": [
@@ -1890,7 +1890,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablevenombody",
+                "ability": "enablesymbiotebody",
                 "min": 16,
                 "max": 16
               },
@@ -1905,10 +1905,10 @@
         ]
       }
     },
-    "venommask": {
+    "symbiotemask": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Mask placeholder",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1917,7 +1917,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [],
       "last_tick_commands": [],
       "commands": [
@@ -1929,22 +1929,22 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenombody",
+            "ability": "enablesymbiotebody",
             "min": 1,
             "max": 1
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenombody"
+            "ability": "enablesymbiotebody"
           }
         ]
       }
     },
-    "venomcopy": {
+    "symbiotecopy": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Form copy",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -1953,7 +1953,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "function klyntars:venomcopy"
       ],
@@ -1967,44 +1967,44 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenombody",
+            "ability": "enablesymbiotebody",
             "min": 10,
             "max": 10
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenombody"
+            "ability": "enablesymbiotebody"
           }
         ]
       }
     },
-    "bodysize": {
+    "symbiotesize": {
       "type": "palladium:size",
       "icon": "palladium:textures/icon/size.png",
-      "title": "null",
+      "title": "Symbiote size",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "scale": 1,
       "conditions": {
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "righttalon": {
+    "rightclaw": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Right claw swipe",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -2021,7 +2021,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 1,
                 "max": 6
               },
@@ -2093,18 +2093,18 @@
             "conditions": [
               {
                 "type": "palladium:ability_on_cooldown",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           }
         ]
       }
     },
-    "attack": {
+    "clawflurry": {
       "type": "palladium:repeating_animation_timer",
       "icon": "klyntars:textures/icon/venomscratchmark.png",
       "list_index": 0,
-      "title": "Attack barrage",
+      "title": "Claw flurry",
       "bar_color": "black",
       "hidden_in_bar": false,
       "hidden": true,
@@ -2124,7 +2124,7 @@
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           },
           {
             "type": "palladium:not",
@@ -2182,7 +2182,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           },
           {
             "type": "palladium:not",
@@ -2235,7 +2235,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 1,
                 "max": 8
               },
@@ -2285,7 +2285,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 12,
                 "max": 20
               },
@@ -2335,7 +2335,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 24,
                 "max": 32
               },
@@ -2385,7 +2385,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 38,
                 "max": 48
               },
@@ -2435,7 +2435,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 1,
                 "max": 18
               },
@@ -2485,7 +2485,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 25,
                 "max": 42
               },
@@ -2535,7 +2535,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 1,
                 "max": 8
               },
@@ -2585,7 +2585,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 12,
                 "max": 20
               },
@@ -2635,7 +2635,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 24,
                 "max": 32
               },
@@ -2685,7 +2685,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 38,
                 "max": 48
               },
@@ -2750,7 +2750,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           },
           {
             "type": "palladium:or",
@@ -2820,7 +2820,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           },
           {
             "type": "palladium:not",
@@ -2836,11 +2836,11 @@
         ]
       }
     },
-    "righttalon2": {
+    "rightclaw2": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Right claw recovery",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -2857,7 +2857,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 6,
                 "max": 10
               },
@@ -2930,18 +2930,18 @@
               {
                 "type": "palladium:ability_last_tick",
                 "power": "null",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           }
         ]
       }
     },
-    "lefttalon": {
+    "leftclaw": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Left claw swipe",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -2958,7 +2958,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 11,
                 "max": 16
               },
@@ -3031,18 +3031,18 @@
               {
                 "type": "palladium:ability_last_tick",
                 "power": "null",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           }
         ]
       }
     },
-    "lefttalon2": {
+    "leftclaw2": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Left claw recovery",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -3059,7 +3059,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "attack",
+                "ability": "clawflurry",
                 "min": 16,
                 "max": 20
               },
@@ -3132,7 +3132,7 @@
               {
                 "type": "palladium:ability_last_tick",
                 "power": "null",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -3145,11 +3145,11 @@
         ]
       }
     },
-    "spinattack": {
+    "spinstrike": {
       "type": "palladium:repeating_animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Spinning strike",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -3166,11 +3166,11 @@
         ]
       }
     },
-    "spinattack2": {
+    "spinstrike2": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Spinning strike recovery",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -3187,11 +3187,11 @@
         ]
       }
     },
-    "venomslam": {
+    "groundpound": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Slam",
+      "title": "Ground pound wind-up",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -3208,11 +3208,11 @@
         ]
       }
     },
-    "venomslam2": {
+    "groundpound2": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Ground pound impact",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -3229,9 +3229,9 @@
         ]
       }
     },
-    "showtalons": {
+    "showclaws": {
       "type": "palladium:show_both_arms",
-      "title": "Passive skill tree",
+      "title": "Both arms (claws)",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -3240,22 +3240,22 @@
         1,
         0
       ],
-      "description": "null",
+      "description": "",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
     },
-    "righttalondmg": {
+    "rightclawhit": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
       "hidden": true,
-      "title": "Render Layer",
+      "title": "Right claw hit",
       "list_index": 2,
       "velocity": 1.5,
       "entity_data": {
@@ -3271,7 +3271,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "righttalon2",
+            "ability": "rightclaw2",
             "min": 3,
             "max": 3
           }
@@ -3279,10 +3279,10 @@
       },
       "hidden_in_bar": true
     },
-    "lefttalondmg": {
+    "leftclawhit": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
-      "title": "Render Layer",
+      "title": "Left claw hit",
       "list_index": 2,
       "hidden": true,
       "velocity": 1.5,
@@ -3299,7 +3299,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "lefttalon2",
+            "ability": "leftclaw2",
             "min": 3,
             "max": 3
           }
@@ -3307,10 +3307,10 @@
       },
       "hidden_in_bar": true
     },
-    "spinattackdmg": {
+    "spinstrikehit": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
-      "title": "Render Layer",
+      "title": "Spinning strike hit",
       "list_index": 2,
       "hidden": true,
       "velocity": 1.5,
@@ -3327,7 +3327,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "spinattack",
+            "ability": "spinstrike",
             "min": 10,
             "max": 13
           }
@@ -3335,10 +3335,10 @@
       },
       "hidden_in_bar": true
     },
-    "venomslamdmg": {
+    "groundpoundhit": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
-      "title": "Render Layer",
+      "title": "Ground pound hit",
       "list_index": 2,
       "velocity": 1.5,
       "hidden": true,
@@ -3355,7 +3355,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "venomslam2",
+            "ability": "groundpound2",
             "min": 3,
             "max": 4
           }
@@ -3366,7 +3366,7 @@
     "symbiontwhipdmg": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
-      "title": "Render Layer",
+      "title": "Whip hit",
       "list_index": 2,
       "velocity": 2.2,
       "hidden": true,
@@ -3421,7 +3421,7 @@
     "symbiontaxedmg": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
-      "title": "Render Layer",
+      "title": "Axe hit",
       "list_index": 2,
       "velocity": 1.8,
       "hidden": true,
@@ -3491,28 +3491,28 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "righttalon2",
+                "ability": "rightclaw2",
                 "min": 3,
                 "max": 3
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "lefttalon2",
+                "ability": "leftclaw2",
                 "min": 3,
                 "max": 3
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "spinattack",
+                "ability": "spinstrike",
                 "min": 10,
                 "max": 10
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "klyntars:venom",
-                "ability": "venomslam2",
+                "ability": "groundpound2",
                 "min": 3,
                 "max": 3
               }
@@ -3645,17 +3645,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venomcrush",
+            "ability": "gripcrush",
             "min": 3,
             "max": 3
           }
         ]
       }
     },
-    "venomspikes": {
+    "spinelayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Spine layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -3664,25 +3664,25 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:venomspike",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 1,
             "max": 8
           }
         ]
       }
     },
-    "enablevenomspike": {
+    "enablesymbiotespine": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Spine growth",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -3699,11 +3699,11 @@
         ]
       }
     },
-    "smallarms": {
+    "shortarms": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Small arms",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -3717,17 +3717,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 8,
             "max": 20
           }
         ]
       }
     },
-    "venomshield": {
+    "symbioteshield": {
       "type": "palladium:animation_timer",
       "icon": "minecraft:shield",
-      "title": "Block",
+      "title": "Shield growth",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -3736,23 +3736,23 @@
         0,
         -3
       ],
-      "description": "null",
+      "description": "",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:ability_enabled",
-            "ability": "venomblock"
+            "ability": "guardstance"
           }
         ]
       },
       "start_value": 0,
       "max_value": 1
     },
-    "venomblock": {
+    "guardstance": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Guard stance",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -3778,7 +3778,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -3788,7 +3788,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -3817,11 +3817,11 @@
         ]
       }
     },
-    "enablevenomshield": {
+    "enablesymbioteshield": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Shield form",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -3835,17 +3835,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "venomblock",
+            "ability": "guardstance",
             "min": 4,
             "max": 8
           }
         ]
       }
     },
-    "venomgrab": {
+    "crushinggrip": {
       "type": "klyntars:grab",
       "icon": "klyntars:textures/icon/venomgrab.png",
-      "title": "Grab & Crush",
+      "title": "Crushing Grip",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -3887,7 +3887,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -3897,7 +3897,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -3945,16 +3945,16 @@
         ]
       }
     },
-    "grabscore": {
+    "gripstate": {
       "type": "palladium:command",
       "icon": "minecraft:green_stained_glass",
-      "title": "null",
+      "title": "Grip state",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "/scoreboard players set @s Klyntars.Range 3"
       ],
@@ -3965,16 +3965,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "venomgrab"
+            "ability": "crushinggrip"
           }
         ]
       }
     },
-    "venomgrabani": {
+    "gripreach": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Grip reach",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -3988,16 +3988,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "venomgrab"
+            "ability": "crushinggrip"
           }
         ]
       }
     },
-    "grabdmg": {
+    "griphit": {
       "type": "palladium:projectile",
       "entity_type": "palladium:custom_projectile",
       "hidden": true,
-      "title": "Render Layer",
+      "title": "Grip hit",
       "list_index": 2,
       "velocity": 1.5,
       "entity_data": {
@@ -4013,17 +4013,17 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "null",
-            "ability": "venomcrush"
+            "ability": "gripcrush"
           }
         ]
       },
       "hidden_in_bar": true
     },
-    "venomgrabanimation": {
+    "griphold": {
       "type": "palladium:repeating_animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Grip hold",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -4037,16 +4037,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "venomgrab"
+            "ability": "crushinggrip"
           }
         ]
       }
     },
-    "venomcrush": {
+    "gripcrush": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Crush",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -4063,7 +4063,7 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "venomgrabanimation",
+                "ability": "griphold",
                 "min": 12,
                 "max": 17
               },
@@ -4082,7 +4082,7 @@
                       {
                         "type": "palladium:animation_timer_ability",
                         "power": "klyntars:venom",
-                        "ability": "attack",
+                        "ability": "clawflurry",
                         "min": 1,
                         "max": 5
                       },
@@ -4118,11 +4118,11 @@
         ]
       }
     },
-    "enablevenomspikes": {
+    "spikeburst": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomspikeicon.png",
       "list_index": -1,
-      "title": "Tendril explosion",
+      "title": "Spike burst",
       "bar_color": "black",
       "hidden_in_bar": true,
       "hidden": true,
@@ -4158,7 +4158,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -4168,7 +4168,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -4197,10 +4197,10 @@
         ]
       }
     },
-    "spikes": {
+    "spikeburstlayer": {
       "type": "palladium:render_layer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Powers skill tree",
+      "title": "Spike burst layer",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -4209,25 +4209,25 @@
         0,
         -1
       ],
-      "description": "This skill tree allows you to grant yourself more powers.",
+      "description": "",
       "render_layer": "klyntars:venomspikes",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 1,
             "max": 8
           }
         ]
       }
     },
-    "roar": {
+    "symbioteroar": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 3,
-      "title": "Unleash the symbiote",
+      "title": "Roar",
       "hidden_in_bar": true,
       "hidden": true,
       "start_value": 0,
@@ -4241,21 +4241,21 @@
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "enablevenomspikes"
+            "ability": "spikeburst"
           }
         ]
       }
     },
-    "venomspikedmg": {
+    "spikeburstdamage": {
       "type": "palladium:command",
       "icon": "minecraft:fire_charge",
-      "title": "null",
+      "title": "Spike burst damage",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "commands": [
         "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored] run damage @s 35 minecraft:generic by @p[distance=..8,sort=nearest,limit=1]"
       ],
@@ -4264,23 +4264,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 8,
             "max": 8
           }
         ]
       }
     },
-    "venomspikeknockback": {
+    "spikeburstknockback": {
       "type": "palladium:command",
       "icon": "minecraft:fire_charge",
-      "title": "null",
+      "title": "Spike burst knockback",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "commands": [
         "execute at @s as @e[distance=0.1..6,type=!#klyntars:aoe_ignored,type=!minecraft:player] facing entity @p[distance=..8,sort=nearest,limit=1] feet run tp @s ^ ^ ^-0.8"
       ],
@@ -4289,17 +4289,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 8,
             "max": 8
           }
         ]
       }
     },
-    "venomdura": {
+    "basedurability": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Passive skill tree",
+      "title": "Base durability",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4308,7 +4308,7 @@
         1,
         0
       ],
-      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "description": "",
       "attribute": "minecraft:generic.armor",
       "amount": 10,
       "operation": 0,
@@ -4318,15 +4318,15 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venompassive": {
+    "hardenedhide": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:diamond_chestplate",
-      "title": "Enhanced durability",
+      "title": "Hardened Hide",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4345,22 +4345,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venompassive2": {
+    "hardenedhide2": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:netherite_chestplate",
-      "title": "Enhanced durability lvl 2",
+      "title": "Hardened Hide II",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4384,22 +4384,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venompassive"
+            "ability": "hardenedhide"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomhealth": {
+    "thickflesh": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/heart.png",
-      "title": "Enhanced health",
+      "title": "Thick Flesh",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4418,22 +4418,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomhealth2": {
+    "thickflesh2": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/heart.png",
-      "title": "Enhanced health lvl 2",
+      "title": "Thick Flesh II",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4457,22 +4457,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomhealth"
+            "ability": "thickflesh"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomdmgpassive": {
+    "basestrength": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:netherite_sword",
-      "title": "Enhanced damage",
+      "title": "Base strength",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4481,7 +4481,7 @@
         0,
         2
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.attack_damage",
       "amount": 8,
       "operation": 0,
@@ -4491,15 +4491,15 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomdmgupgrade": {
+    "heavyblows": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:diamond_sword",
-      "title": "Enhanced damage",
+      "title": "Heavy Blows",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4518,22 +4518,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomdmgupgrade2": {
+    "heavyblows2": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:netherite_sword",
-      "title": "Enhanced damage lvl 2",
+      "title": "Heavy Blows II",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4557,22 +4557,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomdmgupgrade"
+            "ability": "heavyblows"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomdmg": {
+    "symbiotestrength": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Attack damage skill tree",
+      "title": "Strength",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4581,7 +4581,7 @@
         0,
         1
       ],
-      "description": "This skill tree allows you to grant yourself strength.",
+      "description": "",
       "attribute": "minecraft:generic.attack_damage",
       "amount": 5,
       "operation": 0,
@@ -4591,20 +4591,20 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
     },
-    "venomtoughness": {
+    "symbiotetoughness": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:golden_chestplate",
-      "title": "Enhanced toughness lvl 1",
+      "title": "Toughness",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4613,7 +4613,7 @@
         3,
         1
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.armor_toughness",
       "amount": 8,
       "operation": 0,
@@ -4623,22 +4623,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venompassive"
+            "ability": "hardenedhide"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomtoughnesspassive": {
+    "basetoughness": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:golden_chestplate",
-      "title": "Enhanced toughness lvl 1",
+      "title": "Base toughness",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4647,7 +4647,7 @@
         3,
         1
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.armor_toughness",
       "amount": 8,
       "operation": 0,
@@ -4657,15 +4657,15 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomjump": {
+    "symbiotestride": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced movement",
+      "title": "Symbiote Stride",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4684,22 +4684,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomjump2": {
+    "symbiotestride2": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced movement lvl 2",
+      "title": "Symbiote Stride II",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -4718,27 +4718,27 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomjump"
+            "ability": "symbiotestride"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomspeed": {
+    "symbiotespeed": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced Speed",
+      "title": "Speed",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4747,7 +4747,7 @@
         -2,
         0
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.movement_speed",
       "amount": 0.1,
       "operation": 0,
@@ -4757,22 +4757,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomjump"
+            "ability": "symbiotestride"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomleap": {
+    "symbioteleap": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced Leaps",
+      "title": "Leap",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4781,7 +4781,7 @@
         -4,
         0
       ],
-      "description": "null",
+      "description": "",
       "attribute": "palladium:leaping",
       "amount": 1,
       "operation": 0,
@@ -4791,22 +4791,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomjump"
+            "ability": "symbiotestride"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomspeed2": {
+    "symbiotespeed2": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced Speed",
+      "title": "Speed II",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4815,7 +4815,7 @@
         -2,
         0
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.movement_speed",
       "amount": 0.1,
       "operation": 0,
@@ -4825,22 +4825,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomjump2"
+            "ability": "symbiotestride2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomleap2": {
+    "symbioteleap2": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced Leaps",
+      "title": "Leap II",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4849,7 +4849,7 @@
         -4,
         0
       ],
-      "description": "null",
+      "description": "",
       "attribute": "palladium:leaping",
       "amount": 1,
       "operation": 0,
@@ -4859,28 +4859,28 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venomjump2"
+            "ability": "symbiotestride2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomlheal": {
+    "symbioteregen": {
       "type": "palladium:healing",
       "icon": "minecraft:apple",
-      "title": "null",
+      "title": "Symbiote regeneration",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "frequency": 10,
       "amount": 1,
       "conditions": {
@@ -4888,15 +4888,15 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomfall": {
+    "fallcushion": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Movement skill tree",
+      "title": "Fall cushioning",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4905,7 +4905,7 @@
         -1,
         0
       ],
-      "description": "This skill tree allows you to grant yourself movement capabilities.",
+      "description": "",
       "attribute": "palladium:fall_resistance",
       "amount": 1000,
       "operation": 0,
@@ -4915,16 +4915,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "actionremover": {
+    "combatreset": {
       "type": "palladium:repeating_animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Combat reset",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -4949,7 +4949,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           },
           {
             "type": "palladium:not",
@@ -4985,10 +4985,10 @@
         ]
       }
     },
-    "venomreach": {
+    "symbiotereach": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Passive skill tree",
+      "title": "Reach",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -4997,7 +4997,7 @@
         1,
         0
       ],
-      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "description": "",
       "attribute": "forge:entity_reach",
       "amount": -1000,
       "operation": 0,
@@ -5007,15 +5007,15 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
     },
-    "venomreachblock": {
+    "blockreach": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Passive skill tree",
+      "title": "Block reach",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5024,7 +5024,7 @@
         1,
         0
       ],
-      "description": "This skill tree allows you to grant yourself stat boosts.",
+      "description": "",
       "attribute": "forge:block_reach",
       "amount": -1000,
       "operation": 0,
@@ -5034,12 +5034,12 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "attack"
+            "ability": "clawflurry"
           }
         ]
       }
     },
-    "venomsmashstart": {
+    "combatwheel": {
       "type": "palladium:ability_wheel",
       "icon": "klyntars:textures/icon/symbioteblade.png",
       "list_index": 2,
@@ -5064,12 +5064,12 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 30
           },
@@ -5079,7 +5079,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -5158,7 +5158,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -5214,7 +5214,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -5270,7 +5270,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -5326,7 +5326,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -5410,7 +5410,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
@@ -5437,7 +5437,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
@@ -5464,16 +5464,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomsmash": {
+    "overheadsmash": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Slam",
+      "title": "Overhead smash wind-up",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -5487,18 +5487,18 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venomsmashstart",
+            "ability": "combatwheel",
             "min": 1,
             "max": 10
           }
         ]
       }
     },
-    "venomsmash2": {
+    "overheadsmash2": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 0,
-      "title": "Godlike Appearance",
+      "title": "Overhead smash impact",
       "hidden_in_bar": false,
       "hidden": true,
       "start_value": 0,
@@ -5512,23 +5512,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venomsmashstart",
+            "ability": "combatwheel",
             "min": 10,
             "max": 15
           }
         ]
       }
     },
-    "venomsmashplosion": {
+    "smashshockwave": {
       "type": "klyntars:explosion",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "null",
+      "title": "Smash shockwave",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "cause_fire": false,
       "radius": 3,
       "self_damage": 0,
@@ -5537,16 +5537,16 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venomsmashstart",
+            "ability": "combatwheel",
             "min": 15,
             "max": 15
           }
         ]
       }
     },
-    "showslam": {
+    "showsmash": {
       "type": "palladium:show_both_arms",
-      "title": "Passive skill tree",
+      "title": "Both arms (smash)",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -5555,27 +5555,27 @@
         1,
         0
       ],
-      "description": "null",
+      "description": "",
       "conditions": {
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "venomsmash"
+            "ability": "overheadsmash"
           }
         ]
       }
     },
-    "armorsound": {
+    "bondsound": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbioteblade.png",
-      "title": "null",
+      "title": "Armor sound",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         ""
       ],
@@ -5591,49 +5591,49 @@
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablevenom",
+                "ability": "enablesymbiote",
                 "min": 1,
                 "max": 19
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablevenomhead",
+                "ability": "enablesymbiotehead",
                 "min": 1,
                 "max": 11
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablevenomlegs",
+                "ability": "enablesymbiotelegs",
                 "min": 1,
                 "max": 15
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablesymbiotecover",
+                "ability": "enablecover",
                 "min": 1,
                 "max": 15
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablesymbioteaxe",
+                "ability": "enableaxehand",
                 "min": 1,
                 "max": 9
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablesymbiotepicaxe",
+                "ability": "enablepickaxehand",
                 "min": 1,
                 "max": 9
               },
               {
                 "type": "palladium:animation_timer_ability",
                 "power": "null",
-                "ability": "enablesymbiotepunch",
+                "ability": "enablepunchcuff",
                 "min": 1,
                 "max": 5
               }
@@ -5642,16 +5642,16 @@
         ]
       }
     },
-    "armorsound2": {
+    "bondsound2": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbioteblade.png",
-      "title": "null",
+      "title": "Armor sound II",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.unleash ambient @s ~ ~ ~ 0.9 1"
       ],
@@ -5662,23 +5662,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenombody",
+            "ability": "enablesymbiotebody",
             "min": 1,
             "max": 15
           }
         ]
       }
     },
-    "spikesound": {
+    "spinesound": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbioteblade.png",
-      "title": "null",
+      "title": "Spine sound",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         ""
       ],
@@ -5691,23 +5691,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 1,
             "max": 7
           }
         ]
       }
     },
-    "spikessound": {
+    "spikeburstsound": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbioteblade.png",
-      "title": "null",
+      "title": "Spike burst sound",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         ""
       ],
@@ -5720,17 +5720,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomspike",
+            "ability": "enablesymbiotespine",
             "min": 1,
             "max": 5
           }
         ]
       }
     },
-    "hitsound1": {
+    "impactsound1": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/klyntar_hammer.png",
-      "title": "Throw Hammer",
+      "title": "Hit sound I",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5739,7 +5739,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
@@ -5755,17 +5755,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "righttalon2",
+            "ability": "rightclaw2",
             "min": 1,
             "max": 5
           }
         ]
       }
     },
-    "hitsound2": {
+    "impactsound2": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/klyntar_hammer.png",
-      "title": "Throw Hammer",
+      "title": "Hit sound II",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5774,7 +5774,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
@@ -5790,17 +5790,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "lefttalon2",
+            "ability": "leftclaw2",
             "min": 1,
             "max": 5
           }
         ]
       }
     },
-    "hitsound3": {
+    "impactsound3": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/klyntar_hammer.png",
-      "title": "Throw Hammer",
+      "title": "Hit sound III",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5809,7 +5809,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
@@ -5825,17 +5825,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "venomslam2",
+            "ability": "groundpound2",
             "min": 2,
             "max": 5
           }
         ]
       }
     },
-    "hitsound4": {
+    "impactsound4": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/klyntar_hammer.png",
-      "title": "Throw Hammer",
+      "title": "Hit sound IV",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5844,7 +5844,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.hit ambient @s ~ ~ ~ 0.7 0.8"
       ],
@@ -5860,17 +5860,17 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "spinattack2",
+            "ability": "spinstrike2",
             "min": 5,
             "max": 10
           }
         ]
       }
     },
-    "roarsound4": {
+    "roarsound": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/klyntar_hammer.png",
-      "title": "Throw Hammer",
+      "title": "Roar sound",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -5879,7 +5879,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "playsound klyntars:ability.roar ambient @s ~ ~ ~ 1 2"
       ],
@@ -5895,23 +5895,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomspikes",
+            "ability": "spikeburst",
             "min": 1,
             "max": 8
           }
         ]
       }
     },
-    "shieldsound": {
+    "guardsound": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbioteblade.png",
-      "title": "null",
+      "title": "Shield sound",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         ""
       ],
@@ -5924,14 +5924,14 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenomshield",
+            "ability": "enablesymbioteshield",
             "min": 1,
             "max": 4
           }
         ]
       }
     },
-    "enablevenomhead": {
+    "enablesymbiotehead": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venom_symbol.png",
       "list_index": 3,
@@ -5950,7 +5950,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           },
           {
             "type": "palladium:not",
@@ -5958,7 +5958,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           },
@@ -6012,7 +6012,7 @@
       },
       "description": "Grow the symbiote head, which feeds on its own when hunger runs low."
     },
-    "venomheadenable": {
+    "headtoggle": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
       "title": "Symbiote Head Chat Trigger",
@@ -6024,7 +6024,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "venomhead",
       "adjustment_type": "add",
       "adjustment_amount": 1,
@@ -6033,7 +6033,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
@@ -6048,17 +6048,17 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
         ]
       }
     },
-    "venomdisable1": {
+    "headon": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Head on",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6067,7 +6067,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "venomhead",
       "adjustment_type": "set",
       "adjustment_amount": 1,
@@ -6083,10 +6083,10 @@
         ]
       }
     },
-    "venomdsiable2": {
+    "headoff": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Head off",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6095,7 +6095,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "venomhead",
       "adjustment_type": "set",
       "adjustment_amount": 0,
@@ -6141,15 +6141,15 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ]
       }
     },
-    "venomdsiable3": {
+    "headoff2": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Head off II",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6158,7 +6158,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "venomhead",
       "adjustment_type": "set",
       "adjustment_amount": 0,
@@ -6168,16 +6168,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "enablevenombody"
+            "ability": "enablesymbiotebody"
           }
         ]
       }
     },
-    "enablevenomlegs": {
+    "enablesymbiotelegs": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomlegsicon.png",
       "list_index": 0,
-      "title": "Symbiote Leg Cover",
+      "title": "Leg cover growth",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": true,
@@ -6206,14 +6206,14 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           },
           {
             "type": "palladium:ability_unlocked",
             "power": "null",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
@@ -6225,10 +6225,10 @@
         ]
       }
     },
-    "venomlegsmsg": {
+    "legcovermsg": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Leg cover placeholder",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6237,7 +6237,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [],
       "last_tick_commands": [],
       "commands": [
@@ -6249,22 +6249,22 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "enablevenombody",
+            "ability": "enablesymbiotebody",
             "min": 1,
             "max": 1
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenomlegs"
+            "ability": "enablesymbiotelegs"
           }
         ]
       }
     },
-    "venomlegspeed": {
+    "legcoverspeed": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced Speed",
+      "title": "Leg cover speed",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6273,7 +6273,7 @@
         -2,
         0
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.movement_speed",
       "amount": 0.1,
       "operation": 0,
@@ -6283,22 +6283,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenomlegs"
+            "ability": "enablesymbiotelegs"
           }
         ]
       }
     },
-    "venomlegsjump": {
+    "legcoverjump": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Enhanced movement",
+      "title": "Springing Legs",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -6317,22 +6317,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenomlegs"
+            "ability": "enablesymbiotelegs"
           }
         ]
       }
     },
-    "venomlegsfall": {
+    "legcoverfall": {
       "type": "palladium:attribute_modifier",
       "icon": "klyntars:textures/icon/venom_symbol.png",
-      "title": "Movement skill tree",
+      "title": "Leg cover landing",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -6341,7 +6341,7 @@
         -1,
         0
       ],
-      "description": "This skill tree allows you to grant yourself movement capabilities.",
+      "description": "",
       "attribute": "palladium:fall_resistance",
       "amount": 1000,
       "operation": 0,
@@ -6351,16 +6351,16 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenomlegs"
+            "ability": "enablesymbiotelegs"
           }
         ]
       }
     },
-    "venompunch": {
+    "tentaclepunch": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomsmash.png",
       "list_index": 1,
-      "title": "Symbiote Punch",
+      "title": "Punch",
       "bar_color": "black",
       "hidden_in_bar": false,
       "hidden": true,
@@ -6369,7 +6369,7 @@
         -1.5,
         -0.5
       ],
-      "max_value": 12,
+      "max_value": 16,
       "conditions": {
         "unlocking": [
           {
@@ -6386,7 +6386,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -6394,7 +6394,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           },
@@ -6435,18 +6435,18 @@
         "enabling": [
           {
             "type": "palladium:activation",
-            "ticks": 12,
+            "ticks": 16,
             "cooldown": 20,
             "key_type": "key_bind"
           }
         ]
       }
     },
-    "enablesymbiotepunch": {
+    "enablepunchcuff": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomsmash.png",
       "list_index": 0,
-      "title": "Symbiote Punch",
+      "title": "Punch cuff growth",
       "bar_color": "black",
       "hidden_in_bar": false,
       "hidden": true,
@@ -6461,30 +6461,30 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "null",
-            "ability": "venompunch",
-            "min": 5,
-            "max": 12
+            "ability": "tentaclepunch",
+            "min": 1,
+            "max": 16
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "venompunch"
+            "ability": "tentaclepunch"
           }
         ]
       }
     },
-    "venompunch1": {
+    "tentaclepunchwindup": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomsmash.png",
       "list_index": 2,
-      "title": "Symbiote Punch",
+      "title": "Punch wind-up",
       "bar_color": "black",
       "hidden_in_bar": false,
       "hidden": true,
@@ -6500,23 +6500,23 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venompunch",
+            "ability": "tentaclepunch",
             "min": 1,
             "max": 5
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "venompunch"
+            "ability": "tentaclepunch"
           }
         ]
       }
     },
-    "venompunch2": {
+    "tentaclepunchthrust": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomsmash.png",
       "list_index": 2,
-      "title": "Symbiote Punch",
+      "title": "Punch thrust",
       "bar_color": "black",
       "hidden_in_bar": false,
       "hidden": true,
@@ -6525,72 +6525,68 @@
         -1.5,
         -0.5
       ],
-      "max_value": 5,
+      "max_value": 2,
       "conditions": {
         "unlocking": [],
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venompunch",
+            "ability": "tentaclepunch",
             "min": 6,
             "max": 16
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "venompunch"
+            "ability": "tentaclepunch"
           }
         ]
       }
     },
-    "jabdmg": {
-      "type": "palladium:projectile",
-      "entity_type": "palladium:custom_projectile",
+    "tentaclepunchhit": {
+      "type": "palladium:command",
+      "icon": "klyntars:textures/icon/venomsmash.png",
+      "title": "Punch hit",
       "hidden": true,
-      "title": "Render Layer",
-      "list_index": 2,
-      "velocity": 3,
-      "entity_data": {
-        "Damage": 12,
-        "Size": 3,
-        "Lifetime": 12,
-        "DieOnEntityHit": false,
-        "DieOnBlockHit": false
-      },
-      "swinging_arm": "none",
-      "damage_from_player": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "scoreboard objectives add Klyntar.Punch dummy",
+        "scoreboard players set @s Klyntar.Punch 1"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "enabling": [
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "venompunch",
+            "ability": "tentaclepunch",
             "min": 8,
             "max": 8
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "venompunch"
+            "ability": "tentaclepunch"
           }
         ]
-      },
-      "hidden_in_bar": true
+      }
     },
-    "toolwheel": {
+    "symbiotetools": {
       "type": "palladium:ability_wheel",
       "icon": "klyntars:textures/icon/symbiotehand.png",
-      "title": "Symbiote Tool Wheel",
+      "title": "Symbiote tools",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": 2,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "abilities": [
-        "venompicprop",
-        "venomaxeprop",
+        "pickaxehand",
+        "axehand",
         "toolwheelreset"
       ],
       "disable_mouse_scrolling": false,
@@ -6600,7 +6596,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -6608,7 +6604,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           },
@@ -6678,7 +6674,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -6686,7 +6682,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           },
@@ -6720,10 +6716,10 @@
         ]
       }
     },
-    "venompicprop": {
+    "pickaxehand": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbiotehandpic.png",
-      "title": "Symbiote Pickaxe",
+      "title": "Pickaxe hand",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6732,7 +6728,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Tool dummy",
         "scoreboard players set @s Venom.Tool 1"
@@ -6744,7 +6740,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -6776,10 +6772,10 @@
         ]
       }
     },
-    "venomaxeprop": {
+    "axehand": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/symbiotehandaxe.png",
-      "title": "Symbiote Axe",
+      "title": "Axe hand",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6788,7 +6784,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "scoreboard objectives add Venom.Tool dummy",
         "scoreboard players set @s Venom.Tool 2"
@@ -6800,7 +6796,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:not",
@@ -6832,11 +6828,11 @@
         ]
       }
     },
-    "enablesymbiotepicaxe": {
+    "enablepickaxehand": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Pickaxe growth",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": true,
@@ -6865,7 +6861,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
@@ -6880,11 +6876,11 @@
         ]
       }
     },
-    "enablesymbioteaxe": {
+    "enableaxehand": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "list_index": 4,
-      "title": "Unleash the symbiote",
+      "title": "Axe growth",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": true,
@@ -6913,7 +6909,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
@@ -6928,10 +6924,10 @@
         ]
       }
     },
-    "venompicpropreset": {
+    "pickaxehandreset": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Pickaxe reset",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6940,7 +6936,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "symbiotepicaxe",
       "adjustment_type": "set",
       "adjustment_amount": 0,
@@ -6965,17 +6961,17 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
         ]
       }
     },
-    "venomaxepropreset": {
+    "axehandreset": {
       "type": "klyntars:palladium_property_modifier",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Axe reset",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -6984,7 +6980,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "property_name": "symbioteaxe",
       "adjustment_type": "set",
       "adjustment_amount": 0,
@@ -7009,23 +7005,23 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
         ]
       }
     },
-    "venomaxetool": {
+    "axetool": {
       "type": "palladium:tool_hands",
       "icon": "minecraft:wooden_pickaxe",
-      "title": "null",
+      "title": "Axe tool",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "drop_block_tags": [
         "minecraft:mineable/axe",
         "minecraft:needs_iron_tool"
@@ -7035,28 +7031,28 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablesymbioteaxe"
+            "ability": "enableaxehand"
           }
         ]
       }
     },
-    "venompictool": {
+    "pickaxetool": {
       "type": "palladium:tool_hands",
       "icon": "minecraft:wooden_pickaxe",
-      "title": "null",
+      "title": "Pickaxe tool",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "drop_block_tags": [
         "minecraft:mineable/pickaxe",
         "minecraft:needs_iron_tool"
@@ -7066,22 +7062,22 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablesymbiotepicaxe"
+            "ability": "enablepickaxehand"
           }
         ]
       }
     },
-    "venomtooldmg": {
+    "tooldamage": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:netherite_sword",
-      "title": "Enhanced damage",
+      "title": "Tool damage",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -7090,7 +7086,7 @@
         0,
         2
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.attack_damage",
       "amount": 6,
       "operation": 0,
@@ -7103,28 +7099,28 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "enablesymbiotepicaxe"
+                "ability": "enablepickaxehand"
               },
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "enablesymbioteaxe"
+                "ability": "enableaxehand"
               }
             ]
           }
         ]
       }
     },
-    "restricttools": {
+    "toolslotlock": {
       "type": "palladium:restrict_slots",
       "icon": "minecraft:blaze_rod",
-      "title": "null",
+      "title": "Tool slot lock",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "slots": [
         "mainhand",
         "offhand"
@@ -7137,23 +7133,23 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "enablesymbiotepicaxe"
+                "ability": "enablepickaxehand"
               },
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "enablesymbioteaxe"
+                "ability": "enableaxehand"
               }
             ]
           }
         ]
       }
     },
-    "enablesymbiotecover": {
+    "enablecover": {
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/venomtransformation.png",
       "list_index": 0,
-      "title": "Unleash the symbiote",
+      "title": "Cover growth",
       "hidden_in_bar": false,
       "bar_color": "black",
       "hidden": true,
@@ -7176,7 +7172,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
@@ -7191,10 +7187,10 @@
         ]
       }
     },
-    "symbiotearmor": {
+    "symbioteplating": {
       "type": "palladium:attribute_modifier",
       "icon": "minecraft:diamond_chestplate",
-      "title": "Enhanced durability",
+      "title": "Symbiote armor",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -7203,7 +7199,7 @@
         -1,
         0.5
       ],
-      "description": "null",
+      "description": "",
       "attribute": "minecraft:generic.armor",
       "amount": 10,
       "operation": 0,
@@ -7213,28 +7209,28 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           }
         ],
         "enabling": [
           {
             "type": "palladium:ability_enabled",
             "power": "null",
-            "ability": "enablesymbiotecover"
+            "ability": "enablecover"
           }
         ]
       }
     },
-    "bondheal": {
+    "bondregen": {
       "type": "palladium:healing",
       "icon": "minecraft:apple",
-      "title": "null",
+      "title": "Bond regeneration",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "frequency": 20,
       "amount": 1,
       "conditions": {
@@ -7242,26 +7238,26 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "null",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
     },
-    "venomsaying1": {
+    "voiceroll": {
       "type": "klyntars:random_scoreboard",
       "icon": "minecraft:clock",
-      "title": "null",
+      "title": "Symbiote voice roll",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
       "list_index": -1,
       "gui_position": "null",
-      "description": "null",
+      "description": "",
       "min_value": 1,
       "max_value": 8,
       "objective_score": "Klyntars.Symbiote.Saying",
@@ -7270,7 +7266,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "null",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           }
         ],
         "enabling": [
@@ -7285,17 +7281,17 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "null",
-                "ability": "enablevenombody"
+                "ability": "enablesymbiotebody"
               }
             ]
           }
         ]
       }
     },
-    "venomsaying2": {
+    "voiceline": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Symbiote voice",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": false,
@@ -7304,7 +7300,7 @@
         0,
         -1
       ],
-      "description": "null",
+      "description": "",
       "first_tick_commands": [
         "/function klyntars:symbiote/venomsay"
       ],
@@ -7318,7 +7314,7 @@
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "venomsaying1"
+            "ability": "voiceroll"
           }
         ]
       }
@@ -7385,12 +7381,12 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond1"
+            "ability": "symbiotebond1"
           },
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -7520,7 +7516,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -7561,14 +7557,14 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenomhead",
+            "ability": "enablesymbiotehead",
             "min": 1,
             "max": 1
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenomhead"
+            "ability": "enablesymbiotehead"
           }
         ]
       }
@@ -7591,7 +7587,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "enablevenomhead"
+            "ability": "enablesymbiotehead"
           }
         ]
       }
@@ -7640,7 +7636,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -7650,7 +7646,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -7709,7 +7705,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           }
@@ -7794,7 +7790,7 @@
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/knullwings.png",
       "list_index": 9,
-      "title": "Flight",
+      "title": "Symbiote Flight",
       "bar_color": "black",
       "hidden": false,
       "hidden_in_bar": false,
@@ -7838,7 +7834,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -7848,7 +7844,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -7896,7 +7892,7 @@
       "type": "palladium:animation_timer",
       "icon": "klyntars:textures/icon/knullwings.png",
       "list_index": -1,
-      "title": "Flight",
+      "title": "Flight state",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -7914,7 +7910,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           }
@@ -8109,7 +8105,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -8119,7 +8115,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -8194,7 +8190,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -8204,7 +8200,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -8303,7 +8299,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -8324,7 +8320,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -8413,7 +8409,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -8434,7 +8430,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -8531,7 +8527,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -8552,7 +8548,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -8727,7 +8723,7 @@
               {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "actionremover"
+                "ability": "combatreset"
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
@@ -8735,15 +8731,15 @@
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "enablevenomhead"
+                "ability": "enablesymbiotehead"
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "enablevenomlegs"
+                "ability": "enablesymbiotelegs"
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "enablevenomspikes"
+                "ability": "spikeburst"
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
@@ -8751,7 +8747,7 @@
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "venompunch"
+                "ability": "tentaclepunch"
               },              {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
@@ -8760,7 +8756,7 @@
               {
                 "type": "palladium:ability_first_tick",
                 "power": "klyntars:venom",
-                "ability": "venomgrab"
+                "ability": "crushinggrip"
               },
               {
                 "type": "palladium:ability_first_tick",
@@ -8816,14 +8812,14 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 1,
             "max": 20
           },
           {
             "type": "palladium:ability_enabled",
             "power": "klyntars:venom",
-            "ability": "enablevenom"
+            "ability": "enablesymbiote"
           }
         ]
       }
@@ -8858,14 +8854,14 @@
                   {
                     "type": "palladium:animation_timer_ability",
                     "power": "klyntars:venom",
-                    "ability": "enablevenom",
+                    "ability": "enablesymbiote",
                     "min": 1,
                     "max": 20
                   },
                   {
                     "type": "palladium:ability_enabled",
                     "power": "klyntars:venom",
-                    "ability": "enablevenom"
+                    "ability": "enablesymbiote"
                   }
                 ]
               }
@@ -8892,7 +8888,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "venomblock"
+            "ability": "guardstance"
           }
         ]
       }
@@ -8915,7 +8911,7 @@
           {
             "type": "palladium:ability_last_tick",
             "power": "klyntars:venom",
-            "ability": "venomblock"
+            "ability": "guardstance"
           }
         ]
       }
@@ -8923,7 +8919,7 @@
     "venomshieldstateflag": {
       "type": "palladium:command",
       "icon": "klyntars:textures/icon/impactweb.png",
-      "title": "Enable/Disable Climbing",
+      "title": "Shield state",
       "bar_color": "black",
       "hidden": true,
       "hidden_in_bar": true,
@@ -8947,7 +8943,7 @@
         "enabling": [
           {
             "type": "palladium:ability_enabled",
-            "ability": "venomblock"
+            "ability": "guardstance"
           }
         ]
       }
@@ -9009,7 +9005,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "righttalon2"
+            "ability": "rightclaw2"
           },
           {
             "type": "palladium:or",
@@ -9098,7 +9094,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "lefttalon"
+            "ability": "leftclaw"
           },
           {
             "type": "palladium:or",
@@ -9187,7 +9183,7 @@
           {
             "type": "palladium:ability_first_tick",
             "power": "klyntars:venom",
-            "ability": "righttalon"
+            "ability": "rightclaw"
           },
           {
             "type": "palladium:or",
@@ -9298,7 +9294,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -9308,7 +9304,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -9397,7 +9393,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -9407,7 +9403,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -9496,7 +9492,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -9506,7 +9502,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -9584,7 +9580,7 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 20,
             "max": 20
           },
@@ -9594,7 +9590,7 @@
               {
                 "type": "palladium:ability_enabled",
                 "power": "klyntars:venom",
-                "ability": "attack"
+                "ability": "clawflurry"
               }
             ]
           },
@@ -9835,14 +9831,14 @@
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenombody",
+            "ability": "enablesymbiotebody",
             "min": 1,
             "max": 15
           },
           {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablevenom",
+            "ability": "enablesymbiote",
             "min": 1,
             "max": 19
           }
@@ -9902,7 +9898,7 @@
           {
             "type": "palladium:ability_unlocked",
             "power": "klyntars:venom",
-            "ability": "venombond2"
+            "ability": "symbiotebond2"
           },
           {
             "type": "palladium:objective_score",
@@ -9931,6 +9927,30 @@
           {
             "type": "palladium:objective_score",
             "objective": "Klyntar.KnullBond",
+            "min_score": 1,
+            "max_score": 2147483647
+          }
+        ]
+      }
+    },
+    "backspikes": {
+      "type": "geckolib:render_layer_animation",
+      "icon": "minecraft:bone",
+      "title": "Back spikes",
+      "bar_color": "gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "",
+      "render_layer": "klyntars:klyntar_venom_body",
+      "controller": "venom_back_spikes",
+      "animation_trigger": "back_spikes_trigger",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "Klyntar.BackSpikes",
             "min_score": 1,
             "max_score": 2147483647
           }

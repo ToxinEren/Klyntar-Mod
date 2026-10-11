@@ -1,6 +1,8 @@
 package modKlyntar.player;
 
-import modKlyntar.MyMod;
+import modKlyntar.MyMod;
+import modKlyntar.capability.PlayerPowerCapability;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +14,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod;
+import net.threetag.palladium.power.ability.AbilityUtil;
 
 import java.util.Map;
 import java.util.UUID;
@@ -89,7 +92,7 @@ public final class VenomBedrockAnimationHandler {
 
         if (isShieldAnimationActive(player) || isClimbAnimationActive(player) || isBarrageAnimationActive(player)
                 || isSymbiotePowerAnimationActive(player) || isRegenerationAnimationActive(player)
-                || isGrabAnimationActive(player)) {
+                || isGrabAnimationActive(player) || isTransformationAnimationActive(player)) {
             clearPulseScores(player);
             memory.objective = null;
             memory.lastPosition = player.position();
@@ -193,6 +196,19 @@ public final class VenomBedrockAnimationHandler {
     /** anche i poteri simbionte girano su venom_actions: idle, walk e run li coprirebbero */
     private static boolean isSymbiotePowerAnimationActive(ServerPlayer player) {
         return getScore(player, VenomSymbiotePowersHandler.ANIM_PLAYING) > 0;
+    }
+
+    /**
+     * Anche la trasformazione e la detrasformazione girano su venom_actions (transform_trigger e
+     * transform_revert_trigger). Durano quanto il corpo sta entrando o uscendo, cioe' finche' il timer
+     * di enablesymbiote e' fra 1 e 19: in quella finestra e' accesa l'abilita' symbiotebody. Senza
+     * questa sospensione bastava muoversi, fermarsi o saltare mentre il corpo si ritirava perche' il
+     * trigger di idle, walk o falling troncasse la detrasformazione (11/10/2026).
+     */
+    private static boolean isTransformationAnimationActive(ServerPlayer player) {
+        String forma = PlayerPowerCapability.formaSuPalladium(player);
+        return forma != null && !forma.isEmpty()
+                && AbilityUtil.isEnabled(player, new ResourceLocation(MyMod.MOD_ID, forma), "symbiotebody");
     }
 
     private static boolean isBarrageAnimationActive(ServerPlayer player) {

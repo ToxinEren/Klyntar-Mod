@@ -64,6 +64,16 @@ public class ClientSetup {
     	//EntityRenderers.register(MyMod.VENOM_PLAYER_ENTITY.get(), VenomPlayerRenderer::new);
     }
     
+    /** Lo strato che legge la mano del pugno, su tutte e due le pelli del giocatore. */
+    @SubscribeEvent
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
+        for (String pelle : event.getSkins()) {
+            if (event.getSkin(pelle) instanceof net.minecraft.client.renderer.entity.player.PlayerRenderer giocatore) {
+                giocatore.addLayer(new modKlyntar.client.renderer.ManoDelPugno(giocatore));
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
     	event.registerEntityRenderer(MyMod.WEB_PROJECTILE_ENTITY.get(), WebProjectileRenderer::new);

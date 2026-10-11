@@ -16,7 +16,7 @@
                                                          "MASK":  {
                                                                       "type":  "palladium:ability_integer_property",
                                                                       "power":  "klyntars:riot",
-                                                                      "ability":  "enablevenomhead",
+                                                                      "ability":  "enablesymbiotehead",
                                                                       "property":  "value"
                                                                   }
                                                      },

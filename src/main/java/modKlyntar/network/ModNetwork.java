@@ -70,6 +70,8 @@ public class ModNetwork {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(id++, BarraConflittoPacket.class, BarraConflittoPacket::encode, BarraConflittoPacket::new, BarraConflittoPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, PugnoPacket.class, PugnoPacket::encode, PugnoPacket::new, PugnoPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     /** L'andamento del conflitto fra i due simbionti, solo all'ospite. */
@@ -121,6 +123,57 @@ public class ModNetwork {
     /** Una frustata coi tentacoli da un'entita' all'altra: la vedono tutti quelli che vedono chi frusta. */
     public static void mandaFrustata(net.minecraft.world.entity.Entity da, net.minecraft.world.entity.Entity a, String forma) {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> da), new FrustataPacket(da.getId(), a.getId(), forma));
+    }
+
+    /**
+     * Symbiote Punch: il tentacolo che esce dalla mano verso un bersaglio (o verso un punto, se
+     * va a vuoto). Lo vedono tutti quelli che vedono chi colpisce.
+     */
+    public static void mandaPugno(net.minecraft.server.level.ServerPlayer da, int bersaglio,
+                                  net.minecraft.world.phys.Vec3 punto, String forma) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> da),
+                new PugnoPacket(da.getId(), bersaglio, punto.x, punto.y, punto.z, forma));
+    }
+
+    public static class PugnoPacket {
+        private final int da;
+        private final int bersaglio;
+        private final double x, y, z;
+        private final String forma;
+
+        public PugnoPacket(int da, int bersaglio, double x, double y, double z, String forma) {
+            this.da = da;
+            this.bersaglio = bersaglio;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.forma = forma == null ? "" : forma;
+        }
+
+        public PugnoPacket(FriendlyByteBuf buf) {
+            this.da = buf.readVarInt();
+            this.bersaglio = buf.readVarInt();
+            this.x = buf.readDouble();
+            this.y = buf.readDouble();
+            this.z = buf.readDouble();
+            this.forma = buf.readUtf(32);
+        }
+
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeVarInt(da);
+            buf.writeVarInt(bersaglio);
+            buf.writeDouble(x);
+            buf.writeDouble(y);
+            buf.writeDouble(z);
+            buf.writeUtf(forma, 32);
+        }
+
+        public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                    () -> () -> modKlyntar.client.renderer.TentacoloPugno.aggiungi(da, bersaglio, x, y, z, forma)));
+            ctx.get().setPacketHandled(true);
+            return true;
+        }
     }
 
     public static class FrustataPacket {

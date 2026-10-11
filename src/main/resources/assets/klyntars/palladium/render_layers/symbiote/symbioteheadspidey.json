@@ -16,7 +16,7 @@
                                                          "MASK":  {
                                                                       "type":  "palladium:ability_integer_property",
                                                                       "power":  "klyntars:venomspidey",
-                                                                      "ability":  "enablevenomhead",
+                                                                      "ability":  "enablesymbiotehead",
                                                                       "property":  "value"
                                                                   }
                                                      },

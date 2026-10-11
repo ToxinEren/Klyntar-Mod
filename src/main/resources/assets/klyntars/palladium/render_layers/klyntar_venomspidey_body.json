@@ -166,7 +166,9 @@
       "triggers": {
         "vibrant_trigger": "animation.venom.vibrants.java_safe"
       }
-    }
+    },
+{"name": "venom_default_back_spikes_off", "transition_tick_time": 0, "animation": "animation.venom.back_spikes.off"},
+{"name": "venom_back_spikes", "transition_tick_time": 0, "triggers": {"back_spikes_trigger": "animation.venom.back_spikes.out"}}
   ],
   "bones": {
     "head": "head_venom",

@@ -149,7 +149,7 @@ public final class TentacoliPrimaPersona {
         }
         Player giocatore = evento.getPlayer();
         if (!"allblack".equals(VenomTentaclesTraversalRenderer.formaDi(giocatore))
-                || !AbilityUtil.isEnabled(giocatore, POTERE, "enablevenom")) {
+                || !AbilityUtil.isEnabled(giocatore, POTERE, "enablesymbiote")) {
             return;
         }
         boolean spada = AbilityUtil.isEnabled(giocatore, POTERE, "enablenecrosword");

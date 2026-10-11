@@ -2,6 +2,7 @@ package modKlyntar.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import modKlyntar.client.renderer.BraccioPrimaPersona;
+import modKlyntar.client.renderer.ManoDelPugno;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
@@ -27,6 +28,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = GeckoRenderLayer.class, remap = false)
 public abstract class GeckoRenderLayerPrimaPersonaMixin {
+
+    /**
+     * In cima a {@code renderArm} la pila e' quella con cui e' stato disegnato il braccio in prima
+     * persona (posa compresa) e la parte del braccio destro e' quella che Palladium copia sull'osso
+     * del polsino: da qui {@link ManoDelPugno} legge dove sta la punta del polsino, per far partire
+     * da li' il braccio-tentacolo del pugno.
+     */
+    @Inject(method = "renderArm", at = @At("HEAD"), remap = false)
+    private void klyntar$manoDelPugno(DataContext contesto, HumanoidArm braccio, PlayerRenderer renderer,
+                                      PoseStack pila, MultiBufferSource buffer, int luce, CallbackInfo info) {
+        if (braccio == HumanoidArm.RIGHT && contesto.getLivingEntity() != null) {
+            ManoDelPugno.primaPersona(contesto.getLivingEntity().getId(), renderer.getModel(), pila);
+        }
+    }
 
     @Inject(
             method = "renderArm",

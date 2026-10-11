@@ -156,6 +156,7 @@ public final class VenomTentaclesTraversalRenderer {
         return "riot".equals(forma) ? ARM_COLOR_RIOT : ARM_COLOR;
     }
 
+
     /** una texture per forma: bianca per anti-venom, rossa per carnage, arancione per toxin */
     /** La forma simbionte di questo giocatore, o {@code null} se non ne ha nessuna. */
     public static String formaDi(Player player) {
@@ -1141,6 +1142,24 @@ public final class VenomTentaclesTraversalRenderer {
         try {
             disegnaFilamento(inizio, fine, indice, texture, raggioBase, raggioPunta, segmenti,
                     ampiezza, pila, buffer, tempo);
+        } finally {
+            armR = pr; armG = pg; armB = pb;
+        }
+    }
+
+    /**
+     * Con la tinta e la luce dette da chi chiama: il braccio del pugno, che deve avere la stessa
+     * luce del polsino da cui esce, non la piena luce degli altri filamenti.
+     */
+    public static void disegnaFilamento(Vec3 inizio, Vec3 fine, int indice, ResourceLocation texture,
+                                        float raggioBase, float raggioPunta, int segmenti,
+                                        double ampiezza, PoseStack pila, MultiBufferSource buffer,
+                                        long tempo, int r, int g, int b, int luce) {
+        int pr = armR, pg = armG, pb = armB;
+        armR = r; armG = g; armB = b;
+        try {
+            disegnaFilamento(inizio, fine, indice, texture, raggioBase, raggioPunta, segmenti,
+                    ampiezza, pila, buffer, tempo, luce);
         } finally {
             armR = pr; armG = pg; armB = pb;
         }

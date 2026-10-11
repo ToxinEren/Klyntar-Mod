@@ -1,49 +1,71 @@
-﻿{
-    "type": "palladium:compound",
-    "layers": [
-        {
-            "model": "klyntars:geo/symbiotepunch.geo.json",
-            "type": "geckolib:default",
-            "texture": {
-                "base": "klyntars:textures/models/symbiotepunch.png",
-                "transformers": [
-                    {
-                        "type": "palladium:alpha_mask",
-                        "mask": "klyntars:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
-                    }
-                ],
-                "variables": {
-                    "MASK": {
-                        "type": "palladium:ability_integer_property",
-                        "power": "klyntars:venomspidey",
-                        "ability": "enablesymbiotepunch",
-                        "property": "value"
-                    }
-                },
-                "output": "klyntars:textures/models/symbiotepunch_#MASK.png"
-            }
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model": "klyntars:geo/symbiotepunch.geo.json",
+      "type": "geckolib:default",
+      "bones": {
+        "right_arm": "armorRightArm"
+      },
+      "texture": {
+        "base": "klyntars:textures/models/symbiotepunch.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:ability_integer_property",
+            "power": "klyntars:venomspidey",
+            "ability": "enablepunchcuff",
+            "property": "value"
+          }
         },
+        "output": "klyntars:textures/models/symbiotepunch_#MASK.png"
+      },
+      "animation_file": "klyntars:animations/symbiotetendrils.animation.json",
+      "animation_controller": [
         {
-            "model": "klyntars:geo/symbiotepunch.geo.json",
-            "type": "geckolib:default",
-            "texture": {
-                "base": "klyntars:textures/models/antipunch.png",
-                "transformers": [
-                    {
-                        "type": "palladium:alpha_mask",
-                        "mask": "klyntars:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
-                    }
-                ],
-                "variables": {
-                    "MASK": {
-                        "type": "palladium:ability_integer_property",
-                        "power": "klyntars:antivenom",
-                        "ability": "enablesymbiotepunch",
-                        "property": "value"
-                    }
-                },
-                "output": "klyntars:textures/models/antipunch_#MASK.png"
-            }
+          "name": "sempre",
+          "transition_tick_time": 0,
+          "animation": "animation.klyntar.tendrils"
         }
-    ]
+      ]
+    },
+    {
+      "model": "klyntars:geo/symbiotepunch.geo.json",
+      "type": "geckolib:default",
+      "bones": {
+        "right_arm": "armorRightArm"
+      },
+      "texture": {
+        "base": "klyntars:textures/models/antipunch.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "klyntars:textures/models/alpha_masks/venom/utility/symbiotepunchmask_#MASK.png"
+          }
+        ],
+        "variables": {
+          "MASK": {
+            "type": "palladium:ability_integer_property",
+            "power": "klyntars:antivenom",
+            "ability": "enablepunchcuff",
+            "property": "value"
+          }
+        },
+        "output": "klyntars:textures/models/antipunch_#MASK.png"
+      },
+      "animation_file": "klyntars:animations/symbiotetendrils.animation.json",
+      "animation_controller": [
+        {
+          "name": "sempre",
+          "transition_tick_time": 0,
+          "animation": "animation.klyntar.tendrils"
+        }
+      ]
+    }
+  ]
 }

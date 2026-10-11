@@ -163,7 +163,7 @@ public final class BraccioPrimaPersona {
         // dipende da un pacchetto nostro: quel pacchetto non arrivava e non succedeva niente.
         String forma = VenomTentaclesTraversalRenderer.formaDi(giocatore);
         if (forma == null
-                || !AbilityUtil.isEnabled(giocatore, new ResourceLocation(MyMod.MOD_ID, forma), "enablevenombody")) {
+                || !AbilityUtil.isEnabled(giocatore, new ResourceLocation(MyMod.MOD_ID, forma), "enablesymbiotebody")) {
             return;
         }
 
@@ -425,7 +425,7 @@ public final class BraccioPrimaPersona {
         }
         String forma = VenomTentaclesTraversalRenderer.formaDi(giocatore);
         return forma != null
-                && AbilityUtil.isEnabled(giocatore, new ResourceLocation(MyMod.MOD_ID, forma), "venomblock");
+                && AbilityUtil.isEnabled(giocatore, new ResourceLocation(MyMod.MOD_ID, forma), "guardstance");
     }
 
     /**

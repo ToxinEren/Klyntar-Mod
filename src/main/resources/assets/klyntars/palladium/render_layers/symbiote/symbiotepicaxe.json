@@ -19,11 +19,19 @@
           "MASK": {
             "type": "palladium:animation_timer_ability",
             "power": "klyntars:venom",
-            "ability": "enablesymbiotepicaxe"
+            "ability": "enablepickaxehand"
           }
         },
         "output": "klyntars:textures/models/symbiotepicaxe_#MASK.png"
-      }
+      },
+      "animation_file": "klyntars:animations/symbiotetendrils.animation.json",
+      "animation_controller": [
+        {
+          "name": "sempre",
+          "transition_tick_time": 0,
+          "animation": "animation.klyntar.tendrils"
+        }
+      ]
     }
   ]
 }
